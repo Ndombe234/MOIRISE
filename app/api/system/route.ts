@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentPlayer } from "@/lib/player/server";
-import { getSystemSnapshot, initializeSystemForCurrentPlayer } from "@/lib/system/server";
+import { getSystemViewModel } from "@/lib/system/service";
 
 export async function GET() {
   const player = await getCurrentPlayer();
@@ -10,9 +10,7 @@ export async function GET() {
   }
 
   try {
-    await initializeSystemForCurrentPlayer(player.id);
-    const system = await getSystemSnapshot(player.id);
-    return NextResponse.json(system, { status: 200 });
+    return NextResponse.json(await getSystemViewModel(player), { status: 200 });
   } catch {
     return NextResponse.json({ error: "Unable to load the SYSTEM." }, { status: 500 });
   }
