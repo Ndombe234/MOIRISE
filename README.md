@@ -8,6 +8,8 @@ MORISE — a global social world centered on an evolving personal SYSTEM.
 
 **Module 1 — AUTH + PLAYER — VALIDATED**
 
+**Module 2 — SYSTEM CORE — IMPLEMENTED / AUTHENTICATED E2E PENDING**
+
 This repository intentionally started from zero. No legacy OtakuWorld/NexoraVerse application code, database schema, RPCs, Edge Functions or RLS policies are reused.
 
 ## Product principles
@@ -52,3 +54,14 @@ This repository intentionally started from zero. No legacy OtakuWorld/NexoraVers
 ## Current platform-level auth note
 
 Supabase's leaked-password protection remains disabled because the current project plan does not provide that feature. The application does not attempt to bypass or emulate it. Supabase documents leaked-password protection as a Pro Plan and above feature.
+
+
+## Module 2 validation evidence
+
+- PostgreSQL SYSTEM schema is deployed: profiles, seven dimensions, immutable progression events and memories.
+- All four SYSTEM tables have RLS enabled; anonymous reads and authenticated direct writes to SYSTEM aggregates/events are blocked.
+- The progression RPC is the authenticated mutation boundary and is protected by caller identity, fixed search_path, strict v1 event validation and idempotency.
+- Player creation initializes SYSTEM state through a database trigger; the initialization RPC is not executable by authenticated clients.
+- Render production build: TypeScript passed; 6 test files and 14 tests passed; Next.js production build and standalone preparation passed; deployment is LIVE at https://morise.onrender.com.
+- Browser Use verified unauthenticated /system and /system/progression protection, 390x844 layout without horizontal overflow, no visible runtime/console errors, and /api/system returning HTTP 401.
+- Authenticated end-to-end persistence is deliberately not marked validated yet because the connected browser session has no authenticated QA account/session for the live project.
