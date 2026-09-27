@@ -3,7 +3,7 @@ import {
   getLevelForXp,
   getLevelProgress,
   getLevelThreshold,
-} from "@/lib/system/progression";
+} from "./progression";
 
 describe("SYSTEM progression", () => {
   it("starts a new Player at level 1 with zero XP", () => {
