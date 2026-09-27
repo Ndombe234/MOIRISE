@@ -34,13 +34,13 @@ export default async function DiscoverPage() {
         </div>
         <section aria-labelledby="intent-title" className="discover-section">
           <div className="discover-section-heading"><div><p className="discover-index">01 / INTENT</p><h2 id="intent-title">What feels right now?</h2></div><span>Choose one</span></div>
-          <div className="intent-grid">{intents.map(([index, title, description]) => <button className="intent-card" key={title} type="button" aria-label={`${title}: ${description}`}><span className="intent-index">{index}</span><strong>{title}</strong><small>{description}</small><span className="intent-arrow" aria-hidden="true">↗</span></button>)}</div>
+          <div className="intent-grid">{intents.map(([index, title, description]) => <Link className="intent-card" key={title} href={`/discover?intent=${encodeURIComponent(title.toLowerCase())}`} aria-label={`${title}: ${description}`}><span className="intent-index">{index}</span><strong>{title}</strong><small>{description}</small><span className="intent-arrow" aria-hidden="true">↗</span></Link>)}</div>
         </section>
         <section aria-labelledby="domain-title" className="discover-section">
           <div className="discover-section-heading"><div><p className="discover-index">02 / PATHS</p><h2 id="domain-title">Choose a world to open</h2></div><span>Nothing permanent</span></div>
-          <div className="domain-grid">{domains.map((domain, index) => <button type="button" className="domain-chip" key={domain}><span>{String(index + 1).padStart(2, "0")}</span>{domain}</button>)}</div>
+          <div className="domain-grid">{domains.map((domain, index) => <Link href={`/discover?domain=${encodeURIComponent(domain.toLowerCase())}`} className="domain-chip" key={domain}><span>{String(index + 1).padStart(2, "0")}</span>{domain}</Link>)}</div>
         </section>
-        <section className="detour" aria-labelledby="detour-title"><div><p className="discover-index">03 / DETOUR</p><h2 id="detour-title">Take one step sideways.</h2><p>Unexpected connections are part of the world. A future MORISE engine will use your activity to create bridges between different domains.</p></div><button type="button" className="detour-button">Open a detour <span aria-hidden="true">→</span></button></section>
+        <section className="detour" aria-labelledby="detour-title"><div><p className="discover-index">03 / DETOUR</p><h2 id="detour-title">Take one step sideways.</h2><p>Unexpected connections are part of the world. A future MORISE engine will use your activity to create bridges between different domains.</p></div><Link href="/discover?detour=1" className="detour-button">Open a detour <span aria-hidden="true">→</span></Link></section>
         <footer className="discover-footer"><span>Discovery changes with you.</span><Link href="/home">Return to World →</Link></footer>
       </section>
     </main>
