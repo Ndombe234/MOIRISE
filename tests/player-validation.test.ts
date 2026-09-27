@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { normalizeHandle, validateDisplayName, validateHandle, validatePlayerInput } from "@/lib/player/validation";
+import { normalizeHandle, validateDisplayName, validateHandle, validatePlayerInput } from "../lib/player/validation";
 
 describe("Player validation", () => {
   it("normalizes handles consistently", () => {
