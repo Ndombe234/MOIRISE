@@ -1,3 +1,3 @@
-export function shouldRecordIdentityCompletion(previousCompleted: boolean, transitionedToCompleted: boolean): boolean {
-  return previousCompleted === false && transitionedToCompleted === true;
+export function shouldRecordIdentityCompletion(onboardingCompleted: boolean): boolean {
+  return onboardingCompleted;
 }
