@@ -1,7 +1,7 @@
 # MORISE — Module 2 SYSTEM Core Design Specification
 
 Date: 2026-09-27
-Status: DESIGN — awaiting user review before implementation
+Status: IMPLEMENTED — authenticated E2E validation pending
 
 ## 1. Purpose
 
@@ -587,3 +587,18 @@ Module 2 is complete only when all of these are true:
 This module does not decide what MORISE's complete set of games, major functions, communities, social mechanics, or discovery systems will be.
 
 Those canonical inventories remain separate decisions and must be researched/spec'd in their own modules.
+
+
+## Current validation status
+
+Implementation is deployed to Render and the database path is live. Fresh evidence currently proves:
+- SYSTEM tables exist with RLS enabled.
+- Anonymous table SELECT is denied; authenticated direct aggregate/event INSERT is denied.
+- The progression RPC is executable only by authenticated users; the internal initializer is not executable by authenticated users.
+- The SYSTEM bootstrap trigger initializes the profile/dimensions/memory when a Player is created.
+- Render production build passes TypeScript, 6 test files, 14 tests, Next.js production build and standalone preparation; the live deployment exposes /system, /system/progression, /system/history and /system/memories.
+- Browser Use verifies unauthenticated protection for /system and /system/progression, the 390×844 mobile sign-in layout, and /api/system returning 401.
+- The identity milestone call is deterministic and idempotent; Player save retries the same 25 XP event after a successful onboarding save.
+
+Remaining gate:
+- A real authenticated browser session must execute Auth → Player identity save → SYSTEM → PostgreSQL persistence → reload → 25 XP milestone → retry/double-tab behavior. The connected validation browser currently has no QA-authenticated session, so this gate is not claimed as passed.
