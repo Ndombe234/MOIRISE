@@ -6,18 +6,8 @@ import type {
 } from "@/lib/supabase/database.types";
 import { createClient } from "@/lib/supabase/server";
 import { getLevelProgress } from "@/lib/system/progression";
+import { SYSTEM_DIMENSIONS, type SystemDimensionKey } from "@/lib/system/constants";
 
-export const SYSTEM_DIMENSIONS = [
-  "exploration",
-  "creation",
-  "knowledge",
-  "social",
-  "community",
-  "play",
-  "contribution",
-] as const;
-
-export type SystemDimensionKey = (typeof SYSTEM_DIMENSIONS)[number];
 
 export type SystemSnapshot = {
   profile: SystemProfile;
