@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function HomePage() {
   return (
     <main>
@@ -8,8 +10,12 @@ export default function HomePage() {
           A simple surface for a world that grows with every Player.
         </p>
         <div className="actions" aria-label="Primary actions">
-          <button type="button">Discover</button>
-          <button type="button" className="secondary">Enter my SYSTEM</button>
+          <Link className="button" href="/discover">
+            Discover
+          </Link>
+          <Link className="button secondary" href="/system">
+            Enter my SYSTEM
+          </Link>
         </div>
       </section>
     </main>
