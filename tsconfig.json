@@ -25,7 +25,6 @@
     "lib/**/*.ts",
     "lib/**/*.tsx",
     "proxy.ts",
-    "scripts/**/*.mjs",
     "tests/**/*.ts"
   ],
   "exclude": ["node_modules"]
