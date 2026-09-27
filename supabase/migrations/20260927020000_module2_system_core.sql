@@ -177,15 +177,10 @@ declare
   inserted_event public.system_progression_events%rowtype;
   resulting_total_xp bigint;
   resulting_level integer;
-  dimension_value bigint := null;
   player_is_onboarded boolean;
 begin
   if auth.uid() is null or auth.uid() <> target_player_id then
     raise exception 'not authorized';
-  end if;
-
-  if event_type_value is null or length(trim(event_type_value)) = 0 then
-    raise exception 'event type is required';
   end if;
 
   if event_type_value <> 'player_identity_completed' then
@@ -233,12 +228,11 @@ begin
     from public.system_profiles
     where player_id = target_player_id;
 
-    resulting_level := public.system_level_for_xp(resulting_total_xp);
     return jsonb_build_object(
       'duplicate', true,
       'event_id', existing_event.id,
       'total_xp', resulting_total_xp,
-      'level', resulting_level
+      'level', public.system_level_for_xp(resulting_total_xp)
     );
   end if;
 
@@ -281,19 +275,14 @@ begin
     'duplicate', false,
     'event_id', inserted_event.id,
     'total_xp', resulting_total_xp,
-    'level', resulting_level,
-    'dimension_key', dimension_key_value,
-    'dimension_xp', dimension_value
+    'level', resulting_level
   );
 exception
   when unique_violation then
     select * into existing_event
     from public.system_progression_events
     where player_id = target_player_id
-      and (
-        idempotency_key = idempotency_key_value
-        or event_type = 'player_identity_completed'
-      )
+      and (idempotency_key = idempotency_key_value or event_type = 'player_identity_completed')
     order by created_at asc
     limit 1;
 
@@ -320,30 +309,18 @@ alter table public.system_progression_events enable row level security;
 alter table public.system_memories enable row level security;
 
 drop policy if exists system_profiles_select_own on public.system_profiles;
-create policy system_profiles_select_own
-on public.system_profiles for select to authenticated
-using (auth.uid() = player_id);
-
+create policy system_profiles_select_own on public.system_profiles for select to authenticated using (auth.uid() = player_id);
 drop policy if exists system_dimensions_select_own on public.system_dimensions;
-create policy system_dimensions_select_own
-on public.system_dimensions for select to authenticated
-using (auth.uid() = player_id);
-
+create policy system_dimensions_select_own on public.system_dimensions for select to authenticated using (auth.uid() = player_id);
 drop policy if exists system_progression_events_select_own on public.system_progression_events;
-create policy system_progression_events_select_own
-on public.system_progression_events for select to authenticated
-using (auth.uid() = player_id);
-
+create policy system_progression_events_select_own on public.system_progression_events for select to authenticated using (auth.uid() = player_id);
 drop policy if exists system_memories_select_own on public.system_memories;
-create policy system_memories_select_own
-on public.system_memories for select to authenticated
-using (auth.uid() = player_id);
+create policy system_memories_select_own on public.system_memories for select to authenticated using (auth.uid() = player_id);
 
 revoke all on table public.system_profiles from anon, authenticated;
 revoke all on table public.system_dimensions from anon, authenticated;
 revoke all on table public.system_progression_events from anon, authenticated;
 revoke all on table public.system_memories from anon, authenticated;
-
 grant select on public.system_profiles to authenticated;
 grant select on public.system_dimensions to authenticated;
 grant select on public.system_progression_events to authenticated;
@@ -351,4 +328,5 @@ grant select on public.system_memories to authenticated;
 
 revoke execute on function public.ensure_system_profile(uuid) from public, anon, authenticated;
 revoke execute on function public.record_system_progress_event(uuid, text, text, integer, text, text, text, jsonb) from public, anon, authenticated;
+grant execute on function public.ensure_system_profile(uuid) to authenticated;
 grant execute on function public.record_system_progress_event(uuid, text, text, integer, text, text, text, jsonb) to authenticated;
