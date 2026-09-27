@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildIdentityCompletionRequest } from "@/lib/system/milestone";
+import { buildIdentityCompletionRequest } from "../lib/system/milestone";
 
 describe("SYSTEM identity milestone", () => {
   it("builds a deterministic 25 XP identity-completion request", () => {
