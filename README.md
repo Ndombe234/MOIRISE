@@ -4,7 +4,7 @@ MORISE — a global social world centered on an evolving personal SYSTEM.
 
 ## Project status
 
-Module 0 — Foundations
+**Module 0 — VALIDATED**
 
 This repository intentionally started from zero. No legacy OtakuWorld/NexoraVerse application code, database schema, RPCs, Edge Functions or RLS policies are reused.
 
@@ -21,15 +21,13 @@ This repository intentionally started from zero. No legacy OtakuWorld/NexoraVers
 - Cloudflare is the intended final production platform.
 - Vercel is not used unless explicitly justified.
 
-## Module 0 quality gate
+## Module 0 validation evidence
 
-A module is not considered complete from a green build alone. Completion requires:
-
-1. Source and architecture checked.
-2. Render build and runtime verified.
-3. Supabase foundation verified.
-4. Health endpoint verified.
-5. Real rendered browser navigation checked.
-6. Mobile/desktop presentation checked.
-7. Errors and important warnings investigated.
-8. Only then marked validated.
+- GitHub repository: clean-slate MORISE foundation.
+- Next.js App Router + TypeScript foundation builds successfully on Render.
+- Render runtime uses the Next standalone server with HOSTNAME=0.0.0.0.
+- Supabase public schema is empty and security/performance advisors are clean.
+- /api/health returns HTTP 200 with status: ok.
+- Home, /discover, and /system return HTTP 200.
+- Browser Use verified real-user navigation, back navigation, console/runtime health, asset loading and 390×844 mobile layout.
+- Standalone static assets are copied into the runtime bundle during build.
