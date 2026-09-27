@@ -44,11 +44,11 @@ This repository intentionally started from zero. No legacy OtakuWorld/NexoraVers
 - Player creation is idempotent against concurrent initialization races.
 - Player display name and handle updates validate input, handle uniqueness conflicts, persist to PostgreSQL and survive reload.
 - Authenticated SYSTEM displays the persisted Player; sign-out returns to public home and protected SYSTEM routes redirect to sign-in.
-- Security and performance database advisors are clean after the final hardening pass.
+- Performance advisors are clean. Supabase security advisors report only the platform-level leaked-password-protection warning described below.
 - Browser Use verified the sign-in flow, Player persistence, SYSTEM synchronization, sign-out protection, 390×844 layout and console/runtime health.
 - A favicon route was added and verified HTTP 200.
-- CI now runs TypeScript validation and unit tests on pushes and pull requests.
+- CI now runs TypeScript validation and unit tests during the production build.
 
 ## Current platform-level auth note
 
-Supabase's leaked-password protection remains disabled because the current project is on a plan where that feature is not available. The application does not attempt to bypass or emulate it. Supabase documents leaked-password protection as a Pro Plan and above feature.
+Supabase's leaked-password protection remains disabled because the current project plan does not provide that feature. The application does not attempt to bypass or emulate it. Supabase documents leaked-password protection as a Pro Plan and above feature.
