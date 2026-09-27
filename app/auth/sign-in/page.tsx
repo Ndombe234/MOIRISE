@@ -16,20 +16,14 @@ export default function SignInPage() {
     event.preventDefault();
     setError("");
     setLoading(true);
-
     const supabase = createClient();
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: email.trim(),
-      password,
-    });
-
+    const { error: signInError } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     if (signInError) {
       setError(signInError.message);
       setLoading(false);
       return;
     }
-
-    router.replace("/system");
+    router.replace("/home");
     router.refresh();
   }
 
@@ -40,18 +34,10 @@ export default function SignInPage() {
         <h1 id="title">Enter MORISE.</h1>
         <p className="lead">Sign in to continue to your Player world.</p>
         <form className="form" onSubmit={handleSubmit}>
-          <label className="field">
-            <span>Email</span>
-            <input className="input" autoComplete="email" inputMode="email" required type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
-          </label>
-          <label className="field">
-            <span>Password</span>
-            <input className="input" autoComplete="current-password" minLength={8} required type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
-          </label>
+          <label className="field"><span>Email</span><input className="input" autoComplete="email" inputMode="email" required type="email" value={email} onChange={(event) => setEmail(event.target.value)} /></label>
+          <label className="field"><span>Password</span><input className="input" autoComplete="current-password" minLength={8} required type="password" value={password} onChange={(event) => setPassword(event.target.value)} /></label>
           {error ? <p className="notice error">{error}</p> : null}
-          <button className="button" type="submit" disabled={loading}>
-            {loading ? "Signing in…" : "Sign in"}
-          </button>
+          <button className="button" type="submit" disabled={loading}>{loading ? "Signing in…" : "Sign in"}</button>
         </form>
         <div className="actions">
           <Link className="button secondary" href="/auth/sign-up">Create a Player</Link>
