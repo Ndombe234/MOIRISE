@@ -1,4 +1,5 @@
 import type {
+  Json,
   Player,
   SystemDimension,
   SystemMemory,
@@ -14,7 +15,7 @@ export type SystemProgressionPayload = {
   idempotencyKey: string;
   sourceType: string;
   sourceId?: string | null;
-  metadata?: Record<string, unknown>;
+  metadata?: Json;
 };
 
 export type SystemViewModel = {
