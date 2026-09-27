@@ -328,5 +328,4 @@ grant select on public.system_memories to authenticated;
 
 revoke execute on function public.ensure_system_profile(uuid) from public, anon, authenticated;
 revoke execute on function public.record_system_progress_event(uuid, text, text, integer, text, text, text, jsonb) from public, anon, authenticated;
-grant execute on function public.ensure_system_profile(uuid) to authenticated;
 grant execute on function public.record_system_progress_event(uuid, text, text, integer, text, text, text, jsonb) to authenticated;
