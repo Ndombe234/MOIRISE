@@ -1,12 +1,11 @@
 import { createClient } from "@/lib/supabase/server";
 import type { Player } from "@/lib/supabase/database.types";
 import { buildIdentityCompletionRequest } from "@/lib/system/milestone";
-import { getSystemSnapshot, initializeSystemForCurrentPlayer } from "@/lib/system/server";
+import { getSystemSnapshot } from "@/lib/system/server";
 import type { SystemProgressionPayload, SystemViewModel } from "@/lib/system/types";
 import { validateProgressionPayload } from "@/lib/system/validation";
 
 export async function getSystemViewModel(player: Player): Promise<SystemViewModel> {
-  await initializeSystemForCurrentPlayer(player.id);
   const snapshot = await getSystemSnapshot(player.id);
 
   return {
