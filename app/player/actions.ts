@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { recordIdentityCompletion } from "@/lib/system/service";
 import { createClient } from "@/lib/supabase/server";
 import { normalizeHandle, validateDisplayName, validateHandle } from "@/lib/player/validation";
 
@@ -32,6 +33,7 @@ export async function updatePlayer(formData: FormData): Promise<UpdatePlayerResu
       display_name: displayName,
       handle: handle || null,
       updated_at: new Date().toISOString(),
+      onboarding_completed: true,
     })
     .eq("id", userData.user.id);
 
@@ -40,6 +42,17 @@ export async function updatePlayer(formData: FormData): Promise<UpdatePlayerResu
       return { ok: false, error: "That handle is already in use." };
     }
     return { ok: false, error: "Player update failed. Please try again." };
+  }
+
+  try {
+    await recordIdentityCompletion(userData.user.id);
+  } catch {
+    revalidatePath("/player");
+    revalidatePath("/system");
+    return {
+      ok: false,
+      error: "Player saved, but SYSTEM progress could not be recorded. Please save again.",
+    };
   }
 
   revalidatePath("/player");
