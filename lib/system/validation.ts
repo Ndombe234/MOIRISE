@@ -1,4 +1,5 @@
 import { SYSTEM_DIMENSIONS, type SystemDimensionKey } from "@/lib/system/constants";
+import type { Json } from "@/lib/supabase/database.types";
 import type { SystemProgressionPayload } from "@/lib/system/types";
 
 export function isSystemDimension(value: unknown): value is SystemDimensionKey {
@@ -36,7 +37,7 @@ export function validateProgressionPayload(payload: unknown): SystemProgressionP
     sourceType,
     sourceId: typeof value.sourceId === "string" ? value.sourceId : null,
     metadata: value.metadata && typeof value.metadata === "object"
-      ? value.metadata as Record<string, unknown>
+      ? value.metadata as Json
       : {},
   };
 }
