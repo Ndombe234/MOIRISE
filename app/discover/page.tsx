@@ -1,4 +1,5 @@
 import Link from "next/link";
+import "./discover.css";
 
 const paths = [
   { label: "Learn", text: "Follow a question until it becomes a skill." },
@@ -36,20 +37,14 @@ export default function DiscoverPage() {
 
         <section aria-labelledby="paths-title">
           <div className="discover-section-heading">
-            <div>
-              <span className="discover-code">PATHS</span>
-              <h2 id="paths-title">Start anywhere.</h2>
-            </div>
+            <div><span className="discover-code">PATHS</span><h2 id="paths-title">Start anywhere.</h2></div>
             <span className="discover-caption">No permanent category.</span>
           </div>
           <div className="discover-paths">
             {paths.map((path, index) => (
               <Link className="discover-path" href={`/discover/${path.label.toLowerCase()}`} key={path.label}>
                 <span className="discover-number">0{index + 1}</span>
-                <span>
-                  <strong>{path.label}</strong>
-                  <small>{path.text}</small>
-                </span>
+                <span><strong>{path.label}</strong><small>{path.text}</small></span>
                 <span aria-hidden="true">↗</span>
               </Link>
             ))}
@@ -57,20 +52,11 @@ export default function DiscoverPage() {
         </section>
 
         <section className="discover-detour" aria-labelledby="detour-title">
-          <div>
-            <span className="discover-code">DETOUR</span>
-            <h2 id="detour-title">Try something you did not come looking for.</h2>
-            <p>Unexpected connections are part of the world. These are prompts, not predictions about you.</p>
-          </div>
-          <ul>
-            {detours.map((detour) => <li key={detour}>{detour}</li>)}
-          </ul>
+          <div><span className="discover-code">DETOUR</span><h2 id="detour-title">Try something you did not come looking for.</h2><p>Unexpected connections are part of the world. These are prompts, not predictions about you.</p></div>
+          <ul>{detours.map((detour) => <li key={detour}>{detour}</li>)}</ul>
         </section>
 
-        <footer className="discover-footer">
-          <span>Discovery is a door, not a destination.</span>
-          <Link href="/home">Return to World →</Link>
-        </footer>
+        <footer className="discover-footer"><span>Discovery is a door, not a destination.</span><Link href="/home">Return to World →</Link></footer>
       </section>
     </main>
   );
