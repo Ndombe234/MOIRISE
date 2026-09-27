@@ -5,8 +5,8 @@ import type {
   SystemMemory,
   SystemProgressionEvent,
   SystemProfile,
-} from "@/lib/supabase/database.types";
-import type { SystemDimensionKey } from "@/lib/system/constants";
+} from "../supabase/database.types";
+import type { SystemDimensionKey } from "./constants";
 
 export type SystemProgressionPayload = {
   eventType: string;
