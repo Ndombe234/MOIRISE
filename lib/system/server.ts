@@ -41,13 +41,3 @@ export async function getSystemSnapshot(playerId: string): Promise<SystemSnapsho
   };
 }
 
-export async function initializeSystemForCurrentPlayer(playerId: string) {
-  const supabase = await createClient();
-  const { error } = await supabase.rpc("ensure_system_profile", {
-    target_player_id: playerId,
-  });
-
-  if (error) {
-    throw new Error("Unable to initialize the SYSTEM.");
-  }
-}
