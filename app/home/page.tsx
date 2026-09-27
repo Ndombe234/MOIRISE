@@ -1,4 +1,7 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import "./home-world.css";
 
 const actions = [
   { href: "/discover", label: "Discover", index: "01", text: "Find something unexpected." },
@@ -9,18 +12,21 @@ const actions = [
   { href: "/events", label: "Events", index: "06", text: "See what is happening." },
 ];
 
-export default function HomeWorldPage() {
+export default async function HomeWorldPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) redirect("/auth/sign-in");
+
   return (
     <main className="world-main">
       <section className="world-shell" aria-labelledby="world-title">
         <header className="world-header">
-          <Link className="world-brand" href="/">MORISE</Link>
+          <Link className="world-brand" href="/home">MORISE</Link>
           <nav aria-label="World navigation">
             <Link href="/system">SYSTEM</Link>
-            <Link href="/auth/sign-out">Exit</Link>
           </nav>
         </header>
-
         <div className="world-intro">
           <div>
             <p className="world-kicker">PLAYER WORLD / ONLINE</p>
@@ -33,26 +39,18 @@ export default function HomeWorldPage() {
             <small>View Player progression →</small>
           </Link>
         </div>
-
-        <div className="world-actions" aria-label="Primary world actions">
+        <nav className="world-actions" aria-label="Primary world actions">
           {actions.map((action) => (
             <Link className="world-action" href={action.href} key={action.href}>
               <span className="world-action-index">{action.index}</span>
-              <span className="world-action-copy">
-                <strong>{action.label}</strong>
-                <small>{action.text}</small>
-              </span>
+              <span className="world-action-copy"><strong>{action.label}</strong><small>{action.text}</small></span>
               <span aria-hidden="true" className="world-action-arrow">↗</span>
             </Link>
           ))}
-        </div>
-
+        </nav>
         <section className="world-note" aria-label="Solo first">
           <span className="world-note-dot" />
-          <div>
-            <strong>Solo-first</strong>
-            <p>You can explore MORISE alone. Connections appear naturally as your actions create opportunities.</p>
-          </div>
+          <div><strong>Solo-first</strong><p>You can explore MORISE alone. Connections appear naturally as your actions create opportunities.</p></div>
         </section>
       </section>
     </main>
