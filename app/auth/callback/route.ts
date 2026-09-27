@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { getCurrentPlayer } from "@/lib/player/server";
+import { ensurePlayerForUser } from "@/lib/player/server";
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
@@ -11,14 +11,20 @@ export async function GET(request: Request) {
   }
 
   const supabase = await createClient();
-  const { error } = await supabase.auth.exchangeCodeForSession(code);
+  const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
 
-  if (error) {
+  if (exchangeError) {
+    return NextResponse.redirect(new URL("/auth/sign-in?error=auth_callback", requestUrl.origin));
+  }
+
+  const { data, error: userError } = await supabase.auth.getUser();
+
+  if (userError || !data.user) {
     return NextResponse.redirect(new URL("/auth/sign-in?error=auth_callback", requestUrl.origin));
   }
 
   try {
-    await getCurrentPlayer();
+    await ensurePlayerForUser(supabase, data.user);
   } catch {
     return NextResponse.redirect(new URL("/auth/sign-in?error=player_init", requestUrl.origin));
   }
