@@ -66,9 +66,7 @@ export async function updatePlayer(formData: FormData): Promise<UpdatePlayerResu
     }
   }
 
-  const shouldRecord = shouldRecordIdentityCompletion(false, Boolean(transitionedPlayer));
-
-  if (shouldRecord) {
+  if (shouldRecordIdentityCompletion(true)) {
     try {
       await recordIdentityCompletion(userData.user.id);
     } catch {
