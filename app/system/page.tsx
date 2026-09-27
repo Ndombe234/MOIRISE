@@ -1,15 +1,34 @@
 import Link from "next/link";
+import { signOut } from "@/app/auth/actions";
+import { requireCurrentPlayer } from "@/lib/player/server";
 
-export default function SystemPage() {
+export const dynamic = "force-dynamic";
+
+export default async function SystemPage() {
+  const player = await requireCurrentPlayer();
+
   return (
     <main>
       <section className="hero" aria-labelledby="title">
-        <p className="eyebrow">SYSTEM</p>
-        <h1 id="title">Your SYSTEM starts here.</h1>
-        <p className="lead">This is the dedicated SYSTEM destination. Its full Player engine will be built in Module 2.</p>
+        <p className="eyebrow">SYSTEM / PLAYER</p>
+        <h1 id="title">{player.display_name}</h1>
+        <p className="lead">Your Player is now persistent. The deeper SYSTEM engine will build on this identity in Module 2.</p>
+        <div className="profile-grid">
+          <div>
+            <span className="label">Status</span>
+            <strong>Player initialized</strong>
+          </div>
+          <div>
+            <span className="label">Handle</span>
+            <strong>{player.handle ? "@" + player.handle : "Not set"}</strong>
+          </div>
+        </div>
         <div className="actions">
-          <Link className="button secondary" href="/">Back home</Link>
-          <Link className="button" href="/discover">Discover</Link>
+          <Link className="button" href="/player">Edit Player</Link>
+          <Link className="button secondary" href="/discover">Discover</Link>
+          <form action={signOut}>
+            <button className="button secondary" type="submit">Sign out</button>
+          </form>
         </div>
       </section>
     </main>
