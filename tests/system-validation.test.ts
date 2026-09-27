@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { validateProgressionPayload } from "@/lib/system/validation";
+import { validateProgressionPayload } from "../lib/system/validation";
 
 describe("SYSTEM progression validation", () => {
   it("accepts all seven dimensions and bounded XP", () => {
