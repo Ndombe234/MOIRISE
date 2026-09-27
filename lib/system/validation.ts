@@ -1,6 +1,6 @@
-import { SYSTEM_DIMENSIONS, type SystemDimensionKey } from "@/lib/system/constants";
-import type { Json } from "@/lib/supabase/database.types";
-import type { SystemProgressionPayload } from "@/lib/system/types";
+import { SYSTEM_DIMENSIONS, type SystemDimensionKey } from "./constants";
+import type { Json } from "../supabase/database.types";
+import type { SystemProgressionPayload } from "./types";
 
 export function isSystemDimension(value: unknown): value is SystemDimensionKey {
   return typeof value === "string" && (SYSTEM_DIMENSIONS as readonly string[]).includes(value);
