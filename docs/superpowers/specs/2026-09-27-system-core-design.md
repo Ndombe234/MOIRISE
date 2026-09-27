@@ -50,6 +50,7 @@ The validated product direction is:
 12. PostgreSQL constraints, RLS, grants, RPCs, and security-definer hardening.
 13. API/service/RPC end-to-end mutation path.
 14. Automated unit/integration coverage and browser QA.
+15. One real Player milestone that can produce the first positive SYSTEM XP event.
 
 ### Explicitly out of scope
 
@@ -80,8 +81,8 @@ Fields:
 - `player_id uuid primary key references public.players(id) on delete cascade`
 - `level integer not null default 1`
 - `total_xp bigint not null default 0`
-- `created_at timestamptz`
-- `updated_at timestamptz`
+- `created_at timestamptz not null default timezone('utc', now())`
+- `updated_at timestamptz not null default timezone('utc', now())`
 
 Rules:
 
@@ -126,7 +127,7 @@ Immutable source ledger for progression.
 Fields:
 
 - `id uuid primary key`
-- `player_id uuid not null`
+- `player_id uuid not null references public.players(id) on delete cascade`
 - `event_type text not null`
 - `dimension_key text nullable`
 - `xp_delta integer not null`
@@ -156,7 +157,7 @@ Fields:
 - `memory_key text not null`
 - `title text not null`
 - `description text not null`
-- `source_event_id uuid nullable`
+- `source_event_id uuid nullable references public.system_progression_events(id) on delete set null`
 - `importance smallint not null default 1`
 - `created_at timestamptz not null`
 
@@ -186,11 +187,29 @@ Level is a deterministic function of total XP.
 
 The implementation must centralize the rule in one domain helper and one database-compatible rule set so UI, server logic, tests, and RPC results cannot diverge.
 
-Initial v1 progression curve:
+Initial v1 cumulative level thresholds:
 
-`required_xp(level) = floor(100 * level^1.65)`
+- `threshold(1) = 0`
+- `threshold(level) = floor(100 * (level - 1)^1.65)` for level >= 2
 
-Level is the greatest integer L >= 1 for which total XP is at least the cumulative threshold for L.
+The Player's level is the greatest integer L >= 1 for which `total_xp >= threshold(L)`.
+
+This means a Player always begins at Level 1 with 0 XP.
+
+The UI must show:
+
+- current level
+- current total XP
+- XP needed for next level
+- percentage within current level
+
+For Level L:
+
+- current-level threshold = `threshold(L)`
+- next-level threshold = `threshold(L + 1)`
+- current-level XP = `total_xp - threshold(L)`
+- next-level XP span = `threshold(L + 1) - threshold(L)`
+- progress percentage = current-level XP divided by next-level XP span
 
 The UI must show:
 
@@ -201,7 +220,27 @@ The UI must show:
 
 The exact curve is versioned by the application contract. Changing it later requires an explicit migration/version decision, not a silent code change.
 
-### 5.3 Dimension XP
+### 5.3 First positive XP milestone
+
+Module 2 does not grant XP for merely opening SYSTEM.
+
+The first positive XP event comes from a real Player milestone:
+
+`player_identity_completed`
+
+It occurs only when the Player's existing `onboarding_completed` field transitions from `false` to `true` after a successful, valid Player identity save that satisfies the Module 1 validation rules.
+
+Properties:
+
+- fixed v1 reward: 25 XP
+- no dimension assignment in v1
+- one deterministic memory
+- exactly once per Player
+- replaying the same save cannot grant XP again
+
+This connects SYSTEM progression to a genuine Player action rather than an artificial page-view reward.
+
+### 5.4 Dimension XP
 
 An event may add XP to one dimension.
 
@@ -221,7 +260,7 @@ Responsibilities:
 
 1. Verify the caller is authenticated.
 2. Verify `auth.uid() = requested player_id`.
-3. Validate event type, source type, dimension key, and XP range.
+3. Validate event type, source type, dimension key, XP range, and source identity.
 4. Detect an existing (`player_id`, `idempotency_key`) event.
 5. If already present, return the existing resulting state without applying XP again.
 6. Otherwise:
@@ -231,6 +270,8 @@ Responsibilities:
    - increment the dimension if one is present,
    - optionally create a deterministic SYSTEM memory,
    - return the updated SYSTEM snapshot.
+
+For the `player_identity_completed` event, the RPC must also protect the one-time milestone semantics. A repeated request after `players.onboarding_completed = true` must not award XP again.
 7. Commit as one transaction.
 
 Security-definer requirements:
@@ -258,14 +299,16 @@ The service returns a stable view model rather than leaking raw tables into the 
 
 ### Mutation path
 
-`SYSTEM UI action -> Next.js API route -> system service -> authenticated Supabase RPC -> PostgreSQL transaction/RLS -> view model -> UI`
+`Player/SYSTEM action -> Next.js API route or shared server service -> system service -> authenticated Supabase RPC -> PostgreSQL transaction/RLS -> view model -> UI`
 
 Initial internal endpoints:
 
 - `GET /api/system`
 - `POST /api/system/progress`
 
-The mutation endpoint is not intended as an open public progression API. It exists to establish a testable server boundary and must require a valid authenticated session.
+The progression endpoint is not intended as an open public progression API. It exists as the controlled server boundary for authenticated product modules.
+
+The existing Player update flow will integrate with the shared SYSTEM progression service for the one-time `player_identity_completed` milestone. It will not expose the raw RPC to the browser.
 
 No service-role key is exposed to the browser.
 
@@ -416,6 +459,7 @@ For duplicate idempotency keys, the first accepted event is authoritative. A con
 ### Unit tests
 
 - XP threshold calculation.
+- one-time identity milestone logic.
 - level calculation.
 - percentage calculation.
 - dimension validation.
@@ -440,7 +484,7 @@ For duplicate idempotency keys, the first accepted event is authoritative. A con
 
 Authenticated flow:
 
-`Auth -> SYSTEM -> PostgreSQL -> RLS -> progression event -> SYSTEM result -> reload -> persistence`
+`Auth -> Player -> SYSTEM -> PostgreSQL/RLS -> identity completion milestone -> SYSTEM result -> reload -> persistence`
 
 UI checks:
 
@@ -526,6 +570,7 @@ Module 2 is complete only when all of these are true:
 - API/service/RPC/PostgreSQL path works.
 - Real Player data populates SYSTEM.
 - Progression data persists after reload.
+- The first positive XP reward comes from the real identity-completion milestone.
 - Empty states are honest.
 - Unit tests pass.
 - Database/integration tests pass.
