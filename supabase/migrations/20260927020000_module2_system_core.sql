@@ -38,6 +38,10 @@ create table if not exists public.system_progression_events (
   unique (player_id, idempotency_key)
 );
 
+create unique index if not exists system_identity_completion_once_idx
+  on public.system_progression_events (player_id)
+  where event_type = 'player_identity_completed';
+
 create table if not exists public.system_memories (
   id uuid primary key default gen_random_uuid(),
   player_id uuid not null references public.players(id) on delete cascade,
@@ -174,6 +178,7 @@ declare
   resulting_total_xp bigint;
   resulting_level integer;
   dimension_value bigint := null;
+  player_is_onboarded boolean;
 begin
   if auth.uid() is null or auth.uid() <> target_player_id then
     raise exception 'not authorized';
@@ -183,23 +188,36 @@ begin
     raise exception 'event type is required';
   end if;
 
-  if source_type_value is null or length(trim(source_type_value)) = 0 then
-    raise exception 'source type is required';
+  if event_type_value <> 'player_identity_completed' then
+    raise exception 'unsupported Module 2 progression event';
+  end if;
+
+  if dimension_key_value is not null then
+    raise exception 'identity completion cannot assign a dimension in Module 2';
+  end if;
+
+  if xp_delta_value <> 25 then
+    raise exception 'identity completion reward must be 25 XP';
+  end if;
+
+  if source_type_value <> 'player' then
+    raise exception 'identity completion source must be player';
   end if;
 
   if idempotency_key_value is null or length(trim(idempotency_key_value)) = 0 then
     raise exception 'idempotency key is required';
   end if;
 
-  if xp_delta_value < 0 or xp_delta_value > 10000 then
-    raise exception 'XP delta out of range';
+  select onboarding_completed into player_is_onboarded
+  from public.players
+  where id = target_player_id;
+
+  if not found then
+    raise exception 'player not found';
   end if;
 
-  if dimension_key_value is not null and dimension_key_value not in (
-    'exploration', 'creation', 'knowledge', 'social',
-    'community', 'play', 'contribution'
-  ) then
-    raise exception 'invalid dimension';
+  if player_is_onboarded is not true then
+    raise exception 'player identity is not complete';
   end if;
 
   perform public.ensure_system_profile(target_player_id);
@@ -246,28 +264,18 @@ begin
   set level = resulting_level
   where player_id = target_player_id;
 
-  if dimension_key_value is not null then
-    update public.system_dimensions
-    set xp = xp + xp_delta_value
-    where player_id = target_player_id
-      and dimension_key = dimension_key_value
-    returning xp into dimension_value;
-  end if;
-
-  if event_type_value = 'player_identity_completed' then
-    insert into public.system_memories (
-      player_id, memory_key, title, description, source_event_id, importance
-    )
-    values (
-      target_player_id,
-      'player_identity_completed_v1',
-      'Player identity completed',
-      'Your Player identity is established. Your SYSTEM can now evolve from real activity.',
-      inserted_event.id,
-      2
-    )
-    on conflict (player_id, memory_key) do nothing;
-  end if;
+  insert into public.system_memories (
+    player_id, memory_key, title, description, source_event_id, importance
+  )
+  values (
+    target_player_id,
+    'player_identity_completed_v1',
+    'Player identity completed',
+    'Your Player identity is established. Your SYSTEM can now evolve from real activity.',
+    inserted_event.id,
+    2
+  )
+  on conflict (player_id, memory_key) do nothing;
 
   return jsonb_build_object(
     'duplicate', false,
@@ -282,7 +290,12 @@ exception
     select * into existing_event
     from public.system_progression_events
     where player_id = target_player_id
-      and idempotency_key = idempotency_key_value;
+      and (
+        idempotency_key = idempotency_key_value
+        or event_type = 'player_identity_completed'
+      )
+    order by created_at asc
+    limit 1;
 
     if existing_event.id is null then
       raise;
@@ -336,8 +349,6 @@ grant select on public.system_dimensions to authenticated;
 grant select on public.system_progression_events to authenticated;
 grant select on public.system_memories to authenticated;
 
-grant execute on function public.ensure_system_profile(uuid) to authenticated;
+revoke execute on function public.ensure_system_profile(uuid) from public, anon, authenticated;
+revoke execute on function public.record_system_progress_event(uuid, text, text, integer, text, text, text, jsonb) from public, anon, authenticated;
 grant execute on function public.record_system_progress_event(uuid, text, text, integer, text, text, text, jsonb) to authenticated;
-
-deny execute on function public.ensure_system_profile(uuid) to anon;
-deny execute on function public.record_system_progress_event(uuid, text, text, integer, text, text, text, jsonb) to anon;
