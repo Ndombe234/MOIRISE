@@ -400,6 +400,9 @@ declare
   inserted_event public.system_progression_events%rowtype;
   resulting_total_xp bigint;
   resulting_level integer;
+  referenced_attempt public.play_attempts%rowtype;
+  referenced_attempt_id uuid;
+  expected_xp integer;
 begin
   if auth.uid() is null or auth.uid() <> target_player_id then
     raise exception 'not authorized';
@@ -424,14 +427,44 @@ begin
     end if;
     perform public.ensure_system_profile(target_player_id);
   elsif event_type_value = 'play_completed' then
-    -- Defense in depth: authenticated callers may only refer to a real completed
-    -- attempt that they own. The PLAY app itself uses the service-only RPC above.
     if dimension_key_value <> 'play' or source_type_value <> 'game' or source_id_value is null then
       raise exception 'invalid play progression event';
     end if;
-    if metadata_value is null or jsonb_typeof(metadata_value) <> 'object' or not (metadata_value ? 'attempt_id') then
+    if metadata_value is null or jsonb_typeof(metadata_value) <> 'object' then
       raise exception 'play completion metadata is required';
     end if;
+    if not (metadata_value ? 'attempt_id') then
+      raise exception 'play completion requires attempt id';
+    end if;
+
+    begin
+      referenced_attempt_id := (metadata_value->>'attempt_id')::uuid;
+    exception when invalid_text_representation then
+      raise exception 'invalid play attempt id';
+    end;
+
+    select * into referenced_attempt
+    from public.play_attempts
+    where attempt_id = referenced_attempt_id
+    for update;
+
+    if not found
+      or referenced_attempt.player_id <> target_player_id
+      or referenced_attempt.game_id <> source_id_value
+      or referenced_attempt.status <> 'completed' then
+      raise exception 'play attempt is not valid';
+    end if;
+
+    expected_xp := greatest(1, least(20, floor(referenced_attempt.score / 50)));
+
+    if xp_delta_value <> expected_xp then
+      raise exception 'play progression reward does not match attempt';
+    end if;
+
+    if idempotency_key_value is null or length(trim(idempotency_key_value)) = 0 then
+      raise exception 'idempotency key is required';
+    end if;
+
     perform public.ensure_system_profile(target_player_id);
   else
     raise exception 'unsupported SYSTEM progression event';
