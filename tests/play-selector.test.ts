@@ -52,6 +52,26 @@ describe("PLAY selector", () => {
     expect(result.game.id).toBe("beta");
   });
 
+  it("adapts the selected experience to SYSTEM dimensions", () => {
+    const playFocused = selectNextGame({
+      playerId: "p",
+      systemLevel: 3,
+      dimensions: { play: 5 },
+      recentGameIds: [],
+      sessionSeconds: 30,
+    }, definitions);
+    const creationFocused = selectNextGame({
+      playerId: "p",
+      systemLevel: 3,
+      dimensions: { creation: 5 },
+      recentGameIds: [],
+      sessionSeconds: 60,
+    }, definitions);
+
+    expect(playFocused.game.id).toBe("alpha");
+    expect(creationFocused.game.id).toBe("beta");
+  });
+
   it("is deterministic for the same input", () => {
     const context = {
       playerId: "p",
