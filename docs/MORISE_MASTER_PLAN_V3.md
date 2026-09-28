@@ -157,6 +157,113 @@ The experience path should therefore preserve the principle:
 
 This is an experiential continuation of First Contact and does not create a new module, tab or navigation category.
 
+
+
+## MORISE MOMENT — MEMORABLE EVENTS + SHARABLE EXPERIENCES
+
+**MORISE Moment** is an internal SYSTEM capability for detecting, preserving and optionally sharing unusually meaningful PLAYER experiences. It is not a social-media tab, a required recording feature or a separate product module.
+
+Its purpose is to turn a genuinely remarkable event inside MORISE into a **memorable artifact that can be revisited, shown to others and, when appropriate, become an entry point into the underlying experience**.
+
+The core principle is:
+
+`REMARKABLE EVENT → MOMENT DETECTION → CONTEXT PRESERVATION → PLAYER REVIEW → OPTIONAL SHARE → DISCOVERY / JOIN → NEW EXPERIENCE`
+
+A MORISE Moment must originate from a real event or creation. MORISE must not fabricate achievements, fake rarity, false social proof or artificial "viral" moments merely to increase sharing.
+
+### Moment detection
+
+MORISE AI may detect candidate moments from permitted non-sensitive signals such as:
+
+- unusual but valid player solutions;
+- first-time discoveries;
+- rare combinations of existing mechanics;
+- surprising world reactions;
+- meaningful collaborative outcomes;
+- notable game or puzzle reversals;
+- Living Object transformations;
+- emergent music / audio interactions;
+- successful creation of a novel experience;
+- validated collective discoveries;
+- other auditable events that are genuinely interesting within MORISE.
+
+Detection remains subject to privacy, permissions, technical capability and validation rules.
+
+### Moment artifact
+
+When a candidate event qualifies, MORISE may automatically construct a compact artifact containing the minimum useful context required to understand what happened. Depending on the experience and permissions, this can be a short replay, clip, image, animated scene, compact narrative, event timeline, interactive reconstruction or another suitable representation.
+
+The artifact should answer:
+
+**WHAT happened → WHY it was unusual/meaningful → WHAT the PLAYER actually did → WHAT changed**
+
+The PLAYER controls whether a shareable version is created or published whenever consent is required.
+
+### Shareable experience, not just a video
+
+A MORISE Moment may optionally link to the underlying experience instead of ending with passive viewing.
+
+A recipient may be able to:
+
+- watch the moment;
+- inspect the relevant context;
+- enter a safe replay or reconstruction;
+- try the same challenge;
+- explore the resulting world state;
+- join the related collective experience when permissions allow.
+
+This creates a path:
+
+`PLAYER ACTION → MEMORABLE MOMENT → SHARE → OTHER PLAYER DISCOVERS → OTHER PLAYER ENTERS EXPERIENCE → NEW MOMENT`
+
+The shared artifact must never expose private conversations, hidden personal data, protected world state or other information that the original PLAYER was not authorized to share.
+
+### Social sharing without pressure
+
+MORISE must treat sharing as an **optional consequence of a memorable experience**, not as a mandatory progression mechanic.
+
+MORISE must not:
+
+- require sharing to unlock essential rewards;
+- fabricate rarity or popularity;
+- create fake social proof;
+- manipulate the PLAYER with guilt or coercion;
+- generate artificial views, reactions or platform activity.
+
+The strongest sharing trigger should be the PLAYER's genuine reaction:
+
+> "Je viens vraiment de faire ça ?"
+
+### Learning from Moments
+
+MORISE AI may use validated Moment outcomes as task-experience evidence for improving future detection, presentation and orchestration strategies.
+
+Possible signals include:
+
+- whether the PLAYER saved the moment;
+- whether they voluntarily shared it;
+- whether recipients opened it;
+- whether recipients entered the underlying experience;
+- whether the moment generated meaningful follow-up activity;
+- whether players judged it memorable or irrelevant.
+
+These signals must not directly rewrite production behavior. They become learning candidates subject to validation and benchmarking under the existing MORISE AI learning architecture.
+
+### Collective and emergent Moments
+
+A Moment may represent an individual event or a collective event. Several independent PLAYER actions can converge into one validated story, experiment, Living Object evolution, event, musical composition, game state or discovery.
+
+MORISE may therefore preserve:
+
+`MULTIPLE PLAYER ACTIONS → CONVERGENCE → COLLECTIVE MOMENT → SHAREABLE EXPERIENCE → NEW PARTICIPATION`
+
+The system should prefer **earned novelty** over arbitrary randomness. A Moment is valuable because something meaningful actually happened, not because the system declared it rare.
+
+### No new navigation surface
+
+MORISE Moment is an internal capability orchestrated by MORISE AI. It may appear contextually immediately after an event, inside an existing experience, in PLAYER history, or through an existing SYSTEM surface, but it does not create a new permanent navigation tab.
+
+
 ### Contextual continuation selection
 
 When several legitimate continuations are available, MORISE AI may select one according to permitted context, novelty, readiness, device/runtime constraints, previous validated outcomes and the PLAYER's explicit choices.
