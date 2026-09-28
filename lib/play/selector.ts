@@ -19,8 +19,9 @@ export function selectNextGame(context: PlayContext, definitions: GameDefinition
   const available = candidates.length ? candidates : definitions.filter((game) => game.requiredLevel === 1);
   if (!available.length) throw new Error("No PLAY experience is available.");
 
-  const fresh = available.filter((game) => !context.recentGameIds.includes(game.id));
-  const pool = fresh.length ? fresh : available;
+  const recent = new Set(context.recentGameIds);
+  const fresh = available.filter((game) => !recent.has(game.id));
+  const pool = fresh.length > 0 ? fresh : available;
 
   const scored = pool.map((game) => {
     const affinity = dimensionAffinity(game, context.dimensions);
