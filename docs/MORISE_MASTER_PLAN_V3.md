@@ -751,6 +751,111 @@ Otherwise MORISE may move through the existing controlled alternatives:
 
 The fallback path must be explicit and observable. MORISE must never simulate successful AI work when no execution actually occurred.
 
+### Device compatibility baseline and adaptive execution tiers
+
+MORISE must target broad compatibility with older mobile devices while taking advantage of newer devices when available.
+
+**2 GB RAM is the minimum compatibility design baseline for the MORISE application experience**, not a promise that a 2 GB device can execute every AI workload. The baseline applies to core navigation, authentication, social features, messaging, basic PLAY experiences and graceful degraded operation.
+
+MORISE must never assume that all installed RAM is available to the browser. The capability detector must reason about the resources actually available to the current runtime.
+
+The execution policy is progressive:
+
+| Tier | Example resource profile | Primary goal | AI execution |
+| --- | --- | --- | --- |
+| BASE | approximately 2 GB RAM / constrained mobile | keep MORISE usable | lightweight browser AI only when explicitly validated; otherwise non-AI or alternate execution |
+| STANDARD | mid-range modern mobile | richer contextual features | optimized on-device models and selected media tasks |
+| ADVANCED | high-memory mobile/tablet/desktop | maximize local capability | larger eligible models and more demanding browser workloads |
+| EXTERNAL / LOCAL NODE | approved PC/self-hosted resource | heavy workloads | local/self-hosted execution for workloads unsuitable for the PLAYER device |
+
+The tier is determined dynamically from actual runtime capability, not from the device brand or model name alone.
+
+### Underused device resources — controlled burst compute
+
+MORISE may optionally use otherwise available PLAYER-device resources for a foreground or explicitly authorized creation/inference task when the device is technically capable.
+
+This is **not** a background mining system, bandwidth-sharing system or hidden compute worker.
+
+The policy must require:
+
+- explicit PLAYER permission where sustained or material resource use is involved;
+- foreground or clearly visible task status for heavier workloads;
+- battery/thermal/resource safeguards;
+- immediate cancellation;
+- no persistence after permission is withdrawn;
+- no execution that materially degrades ordinary device use without clear user control;
+- no access to private device data outside the capability's declared permission boundary.
+
+A PLAYER may therefore choose to let MORISE use spare local compute for a bounded task, for example:
+
+`PLAYER CONSENT → CAPABILITY CHECK → RESOURCE CHECK → LOCAL EXECUTION → RESULT → RESOURCE RELEASE`
+
+MORISE must never silently turn idle PLAYER devices into permanent distributed infrastructure.
+
+### Browser-native image, audio and video capability matrix
+
+The Zero-API layer must treat media capabilities as workload-specific instead of assuming that all browser AI is equivalent.
+
+**IMAGE / PHOTO**
+
+Suitable browser-native targets may include optimized image understanding, transformation, enhancement, segmentation, background/object operations and, where the model/device budget permits, image generation.
+
+**MUSIC / AUDIO**
+
+Suitable browser-native targets may include speech recognition, text-to-speech, audio analysis, lightweight sound transformation and selected music/audio generation workloads when an appropriately optimized model/runtime exists for the device.
+
+**VIDEO**
+
+Suitable browser-native targets may include video analysis, frame-level processing, segmentation, captioning, simple effects, short transformations and selected lightweight generation experiments. Full high-quality generative video must remain an optional capability and must not be assumed to work on low-memory phones.
+
+For all three media families:
+
+`MEDIA INTENT → CAPABILITY CHECK → ON-DEVICE ELIGIBILITY → LOCAL EXECUTION → VALIDATION → RESULT`
+
+Where on-device execution is not viable:
+
+`ON-DEVICE → LOCAL / SELF-HOSTED → VALIDATED SERVER FALLBACK → OPTIONAL EXTERNAL PROVIDER`
+
+MORISE must expose the real execution state and must never present a remote or local generation result as on-device output when it was not.
+
+### Model-size and memory policy
+
+Model selection must be constrained by the execution tier and current runtime conditions.
+
+The system should prefer:
+
+- quantized or otherwise optimized models when validated;
+- smaller specialist models for narrow tasks;
+- lazy model loading;
+- unloading/releasing models after use when appropriate;
+- bounded caches;
+- capability-specific model routing;
+- progressive enhancement rather than loading multiple large models simultaneously.
+
+MORISE should prefer **one lightweight specialist operation that actually succeeds** over loading an oversized general model that causes crashes, thermal pressure or browser termination.
+
+### Device-aware media routing
+
+For media creation, MORISE may use different representations or execution paths depending on the device.
+
+Example:
+
+`PLAYER REQUESTS VIDEO`
+
+→ low-memory device: offer a lightweight animation/clip/transform or authorized alternative;
+
+→ capable browser device: use an optimized local model if validated;
+
+→ powerful local node: route to local/self-hosted media generation;
+
+→ optional external provider: use only when explicitly configured and authorized.
+
+The PLAYER-facing contract stays the same even though the execution path changes.
+
+### No new navigation surface
+
+These device tiers, resource policies and Browser AI media capabilities are internal execution mechanisms. They must not create a permanent PLAYER-facing navigation tab.
+
 ### Eligible capability families
 
 The on-device layer may progressively support lightweight or appropriately optimized capabilities such as:
