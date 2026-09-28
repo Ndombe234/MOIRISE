@@ -2,111 +2,48 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { GameDefinition } from "@/lib/play/types";
-
-const GRID = 12;
-const PATH_LENGTH = 7;
-
-function seeded(seed: string) {
-  let value = 2166136261;
-  for (const char of seed) value = Math.imul(value ^ char.charCodeAt(0), 16777619);
-  return () => {
-    value += value << 13;
-    value ^= value >>> 7;
-    value += value << 3;
-    value ^= value >>> 17;
-    value += value << 5;
-    return ((value >>> 0) % 10000) / 10000;
-  };
-}
-
-export function buildTraceSequence(seed: string) {
-  const next = seeded(seed);
-  const result: number[] = [];
-  while (result.length < PATH_LENGTH) {
-    const candidate = Math.floor(next() * GRID);
-    if (!result.includes(candidate)) result.push(candidate);
-  }
-  return result;
-}
+import { visibleEchoSequence, type EchoChallenge } from "@/lib/play/games/echo-trace";
 
 export function EchoTrace({
   definition,
-  attemptId,
+  challenge,
   onComplete,
 }: {
   definition: GameDefinition;
-  attemptId: string;
-  onComplete: (result: {
-    status: "completed" | "failed";
-    score: number;
-    durationMs: number;
-    signals: Record<string, number>;
-    momentCandidate: { kind: "precision"; title: string; summary: string } | null;
-  }) => void;
+  challenge: EchoChallenge;
+  onComplete: (actions: unknown) => void;
 }) {
-  const [seed] = useState(() => crypto.randomUUID());\n  const sequence = useMemo(() => buildTraceSequence(seed), [seed]);
-  const [phase, setPhase] = useState<"reveal" | "play" | "done">("reveal");
-  const [index, setIndex] = useState(0);
-  const [correct, setCorrect] = useState(0);
-  const [mistake, setMistake] = useState(false);
+  const sequence = useMemo(() => visibleEchoSequence(challenge), [challenge]);
+  const [phase, setPhase] = useState<"reveal" | "play">("reveal");
+  const [moves, setMoves] = useState<number[]>([]);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setPhase("play"), 1900);
+    const timer = window.setTimeout(() => setPhase("play"), 1500 + sequence.length * 110);
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [sequence.length]);
 
   function clickCell(cell: number) {
     if (phase !== "play") return;
-    const expected = sequence[index];
-    if (cell !== expected) {
-      setMistake(true);
-      setPhase("done");
-      onComplete({
-        status: "failed",
-        score: Math.round((correct / PATH_LENGTH) * 1000),
-        durationMs: 250,
-        signals: { memory: correct * 12, precision: correct * 10 },
-        momentCandidate: null,
-      });
-      return;
-    }
-
-    const nextCorrect = correct + 1;
-    setCorrect(nextCorrect);
-
-    if (nextCorrect === PATH_LENGTH) {
-      setPhase("done");
-      onComplete({
-        status: "completed",
-        score: 1000,
-        durationMs: Math.max(250, PATH_LENGTH * 650),
-        signals: { memory: 90, precision: 85 },
-        momentCandidate: {
-          kind: "precision",
-          title: "Trace parfaite",
-          summary: "Tu as reconstruit une trace spectrale sans erreur.",
-        },
-      });
-      return;
-    }
-
-    setIndex(index + 1);
+    const next = [...moves, cell];
+    setMoves(next);
+    if (next.length === sequence.length) onComplete({ moves: next });
   }
 
   return (
     <div className="game-board game-echo" aria-label={definition.title}>
       <div className="game-status">
-        <span>{phase === "reveal" ? "Observe." : phase === "play" ? "Recompose." : mistake ? "La trace s’est brisée." : "Trace terminée."}</span>
-        <strong>{correct}/{PATH_LENGTH}</strong>
+        <span>{phase === "reveal" ? "Observe." : "Recompose."}</span>
+        <strong>{moves.length}/{sequence.length}</strong>
       </div>
       <div className="echo-grid">
-        {Array.from({ length: GRID }, (_, cell) => {
+        {Array.from({ length: 16 }, (_, cell) => {
           const isReveal = phase === "reveal" && sequence.includes(cell);
+          const isUsed = moves.includes(cell);
           return (
             <button
               type="button"
               key={cell}
-              className={isReveal ? "echo-cell is-trace" : "echo-cell"}
+              className={isReveal ? "echo-cell is-trace" : isUsed ? "echo-cell is-used" : "echo-cell"}
               onClick={() => clickCell(cell)}
               aria-label={"Trace node " + (cell + 1)}
               disabled={phase !== "play"}
@@ -116,10 +53,8 @@ export function EchoTrace({
       </div>
       <p className="game-instruction">
         {phase === "reveal"
-          ? "Regarde le chemin. Il disparaît bientôt."
-          : phase === "play"
-            ? "Reproduis exactement l’ordre que tu viens de voir."
-            : "Une nouvelle tentative générera une autre trace."}
+          ? "La trace apparaît, puis le monde change de géométrie."
+          : "Reproduis exactement la trace transformée."}
       </p>
     </div>
   );
