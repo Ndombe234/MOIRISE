@@ -4,151 +4,174 @@
 
 The MORISE SYSTEM is not a chatbot bolted onto a social network. It is a platform-wide AI orchestration layer made of multiple specialized mechanics.
 
-MORISE remains general-purpose: the SYSTEM adapts to the PLAYER rather than forcing every user into a fixed niche.
+MORISE is general-purpose: the SYSTEM adapts to the PLAYER rather than forcing every user into a fixed niche.
 
-## Architecture
+## Core architecture
 
-PLAYER signals → specialized AI mechanics → SYSTEM orchestration → recommendation / proposal / assisted action → user confirmation where required → feedback → learning/evaluation.
+`PLAYER signals → specialist mechanics → SYSTEM Orchestrator → recommendation / proposal / assisted action → feedback → controlled learning`
 
-No single AI mechanism should own the entire platform.
+The long-term conversational experience should feel comparable to a modern general AI assistant, but it is grounded in MORISE context, tools, permissions and product data.
 
-## Mechanics by maturity
+## Mechanics
 
-### Level 1 — deterministic intelligence
+### 1. Context and memory
+- current screen/context;
+- explicit preferences;
+- permitted product history;
+- recent activity context;
+- personal preference memory.
 
-These mechanics can work with ordinary application logic and do not require a generative model.
+### 2. Recommendation and ranking
+- content ranking;
+- people/connection ranking;
+- game recommendations;
+- activity/event recommendations;
+- novelty and diversity balancing.
 
-- Context engine: knows where the PLAYER is and what action is currently relevant.
-- Preference profile: stores explicit interests and stable product preferences.
-- Event/context memory: records permitted product events and useful recent context.
-- Recommendation rules: basic relevance, freshness and diversity rules.
-- Notification intelligence: timing, grouping and suppression rules.
-- Anti-abuse signals: spam, duplicate actions, suspicious activity and rate limits.
-- Reward calculation: deterministic XP, titles, progression and eligibility rules.
+### 3. Social intelligence
+- relationship signals;
+- interaction patterns;
+- useful connection suggestions;
+- social context explanations.
 
-Modules: 1 Foundation, 2 PLAYER, 3 SOCIAL, 4 WORLD, 5 SYSTEM, 6 PLAY.
+### 4. Adaptive community intelligence
+- GUILD candidate detection;
+- shared-interest proposals;
+- group recommendations;
+- community health signals.
 
-### Level 2 — predictive / ranking intelligence
+### 5. Game intelligence
+- game discovery;
+- player/game matching;
+- game concept generation;
+- game design assistance;
+- balancing suggestions;
+- game testing assistance.
 
-- Content ranking.
-- People/connection ranking.
-- GUILD candidate detection.
-- Game recommendation ranking.
-- Activity and event recommendation.
-- Churn/return-risk signals used only for product assistance, not sensitive profiling.
-- Personalization based on explicit preferences plus non-sensitive product behavior.
+### 6. Translation intelligence
+Translation is a first-class V1 SYSTEM capability.
 
-Modules: 3 SOCIAL, 4 WORLD, 6 PLAY, 7 Game Discovery Engine, 11 Communities, 13 Adaptive World.
+Preferred order:
+1. browser/on-device translation when suitable;
+2. cached translations;
+3. local/server fallback when required;
+4. optional external API only behind an internal abstraction.
 
-### Level 3 — generative assistance
+Users should be able to write naturally in their own language while recipients see a translated version and can access the original. MORISE terminology and context must be preserved.
 
-- SYSTEM natural-language assistant.
-- Profile and interest summarization.
-- GUILD description generation.
-- Activity/event suggestions.
-- Game concept ideation.
-- Quest/mission generation with validation.
-- Creator assistance for game design, balancing ideas, naming and documentation.
-- Personalized explanations of recommendations and rewards.
+V1 must already provide useful translation quality. Later learning improves context, terminology and personalization; it is not a replacement for usable V1 translation.
 
-Modules: 5 SYSTEM, 7 Game Discovery Engine, 8 Game A→Z Factory, 11 Communities, 15 Meta SYSTEM.
+### 7. Conversation/reasoning
+- natural-language SYSTEM interaction;
+- contextual explanations;
+- multi-step reasoning;
+- tool use;
+- action proposals.
 
-### Level 4 — multi-agent / specialized AI orchestration
+### 8. Safety
+- spam and abuse signals;
+- moderation assistance;
+- anomaly detection;
+- safe generation;
+- action validation.
 
-Specialized agents can cooperate while a central SYSTEM orchestrator controls permissions and workflow.
+### 9. Economy intelligence
+- reward analysis;
+- economy simulation;
+- anomaly/fraud signals;
+- creator-reward integrity.
+
+## Specialist agents
 
 Potential agents:
 
-- Social Agent — relationships and social context.
-- Community Agent — GUILD discovery and formation proposals.
-- Game Discovery Agent — market demand and opportunity research.
-- Game Design Agent — rules, mechanics and balancing proposals.
-- Creator Agent — helps PLAYERS build games and content.
-- Safety Agent — moderation and abuse detection.
-- Economy Agent — reward/economy simulations and anomaly detection.
-- Personalization Agent — contextual recommendations.
-- SYSTEM Orchestrator — decides which specialist should act and combines results.
+- Conversation/Reasoning Agent;
+- Social Agent;
+- Community Agent;
+- Game Discovery Agent;
+- Game Design Agent;
+- Creator Agent;
+- Translation Agent;
+- Safety Agent;
+- Economy Agent;
+- Personalization Agent;
+- SYSTEM Orchestrator.
 
-Modules: 7, 8, 9, 10, 11, 13 and 15.
+The Orchestrator chooses which specialist should handle a task and combines results under server-side permissions.
 
 ## Adaptive GUILD example
 
-Three doctors can have different professional paths while repeatedly interacting around a shared topic.
+Three doctors can have different professional paths while repeatedly interacting around a common topic.
 
-1. The Social/Community mechanics detect a sustained interaction pattern.
-2. The system evaluates non-sensitive, permitted signals and explicit interests.
-3. The Community Agent produces a candidate GUILD proposal.
-4. The SYSTEM explains why the proposal is relevant without exposing private information.
-5. Each required PLAYER action is obtained before creating the persistent group.
-6. The resulting GUILD becomes normal MORISE infrastructure.
-7. Feedback from accept/dismiss/leave actions improves future ranking.
+1. Social/Community mechanics detect a sustained, non-sensitive interaction pattern.
+2. The SYSTEM evaluates permitted signals and explicit interests.
+3. Community Agent prepares a GUILD proposal.
+4. SYSTEM explains the proposal without exposing private information.
+5. Users confirm before persistent creation or membership changes.
+6. Feedback from accept/dismiss/leave improves future ranking.
 
 The SYSTEM suggests; it does not silently create persistent communities from inference.
 
-## AI + privacy rules
+## Learning model
+
+MORISE can learn from the first users in V1.
+
+### Personal adaptation
+Fast updates to one PLAYER's preferences and recommendations.
+
+### Aggregated learning
+Patterns across many users are filtered, evaluated and validated before global use.
+
+### Feedback learning
+Accepted, rejected, corrected and completed recommendations become useful signals.
+
+### Global model/ranking updates
+Never deploy raw behavior directly into the global AI. Protect against spam, fake accounts, coordinated manipulation and data poisoning.
+
+## Privacy and safety
 
 - Do not infer or expose sensitive attributes for recommendation purposes.
-- Never expose private messages or private content to another PLAYER through an AI inference.
+- Never expose private messages or private content to another PLAYER through AI inference.
 - Respect blocking, reporting, mute and recommendation controls.
-- Keep authorization and RLS server-side; AI output is never an authorization decision by itself.
+- Keep authorization and RLS server-side.
+- AI output is never an authorization decision by itself.
 - Validate generated game rules, rewards, moderation decisions and database mutations before execution.
 - Keep high-impact or irreversible actions behind explicit confirmation.
-- Log important AI decisions in an auditable form without storing unnecessary private content.
-- Provide safe fallbacks when an AI provider is unavailable.
+- Log important AI decisions in auditable form without storing unnecessary private content.
+- Core MORISE workflows must remain usable if an external AI provider is unavailable.
 
-## AI provider architecture
+## Provider architecture
 
-MORISE should not hard-code the product to one model vendor.
-
-Use an internal SYSTEM AI interface so providers/models can be changed by capability:
-
-- reasoning;
-- generation;
-- embeddings/retrieval;
-- moderation/classification;
-- ranking;
-- speech or multimodal features when later justified.
-
-The application must continue functioning for core social/product workflows when an external AI service is unavailable.
+MORISE must not hard-code the product to one AI vendor. Use internal interfaces for reasoning, generation, embeddings/retrieval, translation, moderation/classification, ranking and future multimodal capabilities.
 
 ## Cost strategy
 
-Start with deterministic mechanics where possible. Use AI only when it adds measurable value.
-
-Prefer:
-
-1. rules and cached results for simple decisions;
-2. local/cheap models where quality is sufficient;
-3. small/fast models for classification and ranking;
-4. stronger models only for complex generation/reasoning;
-5. caching and batching to control inference cost.
+Start with deterministic mechanics and browser/on-device processing where quality is sufficient. Use cache aggressively. Use local/small models for simple tasks. Reserve stronger models or external APIs for tasks that genuinely need them.
 
 ## Roadmap mapping
 
 | Module | AI role |
 |---|---|
-| 1 Foundation | AI-ready event/context architecture |
-| 2 PLAYER | preference and context profile |
-| 3 SOCIAL | relationship/context intelligence |
-| 4 WORLD | discovery and ranking |
-| 5 SYSTEM | SYSTEM assistant foundations |
-| 6 PLAY | adaptive play/recommendation signals |
-| 7 Game Discovery Engine | market/research/recommendation intelligence |
-| 8 Game A→Z Factory | AI-assisted complete game creation pipeline |
+| 1 Foundation | AI-ready events/context + provider abstractions |
+| 2 PLAYER | preference/context memory |
+| 3 SOCIAL | social intelligence + translation + private-safe context |
+| 4 WORLD | discovery/ranking |
+| 5 SYSTEM | conversational SYSTEM foundations |
+| 6 PLAY | behavior signals for future recommendations |
+| 7 Game Discovery Engine | personalized game discovery |
+| 8 Game A→Z Factory | AI-assisted complete game creation |
 | 9 Shared Game Engine | reusable AI-aware game services |
-| 10 Social Gaming | social graph + gameplay intelligence |
-| 11 Communities | adaptive GUILD intelligence |
-| 12 Events | event generation, scheduling and personalization |
+| 10 Social Gaming | social/game matching |
+| 11 Communities | Adaptive Social System |
+| 12 Events | event recommendation/generation |
 | 13 Adaptive World | platform-wide personalization |
-| 14 Collection / Reward Economy | economy analysis and anomaly detection |
-| 15 Meta SYSTEM | unified multi-mechanic AI orchestration |
+| 14 Collection / Reward Economy | economy analysis/anomaly detection |
+| 15 Meta SYSTEM | unified conversational multi-mechanic AI |
 
 ## Definition of success
 
-The SYSTEM should feel intelligent because MORISE becomes more useful as it understands the PLAYER's legitimate preferences and context.
+The SYSTEM should feel intelligent because MORISE becomes more useful as it understands legitimate PLAYER context and adapts.
 
 It should not feel like a chatbot pasted onto every screen.
 
-The desired experience is:
-
-**PLAYER → MORISE observes permitted context → SYSTEM understands → SYSTEM proposes/helpfully adapts → PLAYER remains in control.**
+**PLAYER → SYSTEM understands → correct mechanic → useful response/action → feedback → controlled learning.**
