@@ -30,3 +30,4 @@
 @media (max-width: 820px) { .world-intro { grid-template-columns: 1fr; } .world-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 520px) { .world-main { padding: 8px; } .world-shell { min-height: calc(100svh - 16px); border-radius: 20px; padding: 16px; } .world-intro { padding: 44px 0 24px; } .world-actions { grid-template-columns: 1fr; } .world-action { min-height: 112px; } }
 @media (prefers-reduced-motion: reduce) { .world-action { transition: none; } }
+.world-social-link { display: inline-flex; margin-top: 10px; color: #9f91ff; text-decoration: none; font-size: .73rem; font-weight: 800; letter-spacing: .06em; } .world-social-link:hover, .world-social-link:focus-visible { color: #eeeaff; outline: none; text-decoration: underline; text-underline-offset: 4px; }
