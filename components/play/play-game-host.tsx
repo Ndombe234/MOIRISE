@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { GameDefinition } from "@/lib/play/types";
 import { startGameSessionAction, completePlaySessionAction, abandonPlaySessionAction } from "@/app/play/actions";
@@ -23,8 +23,12 @@ export function PlayGameHost({
   const [session, setSession] = useState<{ session_id: string; challenge: unknown } | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [restartKey, setRestartKey] = useState(0);
+  const startingRef = useRef(false);
 
   useEffect(() => {
+    if (startingRef.current) return;
+    startingRef.current = true;
     let cancelled = false;
     setSession(null);
     setError(null);
@@ -34,9 +38,12 @@ export function PlayGameHost({
       })
       .catch((err) => {
         if (!cancelled) setError(err instanceof Error ? err.message : "Impossible de préparer cette expérience.");
+      })
+      .finally(() => {
+        startingRef.current = false;
       });
     return () => { cancelled = true; };
-  }, [definition.id]);
+  }, [definition.id, restartKey]);
 
   const submit = async (actions: unknown) => {
     if (!session || submitting) return;
@@ -68,11 +75,20 @@ export function PlayGameHost({
     }
   };
 
+  const replay = () => {
+    setError(null);
+    setSession(null);
+    setRestartKey((value) => value + 1);
+  };
+
   if (error && !session) {
     return (
       <div className="play-session">
         <p className="play-error" role="alert">{error}</p>
-        <Link href="/play" className="play-back-link">Retour au PLAY</Link>
+        <div className="play-error-actions">
+          <button type="button" className="play-primary-button" onClick={replay}>Rejouer</button>
+          <Link href="/play" className="play-back-link">Retour au PLAY</Link>
+        </div>
       </div>
     );
   }
@@ -91,7 +107,12 @@ export function PlayGameHost({
         abandon,
       })}
       {submitting ? <div className="play-saving" role="status">Validation serveur du run…</div> : null}
-      {error ? <p className="play-error" role="alert">{error}</p> : null}
+      {error ? (
+        <div className="play-error-panel" role="alert">
+          <p className="play-error">{error}</p>
+          <button type="button" className="play-primary-button" onClick={replay}>Rejouer</button>
+        </div>
+      ) : null}
       <Link href="/play" className="play-back-link">Quitter l’expérience</Link>
     </div>
   );
