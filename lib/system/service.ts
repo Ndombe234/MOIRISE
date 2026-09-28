@@ -37,11 +37,11 @@ export async function recordSystemProgress(
   const { data, error } = await supabase.rpc("record_system_progress_event", {
     target_player_id: playerId,
     event_type_value: validated.eventType,
-    dimension_key_value: validated.dimensionKey,
+    // Supabase's generated RPC type currently models this text argument as non-null,\n    // while the SYSTEM contract intentionally uses null for identity completion.\n    dimension_key_value: validated.dimensionKey as string,
     xp_delta_value: validated.xpDelta,
     idempotency_key_value: validated.idempotencyKey,
     source_type_value: validated.sourceType,
-    source_id_value: validated.sourceId ?? null,
+    source_id_value: validated.sourceId ?? undefined,
     metadata_value: validated.metadata ?? {},
   });
 
