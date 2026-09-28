@@ -1,4 +1,4 @@
-import { mulberry32, shuffle } from "@/lib/play/seed";
+import { mulberry32, shuffle } from "../seed";
 
 export type EchoTransform = "identity" | "rotate90" | "mirrorH" | "mirrorV";
 
