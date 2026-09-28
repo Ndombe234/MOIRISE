@@ -1,0 +1,1 @@
+revoke all on public.play_attempts from anon;
