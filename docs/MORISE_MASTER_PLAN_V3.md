@@ -264,6 +264,112 @@ The system should prefer **earned novelty** over arbitrary randomness. A Moment 
 MORISE Moment is an internal capability orchestrated by MORISE AI. It may appear contextually immediately after an event, inside an existing experience, in PLAYER history, or through an existing SYSTEM surface, but it does not create a new permanent navigation tab.
 
 
+
+### MORISE Relay and Living Stories
+
+**MORISE Relay is the collaborative continuation layer of MORISE Moment.** A shared Moment can become a small playable experience that another PLAYER is invited to continue rather than merely watch.
+
+The core loop is:
+
+`MORISE MOMENT → SHAREABLE EXPERIENCE → OTHER PLAYER ENTERS → ONE CONTROLLED MODIFICATION → CONSEQUENCE → NEW MOMENT`
+
+When appropriate, MORISE may give the receiving PLAYER a constrained ability to transform one meaningful element of the experience, such as a rule, objective, character behavior, object, environment, time, physics parameter, music/audio layer or other permitted capability.
+
+The constraint is intentional: the receiving PLAYER is not asked to rebuild the entire experience. They are given **one meaningful transformation** that can produce a visible consequence.
+
+Example:
+
+> **SYSTEM**
+>
+> `Tu viens de recevoir un Moment.`
+>
+> `Tu peux changer UNE chose.`
+
+The result becomes part of the experience lineage. The original PLAYER can see that the shared experience was continued or transformed by another PLAYER, subject to the applicable permissions.
+
+This creates:
+
+`PLAYER A → MOMENT → PLAYER B → TRANSFORMATION → CONSEQUENCE → PLAYER A / PLAYER C → NEW MOMENT`
+
+### Dynamic stories generated from PLAYER experience
+
+MORISE AI may transform validated chains of PLAYER experiences, Moments, Relays, discoveries, Living Object changes and collective events into **dynamic narrative works**.
+
+Depending on the permitted context and available creation capabilities, MORISE may produce:
+
+- a novel/roman-style narrative;
+- a BD / comic;
+- a manga or manhwa-style narrative presentation;
+- an interactive chapter;
+- a visual scene;
+- a playable episode;
+- a music/audio-backed story experience.
+
+The narrative is derived from real MORISE events and approved fictional transformation, not from private data or invented claims about what a PLAYER actually did.
+
+The same underlying story state may therefore be represented in multiple forms:
+
+`PLAYER EXPERIENCE → EVENT / MOMENT → NARRATIVE MODEL → ROMAN / BD / MANGA / MANHWA → INTERACTIVE SCENE / GAME → NEW PLAYER EXPERIENCE`
+
+### Living Story principle
+
+A MORISE story can remain **alive** after publication inside MORISE.
+
+A new PLAYER may encounter a story based on an earlier chain of events, enter an interactive part of it, make a permitted choice or transformation, and create a new branch or continuation.
+
+MORISE preserves lineage so that the system can distinguish:
+
+- the original event;
+- the narrative interpretation;
+- the PLAYER-created transformation;
+- the resulting branch;
+- the contributors;
+- the versions;
+- the validated consequences.
+
+A story may therefore evolve:
+
+`EVENT → STORY → RELAY → BRANCH → NEW EVENT → NEW STORY VERSION`
+
+The system should favor coherent, attributable evolution rather than uncontrolled rewriting of shared history.
+
+### Cross-capability orchestration
+
+MORISE AI may compose the Relay and Living Story mechanism with existing capabilities such as:
+
+**WORLD + LIVING OBJECT + STORY / NARRATIVE + MUSIC / AUDIO + GAME_2D + GAME_3D + CREATION_RUNTIME + WORLD_AGENTS + EVALUATION / TESTING**
+
+This allows a single PLAYER event to become, for example, a short manga chapter whose final scene becomes a playable 2D challenge with an adaptive soundtrack, and the resulting player action becomes the next chapter.
+
+No internal capability becomes a new PLAYER-facing navigation category.
+
+### Sharing and rights
+
+Sharing remains optional and permission-controlled. MORISE must protect private conversations, private creations, unpublished material and restricted world states.
+
+When MORISE generates narrative or visual media from PLAYER contributions, the system must preserve relevant creator attribution, contribution lineage, permissions and rights information. It must not represent an AI-generated transformation as a verbatim record of a PLAYER's actions.
+
+For works inspired by or incorporating protected third-party characters, worlds, text, art, music or other copyrighted material, MORISE must respect applicable rights and authorization requirements. MORISE-native stories should use original or appropriately licensed material.
+
+### Learning from Relay chains
+
+Validated Relay chains may become task-experience evidence for MORISE AI.
+
+The learning target includes:
+
+- which transformations produce meaningful consequences;
+- which narrative representations preserve the important structure of an event;
+- which interactive continuations remain coherent;
+- which capability combinations work reliably;
+- which generated stories or experiences are ignored, continued, remixed or positively evaluated.
+
+These observations remain governed by the existing provenance, privacy, validation and controlled-learning architecture. They must not directly rewrite production behavior.
+
+### No new product section
+
+MORISE Relay, Dynamic Stories and Living Stories are internal capabilities orchestrated contextually by MORISE AI. They do not create separate **Moment**, **Relay**, **Roman**, **Manga** or **Story** navigation tabs.
+
+
 ### Contextual continuation selection
 
 When several legitimate continuations are available, MORISE AI may select one according to permitted context, novelty, readiness, device/runtime constraints, previous validated outcomes and the PLAYER's explicit choices.
