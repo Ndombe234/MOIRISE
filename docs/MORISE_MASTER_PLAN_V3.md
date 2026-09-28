@@ -1,20 +1,28 @@
 # MORISE — MASTER PLAN V3
 
-Date: 2026-09-28
+Date: 2026-09-29
 Status: **CANONICAL PLAN — SINGLE SOURCE OF TRUTH**
 Current working point: **MODULE 6 — PLAY / FINAL QA**
 
 ## Product doctrine
 
-MORISE is a general-purpose social platform. The **SYSTEM is the central intelligent interaction layer** connecting PLAYER, WORLD, SOCIAL, PLAY, GUILDS, creation, recommendations and future AI capabilities. MORISE is not limited to one community or profession.
+MORISE is a general-purpose social platform. The **SYSTEM is the central intelligent interaction layer** connecting PLAYER, WORLD, SOCIAL, PLAY, GUILDS, creation, recommendations, memory, emergence and future AI capabilities. MORISE is not limited to one community or profession.
 
 Every major capability must support **SOLO** and **COLLECTIVE** use cases when appropriate.
+
+### Complexity principle — simple interface, deep internal SYSTEM
+
+MORISE may contain a very large number of internal capabilities, mechanics and emergent possibilities without exposing them as a large number of buttons, tabs or modules. The user-facing navigation remains intentionally minimal (approximately 5–6 primary entry points, subject to UX validation). New internal capabilities do **not** automatically create a new navigation item.
+
+`FEW USER-FACING DOORS → MORISE AI ORCHESTRATES MANY INTERNAL CAPABILITIES → CONTEXTUAL EXPERIENCE`
+
+The SYSTEM must reveal capabilities progressively and contextually when they become useful or meaningful. World Memory, MORISE DNA, Convergence, Emergent Missions, Living Objects and Evolution Engine are internal/cross-module capabilities, not additional navigation tabs.
 
 ## MORISE-ONLY AI MISSION — NON-NEGOTIABLE
 
 The AI being built for MORISE exists **only to operate, assist, understand, personalize and evolve within MORISE**. Its role and purpose are strictly limited to MORISE. It is not being built as a general autonomous agent for the outside world.
 
-Its domain is exclusively MORISE: PLAYERs, WORLD, SOCIAL, PLAY, games, GUILDS, activities, events, creator tools, translation, recommendations, moderation, progression and internal SYSTEM operations.
+Its domain is exclusively MORISE: PLAYERs, WORLD, SOCIAL, PLAY, games, GUILDS, activities, events, creator tools, translation, recommendations, moderation, progression, memory, emergence and internal SYSTEM operations.
 
 The AI may improve its own MORISE-specific mechanisms, algorithms, models, prompts, ranking strategies and supporting code inside the MORISE AI Lab when the required infrastructure is available. This self-improvement exists solely to make MORISE better. It must not acquire a product mission outside MORISE or unrestricted authority over external systems, unrelated applications, arbitrary internet services, user devices or financial accounts.
 
@@ -24,15 +32,17 @@ The AI remains technically separated from production-critical systems while expe
 
 `MORISE AI → observes MORISE performance → identifies MORISE-specific weakness → proposes/creates modification → isolated experiment → uses available compute → evaluates against MORISE benchmarks → keeps/improves/rejects candidate → next MORISE AI version`
 
-The evolution loop can include code refactoring, recommendation experiments, translation/context improvements, memory/context strategies, game discovery, game-design assistance, social/community recommendations, benchmark generation and model fine-tuning/training when the required hardware, data and licensing are available.
+The evolution loop can include code refactoring, recommendation experiments, translation/context improvements, personal and collective memory/context strategies, game discovery, game-design assistance, social/community recommendations, emergence detection, World Memory quality, benchmark generation and model fine-tuning/training when the required hardware, data and licensing are available.
 
 **Compute is a constraint, not proof of intelligence:** stronger machines enable larger experiments, but every claimed improvement must be measured with repeatable MORISE-specific evaluations.
 
 ## AI SYSTEM architecture
 
-`PLAYER signals → specialist mechanics → SYSTEM Orchestrator → recommendation/proposal/action → feedback → controlled learning`
+`PLAYER / WORLD signals → specialist mechanics → SYSTEM Orchestrator → contextual recommendation/proposal/action → feedback → controlled learning`
 
-Specialist mechanics include conversation/reasoning, memory/context, personalization, social/relationship intelligence, community/GUILD intelligence, game discovery, game creation, translation, safety/moderation and economy/reward analysis.
+Specialist mechanics include conversation/reasoning, memory/context, personalization, MORISE DNA, social/relationship intelligence, community/GUILD intelligence, game discovery, game creation, translation, safety/moderation, Convergence, Emergent Missions, World Memory and economy/reward analysis.
+
+MORISE AI is the **orchestrator**, not a replacement for specialist mechanics. A single permitted action may update several relevant internal systems at once while preserving their distinct purposes.
 
 ## Translation architecture — browser/on-device first
 
@@ -147,6 +157,39 @@ Trace, Living World, Hidden Possibilities, Unexplored Paths, Evolving Identity, 
 
 ---
 
+# MORISE DNA — DEMONSTRATED CAPABILITY PROFILE
+
+**MORISE DNA** extends the existing PLAYER identity and Evolution Engine. It is not a second profile, personality test, psychological assessment or hidden sensitive profile.
+
+MORISE AI derives it progressively from permitted, observable MORISE actions and validated outcomes. It represents **demonstrated capabilities**, not presumed personality.
+
+Core capability dimensions may include:
+
+- Exploration
+- Creation
+- Resolution
+- Strategy
+- Collection
+- Collaboration
+- Discovery
+- Experimentation
+
+The exact dimensions and thresholds may evolve through MORISE AI Lab experiments, but changes must remain auditable and MORISE-specific.
+
+### DNA evolution
+
+`PLAYER ACTIONS → VALIDATED OUTCOMES → MORISE AI → DNA SIGNALS → EVOLVING CAPABILITY PROFILE → CONTEXTUAL POSSIBILITIES`
+
+Two PLAYERs may have the same progression level while developing very different MORISE DNA. Rare combinations of demonstrated capabilities may unlock MORISE-original titles, classes, experiences, challenges or creation opportunities.
+
+DNA must remain explainable enough for the PLAYER to understand why a capability is being surfaced. It must not infer sensitive traits or make consequential decisions about the user.
+
+### Integration rule
+
+MORISE DNA is an internal capability of **PLAYER + Evolution Engine + SYSTEM**. It does not create a new navigation tab, new account type or separate social graph. Living Object contributions, Convergence outcomes, game results, creations and missions may provide validated evidence when appropriate.
+
+---
+
 # MORISE CONVERGENCE — EMERGENCE-DRIVEN SYSTEM
 
 **MORISE Convergence** is a cross-module mechanic built on top of the existing SYSTEM, Evolution Engine, Living Objects and MORISE-only AI. It is not a new navigation tab.
@@ -197,13 +240,14 @@ The exact rank names, UI language, progression rules and visual identity remain 
 
 ### Cross-module integration
 
-- **PLAYER:** progression, titles and personal history can reflect validated discoveries.
+- **PLAYER:** progression, titles, MORISE DNA and personal history can reflect validated discoveries.
 - **WORLD:** Convergence can surface emerging experiences without creating a popularity-only feed.
 - **SOCIAL:** participation can create optional connections or temporary collaboration spaces.
 - **PLAY:** Convergence can produce new game prototypes, challenges or variants.
 - **LIVING OBJECTS:** Convergence can become a new seed, branch, merge or transformation.
 - **EVENTS:** meaningful convergences can become optional events.
 - **EVOLUTION ENGINE:** Convergence becomes another source of personal discoveries, hidden possibilities and SYSTEM evolution.
+- **WORLD MEMORY:** validated discoveries and outcomes can become collective knowledge.
 - **MORISE AI LAB:** candidate detection and experiment strategies can be tested offline before production use.
 
 ### Integrity requirements
@@ -216,15 +260,139 @@ Convergence, Convergence Spaces and Emergence Events are **internal SYSTEM mecha
 
 ---
 
+# MORISE WORLD MEMORY — COLLECTIVE OPERATIONAL MEMORY
+
+**MORISE World Memory** is the collective memory layer of MORISE. It complements Player Memory, Living Objects, Evolution Engine and Convergence; it does not replace them and does not create a new navigation tab.
+
+Its purpose is to preserve and structure useful knowledge, discoveries, solutions, variants and validated outcomes produced by the real activity of the MORISE network so that future PLAYERs and future MORISE experiences can benefit from them.
+
+A discovery may originate from one PLAYER, several independent trajectories, a Living Object, a game, a challenge, an Emergence Event or an Emergent Mission. When it meets MORISE's validation and provenance requirements, MORISE AI may register it as a World Memory item.
+
+### Collective memory loop
+
+`PLAYER EXPERIENCE → DISCOVERY → MORISE AI ANALYSIS → VALIDATION / PROVENANCE → WORLD MEMORY → FUTURE CONTEXT → NEW PLAYER EXPERIENCE → NEW DISCOVERY`
+
+World Memory is therefore cumulative: useful knowledge can remain valuable after the original publication is no longer visible, while preserving attribution, permissions, provenance, version history and applicable retention/forgetting rules.
+
+### Memory model
+
+A World Memory item may contain:
+
+- origin and creator/contributor attribution;
+- the problem, question or context that produced the discovery;
+- the discovery, solution, strategy or insight;
+- supporting trajectories, variants and experiments;
+- confidence and validation status;
+- lineage to Living Objects, games, missions, events or Convergence outcomes;
+- timestamps and version history;
+- visibility, consent and permission boundaries;
+- usefulness/reuse signals;
+- expiration, correction, withdrawal or forgetting state when applicable.
+
+A World Memory item must not become an immutable archive merely because it was once useful. MORISE must support correction, invalidation, withdrawal, permission changes, retention limits and appropriate forgetting.
+
+### Retrieval and SYSTEM experience
+
+World Memory is not a feed. MORISE AI retrieves it contextually when it can help the current PLAYER or MORISE process.
+
+Example:
+
+> **SYSTEM:** MORISE has a validated discovery related to your situation, derived from multiple independent trajectories.
+
+The SYSTEM may explain the relevant provenance and why the memory is being surfaced without exposing private information or unnecessary user identities.
+
+### Collective intelligence rule
+
+World Memory can support collective **memory, attention and reasoning** while keeping human contributions attributable and preserving user control. MORISE AI does not silently convert every user action into global knowledge.
+
+Raw activity must pass through validation, quality, diversity, anti-spam, anti-manipulation and privacy controls before it can influence shared memory. One account or coordinated group must not manufacture apparent collective knowledge through volume alone.
+
+### Relationship with existing systems
+
+- **Player Memory:** remembers the individual's permitted MORISE journey.
+- **Living Objects:** preserve the history and lineage of creations.
+- **Evolution Engine:** adapts the individual's experience.
+- **Convergence:** detects compatible trajectories and emerging possibilities.
+- **MORISE DNA:** represents demonstrated capabilities.
+- **World Memory:** preserves validated knowledge produced by the wider MORISE world.
+
+These are distinct layers. MORISE AI orchestrates their interaction rather than collapsing them into one generic memory system.
+
+### No new navigation tab
+
+World Memory is an internal MORISE SYSTEM capability. It may be surfaced through existing WORLD, SYSTEM, PLAY, PLAYER, creation or contextual experiences when relevant, but it must not create a new permanent navigation destination.
+
+---
+
+# MORISE MISSIONS FROM REALITY — EMERGENT PROBLEM SOLVING
+
+**Missions From Reality** extends the existing Module 5 mission system and MORISE Convergence. It does not create a second mission system.
+
+MORISE AI may detect that multiple independent PLAYERs are repeatedly encountering a meaningful problem, unanswered question, optimization opportunity or unresolved challenge. When the pattern passes confidence, diversity, privacy and manipulation safeguards, MORISE can transform it into an optional **Emergent Mission**.
+
+### Core loop
+
+`REAL PROBLEM → INDEPENDENT TRAJECTORIES → PATTERN DETECTION → VALIDATED EMERGENT PROBLEM → MISSION → EXPERIMENT / SOLUTIONS → VALIDATED RESULT → WORLD MEMORY`
+
+Example:
+
+`20 PLAYERs independently encounter the same difficult problem → MORISE AI detects the pattern → SYSTEM proposes an Emergent Mission → PLAYERs test different approaches → a solution is validated → World Memory records the discovery and its provenance.`
+
+The mission may be solo or collective. Players do not need to know each other beforehand. Participation remains optional.
+
+### Relationship with Module 5
+
+Module 5 remains the unified home of missions, progression, achievements, titles and rewards. Missions From Reality is an **emergence source** for that existing mission system, not a parallel mission product.
+
+MORISE AI may generate the mission framing, constraints, hints and evaluation proposal, but high-impact rewards, permissions and persistent changes remain subject to the existing authorization and validation rules.
+
+### Solution lifecycle
+
+Candidate solutions may be tested, compared, branched and corrected. A result does not become World Memory solely because it receives activity. It must meet the applicable validation and provenance requirements.
+
+Validated solutions can later inform another PLAYER's context, improve a future mission, influence a Living Object, create a game/challenge/event or contribute to MORISE AI experiments.
+
+### No new navigation tab
+
+Emergent Missions appear through the existing SYSTEM/Missions experience, WORLD/PLAY experiences or contextual SYSTEM moments. They do not create a new permanent button.
+
+---
+
+# MORISE META-ORCHESTRATION RULE
+
+MORISE AI is responsible for coordinating the internal mechanics without flattening their distinct purposes.
+
+A single real MORISE action may legitimately produce several internal effects:
+
+`ACTION → PLAYER MEMORY + EVOLUTION SIGNAL + DNA EVIDENCE + LIVING OBJECT CHANGE + CONVERGENCE SIGNAL + POSSIBLE WORLD MEMORY CANDIDATE`
+
+The AI must decide which pathways are relevant based on context, permissions and validated evidence. Not every action enters every system.
+
+The resulting architecture is:
+
+`PLAYER → EXPERIENCE → CREATION / INTERACTION → CONVERGENCE / DISCOVERY → EMERGENT MISSION WHEN WARRANTED → VALIDATED KNOWLEDGE → WORLD MEMORY → FUTURE PLAYER / FUTURE EXPERIENCE`
+
+This is a cumulative loop, not a collection of disconnected features.
+
+### Interface constraint
+
+Internal capability count must never dictate navigation count. MORISE can contain a very large number of mechanics while exposing only a small number of primary user-facing doors. The SYSTEM progressively reveals contextual capabilities rather than requiring the PLAYER to understand MORISE's internal architecture.
+
+### Anti-duplication rule
+
+When a future feature proposal overlaps an existing MORISE capability, it must be integrated into the existing capability unless it introduces a genuinely distinct purpose. The implementation plan must update the authoritative definition instead of creating parallel systems with different names for the same behavior.
+
+---
+
 # MODULE MAP
 
 | Module | Name | Status | Purpose |
 |---|---|---|---|
 | 1 | Foundation | BASE EXISTANTE | Technical, visual and AI-ready foundation |
-| 2 | PLAYER | BASE EXISTANTE | Identity, preferences, progression and personal context |
+| 2 | PLAYER | BASE EXISTANTE | Identity, preferences, progression, personal context and MORISE DNA foundations |
 | 3 | SOCIAL + PRIVATE MESSAGING | BASE EXISTANTE / messaging incomplete | Social graph, feed, private conversations, sharing and social intelligence |
-| 4 | WORLD | BASE EXISTANTE | Discovery and exploration |
-| 5 | SYSTEM / PROGRESSION | BASE EXISTANTE | Progression plus SYSTEM AI foundations |
+| 4 | WORLD | BASE EXISTANTE | Discovery, exploration and contextual access to emerging knowledge/experiences |
+| 5 | SYSTEM / PROGRESSION | BASE EXISTANTE | Progression, unified missions and Emergent Missions from real-world MORISE patterns |
 | 6 | PLAY | **CURRENT — FINAL QA** | PLAY entry, sessions, validation and existing game interface |
 | 7 | GAME DISCOVERY ENGINE | PLANNED | Market-informed game discovery and personalized recommendations |
 | 8 | GAME A→Z FACTORY | PLANNED | Complete game creation pipeline with AI assistance and Living Objects |
@@ -232,17 +400,19 @@ Convergence, Convergence Spaces and Emergence Events are **internal SYSTEM mecha
 | 10 | SOCIAL GAMING | PLANNED | Games + social graph + collective loops + Living Object branches |
 | 11 | COMMUNITIES | PLANNED | GUILDS and adaptive community intelligence |
 | 12 | EVENTS | PLANNED | Solo + collective recurring experiences and Living Object conversions |
-| 13 | ADAPTIVE WORLD | PLANNED | Platform-wide personalization, Living Object discovery and exploration |
+| 13 | ADAPTIVE WORLD | PLANNED | Platform-wide personalization, Living Object discovery, exploration and World Memory retrieval |
 | 14 | COLLECTION / REWARD ECONOMY | PLANNED | Fair collection, rewards, creator/reward mechanics |
-| 15 | META SYSTEM | PLANNED / first-cycle ceiling | Unified mature MORISE SYSTEM AI + MORISE AI Lab + Living Objects + Evolution Engine + Convergence |
+| 15 | META SYSTEM | PLANNED / first-cycle ceiling | Unified mature MORISE SYSTEM AI + MORISE AI Lab + Living Objects + Evolution Engine + Convergence + DNA + World Memory |
 
 ## MODULE 1 — FOUNDATION
 
-Stable application, routing, auth, responsive UI, database conventions, security, observability and AI-ready event/context architecture. Add provider-independent primitives for Living Object IDs, lineage, events, permissions, branches and audit history without exposing unfinished UI. Add privacy-preserving event/trajectory primitives required for Convergence detection without exposing raw private content.
+Stable application, routing, auth, responsive UI, database conventions, security, observability and AI-ready event/context architecture. Add provider-independent primitives for Living Object IDs, lineage, events, permissions, branches and audit history without exposing unfinished UI. Add privacy-preserving event/trajectory primitives required for Convergence and World Memory provenance without exposing raw private content. Add durable identifiers and provenance metadata for validated collective knowledge without making the memory layer a public navigation feature.
 
 ## MODULE 2 — PLAYER
 
 Persistent PLAYER identity with profile, preferences, progression, titles, achievements, history and visibility controls. AI learns useful non-sensitive personal preferences from explicit choices and permitted activity. PLAYER owns attribution and consent controls for Living Object contributions. Evolution Engine stores only permitted, useful signals for personal adaptation. Convergence discoveries may unlock MORISE-original SYSTEM milestones or titles.
+
+MORISE DNA is introduced as an internal extension of the existing identity/evolution model. It records demonstrated capabilities rather than personality or sensitive traits. The PLAYER can understand relevant DNA changes and retains appropriate visibility/control over the underlying signals.
 
 ## MODULE 3 — SOCIAL + PRIVATE MESSAGING
 
@@ -252,7 +422,7 @@ Living Objects integrate with SOCIAL as shareable collaborative creations. Shari
 
 Adaptive community signals remain proposal-only: sustained meaningful interactions can produce a candidate GUILD, but the SYSTEM waits for user acceptance before persistent creation or membership changes.
 
-Evolution Engine can use social participation as one permitted signal, but solo experience remains first-class. Convergence may create optional temporary collaboration spaces when independent trajectories are compatible.
+Evolution Engine can use social participation as one permitted signal, but solo experience remains first-class. Convergence may create optional temporary collaboration spaces when independent trajectories are compatible. Validated public contributions may later become World Memory candidates; private messages do not enter World Memory merely because they contain useful-looking text.
 
 ## MODULE 4 — WORLD
 
@@ -260,7 +430,7 @@ WORLD exploration with Discover, Play, Create, Communities, Activities and Event
 
 Living Objects receive a discovery surface based on relevance, novelty, quality, diversity and legitimate participation signals. The WORLD must not become a closed popularity feed.
 
-Evolution Engine can alter discovery context, surface unexplored paths and create rare discoveries without adding a new navigation section. Convergence can surface emerging experiences and Emergence Events.
+Evolution Engine can alter discovery context, surface unexplored paths and create rare discoveries without adding a new navigation section. Convergence can surface emerging experiences and Emergence Events. World Memory can be retrieved contextually through existing WORLD surfaces when validated collective knowledge is relevant; it does not become a separate feed.
 
 ## MODULE 5 — SYSTEM / PROGRESSION
 
@@ -270,11 +440,13 @@ Living Object participation can produce validated progression events such as cre
 
 Evolution Engine is orchestrated from SYSTEM and may create contextual titles, discoveries, missions, surprises and progression moments. Convergence can unlock MORISE-original SYSTEM capabilities as the PLAYER's journey develops, creating a personal progression feeling without copying any copyrighted franchise.
 
+Missions From Reality extends this existing mission system. MORISE AI may transform validated recurring problems detected across independent trajectories into optional solo or collective missions. Successful solutions can be validated and passed to World Memory. This is an emergence source for the existing mission system, not a second mission framework.
+
 ## MODULE 6 — PLAY — CURRENT FINAL QA
 
 One elegant PLAY entry instead of a confusing catalogue. Preserve the existing game interface even though the actual game is not yet a finished programmed game. AI collects permitted signals for future personalized game discovery.
 
-Living Objects are not required to block Module 6 QA. Existing PLAY/session validation remains the current gate. Future games may originate from Living Objects in Module 8.
+Living Objects are not required to block Module 6 QA. Existing PLAY/session validation remains the current gate. Future games may originate from Living Objects in Module 8. Future validated game discoveries, experiments and solutions may contribute to World Memory through the established validation pipeline, but no new World Memory UI is required for Module 6 completion.
 
 QA gate: SYSTEM/PLAYER/WORLD/SOCIAL/PLAY visibility; WORLD subcommands; SOCIAL modes; authenticated PLAY; session lifecycle; valid/invalid results; tamper rejection; duplicate protection; progression; mobile; loading/error/empty states; no blank screens; production smoke test.
 
@@ -284,7 +456,7 @@ QA gate: SYSTEM/PLAYER/WORLD/SOCIAL/PLAY visibility; WORLD subcommands; SOCIAL m
 
 SYSTEM recommends games based on PLAYER. Research market demand, comparable games, reviews/community feedback, trends, engagement, risks and differentiation. AI starts with deterministic ranking and progressively learns from player feedback and permitted behavior.
 
-Living Object discovery may surface playable objects and game branches based on player interests while preserving novelty and exploration. Evolution Engine may introduce unexpected but relevant game discoveries and personalized experiments. Convergence may detect independent game-mechanic trajectories and propose a safe experiment or playable Emergence Event.
+Living Object discovery may surface playable objects and game branches based on player interests while preserving novelty and exploration. Evolution Engine may introduce unexpected but relevant game discoveries and personalized experiments. Convergence may detect independent game-mechanic trajectories and propose a safe experiment or playable Emergence Event. Validated game discoveries, strategies and experiment results may become World Memory knowledge when they satisfy collective-memory validation rules.
 
 ## MODULE 8 — GAME A→Z FACTORY
 
@@ -294,11 +466,13 @@ A Living Object can be the game's seed. Contributors can create mechanics, cards
 
 Convergence can propose a game experiment when multiple independent Living Objects or player trajectories reveal compatible mechanics. Such proposals require validation and user control.
 
+Validated design discoveries and reusable solutions can contribute to World Memory with attribution and provenance, allowing later game creators to benefit from historical MORISE knowledge.
+
 AI may assist research, design, content, balancing, documentation and testing.
 
 ## MODULE 9 — SHARED GAME ENGINE
 
-Reusable validated game infrastructure after common requirements are proven. It must support game instances originating from Living Objects, branch/version metadata, contribution attribution and safe conversion from object state to executable game content. It must also support safe experiment identifiers for Convergence-generated prototypes.
+Reusable validated game infrastructure after common requirements are proven. It must support game instances originating from Living Objects, branch/version metadata, contribution attribution and safe conversion from object state to executable game content. It must also support safe experiment identifiers for Convergence-generated prototypes and provenance links for validated discoveries that enter World Memory.
 
 ## MODULE 10 — SOCIAL GAMING
 
@@ -306,7 +480,7 @@ Connect PLAY with SOCIAL through results, challenges, invitations, rematches, co
 
 Living Objects become a collective gaming loop: a player can create a seed, invite contributors, branch a ruleset, test variants and publish a playable branch.
 
-Convergence can connect independent game trajectories into optional Emergence Events or temporary collaboration spaces.
+Convergence can connect independent game trajectories into optional Emergence Events or temporary collaboration spaces. Repeated unresolved game problems can become Missions From Reality, and validated solutions can enter World Memory.
 
 ## MODULE 11 — COMMUNITIES
 
@@ -318,13 +492,15 @@ Example: three doctors with different paths repeatedly interact around a common 
 
 Convergence can identify independent trajectories that may benefit from an optional temporary collaboration, but must never expose private or sensitive information to manufacture a connection.
 
+Community solutions, patterns and reusable knowledge can become World Memory candidates only through the same validation, attribution and permission rules used elsewhere.
+
 ## MODULE 12 — EVENTS
 
 Recurring solo and collective experiences. AI provides event discovery, scheduling assistance, personalization and validated event proposals.
 
 A Living Object can become an event when its contributors choose that transformation: idea → event, challenge → event, game tournament → event, or collaborative project → event.
 
-Fun & Surprise can generate optional rare solo moments or contextual event proposals without requiring a permanent new tab. Convergence can generate Emergence Events when a validated collective possibility appears.
+Fun & Surprise can generate optional rare solo moments or contextual event proposals without requiring a permanent new tab. Convergence can generate Emergence Events when a validated collective possibility appears. Event outcomes can produce World Memory candidates when they contain validated reusable discoveries.
 
 ## MODULE 13 — ADAPTIVE WORLD
 
@@ -332,7 +508,7 @@ Personalize WORLD without creating a closed filter bubble. AI balances relevance
 
 Living Object discovery adds another dimension: MORISE can surface an evolving creation, its active branch, a compatible contribution opportunity or a related emerging community rather than only showing finished content.
 
-Evolution Engine adds personal world changes, unexplored paths, rare discoveries and harmless surprises. Convergence adds discovery of emerging patterns that would otherwise remain invisible.
+Evolution Engine adds personal world changes, unexplored paths, rare discoveries and harmless surprises. Convergence adds discovery of emerging patterns that would otherwise remain invisible. World Memory adds contextual retrieval of validated collective knowledge without turning WORLD into a static knowledge database or popularity feed.
 
 ## MODULE 14 — COLLECTION / REWARD ECONOMY
 
@@ -340,15 +516,15 @@ Fair collections, cosmetics, rewards, creator incentives, referral/share systems
 
 Living Object contributions can receive transparent attribution and non-pay-to-win recognition/rewards. Reward design must prevent contribution spam and coordinated manipulation.
 
-Fun & Surprise rewards must be bounded, transparent enough to preserve trust and never become gambling-like or manipulative. Convergence rewards must reflect meaningful contribution or validated discovery, not artificial activity volume.
+Fun & Surprise rewards must be bounded, transparent enough to preserve trust and never become gambling-like or manipulative. Convergence rewards must reflect meaningful contribution or validated discovery, not artificial activity volume. World Memory contribution recognition must reward validated knowledge quality and meaningful contribution rather than raw volume.
 
 ## MODULE 15 — META SYSTEM + MORISE AI LAB
 
-Integrate the mature MORISE SYSTEM, MORISE-only self-evolution environment, Living Objects, Evolution Engine and Convergence into one coherent experience. The SYSTEM becomes conversational like a modern general AI assistant, but all knowledge, memory, tools and actions are grounded in MORISE.
+Integrate the mature MORISE SYSTEM, MORISE-only self-evolution environment, Living Objects, Evolution Engine, MORISE DNA, Convergence, Missions From Reality and World Memory into one coherent experience. The SYSTEM becomes conversational like a modern general AI assistant, but all knowledge, memory, tools and actions are grounded in MORISE.
 
 ### MORISE AI Lab
 
-An isolated environment where the MORISE AI can improve MORISE-specific capabilities. It may inspect permitted MORISE code, propose/generate MORISE-specific changes, create experimental branches/builds, run tests and benchmarks, train/fine-tune models when hardware/data/licensing allow, optimize recommendation/translation/memory/game/orchestration mechanisms, compare versions and retain a candidate when it measurably improves MORISE benchmarks.
+An isolated environment where the MORISE AI can improve MORISE-specific capabilities. It may inspect permitted MORISE code, propose/generate MORISE-specific changes, create experimental branches/builds, run tests and benchmarks, train/fine-tune models when hardware/data/licensing allow, optimize recommendation/translation/memory/game/orchestration/emergence mechanisms, compare versions and retain a candidate when it measurably improves MORISE benchmarks.
 
 The Lab has **no product mission outside MORISE**.
 
@@ -360,23 +536,39 @@ At maturity, the SYSTEM can understand Living Object state, lineage, branches, c
 
 It can also identify complementary branches and propose merges or collaborations. These are proposals, not autonomous authority.
 
-### Evolution Engine intelligence
+Validated Living Object discoveries can contribute structured knowledge to World Memory while preserving lineage and attribution.
 
-At maturity, the SYSTEM can combine permitted signals from the PLAYER's MORISE journey to evolve the experience across Trace, Living World, Hidden Possibilities, Unexplored Paths, Evolving Identity and MORISE Double.
+### Evolution Engine + MORISE DNA intelligence
+
+At maturity, the SYSTEM can combine permitted signals from the PLAYER's MORISE journey to evolve the experience across Trace, Living World, Hidden Possibilities, Unexplored Paths, Evolving Identity, MORISE Double and MORISE DNA.
+
+MORISE DNA describes demonstrated capabilities and can unlock contextual MORISE-original possibilities without becoming a psychological profile or separate account system.
 
 The **Fun & Surprise** layer can generate rare contextual experiences, humorous SYSTEM moments, personal mysteries, unusual discoveries, legendary moments, controlled visual surprises, mystery gifts and tasteful memory callbacks.
 
-### Convergence intelligence
+### Convergence + Missions From Reality intelligence
 
-At maturity, the SYSTEM can detect meaningful convergence across independent MORISE trajectories without exposing private content or sensitive attributes. It can create candidate Convergence Spaces and Emergence Events, run controlled experiments, compare outcomes and convert validated results into Living Objects, games, challenges, events or communities.
+At maturity, the SYSTEM can detect meaningful convergence across independent MORISE trajectories without exposing private content or sensitive attributes. It can create candidate Convergence Spaces and Emergence Events, detect recurring unresolved problems, transform validated patterns into Missions From Reality, run controlled experiments, compare outcomes and convert validated results into Living Objects, games, challenges, events, communities or World Memory knowledge.
 
-The personal SYSTEM experience may expose capabilities progressively as the PLAYER uses MORISE. This creates a **MORISE-original personal SYSTEM progression** inspired only by the broad concept of progressive system growth, not by any copyrighted franchise.
+Missions From Reality is the bridge from **real network problem → collective/solo experiment → validated solution**. It does not duplicate Module 5's mission system.
 
-Example:
+### World Memory intelligence
 
-`SYSTEM RANK F → exploration → capability unlocked → convergence detection unlocked → Emergence Event discovered → new MORISE capability`
+At maturity, World Memory becomes MORISE's collective operational memory. MORISE AI can collect validated discoveries from the existing mechanics, preserve provenance and attribution, connect related discoveries and retrieve relevant knowledge for future PLAYERs and future MORISE processes.
 
-The rank vocabulary, rules, UI and visual identity must remain original to MORISE.
+World Memory can preserve useful historical knowledge even when the original post, community, game or creator is no longer active, subject to attribution, permissions, correction, retention and forgetting rules. It is not an archive of everything users ever did and it is not a public feed.
+
+A mature World Memory retrieval may tell a PLAYER that a useful discovery comes from multiple independent trajectories and provide the relevant context, while avoiding unnecessary exposure of private identities or content.
+
+### Collective intelligence loop
+
+`PLAYER → EXPERIENCE → ACTION / CREATION → MORISE AI → SPECIALIST MECHANICS → CONVERGENCE / DISCOVERY → EMERGENT MISSION WHEN WARRANTED → VALIDATED SOLUTION → WORLD MEMORY → FUTURE PLAYER → NEW TRAJECTORY`
+
+This creates a cumulative MORISE knowledge loop while keeping personal memory, Living Object lineage, DNA, Evolution Engine, Convergence and World Memory as distinct layers.
+
+### Simple interface rule
+
+The mature SYSTEM must expose only a small number of primary user-facing entry points. Internal capability growth must not produce navigation sprawl. MORISE AI chooses when a capability, discovery, mission, memory or experience becomes contextually visible through an existing door.
 
 ### Compute scaling
 
@@ -392,15 +584,15 @@ Self-modification happens in the Lab first. Production remains protected by auth
 
 For creation:
 
-`PLAYER → seed Living Object → invite → contribute → transform → branch → share → new contributors → validated conversion → game/community/event/etc.`
+`PLAYER → seed Living Object → invite → contribute → transform → branch → share → new contributors → validated conversion → game/community/event/etc. → useful discovery → World Memory when validated`
 
 For personal evolution:
 
-`PLAYER → everyday MORISE activity → Evolution Engine → contextual change/discovery/surprise → PLAYER reaction → controlled learning → better future experience`
+`PLAYER → everyday MORISE activity → Evolution Engine → MORISE DNA evidence → contextual change/discovery/surprise → PLAYER reaction → controlled learning → better future experience`
 
 For emergence:
 
-`PLAYER trajectories → independent creation/play/exploration → convergence detection → optional Convergence Space → experiment → validated Emergence Event → new MORISE creation/experience → new trajectories`
+`PLAYER trajectories → independent creation/play/exploration → convergence detection → optional Convergence Space → experiment → validated Emergence Event or Emergent Mission → solution/discovery → World Memory → new MORISE creation/experience → new trajectories`
 
 ---
 
@@ -414,4 +606,6 @@ A module is only `DONE` after code, UX, mobile, security and production validati
 
 ## Documentation rule
 
-This file is the authoritative plan for modules, AI mechanics, adaptive social behavior, translation, Living Objects, Evolution Engine/Fun & Surprise and Convergence. Superseded standalone roadmaps must not be used as implementation instructions.
+This file is the authoritative plan for modules, AI mechanics, adaptive social behavior, translation, Living Objects, Evolution Engine/Fun & Surprise, MORISE DNA, Convergence, Missions From Reality and World Memory. These capabilities are cross-module SYSTEM mechanics unless a module explicitly owns their implementation. They must not be implemented as duplicate systems or permanent navigation tabs.
+
+When a new feature proposal overlaps an existing capability, update and extend the existing canonical definition instead of creating a parallel feature with a new name. Future AI agents must treat this file as the implementation contract and preserve the current working point unless the plan explicitly changes it.
