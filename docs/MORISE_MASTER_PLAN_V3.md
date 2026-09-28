@@ -502,6 +502,37 @@ Every registered capability must identify its concrete tool(s), input/output con
 
 If a required tool is unavailable, MORISE must not pretend the task succeeded. It must use a validated alternative, defer the task, or fail gracefully.
 
+### Tool ownership, discovery and provisioning
+
+MORISE must **not assume that the PLAYER or project owner must manually provide every tool** required by the Master Plan. Tool availability is an architectural concern managed by the MORISE development/runtime architecture.
+
+Tool sources may include:
+
+- **MORISE-native components** developed specifically for MORISE;
+- **open-source libraries, engines and runtimes** integrated when their licenses, security and capabilities are appropriate;
+- **approved external tools or services** connected through protected adapters/interfaces when a specialized capability is required;
+- **generated or configured internal tooling** prepared by MORISE development infrastructure when an identified capability is missing and such construction is technically feasible.
+
+For every required capability, MORISE must be able to determine:
+
+`REQUIRED CAPABILITY → AVAILABLE TOOLS → COMPATIBILITY / PERMISSIONS → TOOL SELECTION → EXECUTION PATH`
+
+MORISE AI must not invent a tool or claim a capability exists merely because the Master Plan describes the desired outcome.
+
+When a required tool is unavailable, incompatible, too expensive for the current environment, not permitted, or technically immature, the system must choose one of the following validated paths:
+
+1. use another compatible registered tool;
+2. use a MORISE-native implementation when feasible;
+3. configure or prepare the missing capability inside protected development / AI infrastructure when feasible;
+4. defer the capability until its dependencies are ready; or
+5. report the limitation honestly and preserve a safe fallback experience.
+
+Tool selection and provisioning remain subject to licensing, security, privacy, permissions, provenance, cost/resource limits and validation.
+
+The PLAYER should not need to understand or manually assemble this toolchain. MORISE AI orchestrates the available capabilities through protected interfaces while the user-facing experience remains simple.
+
+The later technical conception must define, for each tool family, **who/what provides it, how it is discovered, how it is integrated, how it is versioned, how it is tested, what happens when it disappears or becomes incompatible, and whether MORISE can replace or implement an alternative without changing the user-facing architecture**.
+
 ### Required tool families
 
 The technical architecture must account for concrete tool families including:
