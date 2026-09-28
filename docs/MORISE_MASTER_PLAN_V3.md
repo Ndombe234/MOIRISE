@@ -44,7 +44,7 @@ The AI remains technically separated from production-critical systems while expe
 
 `MORISE AI → observes MORISE performance → identifies MORISE-specific weakness → proposes/codes a MORISE-native modification → isolated experiment → uses available compute → evaluates against MORISE benchmarks → keeps/improves/rejects candidate → next MORISE AI version`
 
-The evolution loop can include code refactoring, recommendation experiments, translation/context improvements, personal and collective memory/context strategies, MORISE DNA, Convergence, Emergent Missions, World Memory quality, game discovery, game-design assistance, social/community recommendations, benchmark generation and model fine-tuning/training when the required hardware, data and licensing are available.
+The evolution loop can include code refactoring, recommendation experiments, translation/context improvements, personal and collective memory/context strategies, MORISE DNA, Convergence, Emergent Missions, World Memory quality, the MORISE Collective Intelligence Engine, game discovery, game-design assistance, social/community recommendations, benchmark generation and model fine-tuning/training when the required hardware, data and licensing are available.
 
 **The ability to call a model or API is not considered proof that MORISE AI has been built.** A MORISE AI capability is complete only when the corresponding MORISE-native mechanism, state, evaluation path and integration are implemented and validated.
 
@@ -54,7 +54,7 @@ The evolution loop can include code refactoring, recommendation experiments, tra
 
 `PLAYER / WORLD signals → specialist mechanics → SYSTEM Orchestrator → contextual recommendation/proposal/action → feedback → controlled learning`
 
-Specialist mechanics include conversation/reasoning, memory/context, personalization, MORISE DNA, social/relationship intelligence, community/GUILD intelligence, game discovery, game creation, translation, safety/moderation, Convergence, Emergent Missions, World Memory and economy/reward analysis.
+Specialist mechanics include conversation/reasoning, memory/context, personalization, MORISE DNA, social/relationship intelligence, community/GUILD intelligence, game discovery, game creation, translation, safety/moderation, Convergence, Emergent Missions, World Memory, the MORISE Collective Intelligence Engine and economy/reward analysis.
 
 MORISE AI is the **orchestrator**, not a replacement for specialist mechanics. A single permitted action may update several relevant internal systems at once while preserving their distinct purposes.
 
@@ -398,6 +398,100 @@ When a future feature proposal overlaps an existing MORISE capability, it must b
 
 ---
 
+# MORISE COLLECTIVE INTELLIGENCE ENGINE
+
+**MORISE Collective Intelligence Engine (CIE)** is a single MORISE-native capability that extends the existing **World Memory + Convergence + MORISE DNA + Missions From Reality + Living Objects + Evolution Engine + MORISE AI** architecture.
+
+It is **not** a new module, not a new navigation tab, not a second intelligence layer and not a replacement for the systems above. The CIE is the internal mechanism that turns distributed MORISE experience into validated, transferable, evolvable collective intelligence.
+
+### Core principle
+
+`INDIVIDUAL / COLLECTIVE EXPERIENCE → SIGNALS → RESONANCE → EXPERIMENTATION → PROOF / CONFLICT / RESULT → WORLD MEMORY → TRANSFER / ADAPTATION → NEW EXPERIENCE → NEW SIGNALS`
+
+The engine must preserve the distinct responsibilities of each existing system while allowing MORISE AI to orchestrate them as one cumulative loop.
+
+### Internal capabilities
+
+The CIE contains the following **internal capabilities**, which must not become separate products or permanent navigation items:
+
+- **Resonance:** detect when similar ideas, strategies, discoveries or solutions begin appearing independently across different trajectories or contexts.
+- **Proof of Discovery:** preserve provenance for meaningful discoveries, including origin, timestamp, contributing trajectories, transformations, validation history, variants and attribution.
+- **Collective Lab:** turn a sufficiently validated question, hypothesis or unresolved problem into a controlled solo/collective experiment with explicit hypotheses, participants, measurements, outcomes and rollback/correction paths.
+- **Knowledge Conflict:** detect meaningful contradictions between World Memory items, identify differences in context and evidence, preserve both histories and optionally propose experiments that can clarify the conflict instead of silently overwriting one side.
+- **Skill Transfer:** transform validated discoveries or strategies into contextual learning experiences for another PLAYER, adapting the knowledge to the new context instead of merely copying the original answer.
+- **Adaptive Roles:** for an eligible collective experience, propose temporary functional roles from demonstrated MORISE capabilities; roles can change as the experiment evolves. Roles are contextual and must not become fixed identity labels.
+- **World Simulation:** when a sufficiently mature and authorized use case warrants it, compare controlled hypothetical world states or experience configurations before proposing a meaningful change. Simulation output is a scenario analysis, not a guaranteed prediction.
+- **Memory Evolution:** maintain lifecycle rules for collective knowledge, including retention, correction, invalidation, withdrawal, versioning, archival and appropriate forgetting.
+- **Contribution Intelligence:** evaluate contribution patterns from validated outcomes and provenance rather than raw activity volume, likes or popularity. Signals may inform existing MORISE DNA, progression, titles, opportunities or contextual recognition but must not become an opaque social score.
+
+### CIE relationship to existing MORISE systems
+
+The CIE does not collapse existing systems into one generic mechanism:
+
+- **Convergence** detects compatible trajectories and emerging possibilities.
+- **Missions From Reality** converts validated recurring real problems into the existing mission framework.
+- **World Memory** stores validated collective knowledge and its lifecycle.
+- **MORISE DNA** records demonstrated individual capabilities that may be relevant to collective work.
+- **Living Objects** preserve creation lineage, branches and transformations.
+- **Evolution Engine** adapts the individual experience and discovers new possibilities.
+- **MORISE AI** orchestrates when and how the CIE activates these mechanisms.
+
+A single permitted action may feed several of these systems, but only the relevant pathways are updated according to context, consent, permissions and validation.
+
+### Collective discovery and validation loop
+
+A mature CIE flow may look like:
+
+`PLAYER A discovers strategy X → PLAYER B independently produces variant Y → PLAYER C encounters the same underlying problem → RESONANCE detected → MORISE AI proposes Collective Lab experiment → results are compared → provenance and evidence are recorded → conflict or agreement is classified → validated result enters World Memory → Skill Transfer creates an adapted learning experience → new PLAYER applies it → new trajectory becomes additional evidence`
+
+The CIE must explicitly preserve **independent discovery**. Repeated activity from one account or coordinated group must not manufacture false consensus, false resonance or artificial knowledge.
+
+### Privacy, safety and integrity
+
+The CIE inherits and extends existing MORISE safeguards:
+
+- Private messages, private objects and restricted content must not become shared knowledge merely because AI can infer a relationship.
+- Sensitive traits must not be inferred for capability assignment, role allocation or contribution analysis.
+- AI suggestions are never authorization boundaries.
+- Every mutation and persistent knowledge change remains protected by server-side authorization/RLS or the equivalent production boundary.
+- Collective findings require quality, diversity, confidence, provenance and anti-manipulation checks.
+- Experiments and simulations require auditability, controlled scope, rollback and clear separation between hypothetical output and validated real-world result.
+- Contribution Intelligence must not reward spam volume, engagement farming or coordinated manipulation.
+- Memory Evolution must respect consent, deletion/withdrawal rules, retention policies and historical integrity requirements.
+- The system must preserve correction rather than treating every stored result as permanently true.
+
+### Interface rule
+
+The PLAYER should experience the CIE through existing MORISE doors and contextual SYSTEM moments rather than through a screen called “Collective Intelligence”.
+
+Examples of valid contextual experiences include:
+
+> **SYSTEM — RESONANCE DETECTED:** multiple independent trajectories are producing compatible solutions.
+
+> **SYSTEM — KNOWLEDGE CONFLICT:** two validated memories disagree in this context. MORISE can compare evidence or open an experiment.
+
+> **SYSTEM — SKILL TRANSFER AVAILABLE:** a demonstrated strategy may help with your current problem.
+
+> **SYSTEM — COLLECTIVE LAB:** MORISE found a testable hypothesis that can be explored alone or with others.
+
+The interface must remain understandable and optional. The internal complexity of the CIE must never increase the navigation count.
+
+### Market-defensible data loop
+
+The CIE is also a strategic MORISE data moat, but only through **quality and provenance**, not indiscriminate data collection:
+
+`EXPERIENCE → VALIDATED SIGNAL → PROVENANCE → WORLD MEMORY → REUSE → OUTCOME → NEW VALIDATED SIGNAL`
+
+Over time this can create a proprietary corpus of structured problem-solving trajectories, solution variants, experiment outcomes and transfer paths that are specific to MORISE. This corpus must remain governed by permissions, privacy, retention, licensing and deletion requirements.
+
+### No new module / no duplicate system
+
+The CIE is an internal META SYSTEM capability. It must be implemented incrementally through the modules that produce its required primitives, while keeping one canonical definition here.
+
+No future feature should create separate systems named “Resonance Engine”, “Proof Engine”, “Skill Transfer Engine”, “Collective Lab”, “Conflict Engine”, “Contribution Engine” or similar unless a future plan explicitly defines a genuinely distinct subsystem. Those concepts are already owned by the MORISE Collective Intelligence Engine.
+
+---
+
 # MODULE MAP
 
 | Module | Name | Status | Purpose |
@@ -416,7 +510,7 @@ When a future feature proposal overlaps an existing MORISE capability, it must b
 | 12 | EVENTS | PLANNED | Solo + collective recurring experiences and Living Object conversions |
 | 13 | ADAPTIVE WORLD | PLANNED | Platform-wide personalization, Living Object discovery, exploration and World Memory retrieval |
 | 14 | COLLECTION / REWARD ECONOMY | PLANNED | Fair collection, rewards, creator/reward mechanics |
-| 15 | META SYSTEM | PLANNED / first-cycle ceiling | Unified mature MORISE SYSTEM AI + MORISE AI Lab + Living Objects + Evolution Engine + Convergence + DNA + World Memory |
+| 15 | META SYSTEM | PLANNED / first-cycle ceiling | Unified mature MORISE SYSTEM AI + MORISE AI Lab + Living Objects + Evolution Engine + Convergence + DNA + World Memory + Collective Intelligence Engine |
 
 ## MODULE 1 — FOUNDATION
 
@@ -534,7 +628,7 @@ Fun & Surprise rewards must be bounded, transparent enough to preserve trust and
 
 ## MODULE 15 — META SYSTEM + MORISE AI LAB
 
-Integrate the mature MORISE SYSTEM, MORISE-only self-evolution environment, Living Objects, Evolution Engine, MORISE DNA, Convergence, Missions From Reality and World Memory into one coherent experience. The SYSTEM becomes conversational like a modern general AI assistant, but all knowledge, memory, tools and actions are grounded in MORISE.
+Integrate the mature MORISE SYSTEM, MORISE-only self-evolution environment, Living Objects, Evolution Engine, MORISE DNA, Convergence, Missions From Reality, World Memory and the MORISE Collective Intelligence Engine into one coherent experience. The SYSTEM becomes conversational like a modern general AI assistant, but all knowledge, memory, tools and actions are grounded in MORISE.
 
 ### MORISE AI Lab
 
@@ -573,6 +667,12 @@ At maturity, World Memory becomes MORISE's collective operational memory. MORISE
 World Memory can preserve useful historical knowledge even when the original post, community, game or creator is no longer active, subject to attribution, permissions, correction, retention and forgetting rules. It is not an archive of everything users ever did and it is not a public feed.
 
 A mature World Memory retrieval may tell a PLAYER that a useful discovery comes from multiple independent trajectories and provide the relevant context, while avoiding unnecessary exposure of private identities or content.
+
+### MORISE Collective Intelligence Engine intelligence
+
+At maturity, the CIE provides the bridge between distributed experience and validated collective intelligence. MORISE AI can detect Resonance, preserve Proof of Discovery, open controlled Collective Lab experiments, surface Knowledge Conflicts, enable contextual Skill Transfer, propose Adaptive Roles, run authorized World Simulations, evolve collective-memory lifecycle rules and derive Contribution Intelligence from validated outcomes.
+
+These capabilities remain internal to the CIE and continue to use the existing Convergence, Missions From Reality, World Memory, MORISE DNA, Living Objects and Evolution Engine mechanisms. The CIE never creates a second mission framework, second profile, second memory system or second AI.
 
 ### Collective intelligence loop
 
@@ -620,7 +720,7 @@ A module is only `DONE` after code, UX, mobile, security and production validati
 
 ## Documentation rule
 
-This file is the authoritative plan for modules, AI mechanics, adaptive social behavior, translation, Living Objects, Evolution Engine/Fun & Surprise, MORISE DNA, Convergence, Missions From Reality and World Memory. These capabilities are cross-module SYSTEM mechanics unless a module explicitly owns their implementation. They must not be implemented as duplicate systems or permanent navigation tabs.
+This file is the authoritative plan for modules, AI mechanics, adaptive social behavior, translation, Living Objects, Evolution Engine/Fun & Surprise, MORISE DNA, Convergence, Missions From Reality, World Memory and the MORISE Collective Intelligence Engine. These capabilities are cross-module SYSTEM mechanics unless a module explicitly owns their implementation. They must not be implemented as duplicate systems or permanent navigation tabs.
 
 MORISE AI is a **coded, MORISE-native runtime system**. External models/APIs may assist implementation or provide optional auxiliary capabilities, but no external API is itself MORISE AI. The AI development process must progressively implement the native mechanisms that allow MORISE AI to operate, learn from permitted signals, evaluate outcomes and improve through controlled MORISE AI Lab experiments.
 
