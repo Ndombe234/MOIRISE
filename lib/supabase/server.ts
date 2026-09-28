@@ -1,6 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import type { Database } from "@/lib/supabase/database.types";
+import type { MoriseDatabase } from "@/lib/supabase/social.types";
 
 export async function createClient() {
   const cookieStore = await cookies();
@@ -11,7 +11,7 @@ export async function createClient() {
     throw new Error("Supabase public environment variables are not configured.");
   }
 
-  return createServerClient<Database>(url, key, {
+  return createServerClient<MoriseDatabase>(url, key, {
     cookies: {
       getAll() {
         return cookieStore.getAll();
