@@ -356,12 +356,15 @@ The engine may generate, combine or retire patterns such as:
 - **AI Fallibility:** when MORISE makes a non-critical prediction that proves wrong, it may expose the discrepancy as an optional experiment rather than hiding the failure, enabling the PLAYER to investigate how the experience changes after the correction;
 - **Player Laboratory:** offer controlled experimental mechanics that have not yet been broadly validated, with explicit lightweight participation framing and the ability to reject, restart or leave;
 - **Emergent Experience:** combine recent validated signals, mechanics, Living Objects, problems, strategies or experiences to generate a new playable or interactive experience that did not exist as a predefined item.
+- **MORISE Dream / Hypothesis Synthesis:** combine previously unrelated but validated mechanics, discoveries, rules, Living Object branches or problem/solution patterns into a candidate experience or mechanic. The candidate must be isolated and evaluated before being kept, so MORISE can explore combinations that were not explicitly designed in advance without treating randomness as intelligence.
 
 These are **experience patterns**, not permanent features or separate systems. MORISE AI decides contextually whether any pattern is appropriate.
 
 #### Procedural and generative behavior
 
 When required infrastructure is available, MORISE AI may use Creation Tools + Creation Runtime to generate or assemble the environment, rules, code, scenes, assets and test configuration needed for an emergent experience. A validated fallback must exist for latency-sensitive or unavailable capabilities.
+
+For **MORISE Dream / Hypothesis Synthesis**, the system may first create a small candidate specification or simulation, use World Agents and automated tests to challenge it, and promote it to a real PLAYER-facing experience only when the candidate shows coherent rules, acceptable performance and meaningful entertainment, creative or learning value.
 
 World Agents may participate as bounded opponents, playtesters, investigators, simulators or evaluators. Their observations enter the existing validation pipeline rather than becoming unrestricted autonomous authority.
 
@@ -983,7 +986,7 @@ MORISE DNA describes demonstrated capabilities and can unlock contextual MORISE-
 
 The **Fun & Surprise** layer can generate rare contextual experiences, humorous SYSTEM moments, personal mysteries, unusual discoveries, legendary moments, controlled visual surprises, mystery gifts and tasteful memory callbacks.
 
-The **MORISE Emergent Experience Engine** can then turn validated context into playable or interactive experiments: alternate branches, hidden-rule experiences, historical-trace challenges, reactivation of eligible abandoned creations, controlled mutations, role inversions, mystery investigations, transparent AI-fallibility experiments, player-laboratory mechanics and entirely new emergent experiences. These patterns use the existing Creation Runtime, World Agents, Convergence, CIE and World Memory instead of creating parallel systems.
+The **MORISE Emergent Experience Engine** can then turn validated context into playable or interactive experiments: alternate branches, hidden-rule experiences, historical-trace challenges, reactivation of eligible abandoned creations, controlled mutations, role inversions, mystery investigations, transparent AI-fallibility experiments, player-laboratory mechanics, **MORISE Dream / hypothesis synthesis** and entirely new emergent experiences. These patterns use the existing Creation Runtime, World Agents, Convergence, CIE and World Memory instead of creating parallel systems.
 
 ### Game intelligence: adaptive discovery + 2D/3D generation
 
