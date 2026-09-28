@@ -12,7 +12,7 @@ export type ShadowChallenge = {
 const key = ([row, col]: ShadowPoint) => row + ":" + col;
 const neighbors = ([row, col]: ShadowPoint): ShadowPoint[] => [
   [row - 1, col], [row + 1, col], [row, col - 1], [row, col + 1],
-].filter(([r, c]) => r >= 0 && r < 7 && c >= 0 && c < 7);
+].filter(([r, c]) => r >= 0 && r < 7 && c >= 0 && c < 7) as ShadowPoint[];
 
 export function generateShadowChallenge(seed: number): ShadowChallenge {
   const random = mulberry32(seed);
