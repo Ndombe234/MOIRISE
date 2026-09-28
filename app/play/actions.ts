@@ -103,3 +103,14 @@ export async function completePlaySessionAction(sessionId: string, rawActions: u
     persistence: data,
   };
 }
+
+export async function abandonPlaySessionAction(sessionId: string) {
+  const supabase = await createClient();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError) throw authError;
+  if (!user) redirect("/auth/sign-in");
+  const validSessionId = validateAttemptId(sessionId);
+  const { data, error } = await supabase.rpc("close_play_session", { session_id_value: validSessionId });
+  if (error) throw new Error("Unable to close PLAY session.");
+  return data;
+}
