@@ -554,7 +554,7 @@ Missions From Reality extends this existing mission system. MORISE AI may transf
 
 One elegant PLAY entry instead of a confusing catalogue. Preserve the existing game interface even though the actual game is not yet a finished programmed game. AI collects permitted signals for future personalized game discovery.
 
-Living Objects are not required to block Module 6 QA. Existing PLAY/session validation remains the current gate. Future games may originate from Living Objects in Module 8. Future validated game discoveries, experiments and solutions may contribute to World Memory through the established validation pipeline, but no new World Memory UI is required for Module 6 completion.
+Living Objects are not required to block Module 6 QA. Existing PLAY/session validation remains the current gate. Future games may originate from Living Objects in Module 8. The PLAY architecture must remain format-agnostic so it can host **2D and 3D games**, including justified hybrid experiences, produced by the later game pipeline. Future validated game discoveries, experiments and solutions may contribute to World Memory through the established validation pipeline, but no new World Memory UI is required for Module 6 completion.
 
 QA gate: SYSTEM/PLAYER/WORLD/SOCIAL/PLAY visibility; WORLD subcommands; SOCIAL modes; authenticated PLAY; session lifecycle; valid/invalid results; tamper rejection; duplicate protection; progression; mobile; loading/error/empty states; no blank screens; production smoke test.
 
@@ -562,25 +562,35 @@ QA gate: SYSTEM/PLAYER/WORLD/SOCIAL/PLAY visibility; WORLD subcommands; SOCIAL m
 
 ## MODULE 7 — GAME DISCOVERY ENGINE
 
-SYSTEM recommends games based on PLAYER. Research market demand, comparable games, reviews/community feedback, trends, engagement, risks and differentiation. AI starts with deterministic ranking and progressively learns from player feedback and permitted behavior.
+SYSTEM recommends and surfaces games according to the PLAYER's explicit choices, demonstrated non-sensitive behavior, preferences, progression, prior game reactions and other permitted signals. Research market demand, comparable games, reviews/community feedback, trends, engagement, risks and differentiation. AI starts with deterministic ranking and progressively learns from player feedback and permitted behavior.
+
+The discovery system must treat **2D and 3D as first-class game formats**, alongside justified hybrid experiences. MORISE AI may determine which format or combination to surface for a PLAYER or context, while preserving novelty and exploration. Behavior is an input to contextual discovery, not a fixed label that limits the PLAYER to one category.
 
 Living Object discovery may surface playable objects and game branches based on player interests while preserving novelty and exploration. Evolution Engine may introduce unexpected but relevant game discoveries and personalized experiments. Convergence may detect independent game-mechanic trajectories and propose a safe experiment or playable Emergence Event. Validated game discoveries, strategies and experiment results may become World Memory knowledge when they satisfy collective-memory validation rules.
 
 ## MODULE 8 — GAME A→Z FACTORY
 
-Every game is built A→Z: market research → concept → core loop/rules → visual direction → prototype → SOLO → justified COLLECTIVE → content → frontend/backend/data → security/anti-cheat → user testing → balancing → mobile/web optimization → QA → production → launch/iteration.
+Every game is built A→Z: market research → concept → core loop/rules → **2D / 3D / justified hybrid format selection** → visual direction → prototype → SOLO → justified COLLECTIVE → content → frontend/backend/data → security/anti-cheat → user testing → balancing → mobile/web optimization → QA → production → launch/iteration.
 
-A Living Object can be the game's seed. Contributors can create mechanics, cards, characters, rules, modes, levels and variants as branches. A validated branch may be converted into a playable game without losing its lineage or contributor attribution.
+The factory must support the creation of **real 2D games and real 3D games**, with the rendering, input, camera, physics, animation, scene/world, asset, performance and runtime requirements appropriate to each format. A game may also combine 2D and 3D when the concept genuinely benefits from a hybrid approach.
+
+MORISE AI may assist the A→Z process and propose the appropriate game format from the game concept, target device, gameplay requirements, performance constraints, player context and validated preferences. Format selection remains contextual and does not become a fixed PLAYER identity label.
+
+A Living Object can be the game's seed. Contributors can create mechanics, cards, characters, rules, modes, levels, worlds, scenes and variants as branches. A validated branch may be converted into a playable **2D or 3D game** without losing its lineage or contributor attribution.
 
 Convergence can propose a game experiment when multiple independent Living Objects or player trajectories reveal compatible mechanics. Such proposals require validation and user control.
 
 Validated design discoveries and reusable solutions can contribute to World Memory with attribution and provenance, allowing later game creators to benefit from historical MORISE knowledge.
 
-AI may assist research, design, content, balancing, documentation and testing.
+AI may assist research, design, content, balancing, documentation, testing and format-specific 2D/3D production workflows.
 
 ## MODULE 9 — SHARED GAME ENGINE
 
-Reusable validated game infrastructure after common requirements are proven. It must support game instances originating from Living Objects, branch/version metadata, contribution attribution and safe conversion from object state to executable game content. It must also support safe experiment identifiers for Convergence-generated prototypes and provenance links for validated discoveries that enter World Memory.
+Reusable validated game infrastructure after common requirements are proven. The shared engine must support **2D and 3D game runtimes**, including the abstractions and services required for rendering, input, scenes/worlds, assets, animation, physics, cameras, audio, persistence, performance budgets and safe execution across supported web/mobile targets.
+
+It must support game instances originating from Living Objects, branch/version metadata, contribution attribution and safe conversion from object state to executable **2D or 3D game content**. It must also support safe experiment identifiers for Convergence-generated prototypes, format-aware testing/benchmarking and provenance links for validated discoveries that enter World Memory.
+
+The architecture must avoid locking MORISE into one visual format: 2D, 3D and hybrid games can share validated platform services while retaining the specialized runtime capabilities each format requires.
 
 ## MODULE 10 — SOCIAL GAMING
 
@@ -654,9 +664,17 @@ MORISE DNA describes demonstrated capabilities and can unlock contextual MORISE-
 
 The **Fun & Surprise** layer can generate rare contextual experiences, humorous SYSTEM moments, personal mysteries, unusual discoveries, legendary moments, controlled visual surprises, mystery gifts and tasteful memory callbacks.
 
+### Game intelligence: adaptive discovery + 2D/3D generation
+
+At maturity, the SYSTEM can reason about games as both **content and executable experiences**. MORISE AI can select and surface games using explicit PLAYER choices, demonstrated non-sensitive behavior, preferences, progression, game reactions and contextual needs while preserving novelty and exploration.
+
+The mature GAME A→Z Factory and Shared Game Engine support **2D, 3D and justified hybrid games**. MORISE AI may determine which format, mechanic family, difficulty, pacing, presentation and experience to propose based on the game concept, device constraints, validated PLAYER signals and experiment results. This is contextual adaptation, not a fixed behavioral label.
+
+The AI can learn from accepted, rejected, completed, abandoned and corrected game experiences within the existing privacy, anti-manipulation and controlled-learning rules. Player behavior informs discovery and adaptation but must not create a coercive filter bubble. Format and game assignment remain explainable enough to the PLAYER when material.
+
 ### Convergence + Missions From Reality intelligence
 
-At maturity, the SYSTEM can detect meaningful convergence across independent MORISE trajectories without exposing private content or sensitive attributes. It can create candidate Convergence Spaces and Emergence Events, detect recurring unresolved problems, transform validated patterns into Missions From Reality, run controlled experiments, compare outcomes and convert validated results into Living Objects, games, challenges, events, communities or World Memory knowledge.
+At maturity, the SYSTEM can detect meaningful convergence across independent MORISE trajectories without exposing private content or sensitive attributes. It can create candidate Convergence Spaces and Emergence Events, detect recurring unresolved problems, transform validated patterns into Missions From Reality, run controlled experiments, compare outcomes and convert validated results into Living Objects, **2D/3D/hybrid games**, challenges, events, communities or World Memory knowledge.
 
 Missions From Reality is the bridge from **real network problem → collective/solo experiment → validated solution**. It does not duplicate Module 5's mission system.
 
@@ -720,7 +738,7 @@ A module is only `DONE` after code, UX, mobile, security and production validati
 
 ## Documentation rule
 
-This file is the authoritative plan for modules, AI mechanics, adaptive social behavior, translation, Living Objects, Evolution Engine/Fun & Surprise, MORISE DNA, Convergence, Missions From Reality, World Memory and the MORISE Collective Intelligence Engine. These capabilities are cross-module SYSTEM mechanics unless a module explicitly owns their implementation. They must not be implemented as duplicate systems or permanent navigation tabs.
+This file is the authoritative plan for modules, AI mechanics, adaptive social behavior, adaptive game discovery/assignment, 2D/3D game creation and runtime architecture, translation, Living Objects, Evolution Engine/Fun & Surprise, MORISE DNA, Convergence, Missions From Reality, World Memory and the MORISE Collective Intelligence Engine. These capabilities are cross-module SYSTEM mechanics unless a module explicitly owns their implementation. They must not be implemented as duplicate systems or permanent navigation tabs.
 
 MORISE AI is a **coded, MORISE-native runtime system**. External models/APIs may assist implementation or provide optional auxiliary capabilities, but no external API is itself MORISE AI. The AI development process must progressively implement the native mechanisms that allow MORISE AI to operate, learn from permitted signals, evaluate outcomes and improve through controlled MORISE AI Lab experiments.
 
