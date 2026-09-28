@@ -9,7 +9,7 @@ const definitions: GameDefinition[] = [
     title: "Alpha",
     description: "",
     estimatedSeconds: 30,
-    dimensions: { play: 2, exploration: 1 } as never,
+    dimensions: { play: 2, exploration: 1 },
     difficulty: "calm",
     requiredLevel: 1,
     launchPath: "/play/alpha",
@@ -20,7 +20,7 @@ const definitions: GameDefinition[] = [
     title: "Beta",
     description: "",
     estimatedSeconds: 90,
-    dimensions: { creation: 3 } as never,
+    dimensions: { creation: 3 },
     difficulty: "intense",
     requiredLevel: 3,
     launchPath: "/play/beta",
@@ -40,36 +40,29 @@ describe("PLAY selector", () => {
     expect(result.game.id).toBe("alpha");
   });
 
-  it("avoids recently played games when alternatives are available", () => {
+  it("avoids recently played games when an eligible alternative exists", () => {
     const result = selectNextGame({
       playerId: "p",
       systemLevel: 3,
-      dimensions: { play: 5 },
+      dimensions: { play: 8, creation: 8 },
       recentGameIds: ["alpha"],
-      sessionSeconds: 30,
+      sessionSeconds: 60,
     }, definitions);
 
     expect(result.game.id).toBe("beta");
   });
 
-  it("adapts the selected experience to SYSTEM dimensions", () => {
-    const playFocused = selectNextGame({
+  it("uses preference signals as a secondary affinity", () => {
+    const result = selectNextGame({
       playerId: "p",
       systemLevel: 3,
-      dimensions: { play: 5 },
+      dimensions: {},
+      preferenceSignals: { creation: 10 },
       recentGameIds: [],
-      sessionSeconds: 30,
-    }, definitions);
-    const creationFocused = selectNextGame({
-      playerId: "p",
-      systemLevel: 3,
-      dimensions: { creation: 5 },
-      recentGameIds: [],
-      sessionSeconds: 60,
+      sessionSeconds: 90,
     }, definitions);
 
-    expect(playFocused.game.id).toBe("alpha");
-    expect(creationFocused.game.id).toBe("beta");
+    expect(result.game.id).toBe("beta");
   });
 
   it("is deterministic for the same input", () => {
@@ -82,5 +75,20 @@ describe("PLAY selector", () => {
     };
 
     expect(selectNextGame(context, definitions)).toEqual(selectNextGame(context, definitions));
+  });
+
+  it("breaks ties by stable experience id", () => {
+    const tied: GameDefinition[] = [
+      { ...definitions[0], id: "zeta" },
+      { ...definitions[0], id: "alpha-2" },
+    ];
+
+    expect(selectNextGame({
+      playerId: "p",
+      systemLevel: 1,
+      dimensions: {},
+      recentGameIds: [],
+      sessionSeconds: 30,
+    }, tied).game.id).toBe("alpha-2");
   });
 });
