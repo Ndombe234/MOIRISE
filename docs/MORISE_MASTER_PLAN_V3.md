@@ -1427,6 +1427,48 @@ The initial MORISE experience should prioritize free access, creation, discovery
 
 The core MORISE experience should not require intrusive advertising or user payment merely to participate.
 
+### Launch, growth and controlled monetization activation
+
+MORISE must support a **Free / Growth phase before any creator monetization program is publicly activated**. During this phase:
+
+- the core product remains free to access and use;
+- users can accumulate legitimate creation history, audience, participation, discoveries, remixes and other validated platform activity;
+- the platform may collect the validated signals required for a future creator-eligibility program;
+- monetization thresholds and payout rules are **not treated as active public guarantees** until the corresponding economic program is officially enabled;
+- the architecture must not require a redesign when monetization is later activated.
+
+This must not be implemented through deceptive concealment. Public product information must remain accurate, and MORISE must not promise future income, fixed thresholds or payouts that have not been approved.
+
+Recommended lifecycle:
+
+`FREE / GROWTH → CREATOR PROGRAM READY → ECONOMIC PROGRAM ACTIVATED → SCALE`
+
+The exact activation date is a business decision. The system should nevertheless be able to evaluate historical validated activity once an authorized program is launched, subject to applicable rules, rights, fraud checks, privacy requirements and any required enrollment.
+
+### Automatic high-threshold owner/admin alerting
+
+When an individual creator or a qualifying group of creators reaches the **highest configured eligibility threshold** for an economic stage, the platform must generate an auditable administrative event:
+
+`VALIDATED ACTIVITY → THRESHOLD EVALUATION → TOP THRESHOLD REACHED → ADMIN ALERT EVENT → OWNER / AUTHORIZED ADMIN NOTIFICATION`
+
+The alerting capability must:
+
+- detect both single-user and multi-user threshold attainment;
+- identify the relevant creator(s), project(s), threshold/stage, measurement window and validated signals;
+- distinguish a newly reached threshold from an already-notified state to prevent alert spam;
+- support immediate alerts plus configurable grouped/digest notifications when several creators qualify close together;
+- remain server-side and durable so the alert is generated even when the owner/admin is offline;
+- preserve an audit record of the triggering event, notification status, acknowledgement and subsequent eligibility decision;
+- never activate money, payouts or economic rights solely because the alert fired;
+- support escalation for high-priority economic eligibility events;
+- allow authorized administrators to review the evidence before activating any economic capability.
+
+Default conceptual flow:
+
+`CREATOR / PROJECT ACTIVITY → VALIDATION → ELIGIBILITY ENGINE → THRESHOLD REACHED → THRESHOLD_REACHED EVENT → NOTIFICATION SERVICE → AUTHORIZED OWNER / ADMIN → REVIEW / APPROVE / DEFER`
+
+MORISE AI may summarize the reason for the alert and the recommended next permitted action, but the underlying threshold event and eligibility state must remain deterministic, auditable and independently verifiable.
+
 ### Technical conception requirement
 
 The later technical conception must define the exact schemas, event pipeline, aggregation and measurement jobs, eligibility rules, anti-fraud signals, provenance model, creator states, audit logs, economy/ledger boundaries, payment adapters, permissions, appeals, privacy controls, configuration management and failure/recovery behavior.
