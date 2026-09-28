@@ -49,6 +49,7 @@ export function ShadowCourier({
           const isExit = row === challenge.exit[0] && col === challenge.exit[1];
           const isPath = path.some(([r, c]) => r === row && c === col);
           const isPortal = Boolean(challenge.portals[cellKey]);
+          const isCurrent = current[0] === row && current[1] === col;
           return (
             <button
               key={cellKey}
@@ -61,9 +62,10 @@ export function ShadowCourier({
                 isStart ? "is-start" : "",
                 isExit ? "is-exit" : "",
                 isPortal ? "is-portal" : "",
+                isCurrent ? "is-current" : "",
               ].filter(Boolean).join(" ")}
               onClick={() => move(point)}
-              aria-label={isBlocked ? "Blocked" : isExit ? "Exit" : isPortal ? "Portal" : "Route cell"}
+              aria-label={isBlocked ? "Blocked" : isExit ? "Exit" : isPortal ? "Portal" : isCurrent ? "Current position" : "Route cell"}
             >
               {isStart ? "◆" : isExit ? "◎" : isPortal ? "◇" : ""}
             </button>
