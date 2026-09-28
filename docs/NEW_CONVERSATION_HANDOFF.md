@@ -9,7 +9,7 @@ Use this file as the continuity checkpoint when a new conversation starts.
 - AI architecture: `docs/MORISE_AI_MECHANICS_MAP.md`
 - Adaptive social: `docs/MORISE_ADAPTIVE_SOCIAL_SYSTEM.md`
 - Navigation: `docs/MORISE_NAVIGATION_SPEC.md`
-- Current status: `docs/MODULE_STATUS_V2.md`
+- Current status: `docs/MODULE_STATUS.md`
 - Execution template: `docs/MODULE_EXECUTION_TEMPLATE.md`
 
 ## Current position
@@ -22,7 +22,15 @@ Do not move to Module 7 implementation until the Module 6 QA gate is closed.
 
 MORISE is a general-purpose social platform. The SYSTEM is the central intelligent interaction layer connecting PLAYER, WORLD, SOCIAL, PLAY, GUILDS, games, creation and recommendations. Every relevant feature supports SOLO and COLLECTIVE use cases when appropriate.
 
-The SYSTEM is designed to evolve toward a true conversational AI experience: context + memory + specialized mechanics + orchestration + tools + controlled learning.
+## MORISE-only AI mission
+
+The AI we build is specifically for MORISE. Its purpose is to operate, understand, assist, personalize and evolve **within MORISE only**: PLAYER, WORLD, SOCIAL, PLAY, games, GUILDS, activities, events, creator tools, translation, recommendations, moderation, progression and internal SYSTEM operations.
+
+The AI may experiment with and improve MORISE-specific code, models, algorithms, prompts, ranking strategies and other mechanisms in an isolated MORISE AI Lab. It must not be designed as a general autonomous agent for unrelated external systems.
+
+The AI Lab can scale from one capable computer to additional machines/GPU resources as available. More compute enables larger experiments but does not by itself prove improvement. MORISE-specific benchmarks must measure candidate versions.
+
+Self-modification is therefore allowed as an **internal MORISE engineering capability**: the AI can generate, test, compare and retain candidate improvements inside its isolated Lab. Production-critical systems remain protected by authorization, security, testing, deployment and rollback boundaries.
 
 ## AI requirements
 
@@ -31,7 +39,7 @@ The SYSTEM is designed to evolve toward a true conversational AI experience: con
 - Global learning is validated and protected against manipulation/data poisoning.
 - Private information is never exposed through hidden inference.
 - Translation is a V1 SYSTEM capability and is browser/on-device first, with caching and controlled fallbacks.
-- The system must function even when an external AI provider is unavailable for core product workflows.
+- Core MORISE workflows must remain usable if an external AI provider is unavailable.
 
 ## Adaptive social requirement
 
