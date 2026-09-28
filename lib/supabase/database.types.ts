@@ -120,6 +120,50 @@ export type Database = {
           },
         ]
       }
+      play_sessions: {
+        Row: {
+          challenge: Json
+          completed_at: string | null
+          expires_at: string
+          game_id: string
+          player_id: string
+          seed: number
+          session_id: string
+          started_at: string
+          status: string
+        }
+        Insert: {
+          challenge: Json
+          completed_at?: string | null
+          expires_at?: string
+          game_id: string
+          player_id: string
+          seed: number
+          session_id?: string
+          started_at?: string
+          status?: string
+        }
+        Update: {
+          challenge?: Json
+          completed_at?: string | null
+          expires_at?: string
+          game_id?: string
+          player_id?: string
+          seed?: number
+          session_id?: string
+          started_at?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "play_sessions_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       players: {
         Row: {
           avatar_url: string | null
@@ -460,6 +504,18 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      close_play_session: {
+        Args: { session_id_value: string }
+        Returns: string
+      }
+      create_play_session: {
+        Args: {
+          challenge_value: Json
+          game_id_value: string
+          seed_value: number
+        }
+        Returns: Json
+      }
       ensure_system_profile: {
         Args: { target_player_id: string }
         Returns: undefined
