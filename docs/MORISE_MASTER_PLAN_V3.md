@@ -66,6 +66,39 @@ Translation is a first-class V1 SYSTEM capability. Prefer browser/on-device proc
 
 MORISE V1 may learn from users immediately through personal adaptation, aggregated validated patterns and feedback learning. Raw activity must not directly rewrite the global AI; protect against spam, fake accounts, coordinated manipulation and data poisoning.
 
+### MORISE AI task-experience learning loop
+
+MORISE AI must also learn from **how it performs real MORISE tasks**, not only from explicit user feedback. A completed task becomes a structured MORISE experience that can be observed, evaluated and reused.
+
+The core loop is:
+
+`PLAYER / SYSTEM INTENT → TASK PLANNING → TOOL SELECTION → TOOL EXECUTION → RESULT / ENVIRONMENT STATE → OBSERVATION → ERROR / SUCCESS ANALYSIS → LESSON CANDIDATE → VALIDATION / BENCHMARK → RETAIN / IMPROVE / REJECT → FUTURE TASK STRATEGY`
+
+For creation tasks, this means MORISE AI can learn from the concrete process of selecting tools, generating code/scenes/assets/rules, building, executing, testing, diagnosing failures, correcting them, optimizing and producing the final validated result. The learning signal comes from the **actual task trajectory and measured outcome**, not from claiming that the task succeeded.
+
+MORISE AI may progressively improve MORISE-specific capabilities such as:
+
+- tool-selection strategies and tool sequencing;
+- planning and decomposition of complex tasks;
+- generation strategies for code, scenes, assets and rules;
+- error diagnosis and correction strategies;
+- testing strategies and benchmark selection;
+- optimization strategies for supported targets;
+- game-design and balancing heuristics;
+- reusable validated workflows and patterns;
+- prediction of likely failures before execution;
+- contextual selection between 2D, 3D and hybrid creation approaches.
+
+A task experience must produce structured provenance: task intent, relevant permitted context, tools used, versions/configuration, intermediate results where necessary, failures, corrections, final outcome, validation evidence and confidence. Learning candidates are isolated from production until they pass the existing evaluation and MORISE AI Lab controls.
+
+**Learning from task execution does not mean uncontrolled self-rewriting.** A successful task does not immediately rewrite the production AI. Instead:
+
+`TASK EXPERIENCE → CANDIDATE LEARNING → CONTROLLED EVALUATION → BENCHMARK COMPARISON → APPROVE / REJECT / REVISE → DEPLOY THROUGH PROTECTED PATH`
+
+MORISE AI can therefore become better at using its own available capabilities over time. The goal is not merely to remember that a task happened, but to improve the **strategy, tool choice, execution sequence, error handling and validated methods** used for future tasks.
+
+This loop is MORISE-native and feeds the existing MORISE AI Lab, World Memory, CIE and other appropriate learning mechanisms without creating a second AI or second learning system.
+
 ---
 
 # SIGNATURE MORISE MECHANIC — LIVING OBJECTS
@@ -524,7 +557,9 @@ The PLAYER does not need to know these tools or program them manually. The visib
 
 The creation loop is:
 
-`PLAYER / SYSTEM INTENT → MORISE AI DESIGN → CREATION-TOOL SELECTION → FORMAT SELECTION → RUNTIME ASSEMBLY → CODE / SCENE / ASSET / RULE GENERATION → BUILD → EXECUTE → AUTOMATED TEST → CORRECT → OPTIMIZE → VALIDATE → PLAY / EXPERIENCE`
+`PLAYER / SYSTEM INTENT → MORISE AI DESIGN → CREATION-TOOL SELECTION → FORMAT SELECTION → RUNTIME ASSEMBLY → CODE / SCENE / ASSET / RULE GENERATION → BUILD → EXECUTE → AUTOMATED TEST → CORRECT → OPTIMIZE → VALIDATE → PLAY / EXPERIENCE → TASK EXPERIENCE RECORDED → LEARNING CANDIDATE`
+
+The execution history of the task must remain available to the MORISE learning architecture in a privacy-preserving and provenance-aware form so that validated successes, failures and correction strategies can improve future creation tasks.
 
 The runtime must support the existing **2D, 3D and justified hybrid** game architecture and may also support non-game interactive experiences when a future module requires them.
 
@@ -755,6 +790,8 @@ The AI can learn from accepted, rejected, completed, abandoned and corrected gam
 
 At maturity, MORISE Creation Runtime becomes a PLAYER-facing foundation for creating new games and interactive experiences even when no ready-made environment exists. MORISE AI selects the appropriate authorized **MORISE Creation Tools**, assembles the missing execution environment, generates/configures code, scenes, assets, rules and runtime components, builds them in isolation, executes automated tests, diagnoses failures, iterates and optimizes, and produces a reproducible candidate before production exposure. The tool layer is part of the architecture: AI orchestration alone is not treated as sufficient proof of real game creation.
 
+Every completed creation task also becomes a potential **task-experience learning sample**. MORISE AI can learn which tool combinations, generation strategies, build sequences, test suites, corrections and optimization methods produced validated results, then compare those methods against future tasks. This allows the way MORISE AI performs creation work to improve progressively rather than merely accumulating static memories.
+
 MORISE World Agents become scoped functional participants of the mature world: playtesters, opponents, simulation agents, evaluators, exploration agents or other role-specific participants. MORISE AI can create or retire these agents according to controlled objectives, permissions and validation requirements. Their observations feed the existing CIE/World Memory pipeline only when validated.
 
 No World Agent is a replacement for MORISE AI, and no World Agent receives unrestricted access to MORISE or external systems.
@@ -803,7 +840,11 @@ Self-modification happens in the Lab first. Production remains protected by auth
 
 For creation:
 
-`PLAYER → seed Living Object → invite → contribute → transform → branch → share → new contributors → validated conversion → game/community/event/etc. → useful discovery → World Memory when validated`
+`PLAYER → seed Living Object → invite → contribute → transform → branch → share → new contributors → validated conversion → game/community/event/etc. → useful discovery → World Memory when validated → task experience → validated learning → better future creation`
+
+For task learning:
+
+`TASK INTENT → MORISE AI PLAN → TOOLS → EXECUTION → RESULT → OBSERVE → DIAGNOSE → LEARN CANDIDATE → BENCHMARK → RETAIN / IMPROVE / REJECT → FUTURE TASK`
 
 For personal evolution:
 
