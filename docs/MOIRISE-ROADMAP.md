@@ -3,7 +3,7 @@
 ## Current module
 
 **Module 6 — PLAY Engine & Single PLAY Entry**  
-**Status:** IMPLEMENTATION IN PROGRESS
+**Status:** IMPLEMENTATION COMPLETE ON FEATURE BRANCH / LIVE DEPLOYMENT GATE PENDING
 
 ### Stable module history
 
@@ -30,6 +30,8 @@
 - Game results and progression are validated server-side.
 - Duplicate completion cannot award duplicate progression.
 - Browser QA is part of completion, not an optional polish step.
+- Module 6 branch CI/typecheck/tests/build are green; public live browser QA confirms home load and `/play` auth protection with no runtime/console errors.
+- Full authenticated PLAY browser QA and live application of the new PLAY integrity migration require the server-only `SUPABASE_SERVICE_ROLE_KEY` to be configured on the deployment target.
 
 ## Source-of-truth rule
 
