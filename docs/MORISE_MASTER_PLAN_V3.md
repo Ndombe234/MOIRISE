@@ -44,7 +44,7 @@ The AI remains technically separated from production-critical systems while expe
 
 `MORISE AI → observes MORISE performance → identifies MORISE-specific weakness → proposes/codes a MORISE-native modification → isolated experiment → uses available compute → evaluates against MORISE benchmarks → keeps/improves/rejects candidate → next MORISE AI version`
 
-The evolution loop can include code refactoring, recommendation experiments, translation/context improvements, personal and collective memory/context strategies, MORISE DNA, Convergence, Emergent Missions, World Memory quality, the MORISE Collective Intelligence Engine, game discovery, game-design assistance, social/community recommendations, benchmark generation and model fine-tuning/training when the required hardware, data and licensing are available.
+The evolution loop can include code refactoring, recommendation experiments, translation/context improvements, personal and collective memory/context strategies, MORISE DNA, Convergence, Emergent Missions, World Memory quality, the MORISE Collective Intelligence Engine, MORISE Creation Runtime, MORISE World Agents, game discovery, game-design assistance, adaptive game assignment, social/community recommendations, benchmark generation and model fine-tuning/training when the required hardware, data and licensing are available.
 
 **The ability to call a model or API is not considered proof that MORISE AI has been built.** A MORISE AI capability is complete only when the corresponding MORISE-native mechanism, state, evaluation path and integration are implemented and validated.
 
@@ -54,7 +54,7 @@ The evolution loop can include code refactoring, recommendation experiments, tra
 
 `PLAYER / WORLD signals → specialist mechanics → SYSTEM Orchestrator → contextual recommendation/proposal/action → feedback → controlled learning`
 
-Specialist mechanics include conversation/reasoning, memory/context, personalization, MORISE DNA, social/relationship intelligence, community/GUILD intelligence, game discovery, game creation, translation, safety/moderation, Convergence, Emergent Missions, World Memory, the MORISE Collective Intelligence Engine and economy/reward analysis.
+Specialist mechanics include conversation/reasoning, memory/context, personalization, MORISE DNA, social/relationship intelligence, community/GUILD intelligence, game discovery, game creation, MORISE Creation Runtime, MORISE World Agents, translation, safety/moderation, Convergence, Emergent Missions, World Memory, the MORISE Collective Intelligence Engine and economy/reward analysis.
 
 MORISE AI is the **orchestrator**, not a replacement for specialist mechanics. A single permitted action may update several relevant internal systems at once while preserving their distinct purposes.
 
@@ -492,6 +492,57 @@ No future feature should create separate systems named “Resonance Engine”, �
 
 ---
 
+# MORISE CREATION RUNTIME + WORLD AGENTS
+
+**MORISE Creation Runtime** and **MORISE World Agents** are internal MORISE-native capabilities that extend the existing Game A→Z Factory, Shared Game Engine, CIE, Evolution Engine, World Memory and MORISE AI. They are not new modules or permanent navigation tabs.
+
+### MORISE Creation Runtime
+
+MORISE AI must not require a pre-existing game/world environment for every new creation. When an approved creation requires an environment that does not yet exist, the MORISE Creation Runtime can assemble or configure an isolated creation environment from available MORISE-native runtime capabilities.
+
+The creation loop is:
+
+`PLAYER / SYSTEM INTENT → MORISE AI DESIGN → FORMAT SELECTION → RUNTIME ASSEMBLY → CODE / SCENE / ASSET / RULE GENERATION → BUILD → EXECUTE → AUTOMATED TEST → CORRECT → OPTIMIZE → VALIDATE → PLAY / EXPERIENCE`
+
+The runtime must support the existing **2D, 3D and justified hybrid** game architecture and may also support non-game interactive experiences when a future module requires them.
+
+For 2D creations, the runtime can assemble the required scene, input, collision/physics, animation, assets, UI, audio, persistence and execution configuration. For 3D creations, it can assemble the required world/scene, camera, lighting, physics, animation, assets, materials, audio, persistence, performance and execution configuration. The exact implementation may use reusable MORISE-native components and approved supporting technologies, but the resulting experience remains governed by MORISE permissions, validation and security.
+
+The Creation Runtime must isolate experimental builds, support reproducible builds where practical, expose diagnostics to MORISE AI, and allow rollback when a generated environment or build fails validation.
+
+### MORISE World Agents
+
+**MORISE World Agents** are temporary or persistent, permissioned software agents that can participate functionally inside MORISE experiences without replacing human PLAYERs or becoming a second general-purpose AI.
+
+A World Agent may be created or selected when an experience needs a functional participant such as a playtester, opponent, simulator, balancing assistant, exploration agent, event facilitator or other narrowly defined role.
+
+World Agents can have scoped memory, capabilities, objectives, permissions, experience history and evaluation criteria. Their behavior must remain constrained to the MORISE experience and role for which they were deployed.
+
+A World Agent may:
+
+- play-test a game and report difficulty, exploits, dominant strategies or broken states;
+- test 2D/3D environments and interactions;
+- simulate variants or controlled scenarios;
+- act as a temporary opponent, teammate or rules participant;
+- help validate a Living Object transformation;
+- assist an authorized Collective Lab experiment;
+- perform repetitive validation or content-checking tasks;
+- provide structured observations to MORISE AI.
+
+World Agents must not silently obtain broader privileges, expose private information, change authorization rules, publish persistent communities, spend money or perform irreversible high-impact actions. Their permissions remain server-side and auditable.
+
+World Agents may be generated, modified, paused or retired by MORISE AI under the existing Lab/production boundary. Their observations become learning signals only through the existing validation, provenance, privacy and anti-manipulation pipeline.
+
+### Relationship to MORISE AI and CIE
+
+MORISE AI remains the orchestrator. Creation Runtime provides the environment in which generated experiences can actually execute. World Agents provide scoped functional participants or evaluators. The CIE determines when distributed observations, experiments and validated outcomes become collective intelligence.
+
+This architecture must never be interpreted as requiring an external general-purpose AI API for each experience. External models may be auxiliary, but the MORISE-native runtime, permissions, orchestration, evaluation and state remain inside MORISE.
+
+No future feature should create separate permanent modules named “Creation Runtime”, “World Agents”, “Playtest Agents” or similar unless a genuinely distinct purpose is later proven. These capabilities are owned by this canonical definition.
+
+---
+
 # MODULE MAP
 
 | Module | Name | Status | Purpose |
@@ -584,6 +635,10 @@ Validated design discoveries and reusable solutions can contribute to World Memo
 
 AI may assist research, design, content, balancing, documentation, testing and format-specific 2D/3D production workflows.
 
+MORISE Creation Runtime is the execution foundation for generated prototypes and environments. If the required environment does not already exist, MORISE AI may assemble an isolated runtime from approved reusable components, generate the required code/scenes/assets/rules, build and execute the prototype, run automated tests, iterate on failures and only then propose the experience for PLAY. The runtime must support reproducible builds, diagnostics, rollback and secure isolation.
+
+MORISE World Agents may be deployed inside the creation/test loop as scoped playtesters, opponents, evaluators or simulation participants. Their observations can inform balancing and validation but do not bypass human/player control or production authorization.
+
 ## MODULE 9 — SHARED GAME ENGINE
 
 Reusable validated game infrastructure after common requirements are proven. The shared engine must support **2D and 3D game runtimes**, including the abstractions and services required for rendering, input, scenes/worlds, assets, animation, physics, cameras, audio, persistence, performance budgets and safe execution across supported web/mobile targets.
@@ -591,6 +646,10 @@ Reusable validated game infrastructure after common requirements are proven. The
 It must support game instances originating from Living Objects, branch/version metadata, contribution attribution and safe conversion from object state to executable **2D or 3D game content**. It must also support safe experiment identifiers for Convergence-generated prototypes, format-aware testing/benchmarking and provenance links for validated discoveries that enter World Memory.
 
 The architecture must avoid locking MORISE into one visual format: 2D, 3D and hybrid games can share validated platform services while retaining the specialized runtime capabilities each format requires.
+
+The Shared Game Engine integrates with MORISE Creation Runtime rather than assuming that every game already has a finished environment. It supplies reusable runtime services, while Creation Runtime assembles the specific environment/configuration required by each generated or transformed experience.
+
+The engine must also expose controlled interfaces for World Agents to enter approved test environments, observe game state, execute allowed actions and return structured evaluation results without bypassing server-side permissions.
 
 ## MODULE 10 — SOCIAL GAMING
 
@@ -672,6 +731,12 @@ The mature GAME A→Z Factory and Shared Game Engine support **2D, 3D and justif
 
 The AI can learn from accepted, rejected, completed, abandoned and corrected game experiences within the existing privacy, anti-manipulation and controlled-learning rules. Player behavior informs discovery and adaptation but must not create a coercive filter bubble. Format and game assignment remain explainable enough to the PLAYER when material.
 
+At maturity, MORISE Creation Runtime can assemble a missing execution environment when a new game or interactive experience requires capabilities that do not yet exist as a ready-made environment. MORISE AI can generate/configure the required code, scenes, assets, rules and runtime components, build them in isolation, execute automated tests, diagnose failures, iterate and produce a reproducible candidate before production exposure.
+
+MORISE World Agents become scoped functional participants of the mature world: playtesters, opponents, simulation agents, evaluators, exploration agents or other role-specific participants. MORISE AI can create or retire these agents according to controlled objectives, permissions and validation requirements. Their observations feed the existing CIE/World Memory pipeline only when validated.
+
+No World Agent is a replacement for MORISE AI, and no World Agent receives unrestricted access to MORISE or external systems.
+
 ### Convergence + Missions From Reality intelligence
 
 At maturity, the SYSTEM can detect meaningful convergence across independent MORISE trajectories without exposing private content or sensitive attributes. It can create candidate Convergence Spaces and Emergence Events, detect recurring unresolved problems, transform validated patterns into Missions From Reality, run controlled experiments, compare outcomes and convert validated results into Living Objects, **2D/3D/hybrid games**, challenges, events, communities or World Memory knowledge.
@@ -738,7 +803,7 @@ A module is only `DONE` after code, UX, mobile, security and production validati
 
 ## Documentation rule
 
-This file is the authoritative plan for modules, AI mechanics, adaptive social behavior, adaptive game discovery/assignment, 2D/3D game creation and runtime architecture, translation, Living Objects, Evolution Engine/Fun & Surprise, MORISE DNA, Convergence, Missions From Reality, World Memory and the MORISE Collective Intelligence Engine. These capabilities are cross-module SYSTEM mechanics unless a module explicitly owns their implementation. They must not be implemented as duplicate systems or permanent navigation tabs.
+This file is the authoritative plan for modules, AI mechanics, adaptive social behavior, adaptive game discovery/assignment, 2D/3D game creation and runtime architecture, MORISE Creation Runtime, MORISE World Agents, translation, Living Objects, Evolution Engine/Fun & Surprise, MORISE DNA, Convergence, Missions From Reality, World Memory and the MORISE Collective Intelligence Engine. These capabilities are cross-module SYSTEM mechanics unless a module explicitly owns their implementation. They must not be implemented as duplicate systems or permanent navigation tabs.
 
 MORISE AI is a **coded, MORISE-native runtime system**. External models/APIs may assist implementation or provide optional auxiliary capabilities, but no external API is itself MORISE AI. The AI development process must progressively implement the native mechanisms that allow MORISE AI to operate, learn from permitted signals, evaluate outcomes and improve through controlled MORISE AI Lab experiments.
 
