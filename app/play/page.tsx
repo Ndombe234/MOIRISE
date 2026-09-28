@@ -25,9 +25,12 @@ export default async function PlayPage() {
 
         <section className="play-hero">
           <div>
-            <p className="play-eyebrow">PLAY / LAB</p>
-            <h1>Une porte.<br />Des mondes à maîtriser.</h1>
-            <p>Des expériences courtes, étranges et rejouables. Ton SYSTEM influence ce qui apparaît ensuite.</p>
+            <p className="play-eyebrow">SYSTEM / PLAY</p>
+            <h1>Une porte.<br />Ton expérience.</h1>
+            <p>
+              Le SYSTEM choisit une expérience selon ton parcours, tes dimensions et ce qu'il apprend de ta façon de jouer.
+              Tu n'as pas besoin de parcourir un catalogue.
+            </p>
           </div>
           <div className="play-system-note">
             <span>SYSTEM</span>
@@ -36,28 +39,20 @@ export default async function PlayPage() {
           </div>
         </section>
 
-        {context ? <PlayLauncher selection={context.selection} /> : null}
-
-        <section className="play-lab-grid" aria-labelledby="lab-title">
-          <div className="play-section-heading">
-            <p className="play-eyebrow">LAB / EXPÉRIMENTAL</p>
-            <h2 id="lab-title">Choisis autrement.</h2>
-          </div>
-          <div className="play-game-grid">
-            <Link href="/play/echo-trace" className="play-game-card">
-              <span>01</span><strong>Echo Trace</strong><small>Mémoire + précision</small>
-            </Link>
-            <Link href="/play/signal-bloom" className="play-game-card">
-              <span>02</span><strong>Signal Bloom</strong><small>Timing + observation</small>
-            </Link>
-            <Link href="/play/shadow-courier" className="play-game-card">
-              <span>03</span><strong>Shadow Courier</strong><small>Planification spatiale</small>
-            </Link>
-          </div>
-        </section>
+        {context ? (
+          <PlayLauncher selection={context.selection} />
+        ) : (
+          <section className="play-launcher" aria-live="polite">
+            <div>
+              <p className="play-eyebrow">SYSTEM</p>
+              <h2>Ton expérience se prépare.</h2>
+              <p>Réessaie dans un instant.</p>
+            </div>
+          </section>
+        )}
 
         <footer className="play-footer">
-          <span>Play Lab — premières expériences du moteur MORISE.</span>
+          <span>Le catalogue reste derrière le SYSTEM. Tu n'as qu'une porte à ouvrir.</span>
           <Link href="/home">Retour au World →</Link>
         </footer>
       </section>
