@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { getGameDefinition } from "@/lib/play/definitions";
 import { generatePlayChallenge, startPlaySession } from "@/lib/play/session-actions";
 import { validateEchoRun, type EchoChallenge } from "@/lib/play/games/echo-trace";
@@ -52,7 +53,10 @@ export async function completePlaySessionAction(sessionId: string, rawActions: u
   else if (session.game_id === "signal-bloom") result = validateSignalBloomRun(challenge as SignalBloomChallenge, actionLog.hitTimes as number[]);
   else result = validateShadowRun(challenge as ShadowChallenge, actionLog.path as ShadowPoint[]);
 
-  if (!result.valid) return { status: "failed", sessionId: validSessionId, score: result.score, summary: result.summary, metadata: result.metadata };
+  if (!result.valid) {
+    await supabase.rpc("close_play_session", { session_id_value: validSessionId });
+    return { status: "failed", sessionId: validSessionId, score: result.score, summary: result.summary, metadata: result.metadata };
+  }
 
   const durationMs = Math.max(250, Math.min(20 * 60 * 1000, Date.now() - Date.parse(session.started_at)));
   const signals = session.game_id === "echo-trace"
@@ -61,7 +65,9 @@ export async function completePlaySessionAction(sessionId: string, rawActions: u
       ? { play: result.score, exploration: Math.round(result.score / 3) }
       : { play: result.score, exploration: Math.round(result.score / 2), creation: Math.round(result.score / 4) };
 
-  const { data, error } = await supabase.rpc("record_play_completion", {
+  const admin = createAdminClient();
+  const { data, error } = await admin.rpc("record_play_completion_internal", {
+    player_id_value: user.id,
     game_id_value: game.id,
     attempt_id_value: validSessionId,
     status_value: "completed",
@@ -72,8 +78,6 @@ export async function completePlaySessionAction(sessionId: string, rawActions: u
   });
   if (error) throw new Error("Unable to save PLAY result.");
 
-  const { error: closeError } = await supabase.rpc("close_play_session", { session_id_value: validSessionId });
-  if (closeError) throw new Error("PLAY result saved, but the session could not be closed.");
 
   return { status: "recorded", sessionId: validSessionId, score: result.score, summary: result.summary, metadata: result.metadata, persistence: data };
 }
