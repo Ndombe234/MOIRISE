@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import type { Player } from "@/lib/supabase/database.types";
+import type { Database, Player } from "@/lib/supabase/database.types";
 import { buildIdentityCompletionRequest } from "@/lib/system/milestone";
 import { getSystemSnapshot } from "@/lib/system/server";
 import type { SystemProgressionPayload, SystemViewModel } from "@/lib/system/types";
@@ -34,7 +34,7 @@ export async function recordSystemProgress(
   const validated = validateProgressionPayload(payload);
   const supabase = await createClient();
 
-  const { data, error } = await supabase.rpc("record_system_progress_event", {
+  const rpcArgs: Database["public"]["Functions"]["record_system_progress_event"]["Args"] = {
     target_player_id: playerId,
     event_type_value: validated.eventType,
     dimension_key_value: validated.dimensionKey as string,
@@ -43,7 +43,9 @@ export async function recordSystemProgress(
     source_type_value: validated.sourceType,
     source_id_value: validated.sourceId ?? undefined,
     metadata_value: validated.metadata ?? {},
-  });
+  };
+
+  const { data, error } = await supabase.rpc("record_system_progress_event", rpcArgs);
 
   if (error) {
     throw new Error("Unable to record SYSTEM progression.");
