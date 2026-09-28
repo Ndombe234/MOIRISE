@@ -1,4 +1,4 @@
-import { mulberry32 } from "@/lib/play/seed";
+import { mulberry32 } from "../seed";
 
 export type SignalBloomChallenge = {
   targetTimes: number[];
