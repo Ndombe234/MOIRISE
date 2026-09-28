@@ -16,14 +16,16 @@ function dimensionAffinity(game: GameDefinition, dimensions: PlayContext["dimens
 
 export function selectNextGame(context: PlayContext, definitions: GameDefinition[]): PlaySelection {
   const candidates = definitions.filter((game) => game.requiredLevel <= context.systemLevel);
-  const pool = candidates.length ? candidates : definitions.filter((game) => game.requiredLevel === 1);
-  if (!pool.length) throw new Error("No PLAY experience is available.");
+  const available = candidates.length ? candidates : definitions.filter((game) => game.requiredLevel === 1);
+  if (!available.length) throw new Error("No PLAY experience is available.");
+
+  const fresh = available.filter((game) => !context.recentGameIds.includes(game.id));
+  const pool = fresh.length ? fresh : available;
 
   const scored = pool.map((game) => {
     const affinity = dimensionAffinity(game, context.dimensions);
-    const recencyPenalty = context.recentGameIds.includes(game.id) ? 8 : 0;
     const sessionDelta = Math.abs(game.estimatedSeconds - context.sessionSeconds) / 30;
-    const score = affinity - recencyPenalty - sessionDelta - difficultyPenalty[game.difficulty];
+    const score = affinity - sessionDelta - difficultyPenalty[game.difficulty];
     return { game, affinity, score };
   });
 
@@ -36,8 +38,10 @@ export function selectNextGame(context: PlayContext, definitions: GameDefinition
   return {
     game: chosen.game,
     affinity: chosen.affinity,
-    reason: chosen.affinity > 4
-      ? "Ton SYSTEM montre une affinité avec cette expérience."
-      : "Cette expérience complète ton prochain moment de jeu.",
+    reason: context.recentGameIds.includes(chosen.game.id)
+      ? "Toutes les expériences disponibles ont été jouées récemment : cette rotation revient à ton affinité SYSTEM."
+      : chosen.affinity > 4
+        ? "Ton SYSTEM montre une affinité avec cette expérience."
+        : "Cette expérience complète ton prochain moment de jeu.",
   };
 }
