@@ -360,11 +360,11 @@ export type Database = {
       }
       record_system_progress_event: {
         Args: {
-          dimension_key_value: string
+          dimension_key_value: string | null
           event_type_value: string
           idempotency_key_value: string
           metadata_value?: Json
-          source_id_value?: string
+          source_id_value?: string | null
           source_type_value: string
           target_player_id: string
           xp_delta_value: number
