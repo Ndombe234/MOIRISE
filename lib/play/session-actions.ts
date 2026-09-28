@@ -2,18 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { getGameDefinition } from "@/lib/play/definitions";
-import { generateEchoChallenge } from "@/lib/play/games/echo-trace";
-import { generateSignalBloomChallenge } from "@/lib/play/games/signal-bloom";
-import { generateShadowChallenge } from "@/lib/play/games/shadow-courier";
-
-export function generatePlayChallenge(gameId: string, seed: number) {
-  switch (gameId) {
-    case "echo-trace": return generateEchoChallenge(seed);
-    case "signal-bloom": return generateSignalBloomChallenge(seed);
-    case "shadow-courier": return generateShadowChallenge(seed);
-    default: throw new Error("Unsupported PLAY experience.");
-  }
-}
+import { generatePlayChallenge } from "@/lib/play/challenge";
 
 export async function startPlaySession(slug: string) {
   const supabase = await createClient();
@@ -31,6 +20,15 @@ export async function startPlaySession(slug: string) {
   });
   if (error) throw new Error("Unable to start PLAY session.");
 
-  const session = data as { session_id: string; game_id: string; seed: number; expires_at: string };
-  return { ...session, challenge: generatePlayChallenge(game.id, Number(session.seed)) };
+  const session = data as {
+    session_id: string;
+    game_id: string;
+    seed: number;
+    expires_at: string;
+  };
+
+  return {
+    ...session,
+    challenge: generatePlayChallenge(game.id, Number(session.seed)),
+  };
 }
