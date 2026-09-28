@@ -1,104 +1,183 @@
-# MORISE Module 6 — PLAY Engine & Play Lab
+# MOIRISE Module 6 — PLAY Engine & Play Lab
 
-**Status:** DESIGN + IMPLEMENTATION IN PROGRESS  
+**Status:** IMPLEMENTATION IN PROGRESS
 **Date:** 2026-09-28
 
 ## Goal
-Turn PLAY into a single simple door containing genuinely fun, short-to-deep interactive experiences that work solo, connect to SYSTEM progression, can generate shareable Moments, and can later scale to MORISE's canonical 40-game inventory.
 
-## Important inventory rule
-The authoritative names of the previously defined canonical 40 games and the separate 20 major features are not present in the project context available to this implementation session.
+Turn PLAY into a single simple door behind which MOIRISE can host a very large and evolving universe of experiences. The Player does not browse a catalogue: the SYSTEM selects one experience according to the Player's tastes when known, current SYSTEM evolution, dimensions, history, recent play and session context.
 
-Therefore this module does not redefine or replace that canonical inventory.
+The depth of the catalogue is intentionally invisible to the Player. The architecture must be able to grow to a very large number of experiences without changing the simple product shell.
 
-This module builds the reusable PLAY engine, game metadata contracts, progression/result contracts, selection logic, and a small experimental Play Lab set used to validate the engine and interaction model.
+## Product decisions
 
-These experimental games are not declared to be the canonical 40 until the authoritative inventory is recovered.
+### One visible PLAY door
 
-## Market analysis
-Current 2026 signals:
+The Player sees one primary PLAY action.
 
-1. Gaming remains a large global market. Newzoo forecasts $213.9B in 2026 and 3.7B players. As player penetration grows, retention of existing audiences becomes increasingly important.
-2. Discovery is shifting toward experiences that retain rather than only create short-term engagement. Roblox's 2026 discovery changes explicitly balance shorter experiences with deeper returning experiences and longer-term retention.
-3. Solo-friendly asynchronous social loops can create social value without requiring friends to be online. Current retention analysis highlights asynchronous challenges, shared milestones, and cohort-based leaderboards.
-4. Sustained play is influenced by coherent presentation, emotional or narrative design, community co-creation, and personalization rather than raw difficulty alone.
+The Player must not see:
+- a giant games catalogue;
+- a list of all available games;
+- a fixed inventory count;
+- a "top games" ranking;
+- fake popularity metrics;
+- a mandatory game browser.
 
-## Product implications
-MORISE should not build a generic arcade page with dozens of interchangeable clones.
+The selected experience may be named and briefly explained before launch, but PLAY remains one decision: enter the experience chosen by the SYSTEM.
 
-PLAY will optimize for instant comprehension, 20–120 second first-session loops, deeper mastery when the player chooses to stay, unusual rules that are easy to explain, outcomes that create a story or visual artifact, asynchronous comparison, adaptive selection based on SYSTEM, no pay-to-win, no fake players, no fake scores, no forced social participation, and minimal advertising interruption.
+### No fixed 40-game catalogue
 
-## MORISE originality principle
-A MORISE game is not considered original merely because its art is new.
+The former canonical 40-game inventory is retired and must not be treated as a product constraint.
 
-A game should have at least one distinctive mechanic relationship:
-- the world changes based on the player's SYSTEM dimensions;
-- the result becomes a social object or Moment;
-- the player manipulates an abstract system rather than a conventional avatar;
-- exploration changes the rules of the next round;
-- a failure creates useful information for the next attempt;
-- another player's past action affects the player's world asynchronously;
-- the game produces a personal signature that can be shared.
+Moirise will not promise a fixed number of games.
 
-## Play families
-- Pulse — 20–90 second skill loops.
-- Drift — compact exploratory micro-worlds.
-- Forge — creation-based games.
-- Duel — asynchronous challenges.
-- Quest — progression-oriented experiences.
+Experience selection and future experience creation are product decisions based on:
+- usefulness to the Player journey;
+- solo fun;
+- replayability;
+- distinctive mechanics;
+- SYSTEM integration;
+- shareable moments;
+- mobile/web performance;
+- accessibility;
+- market evidence;
+- actual Player behavior once data exists.
+
+The current Play Lab experiences are prototypes and may be replaced when evidence shows a better direction.
+
+### Player-specific evolution
+
+The same PLAY button can lead to different experiences for different Players.
+
+The selection may consider:
+- declared tastes/preferences when those signals exist;
+- SYSTEM level;
+- SYSTEM dimensions;
+- recent experiences;
+- previous results;
+- session length/context;
+- discovery/novelty needs;
+- future validated behavioral signals.
+
+Selection must evolve as the Player evolves.
+
+A Player must never be permanently classified by a single early choice.
+
+## Architecture
+
+Authenticated PLAY shell
+→ server-side selection context
+→ deterministic selection engine
+→ typed experience definition
+→ server-owned play session
+→ client interaction
+→ server validation
+→ idempotent SYSTEM progression
+→ result/Moment context
+→ next selection influenced by real history
+
+The client never authoritatively assigns XP, score, progression, or session outcome.
+
+## Experience families
+
+The engine supports:
+- Pulse — short skill loops;
+- Drift — compact exploration;
+- Forge — creation;
+- Duel — asynchronous challenges;
+- Quest — progression experiences;
 - World — selective 3D experiences.
 
-## Experimental Play Lab
-The first engine validation set contains six small experimental experiences:
+Families are an extensibility mechanism, not a menu that must be exposed to Players.
 
-1. Echo Trace — recreate a path revealed by a spectral signal; precision and memory.
-2. Signal Bloom — tune a moving signal until a hidden pattern resolves; timing and observation.
-3. Shadow Courier — place light gates so a moving shadow reaches its destination; spatial planning.
-4. Foldline — rotate a field to route energy through changing folds; pattern recognition.
-5. Gravity Thread — connect drifting nodes while the field slowly rotates; planning and adaptation.
-6. Drift Atlas — choose among changing routes where each choice alters what the next route can contain; exploration.
+## Current Play Lab
 
-These are prototype concepts for validating the engine contract, not the final 40-game catalogue.
+The repository currently validates the engine with:
+- Echo Trace
+- Signal Bloom
+- Shadow Courier
 
-## Game contract
-Every experience implements id, family, title, description, estimatedSeconds, dimensions, difficulty, requiredLevel, and launchPath.
-
-Runtime result includes status, score, durationMs, attemptId, signals, and momentCandidate.
-
-The client never decides authoritative XP directly.
-
-A completed experience emits a server-side progression event with an idempotency key based on playerId + gameId + attemptId.
+These are implementation prototypes, not a permanent catalogue. Additional experiences must be introduced only when they improve the product.
 
 ## Adaptive selection
-The selector uses SYSTEM level, SYSTEM dimensions, recently played game IDs, difficulty, and estimated session length.
 
-It must not claim to use machine learning before there is enough data to justify it.
+Initial selection is deterministic and explainable.
 
-Initial selection is deterministic and transparent.
+Signals include:
+- level gating;
+- dimension affinity;
+- recent-game avoidance/cooldown;
+- session-duration fit;
+- discovery/novelty;
+- preference signals when available.
 
-## Sharing
-Games can generate a Moment candidate such as a personal best, unusual path, rare discovery, high-precision run, created artifact, hidden route, or challenge result.
+Do not claim machine learning before the system has sufficient real data.
 
-The first implementation supports a shareable route to the result context without fabricating engagement.
+The selector must have deterministic tie-breaking.
+
+## Security and persistence
+
+Every run gets a server-owned session and challenge.
+
+The client submits only player actions needed for validation.
+
+The server:
+- owns the challenge seed/session;
+- validates the action log;
+- enforces expiry;
+- records the result;
+- awards progression through the existing SYSTEM RPC;
+- uses an idempotency key based on Player + experience + attempt.
+
+Direct client calls must not be able to invent arbitrary experience IDs/challenges that are outside the active experience registry.
+
+## Results and Moments
+
+A completed experience can produce a Moment candidate such as:
+- personal best;
+- precision;
+- discovery;
+- unusual route;
+- challenge result.
+
+The result route is private until the dedicated Moments/social-sharing module exposes it publicly.
+
+No fabricated engagement is permitted.
 
 ## Performance
-Small browser games should load without blocking the main shell, remain playable on mobile widths, avoid large third-party assets, prefer Canvas/SVG/DOM for small 2D experiences, and reserve WebGL/3D for experiences that actually benefit from spatial depth.
 
-## Safety
-No multiplayer chat is introduced in this module.
-No user-generated executable code is executed in the browser.
-All result validation and progression mutation boundaries remain server-controlled.
+- Mobile-first;
+- target 390x844 without horizontal overflow;
+- small 2D games use browser-native DOM/SVG/Canvas where appropriate;
+- lazy-load game experiences;
+- do not load the complete experience universe into the main shell;
+- 3D/WebGL is selective and isolated.
 
-## Definition of done for this module phase
-- PLAY is a real authenticated destination.
-- A deterministic selection engine exists.
-- Game definitions are typed and validated.
-- At least three experiments are fully playable end-to-end in-browser.
-- Game result state is recoverable through a direct URL.
-- SYSTEM progression integration uses idempotent result events.
-- Mobile and desktop layouts work.
-- Unit tests cover selection and result validation.
-- Production build and CI pass.
-- Browser QA covers launch, restart, completion, direct result route, refresh, back navigation, and mobile layout.
+## UX constraints
 
-The canonical 40-game inventory remains a separate product source-of-truth task when its authoritative definition is recovered.
+PLAY must feel like a door, not a dashboard.
+
+The Player should think:
+"PLAY" → "the SYSTEM chose something for me" → "I play" → "my SYSTEM changed."
+
+A Player may learn more through the experience, but discovery must remain progressive.
+
+## Definition of done
+
+Module 6 is complete only when:
+
+1. PLAY is an authenticated real destination.
+2. The visible PLAY surface contains one primary PLAY action and no catalogue grid.
+3. Selection is server-side, deterministic, explainable and Player-specific.
+4. Selection uses real SYSTEM state and recent history.
+5. At least three experiments are playable end-to-end.
+6. Game sessions and challenges are server-owned.
+7. Invalid or replayed results cannot award duplicate progression.
+8. Direct access without authentication is blocked.
+9. Result state is recoverable by direct URL for the owning Player.
+10. Mobile and desktop layouts work.
+11. Typecheck passes.
+12. Unit tests pass.
+13. Production build passes.
+14. Browser QA covers launch, play, completion, replay, refresh, back navigation, mobile viewport and direct route access.
+15. Documentation records the final decisions and verification evidence.
