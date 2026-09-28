@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getGameDefinition } from "@/lib/play/definitions";
+import { generatePlayChallenge } from "@/lib/play/session-actions";
 import { validateEchoRun, type EchoChallenge } from "@/lib/play/games/echo-trace";
 import { validateSignalBloomRun, type SignalBloomChallenge } from "@/lib/play/games/signal-bloom";
 import { validateShadowRun, type ShadowChallenge, type ShadowPoint } from "@/lib/play/games/shadow-courier";
@@ -11,17 +12,13 @@ import { validateAttemptId } from "@/lib/play/result-validation";
 function parseActionLog(gameId: string, raw: unknown) {
   if (!raw || typeof raw !== "object") throw new Error("Invalid PLAY action log.");
   const value = raw as Record<string, unknown>;
-  if (gameId === "echo-trace") {
-    return { moves: value.moves as unknown };
-  }
-  if (gameId === "signal-bloom") {
-    return { hitTimes: value.hitTimes as unknown };
-  }
-  return { path: value.path as unknown };
+  if (gameId === "echo-trace") return { moves: value.moves as unknown };
+  if (gameId === "signal-bloom") return { hitTimes: value.hitTimes as unknown };
+  if (gameId === "shadow-courier") return { path: value.path as unknown };
+  throw new Error("Unsupported PLAY experience.");
 }
 
 export async function startGameSessionAction(gameId: string) {
-  const { startPlaySession } = await import("@/lib/play/session-actions");
   return startPlaySession(gameId);
 }
 
@@ -34,7 +31,7 @@ export async function completePlaySessionAction(sessionId: string, rawActions: u
   const validSessionId = validateAttemptId(sessionId);
   const { data: session, error: sessionError } = await supabase
     .from("play_sessions")
-    .select("session_id, player_id, game_id, challenge, status, started_at, expires_at")
+    .select("session_id, player_id, game_id, seed, status, started_at, expires_at")
     .eq("session_id", validSessionId)
     .eq("player_id", user.id)
     .maybeSingle();
@@ -47,34 +44,22 @@ export async function completePlaySessionAction(sessionId: string, rawActions: u
   const game = getGameDefinition(session.game_id);
   if (!game) throw new Error("Unknown PLAY experience.");
 
+  const challenge = generatePlayChallenge(game.id, Number(session.seed));
   const actionLog = parseActionLog(session.game_id, rawActions);
+
   let result: { valid: boolean; score: number; summary: string; metadata: Record<string, unknown> };
+  if (session.game_id === "echo-trace") result = validateEchoRun(challenge as EchoChallenge, actionLog.moves as number[]);
+  else if (session.game_id === "signal-bloom") result = validateSignalBloomRun(challenge as SignalBloomChallenge, actionLog.hitTimes as number[]);
+  else result = validateShadowRun(challenge as ShadowChallenge, actionLog.path as ShadowPoint[]);
 
-  if (session.game_id === "echo-trace") {
-    result = validateEchoRun(session.challenge as unknown as EchoChallenge, actionLog.moves as number[]);
-  } else if (session.game_id === "signal-bloom") {
-    result = validateSignalBloomRun(session.challenge as unknown as SignalBloomChallenge, actionLog.hitTimes as number[]);
-  } else {
-    result = validateShadowRun(session.challenge as unknown as ShadowChallenge, actionLog.path as ShadowPoint[]);
-  }
-
-  if (!result.valid) {
-    return {
-      status: "failed",
-      sessionId: validSessionId,
-      score: result.score,
-      summary: result.summary,
-      metadata: result.metadata,
-    };
-  }
+  if (!result.valid) return { status: "failed", sessionId: validSessionId, score: result.score, summary: result.summary, metadata: result.metadata };
 
   const durationMs = Math.max(250, Math.min(20 * 60 * 1000, Date.now() - Date.parse(session.started_at)));
-  const signals =
-    session.game_id === "echo-trace"
-      ? { play: result.score, knowledge: Math.round(result.score / 2) }
-      : session.game_id === "signal-bloom"
-        ? { play: result.score, exploration: Math.round(result.score / 3) }
-        : { play: result.score, exploration: Math.round(result.score / 2), creation: Math.round(result.score / 4) };
+  const signals = session.game_id === "echo-trace"
+    ? { play: result.score, knowledge: Math.round(result.score / 2) }
+    : session.game_id === "signal-bloom"
+      ? { play: result.score, exploration: Math.round(result.score / 3) }
+      : { play: result.score, exploration: Math.round(result.score / 2), creation: Math.round(result.score / 4) };
 
   const { data, error } = await supabase.rpc("record_play_completion", {
     game_id_value: game.id,
@@ -83,25 +68,14 @@ export async function completePlaySessionAction(sessionId: string, rawActions: u
     score_value: result.score,
     duration_ms_value: durationMs,
     signals_value: signals,
-    moment_candidate_value: {
-      kind: "personal_best",
-      title: game.title + " complete",
-      summary: result.summary,
-    },
+    moment_candidate_value: { kind: "personal_best", title: game.title + " complete", summary: result.summary },
   });
-
   if (error) throw new Error("Unable to save PLAY result.");
 
-  await supabase.rpc("close_play_session", { session_id_value: validSessionId });
+  const { error: closeError } = await supabase.rpc("close_play_session", { session_id_value: validSessionId });
+  if (closeError) throw new Error("PLAY result saved, but the session could not be closed.");
 
-  return {
-    status: "recorded",
-    sessionId: validSessionId,
-    score: result.score,
-    summary: result.summary,
-    metadata: result.metadata,
-    persistence: data,
-  };
+  return { status: "recorded", sessionId: validSessionId, score: result.score, summary: result.summary, metadata: result.metadata, persistence: data };
 }
 
 export async function abandonPlaySessionAction(sessionId: string) {
