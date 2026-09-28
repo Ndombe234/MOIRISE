@@ -26,7 +26,15 @@ for select
 to authenticated
 using (player_id = (select auth.uid()));
 
-revoke insert, update, delete on public.play_attempts from authenticated, anon;
+revoke update, delete on public.play_attempts from authenticated, anon;
+grant insert on public.play_attempts to authenticated;
+drop policy if exists "play_attempts_insert_owner" on public.play_attempts;
+create policy "play_attempts_insert_owner"
+on public.play_attempts
+for insert
+to authenticated
+with check (player_id = (select auth.uid()));
+
 
 create or replace function public.record_play_completion(
   game_id_value text,
