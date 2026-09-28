@@ -532,6 +532,19 @@ export type Database = {
         }
         Returns: Json
       }
+      record_play_completion_internal: {
+        Args: {
+          attempt_id_value: string
+          duration_ms_value: number
+          game_id_value: string
+          moment_candidate_value?: Json
+          player_id_value: string
+          score_value: number
+          signals_value?: Json
+          status_value: string
+        }
+        Returns: Json
+      }
       record_system_progress_event: {
         Args: {
           dimension_key_value: string
