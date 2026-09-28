@@ -3,18 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getGameDefinition } from "@/lib/play/definitions";
 import { PlayGameHost } from "@/components/play/play-game-host";
-import { EchoTrace } from "@/components/play/echo-trace";
-import { SignalBloom } from "@/components/play/signal-bloom";
-import { ShadowCourier } from "@/components/play/shadow-courier";
-import type { GameDefinition } from "@/lib/play/types";
-
-type PlayControls = {
-  sessionId: string;
-  challenge: unknown;
-  complete: (actions: unknown) => void;
-  fail: (actions: unknown) => void;
-  abandon: () => void;
-};
+import "./play.css";
 
 type Params = Promise<{ gameId: string }>;
 
@@ -27,19 +16,6 @@ export default async function PlayGamePage({ params }: { params: Params }) {
   const definition = getGameDefinition(gameId);
   if (!definition) notFound();
 
-  const renderGame = (game: GameDefinition, controls: PlayControls) => {
-    switch (game.id) {
-      case "echo-trace":
-        return <EchoTrace definition={game} challenge={controls.challenge as import("@/lib/play/games/echo-trace").EchoChallenge} onComplete={controls.complete} />;
-      case "signal-bloom":
-        return <SignalBloom definition={game} challenge={controls.challenge as import("@/lib/play/games/signal-bloom").SignalBloomChallenge} onComplete={controls.complete} />;
-      case "shadow-courier":
-        return <ShadowCourier definition={game} challenge={controls.challenge as import("@/lib/play/games/shadow-courier").ShadowChallenge} onComplete={controls.complete} />;
-      default:
-        return <div className="game-board"><strong>Cette expérience n’est pas encore disponible.</strong></div>;
-    }
-  };
-
   return (
     <main className="play-main">
       <section className="play-shell">
@@ -51,9 +27,7 @@ export default async function PlayGamePage({ params }: { params: Params }) {
           </nav>
         </header>
 
-        <PlayGameHost definition={definition}>
-          {(controls) => renderGame(definition, controls)}
-        </PlayGameHost>
+        <PlayGameHost definition={definition} />
       </section>
     </main>
   );
