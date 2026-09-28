@@ -5,37 +5,51 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import "./morise-navigation.css";
 
+// Navigation principale : toujours visible. Le menu hamburger est réservé aux onglets secondaires.
 const primary = [
+  { href: "/system", label: "SYSTEM", icon: "◈" },
+  { href: "/player", label: "PLAYER", icon: "P" },
   { href: "/home", label: "WORLD", icon: "W" },
-  { href: "/communities", label: "ALLIES", icon: "◎" },
-  { href: "/social", label: "LINK", icon: "S" },
+  { href: "/social", label: "SOCIAL", icon: "S" },
   { href: "/play", label: "PLAY", icon: "▶" },
 ];
 
 const menuSections = [
   {
+    title: "SOCIAL",
+    items: [
+      { href: "/messages", label: "Messages", icon: "✉" },
+      { href: "/friends", label: "Friends", icon: "◎" },
+      { href: "/communities", label: "Groups", icon: "◉" },
+      { href: "/social?mode=following", label: "Following", icon: "↗" },
+      { href: "/events", label: "Alerts & Events", icon: "!" },
+    ],
+  },
+  {
+    title: "CREATOR",
+    items: [
+      { href: "/create", label: "Create", icon: "＋" },
+      { href: "/reels", label: "Reels", icon: "▷" },
+      { href: "/pages", label: "Pages", icon: "▣" },
+      { href: "/marketplace", label: "Marketplace", icon: "⌂" },
+    ],
+  },
+  {
     title: "PLAYER",
     items: [
       { href: "/player", label: "Profile", icon: "P" },
       { href: "/system/progression", label: "Progression", icon: "↗" },
+      { href: "/system/history", label: "History", icon: "◷" },
       { href: "/system/memories", label: "Memories", icon: "◇" },
       { href: "/activities", label: "Activity", icon: "◷" },
-    ],
-  },
-  {
-    title: "SOCIAL",
-    items: [
-      { href: "/social", label: "Moments", icon: "S" },
-      { href: "/social?mode=following", label: "Following", icon: "↗" },
-      { href: "/events", label: "Alerts & Events", icon: "!" },
+      { href: "/bookmarks", label: "Saved", icon: "▮" },
     ],
   },
   {
     title: "WORLD",
     items: [
       { href: "/discover", label: "Discover", icon: "✦" },
-      { href: "/create", label: "Create", icon: "＋" },
-      { href: "/communities", label: "Communities", icon: "◎" },
+      { href: "/communities", label: "Groups", icon: "◎" },
       { href: "/activities", label: "Activities", icon: "◇" },
       { href: "/events", label: "Events", icon: "◷" },
     ],
@@ -46,7 +60,6 @@ const menuSections = [
       { href: "/play", label: "Games", icon: "▶" },
       { href: "/play", label: "Solo", icon: "1" },
       { href: "/play", label: "Challenges", icon: "◆" },
-      { href: "/system/history", label: "History", icon: "◷" },
     ],
   },
   {
@@ -56,6 +69,14 @@ const menuSections = [
       { href: "/system/progression", label: "Progression", icon: "↗" },
       { href: "/system/history", label: "History", icon: "◷" },
       { href: "/system/memories", label: "Memories", icon: "◇" },
+    ],
+  },
+  {
+    title: "ACCOUNT",
+    items: [
+      { href: "/settings", label: "Settings & Privacy", icon: "⚙" },
+      { href: "/help", label: "Help & Support", icon: "?" },
+      { href: "/referral", label: "Invite & Referral", icon: "♥" },
     ],
   },
 ];
@@ -80,7 +101,7 @@ export function MoriseNavigation() {
   return (
     <>
       <header className="morise-topbar">
-        <Link className="morise-topbar-brand" href="/home" aria-label="MORISE accueil">
+        <Link className="morise-topbar-brand" href="/system" aria-label="MORISE SYSTEM">
           <span className="morise-topbar-mark" aria-hidden="true">◈</span>
           <span>MORISE</span>
         </Link>
@@ -91,10 +112,10 @@ export function MoriseNavigation() {
             type="button"
             className={`morise-topbar-action morise-menu-button${menuOpen ? " is-open" : ""}`}
             onClick={() => setMenuOpen((open) => !open)}
-            aria-label={menuOpen ? "Fermer le menu MORISE" : "Open MORISE menu"}
+            aria-label={menuOpen ? "Fermer le menu secondaire" : "Ouvrir le menu secondaire"}
             aria-expanded={menuOpen}
-            aria-controls="morise-main-menu"
-            title="Menu"
+            aria-controls="morise-secondary-menu"
+            title="Menu secondaire"
           >
             <span aria-hidden="true">☰</span>
           </button>
@@ -104,17 +125,18 @@ export function MoriseNavigation() {
       {menuOpen ? (
         <div className="morise-menu-layer" role="presentation">
           <button type="button" className="morise-menu-backdrop" aria-label="Fermer le menu" onClick={() => setMenuOpen(false)} />
-          <aside id="morise-main-menu" className="morise-menu-panel" aria-label="MORISE menu">
+          <aside id="morise-secondary-menu" className="morise-menu-panel" aria-label="Onglets secondaires MORISE">
             <div className="morise-menu-header">
               <div>
                 <span className="morise-menu-kicker">MORISE</span>
                 <h2>Menu</h2>
+                <small className="morise-menu-subtitle">Onglets secondaires</small>
               </div>
               <button type="button" className="morise-menu-close" onClick={() => setMenuOpen(false)} aria-label="Fermer le menu">×</button>
             </div>
             <div className="morise-menu-profile">
               <span className="morise-menu-avatar" aria-hidden="true">P</span>
-              <div><strong>Ton espace MORISE</strong><small>Accès rapide à toutes les fonctions</small></div>
+              <div><strong>Ton espace MORISE</strong><small>Les fonctions secondaires sont regroupées ici.</small></div>
             </div>
             <div className="morise-menu-grid">
               {menuSections.map((section) => (
@@ -131,6 +153,10 @@ export function MoriseNavigation() {
                 </section>
               ))}
             </div>
+            <div className="morise-menu-footer">
+              <Link href="/settings" className="morise-menu-footer-link">⚙ Paramètres</Link>
+              <Link href="/help" className="morise-menu-footer-link">? Aide</Link>
+            </div>
           </aside>
         </div>
       ) : null}
@@ -146,10 +172,6 @@ export function MoriseNavigation() {
               </Link>
             );
           })}
-          <button type="button" className={`morise-global-link morise-global-menu-link${menuOpen ? " is-active" : ""}`} onClick={() => setMenuOpen(true)} aria-label="Open MORISE menu">
-            <span className="morise-global-icon" aria-hidden="true">☰</span>
-            <span className="morise-global-label">MENU</span>
-          </button>
         </div>
       </nav>
     </>
@@ -160,7 +182,7 @@ export const worldLinks = [
   { href: "/discover", label: "Discover", icon: "✦" },
   { href: "/play", label: "Play", icon: "▶" },
   { href: "/create", label: "Create", icon: "＋" },
-  { href: "/communities", label: "Communities", icon: "◎" },
+  { href: "/communities", label: "Groups", icon: "◎" },
   { href: "/activities", label: "Activities", icon: "◇" },
   { href: "/events", label: "Events", icon: "◷" },
 ];
