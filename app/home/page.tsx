@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { MoriseNavigation, WorldQuickNav } from "@/components/morise-navigation";
 import "./home-world.css";
 
 const actions = [
@@ -21,11 +22,11 @@ export default async function HomeWorldPage() {
   return (
     <main className="world-main">
       <section className="world-shell" aria-labelledby="world-title">
+        <MoriseNavigation />
+        <WorldQuickNav />
         <header className="world-header">
           <Link className="world-brand" href="/home">MORISE</Link>
-          <nav aria-label="World navigation">
-            <Link href="/system">SYSTEM</Link>
-          </nav>
+          <nav aria-label="World navigation"><Link href="/system">SYSTEM</Link></nav>
         </header>
         <div className="world-intro">
           <div>
@@ -34,9 +35,7 @@ export default async function HomeWorldPage() {
             <p>One world. Many paths. Start with one action and let your Player evolve from what you actually do.</p>
           </div>
           <Link className="world-system-card" href="/system">
-            <span>SYSTEM</span>
-            <strong>Enter your evolution</strong>
-            <small>View Player progression →</small>
+            <span>SYSTEM</span><strong>Enter your evolution</strong><small>View Player progression →</small>
           </Link>
         </div>
         <nav className="world-actions" aria-label="Primary world actions">
@@ -49,12 +48,7 @@ export default async function HomeWorldPage() {
           ))}
         </nav>
         <section className="world-note" aria-label="Solo first and social">
-          <span className="world-note-dot" />
-          <div>
-            <strong>Solo-first</strong>
-            <p>You can explore MORISE alone. Connections appear naturally as your actions create opportunities.</p>
-            <Link className="world-social-link" href="/social">Open Social →</Link>
-          </div>
+          <span className="world-note-dot" /><div><strong>Solo-first</strong><p>You can explore MORISE alone. Connections appear naturally as your actions create opportunities.</p><Link className="world-social-link" href="/social">Open Social →</Link></div>
         </section>
       </section>
     </main>
