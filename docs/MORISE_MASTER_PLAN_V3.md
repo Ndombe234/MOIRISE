@@ -678,6 +678,212 @@ The architecture is considered implemented only when MORISE AI can:
 
 ---
 
+## MORISE ZERO-API / ON-DEVICE AI — BROWSER-NATIVE EXECUTION
+
+MORISE must support an execution path for eligible AI capabilities that requires **no inference API, no mandatory external AI server and no permanent local API**. This capability is complementary to the Creative Gateway and to future local/self-hosted execution. It is an execution mode, not a new product module or navigation surface.
+
+### Core principle
+
+When the PLAYER's device and browser support the required capabilities, MORISE may execute an eligible model or inference workload directly on the PLAYER device.
+
+The conceptual path is:
+
+`PLAYER → MORISE SYSTEM → CAPABILITY CHECK → ON-DEVICE RUNTIME → LOCAL MODEL / INFERENCE → RESULT → MORISE SYSTEM`
+
+The preferred browser-native execution layers are standards-compatible mechanisms such as **WebGPU** and, where appropriate, WebAssembly/WASM-based execution. MORISE must not hard-code a single browser runtime or a single model format.
+
+### No inference API requirement
+
+For workloads supported by the on-device runtime:
+
+- the inference computation happens on the PLAYER device;
+- MORISE does not need an inference API endpoint;
+- no AI-provider API key is required;
+- no localhost or LAN service is required;
+- the core feature must not fail merely because no remote AI provider is configured;
+- model files may be downloaded or updated when needed, but downloading a model is not treated as an inference API dependency;
+- cached models may be reused locally according to browser storage, permission and device constraints.
+
+This distinction is mandatory:
+
+**MODEL DISTRIBUTION ≠ REMOTE INFERENCE API**
+
+A model may be obtained from an approved distribution channel and then executed locally without sending each inference request to that provider.
+
+### Capability detection
+
+Before selecting the on-device path, MORISE evaluates only the technical information required to decide whether the workload is viable, for example:
+
+- supported browser/runtime capabilities;
+- WebGPU availability;
+- WASM availability;
+- compatible model/runtime format;
+- approximate device memory constraints exposed by the platform;
+- available storage for model caching;
+- current execution/resource policy;
+- feature-specific minimum requirements.
+
+The result must be an explicit capability state such as:
+
+`ON_DEVICE_READY`
+`ON_DEVICE_LIMITED`
+`ON_DEVICE_UNAVAILABLE`
+`MODEL_NOT_CACHED`
+`MODEL_DOWNLOAD_REQUIRED`
+`MODEL_LOAD_FAILED`
+`RUNTIME_ERROR`
+
+MORISE must not assume that a capable desktop, tablet or phone can run every model. The decision is workload-specific.
+
+### Adaptive execution selection
+
+The shared execution policy is:
+
+`REQUEST → CAPABILITY CHECK → ON-DEVICE ELIGIBLE?`
+
+If eligible:
+
+`ON-DEVICE → EXECUTE → VALIDATE → RESULT`
+
+Otherwise MORISE may move through the existing controlled alternatives:
+
+`ON-DEVICE → LOCAL / SELF-HOSTED → VALIDATED SERVER FALLBACK → OPTIONAL EXTERNAL PROVIDER`
+
+The fallback path must be explicit and observable. MORISE must never simulate successful AI work when no execution actually occurred.
+
+### Eligible capability families
+
+The on-device layer may progressively support lightweight or appropriately optimized capabilities such as:
+
+- text generation or transformation;
+- translation;
+- language detection;
+- classification and moderation assistance;
+- summarization;
+- embeddings or semantic utilities;
+- speech recognition;
+- text-to-speech;
+- selected vision tasks;
+- other validated inference workloads that fit the device/resource budget.
+
+Heavy generation workloads such as high-quality image, music or video generation are **not automatically assumed to be browser-capable**. They remain compatible with the existing Creative Gateway and may use local/self-hosted or optional remote execution when the on-device path is not practical.
+
+### Local model lifecycle
+
+On-device models are managed as versioned assets, not as hidden dependencies.
+
+Each model/runtime record should retain:
+
+- model identifier;
+- model version;
+- runtime version;
+- format;
+- source/distribution reference;
+- license/status;
+- supported capabilities;
+- minimum resource expectations;
+- integrity/version metadata;
+- cache status;
+- compatibility status;
+- provenance.
+
+MORISE may use lazy download and local caching so that a model is fetched only when a PLAYER actually needs the corresponding capability. Cache invalidation and upgrades must be deterministic.
+
+### Privacy boundary
+
+For eligible on-device tasks, the preferred path is:
+
+`PLAYER DATA → LOCAL INFERENCE → LOCAL RESULT`
+
+MORISE must not send raw PLAYER content to a remote inference provider merely because an on-device model exists but is still loading or because a provider happens to be available.
+
+If a remote fallback is necessary, the applicable privacy, permission, rights and provenance rules must be evaluated first. The PLAYER must not be misled about where material data is processed.
+
+Where technically possible, sensitive or private content should be processed on-device by default when the PLAYER has enabled the corresponding capability.
+
+### Resource and UX safeguards
+
+On-device execution must be bounded by device-aware policies covering:
+
+- memory usage;
+- execution time;
+- thermal/battery considerations;
+- concurrency;
+- model download size;
+- storage limits;
+- foreground/background behavior;
+- cancellation;
+- retry limits.
+
+The PLAYER must receive a coherent MORISE experience even when the device cannot execute the requested workload. The UI should communicate a real state such as **preparing locally**, **device not compatible**, **using another authorized execution path** or **temporarily unavailable**, rather than exposing a technical blank screen.
+
+### Offline and degraded operation
+
+Where the browser/runtime and model cache allow it, an on-device capability may continue working without network access after its required model assets have been cached.
+
+Offline operation is capability-specific and must never be promised unless the runtime has actually been validated for that capability.
+
+When the local model is unavailable, MORISE must preserve the user's work, show the actual state, and offer the next authorized path without inventing a result.
+
+### Security
+
+On-device model files are not treated as secrets. API credentials, privileged configuration, administrator secrets and external-provider tokens must never be embedded in frontend code or exposed through publicly readable client configuration.
+
+The browser layer must use:
+
+- signed/versioned application assets where applicable;
+- integrity/version checks for model assets;
+- strict capability and permission checks;
+- isolation between untrusted generated content and privileged MORISE operations;
+- server-side authorization for any action that changes persistent account, economy, moderation or owner/admin state.
+
+Executing a model locally does not grant the model or the browser permission to bypass MORISE authorization boundaries.
+
+### AI learning and on-device signals
+
+On-device inference results can generate permitted task-experience observations, but **local inference success is not automatically treated as validated learning**.
+
+A learning candidate follows the existing MORISE loop:
+
+`TASK → ON-DEVICE EXECUTION → RESULT → OBSERVATION → LEARNING CANDIDATE → VALIDATION / BENCHMARK → RETAIN / IMPROVE / REJECT`
+
+Only the minimum permitted metadata should leave the device. Raw private prompts, files, audio or other content must not be uploaded merely to improve MORISE unless the PLAYER has explicitly authorized the applicable flow.
+
+### Relationship with Creative Gateway
+
+The Creative Gateway remains the common orchestration boundary for IMAGE, MUSIC and VIDEO engines. When a creative workload later becomes technically viable on-device, the Gateway may select an on-device execution provider without changing the PLAYER-facing contract.
+
+The architecture therefore becomes:
+
+`PLAYER / SYSTEM INTENT → MORISE ORCHESTRATION → CAPABILITY SELECTION → EXECUTION MODE`
+
+with execution modes that may include:
+
+`BROWSER / ON-DEVICE → LOCAL / SELF-HOSTED → OPTIONAL EXTERNAL PROVIDER`
+
+This allows MORISE to add a future powerful local computer without making that computer a mandatory dependency, while also allowing capable PLAYER devices to contribute compute for eligible lightweight tasks.
+
+### No new navigation surface
+
+Zero-API / On-Device AI is an internal execution capability. It must not create a permanent PLAYER-facing tab, settings maze or separate AI product. The SYSTEM chooses the execution path contextually and exposes only the information required for trust, consent, status and control.
+
+### Acceptance criteria
+
+This capability is considered architecturally ready when MORISE can:
+
+1. detect device/runtime capability;
+2. distinguish on-device inference from remote inference;
+3. select an eligible local model/runtime;
+4. execute a validated workload locally when supported;
+5. cache and version models safely;
+6. fail gracefully without blank screens or fake success;
+7. fall back to another authorized execution path when necessary;
+8. preserve privacy and provenance boundaries;
+9. keep external API keys optional;
+10. reuse the same orchestration contracts as future local/self-hosted and Creative Gateway execution.
+
+---
+
 ## MORISE CREATIVE MEDIA ENGINES — LOCAL-FIRST + PROVIDER GATEWAY
 
 MORISE must treat **image, music and video generation as three distinct but coordinated creative media capabilities** that are structurally prepared in the architecture from the beginning.
