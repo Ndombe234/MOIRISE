@@ -44,14 +44,16 @@ export function WorldQuickNav() {
   </nav>;
 }
 
-export function SocialQuickNav({ mode }: { mode: "world" | "following" }) {
+type SocialMode = "world" | "following" | "link" | "guilds";
+
+export function SocialQuickNav({ mode }: { mode: SocialMode }) {
   return <nav className="morise-context-nav morise-social-context" aria-label="Social navigation">
     <span className="morise-context-title">SOCIAL</span>
     <div className="morise-context-links morise-segmented">
       <Link className={mode === "world" ? "is-active" : ""} href="/social">World</Link>
       <Link className={mode === "following" ? "is-active" : ""} href="/social?mode=following">Following</Link>
-      <Link className={mode === "world" ? "" : ""} href="/link">Link</Link>
-      <Link href="/guilds">Guilds</Link>
+      <Link className={mode === "link" ? "is-active" : ""} href="/link">Link</Link>
+      <Link className={mode === "guilds" ? "is-active" : ""} href="/guilds">Guilds</Link>
     </div>
   </nav>;
 }
