@@ -492,6 +492,140 @@ The canonical capability registry may expose stable contracts such as:
 Each capability contract must declare supported inputs, outputs, permissions, resource requirements, validation requirements, version, expected failure modes and provenance requirements. MORISE AI must respect these contracts and cannot bypass their permissions.
 
 
+## MORISE AI INITIALIZATION — CODED BRAIN BEFORE LOCAL COMPUTER
+
+MORISE must not wait for the future owner-controlled computer before its AI architecture becomes operational.
+
+The first development phase must implement the **MORISE-native AI control plane** in code before a dedicated local GPU computer is available. This control plane is the software foundation of the MORISE SYSTEM and must remain useful even when no external AI provider and no local model server are connected.
+
+### Initial MORISE intelligence must be coded first
+
+Before the local computer is available, MORISE must already implement, as authorized and testable software:
+
+- the AI orchestrator and task router;
+- the capability registry and capability contracts;
+- tool discovery and tool-selection logic;
+- workflow/state-machine orchestration;
+- permissions and security boundaries;
+- context handling;
+- memory interfaces and provenance;
+- task-experience observation and learning-candidate recording;
+- validation and benchmarking interfaces;
+- failure analysis and retry/cancellation rules;
+- provider/engine abstraction interfaces;
+- Browser AI capability detection;
+- fallback and unavailable-state handling;
+- OWNER / ADMIN controls over AI configuration;
+- logging, audit and correlation identifiers;
+- feature flags for future execution providers.
+
+This is the **coded MORISE brain/control system**. It is distinct from any single model provider.
+
+### Model/provider separation
+
+MORISE AI must not be defined as:
+
+`MORISE AI = ONE EXTERNAL MODEL / ONE API / ONE COMPUTER`
+
+Instead:
+
+`MORISE AI = CODED MORISE CONTROL PLANE + AUTHORIZED MODELS / TOOLS / MEMORY / VALIDATION / EXECUTION PROVIDERS`
+
+The control plane determines what should happen, which capability is required, which execution path is authorized, how the result is evaluated and what may be retained.
+
+### No Cloudflare Workers AI activation at this stage
+
+**Cloudflare Workers AI is intentionally NOT part of the active MORISE AI execution path at this stage.**
+
+The architecture may contain a future provider adapter/interface for Cloudflare Workers AI, but:
+
+- no Cloudflare Workers AI dependency is required for the core application;
+- no Cloudflare AI API key is required;
+- no Cloudflare AI model must be configured now;
+- no product feature may assume Workers AI is available;
+- disabling or removing the future adapter must not break MORISE;
+- current development must not be blocked by learning how to integrate Workers AI.
+
+Cloudflare Workers AI remains a **reserved optional provider** that may be evaluated later by the OWNER when there is a concrete technical or economic reason to activate it.
+
+### Initial execution policy before the local computer exists
+
+Before the future local computer is available, the execution priority is:
+
+`MORISE CODED CONTROL PLANE → BROWSER / ON-DEVICE CAPABILITIES WHEN VALIDATED → OTHER AUTHORIZED EXECUTION PATHS ONLY WHEN EXPLICITLY CONFIGURED`
+
+The system must not fabricate an AI result when no execution provider is available.
+
+A capability may instead enter a real state such as:
+
+`READY`
+`BROWSER_READY`
+`LOCAL_COMPUTER_PENDING`
+`PROVIDER_NOT_CONFIGURED`
+`UNAVAILABLE`
+`FAILED`
+
+### Future local computer integration
+
+The future owner-controlled computer is an **execution expansion**, not the point at which MORISE becomes intelligent.
+
+When the computer becomes available, MORISE should connect it through the existing provider/tool abstraction:
+
+`MORISE AI CONTROL PLANE → SECURE LOCAL EXECUTION INTERFACE → LOCAL MODELS / CREATIVE TOOLS → RESULT → VALIDATION → MORISE`
+
+The integration must reuse the existing contracts instead of introducing a second AI architecture.
+
+Potential future local workloads include:
+
+- larger language models;
+- image generation;
+- music/audio generation;
+- video generation;
+- speech models;
+- game/scene generation;
+- simulation;
+- evaluation;
+- batch creative work.
+
+### Provider activation lifecycle
+
+Every optional AI provider follows:
+
+`DISCOVER → EVALUATE → CONFIGURE → SECURE → TEST → ENABLE → MONITOR → REVIEW → DISABLE / REPLACE`
+
+A provider is never considered part of core MORISE merely because an adapter exists.
+
+The OWNER must be able to keep a provider disabled without affecting unrelated capabilities.
+
+### No premature dependency
+
+Until a future provider is intentionally activated, MORISE development must use:
+
+- coded MORISE orchestration;
+- deterministic tests;
+- local/browser capabilities that are actually available;
+- mock/test execution contracts only where appropriate for development;
+- explicit unavailable states for capabilities requiring future hardware.
+
+Development must not be blocked by the absence of the final local computer.
+
+### Acceptance criteria
+
+This phase is considered complete when:
+
+1. MORISE's control plane can receive an authorized task;
+2. it identifies the required capability;
+3. it discovers the available execution paths;
+4. it selects only an authorized path;
+5. it executes or reports a real unavailable state;
+6. it validates the result;
+7. it records the permitted task-experience evidence;
+8. it can operate without Cloudflare Workers AI;
+9. it can later attach a local computer without redesigning the control plane;
+10. provider activation remains optional and OWNER-controlled.
+
+---
+
 ## MANDATORY TOOLING — CAPABILITY → TOOL → EXECUTION → VALIDATION
 
 A MORISE capability must never be described as though MORISE AI can perform it without concrete implementation mechanisms. Every capability that creates, transforms, executes, tests, publishes or learns must follow:
