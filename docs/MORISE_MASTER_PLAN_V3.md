@@ -18,6 +18,138 @@ MORISE may contain a very large number of internal capabilities, mechanics and e
 
 The SYSTEM must reveal capabilities progressively and contextually when they become useful or meaningful. World Memory, MORISE DNA, Convergence, Emergent Missions, Living Objects and Evolution Engine are internal/cross-module capabilities, not additional navigation tabs.
 
+# MORISE FIRST CONTACT — 2-MINUTE DISCOVERY EXPERIENCE
+
+**MORISE First Contact** is the canonical first experience for a new PLAYER. It is an internal/cross-module experience, not a new navigation module or permanent tab. Its purpose is not to explain MORISE's architecture. Its purpose is to **make the PLAYER experience MORISE** during the first approximately two minutes.
+
+The first session must prioritize curiosity, play, suspense, discovery and immediate feedback over tutorials, feature lists or long explanations. The PLAYER should leave the first experience with a concrete feeling that **their actions matter, MORISE reacts and the next experience can be different because of what just happened**.
+
+### Core design principle
+
+\`PLAYER ACTION → CONSEQUENCE → DISCOVERY → NEW POSSIBILITY → PLAYER CHOICE → SYSTEM REACTION\`
+
+The experience may intentionally hide part of the rules and reveal them progressively. This is a game-design suspense mechanism, not a claim of hypnosis and not a manipulative engagement system.
+
+### Target duration
+
+Target duration is **approximately 120 seconds**, with flexible timing so that the experience can end naturally when the PLAYER reaches the meaningful discovery rather than stopping arbitrarily at exactly two minutes.
+
+The experience must be:
+
+- immediately interactive;
+- understandable without a long tutorial;
+- playable on supported mobile/web targets;
+- safe and reversible;
+- capable of producing a meaningful first PLAYER signal;
+- capable of demonstrating that MORISE can react to PLAYER behavior;
+- short enough that restarting/trying another variation is attractive.
+
+### First Contact flow
+
+**Phase 1 — SYSTEM invitation (approximately 0:00–0:15)**
+
+MORISE opens with a minimal SYSTEM prompt such as:
+
+> **SYSTEM**
+>
+> \`Tu as 120 secondes.\`
+>
+> \`Je peux te donner une règle.\`
+>
+> **A — Obéis**  
+> **B — Triche**  
+> **C — Trouve une troisième solution**
+
+The wording, choices and visual presentation may vary between validated experiences. The important invariant is that the PLAYER makes an immediate meaningful choice before receiving a long explanation.
+
+**Phase 2 — Living micro-world (approximately 0:15–1:00)**
+
+MORISE presents a small interactive world/experiment containing a simple objective, a few objects/actors and at least one rule whose deeper consequence is not immediately obvious.
+
+The objective may be intentionally simple, for example:
+
+> \`OBJECTIF : ouvre la porte.\`
+
+The PLAYER can interact, experiment and attempt non-obvious approaches. The system must reward valid experimentation with observable consequences rather than silently rejecting unexpected actions whenever the environment can safely support them.
+
+**Phase 3 — Reaction and anomaly (approximately 0:40–1:20)**
+
+MORISE observes the PLAYER's permitted actions in real time. An unexpected but valid action may trigger an **ANOMALY**, rule change, world reaction, character response, altered objective or new possibility.
+
+Example:
+
+> \`ANOMALIE DÉTECTÉE\`
+
+The experience should create a genuine question in the PLAYER's mind: **what is the system going to do next?**
+
+**Phase 4 — Adaptive challenge (approximately 1:00–1:40)**
+
+MORISE may alter the objective, rule set, pacing or available options according to what the PLAYER actually did. Exploration, speed, experimentation and unconventional solutions can lead to different variations.
+
+The system must not use sensitive traits or hidden psychological profiling to determine the variation. Personalization must rely on explicit choices and permitted, non-sensitive gameplay signals.
+
+**Phase 5 — Reveal and continuation hook (approximately 1:40–2:00)**
+
+The SYSTEM reveals a meaningful interpretation of the experience without over-explaining the internal architecture. For example:
+
+> **FIRST CONTACT TERMINÉ**
+>
+> \`Tu pensais jouer à mon expérience.\`
+>
+> \`En réalité, j'observais comment tu cherchais une solution.\`
+
+It may then present a temporary, non-sensitive first-session descriptor such as \`EXPLORATEUR\`, \`STRATÈGE\`, \`EXPÉRIMENTATEUR\`, \`CHAOS\` or \`IMPRÉVISIBLE\`. These are session signals, not permanent personality labels.
+
+The final message may be:
+
+> **SYSTEM**
+>
+> \`J'ai découvert comment tu joues.\`
+>
+> \`La prochaine expérience pourra être différente.\`
+
+The PLAYER then receives a contextual next experience or choice rather than a generic feature tour.
+
+### Procedural variation
+
+First Contact must not become one fixed script forever. MORISE may combine validated micro-world templates, rules, objectives, objects, characters, pacing, anomalies and endings to create multiple first-session variants.
+
+When the mature **MORISE Creation Tools + Creation Runtime** are available, MORISE AI may generate or assemble a first-contact micro-experience within the approved runtime rather than relying only on a fixed catalogue.
+
+The architecture must preserve a fast first interaction. Generation must not introduce unacceptable startup latency; a validated prebuilt fallback must remain available.
+
+### Learning from First Contact
+
+First Contact is also a controlled first experiment for the MORISE AI task-experience learning architecture.
+
+The system may record permitted, privacy-preserving signals such as:
+
+- explicit initial choice;
+- meaningful interaction sequence;
+- successful/failed approaches;
+- unusual but valid solutions;
+- abandoned actions;
+- explicit feedback;
+- completion/exit point;
+- which variation was shown;
+- which system responses were accepted, ignored or rejected.
+
+These signals may inform **PLAYER adaptation** and, after validation, MORISE-specific learning experiments. They must not directly rewrite the production AI.
+
+### Design and safety constraints
+
+First Contact must never require private-message exposure, sensitive-trait inference, manipulative pressure, irreversible actions or hidden consequential decisions.
+
+No failure in the first experience should punish the PLAYER with permanent loss, social exclusion or account-level disadvantage.
+
+The experience should generate **curiosity without coercion**. The PLAYER can leave, restart or skip it where appropriate.
+
+### No new navigation tab
+
+MORISE First Contact is a **first-session experience layer**, not a permanent product section. Its mechanics are orchestrated through the existing SYSTEM/PLAY/PLAYER/creation architecture.
+
+---
+
 ## MORISE-ONLY AI MISSION — NON-NEGOTIABLE
 
 **MORISE AI is a coded, MORISE-native AI system, not a simple API, wrapper, chatbot shell or recommendation layer.** It is built as part of the MORISE software architecture and exists only to operate, assist, understand, personalize and evolve within MORISE. Its role and purpose are strictly limited to MORISE.
@@ -662,6 +794,8 @@ Missions From Reality extends this existing mission system. MORISE AI may transf
 
 One elegant PLAY entry instead of a confusing catalogue. Preserve the existing game interface even though the actual game is not yet a finished programmed game. AI collects permitted signals for future personalized game discovery.
 
+MORISE First Contact is the canonical first-session experience layer and must be treated as part of the end-to-end PLAYER experience. Module 6 QA must verify the First Contact entry path where implemented in the current build: immediate interaction, suspense/reaction loop, safe exit/restart behavior, mobile usability, loading/error/empty states and the absence of blank screens. Future Creation Runtime-generated variations may evolve later without changing the canonical first-contact contract.
+
 Living Objects are not required to block Module 6 QA. Existing PLAY/session validation remains the current gate. Future games may originate from Living Objects in Module 8. The PLAY architecture must remain format-agnostic so it can host **2D and 3D games**, including justified hybrid experiences, produced by the later game pipeline. Future validated game discoveries, experiments and solutions may contribute to World Memory through the established validation pipeline, but no new World Memory UI is required for Module 6 completion.
 
 QA gate: SYSTEM/PLAYER/WORLD/SOCIAL/PLAY visibility; WORLD subcommands; SOCIAL modes; authenticated PLAY; session lifecycle; valid/invalid results; tamper rejection; duplicate protection; progression; mobile; loading/error/empty states; no blank screens; production smoke test.
@@ -866,7 +1000,7 @@ A module is only `DONE` after code, UX, mobile, security and production validati
 
 ## Documentation rule
 
-This file is the authoritative plan for modules, AI mechanics, adaptive social behavior, adaptive game discovery/assignment, 2D/3D game creation and runtime architecture, MORISE Creation Runtime, MORISE Creation Tools, MORISE World Agents, translation, Living Objects, Evolution Engine/Fun & Surprise, MORISE DNA, Convergence, Missions From Reality, World Memory and the MORISE Collective Intelligence Engine. These capabilities are cross-module SYSTEM mechanics unless a module explicitly owns their implementation. They must not be implemented as duplicate systems or permanent navigation tabs.
+This file is the authoritative plan for modules, AI mechanics, the MORISE First Contact experience, adaptive social behavior, adaptive game discovery/assignment, 2D/3D game creation and runtime architecture, MORISE Creation Runtime, MORISE Creation Tools, MORISE World Agents, translation, Living Objects, Evolution Engine/Fun & Surprise, MORISE DNA, Convergence, Missions From Reality, World Memory and the MORISE Collective Intelligence Engine. These capabilities are cross-module SYSTEM mechanics unless a module explicitly owns their implementation. They must not be implemented as duplicate systems or permanent navigation tabs.
 
 MORISE AI is a **coded, MORISE-native runtime system**. External models/APIs may assist implementation or provide optional auxiliary capabilities, but no external API is itself MORISE AI. The AI development process must progressively implement the native mechanisms that allow MORISE AI to operate, learn from permitted signals, evaluate outcomes and improve through controlled MORISE AI Lab experiments.
 
