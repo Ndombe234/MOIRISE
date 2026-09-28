@@ -166,7 +166,7 @@ The AI used to build MORISE is expected to progressively **code the mechanisms t
 
 This does **not** mean the development AI is silently granted unrestricted runtime control over MORISE. Development-time coding, testing and architecture changes remain subject to the normal repository, security, review, validation and deployment controls. The resulting MORISE AI is the runtime system embedded in MORISE.
 
-MORISE AI must progressively contain, as native software components, its own MORISE-specific orchestration, memory/context handling, learning/feedback loops, capability discovery, evaluation/benchmarking, specialist-mechanic coordination and controlled self-improvement mechanisms.
+MORISE AI must progressively contain, as native software components, its own MORISE-specific orchestration, capability registry/contract discovery, memory/context handling, learning/feedback loops, evaluation/benchmarking, specialist-mechanic coordination and controlled self-improvement mechanisms.
 
 The AI may improve its own MORISE-specific mechanisms, algorithms, models, prompts, ranking strategies and supporting code inside the MORISE AI Lab when the required infrastructure is available. This self-improvement exists solely to make MORISE better. It must not acquire a product mission outside MORISE or unrestricted authority over external systems, unrelated applications, arbitrary internet services, user devices or financial accounts.
 
@@ -186,9 +186,137 @@ The evolution loop can include code refactoring, recommendation experiments, tra
 
 `PLAYER / WORLD signals → specialist mechanics → SYSTEM Orchestrator → contextual recommendation/proposal/action → feedback → controlled learning`
 
-Specialist mechanics include conversation/reasoning, memory/context, personalization, MORISE DNA, social/relationship intelligence, community/GUILD intelligence, game discovery, game creation, MORISE Creation Runtime, MORISE World Agents, translation, safety/moderation, Convergence, Emergent Missions, World Memory, the MORISE Collective Intelligence Engine and economy/reward analysis.
+Specialist mechanics include conversation/reasoning, memory/context, personalization, MORISE DNA, social/relationship intelligence, community/GUILD intelligence, game discovery, game creation, creative/media intelligence, **MUSIC / AUDIO**, MORISE Creation Runtime, MORISE World Agents, translation, safety/moderation, Convergence, Emergent Missions, World Memory, the MORISE Collective Intelligence Engine and economy/reward analysis.
 
 MORISE AI is the **orchestrator**, not a replacement for specialist mechanics. A single permitted action may update several relevant internal systems at once while preserving their distinct purposes.
+
+## MORISE AI CAPABILITY ORCHESTRATION — PREPROGRAMMED CAPABILITIES + LEARNING
+
+MORISE AI is the intelligent **orchestrator** of MORISE capabilities, not a magical unrestricted system that must reinvent every mechanism from zero. MORISE provides a registry of already-programmed, validated capability interfaces — tools, runtimes, engines and services — that MORISE AI can discover, select, sequence, parameterize, combine, test and improve.
+
+The PLAYER never needs to select internal capabilities one by one. The visible interaction remains simple while MORISE AI determines which internal capabilities are appropriate for the current permitted objective and context.
+
+### Capability registry
+
+The canonical capability registry may expose stable contracts such as:
+
+- **GAME_2D**
+- **GAME_3D**
+- **CREATION_RUNTIME**
+- **CREATION_TOOLS**
+- **SCENE**
+- **WORLD**
+- **CHARACTER**
+- **PHYSICS**
+- **MUSIC / AUDIO**
+- **VISUAL_CREATION**
+- **STORY / NARRATIVE**
+- **MISSION**
+- **LIVING_OBJECT**
+- **CONVERGENCE**
+- **WORLD_MEMORY**
+- **WORLD_AGENTS**
+- **SOCIAL / COLLECTIVE**
+- **TRANSLATION**
+- **EVALUATION / TESTING**
+
+Each capability contract must declare supported inputs, outputs, permissions, resource requirements, validation requirements, version, expected failure modes and provenance requirements. MORISE AI must respect these contracts and cannot bypass their permissions.
+
+### Orchestration learning
+
+MORISE AI learns primarily how to use MORISE's available capabilities more effectively over time.
+
+Core loop:
+
+`INTENT → PLAN → CAPABILITY SELECTION → PARAMETERIZATION → EXECUTION → OBSERVATION → RESULT → ERROR / SUCCESS ANALYSIS → LESSON CANDIDATE → BENCHMARK → RETAIN / REVISE / REJECT`
+
+The learning target is the **orchestration strategy**: which capability to use, in which order, with which parameters, under which conditions, how to test it and how to recover from failure.
+
+This extends the existing task-experience learning architecture. Validated lessons improve future strategy without directly rewriting production behavior.
+
+### Cross-domain capability discovery
+
+MORISE AI may learn useful mechanics from many creative and interactive domains without turning those domains into separate product sections. Music, cinema, visual art, sports, education, science, puzzles, performance, storytelling, simulation, cooking, design and other domains can provide **sources of mechanics** that MORISE translates into MORISE-native experiences when technically, legally and contextually appropriate.
+
+A domain is therefore an internal source of capabilities, not a navigation category.
+
+### MORISE MUSIC / AUDIO — SYSTEM CAPABILITY
+
+**Music / Audio is a SYSTEM capability, not a dedicated navigation button.**
+
+MORISE AI may orchestrate audio capabilities for:
+
+- adaptive soundtracks for 2D/3D experiences;
+- interactive music whose structure responds to PLAYER actions;
+- collaborative compositions produced from multiple permitted contributions;
+- sound identities for Living Objects, communities, events or experiences;
+- music-driven game and world mechanics;
+- emergent musical experiments;
+- community listening experiences;
+- audio used as a creative input for games, stories, puzzles and other MORISE experiences;
+- validated music creations that may later be prepared for external distribution.
+
+Example:
+
+`PLAYER ACTION → MUSIC CHANGE → WORLD / GAME CHANGE → PLAYER RESPONSE → EXPERIENCE LEARNING`
+
+Collective example:
+
+`COLLECTIVE CONTRIBUTIONS → MORISE AI ARRANGEMENT → VALIDATION → COMMUNITY LISTENING → WORLD MEMORY / LIVING OBJECT`
+
+The PLAYER does not need to know which internal music pipeline is active. MORISE AI decides when music is useful and how it interacts with other capabilities.
+
+### External music distribution
+
+MORISE may optionally prepare eligible music works for external distribution through an appropriate distributor. MORISE must not assume direct publishing access to every streaming platform.
+
+Before external distribution, the system must support, as applicable:
+
+- creator and contributor attribution;
+- rights and permission checks;
+- AI-generation / AI-assistance provenance;
+- version and source lineage;
+- artwork and metadata preparation;
+- explicit authorization by relevant rights holders;
+- export in the required technical format;
+- distribution status tracking.
+
+External publication is never automatic merely because a track is popular inside MORISE. Required rights and explicit publication authorization must be satisfied first.
+
+MORISE must not generate artificial streams, manipulate platform metrics or publish unauthorized imitations of real artists' voices or identities.
+
+### Capability composition and Creation Runtime
+
+When no suitable environment exists, MORISE AI may use **Creation Tools + Creation Runtime** to assemble the required isolated environment, generate/configure code, scenes, assets and rules, build, execute, test, diagnose and correct the experience before exposure to the PLAYER.
+
+The same architecture applies to multimedia experiences. For example:
+
+`GAME_3D + WORLD + MUSIC / AUDIO + PHYSICS + EVALUATION`
+
+can become one coherent experience without creating five new PLAYER-facing buttons.
+
+### Emergent Experience relationship
+
+The MORISE Emergent Experience Engine can use the capability registry to compose validated mechanisms into experiences that did not exist as predefined items:
+
+`VALIDATED CAPABILITIES → HYPOTHESIS → COMPOSITION → BUILD / ASSEMBLE → TEST → PLAYER EXPERIENCE → OBSERVATION → LEARNING`
+
+This keeps new ideas inside MORISE's existing architecture instead of creating a new module for every innovation.
+
+### Orchestration acceptance criteria
+
+The architecture is considered implemented only when MORISE AI can:
+
+1. discover available capability contracts;
+2. choose capabilities from a permitted task/context;
+3. sequence and parameterize them;
+4. execute them through protected interfaces;
+5. observe results and failures;
+6. evaluate the completed experience;
+7. retain validated orchestration lessons without uncontrolled production self-rewriting;
+8. compose cross-domain mechanics such as music into games, worlds, Living Objects, social experiences or emergent experiences without requiring new navigation buttons.
+
+---
 
 ## Translation architecture — browser/on-device first
 
@@ -1074,7 +1202,7 @@ A module is only `DONE` after code, UX, mobile, security and production validati
 
 ## Documentation rule
 
-This file is the authoritative plan for modules, AI mechanics, the MORISE First Contact experience, adaptive social behavior, adaptive game discovery/assignment, 2D/3D game creation and runtime architecture, MORISE Creation Runtime, MORISE Creation Tools, MORISE World Agents, the MORISE Emergent Experience Engine, translation, Living Objects, Evolution Engine/Fun & Surprise, MORISE DNA, Convergence, Missions From Reality, World Memory and the MORISE Collective Intelligence Engine. These capabilities are cross-module SYSTEM mechanics unless a module explicitly owns their implementation. They must not be implemented as duplicate systems or permanent navigation tabs.
+This file is the authoritative plan for modules, AI mechanics, the MORISE First Contact experience, **MORISE AI Capability Orchestration**, adaptive social behavior, adaptive game discovery/assignment, 2D/3D game creation and runtime architecture, MORISE Creation Runtime, MORISE Creation Tools, MORISE World Agents, **creative/media capabilities including Music / Audio**, the MORISE Emergent Experience Engine, translation, Living Objects, Evolution Engine/Fun & Surprise, MORISE DNA, Convergence, Missions From Reality, World Memory and the MORISE Collective Intelligence Engine. These capabilities are cross-module SYSTEM mechanics unless a module explicitly owns their implementation. They must not be implemented as duplicate systems or permanent navigation tabs.
 
 MORISE AI is a **coded, MORISE-native runtime system**. External models/APIs may assist implementation or provide optional auxiliary capabilities, but no external API is itself MORISE AI. The AI development process must progressively implement the native mechanisms that allow MORISE AI to operate, learn from permitted signals, evaluate outcomes and improve through controlled MORISE AI Lab experiments.
 
