@@ -813,6 +813,32 @@ Localization failures must be observable through development/QA tooling and must
 Translation and internationalization remain a cross-module MORISE SYSTEM capability. They must not create a new permanent PLAYER-facing navigation tab merely because they support 20 languages.
 
 
+### English `en` fallback and API-key independence
+
+English (`en`) is the **absolute international fallback locale** for MORISE.
+
+Locale resolution follows this priority:
+
+`EXPLICIT PLAYER LOCALE → SAVED PLAYER PREFERENCE → DEVICE / BROWSER LOCALE → SUPPORTED LOCALE → ENGLISH (en)`
+
+If the detected or requested language is not one of the 20 supported V1 locales, MORISE must automatically display English. If a specific translation resource is missing inside an otherwise supported locale, the deterministic fallback is also English rather than an untranslated key, broken interface or blank UI.
+
+English (`en`) is the canonical reference locale for product-controlled localization resources and release completeness checks.
+
+### No mandatory API keys
+
+MORISE's core AI, translation and internationalization architecture must **not require an external API key to function**.
+
+The preferred execution hierarchy is provider-agnostic:
+
+`MORISE-NATIVE / AVAILABLE MODEL → BROWSER OR ON-DEVICE TOOLING → LOCAL / SELF-HOSTED COMPONENT → VALIDATED SERVER FALLBACK → OPTIONAL EXTERNAL PROVIDER`
+
+External APIs or hosted services may be integrated later as optional auxiliary providers when appropriate, but the absence, expiration or unavailability of an external API key must not make the core MORISE experience unusable.
+
+MORISE must never hard-code dependence on one external AI or translation vendor. Provider selection remains behind internal MORISE abstractions, capability contracts, permissions, provenance, validation and fallback logic.
+
+Where no suitable translation tool is available, MORISE must use a validated fallback path or English rather than pretending a translation capability exists.
+
 ## Translation architecture — browser/on-device first
 
 Translation is a first-class V1 SYSTEM capability. Prefer browser/on-device processing where suitable, then translation cache, local/server fallback and an optional external API behind an internal abstraction. V1 must already provide useful translation quality.
