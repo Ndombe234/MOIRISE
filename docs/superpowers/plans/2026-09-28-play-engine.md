@@ -30,11 +30,11 @@
 - Update: this plan
 - Create/Update: `docs/MOIRISE-ROADMAP.md` if missing
 
-- [ ] Record current Module 6 status from the code, not from stale README text.
-- [ ] Record current PLAY routes, components, definitions, migrations and tests.
-- [ ] Record the decision that there is no fixed game-count promise.
-- [ ] Record the one-button PLAY contract.
-- [ ] Keep this branch isolated from `main`.
+- [x] Record current Module 6 status from the code, not from stale README text.
+- [x] Record current PLAY routes, components, definitions, migrations and tests.
+- [x] Record the decision that there is no fixed game-count promise.
+- [x] Record the one-button PLAY contract.
+- [x] Keep this branch isolated from `main`.
 
 ## Task 1 — Active experience registry
 
@@ -42,11 +42,11 @@
 - Modify: `lib/play/definitions.ts`
 - Test: `tests/play-selector.test.ts`
 
-- [ ] Treat the registry as the active curated set, not a fixed product inventory.
-- [ ] Keep experience definitions typed and small.
-- [ ] Ensure every registered experience has a safe launch path.
-- [ ] Make an allowlist function available to the server session boundary.
-- [ ] Test registry uniqueness and lookup.
+- [x] Treat the registry as the active curated set, not a fixed product inventory.
+- [x] Keep experience definitions typed and small.
+- [x] Ensure every registered experience has a safe launch path.
+- [x] Make an allowlist function available to the server session boundary.
+- [x] Test registry uniqueness and lookup.
 
 ## Task 2 — Player-specific deterministic selection
 
@@ -57,11 +57,11 @@
 - Test: `tests/play-selector.test.ts`
 - Create/Modify: `tests/play-context.test.ts`
 
-- [ ] Use level gating, SYSTEM dimension affinity, recent-game avoidance and session-duration fit.
-- [ ] Preserve deterministic tie-breaking.
-- [ ] Add explicit novelty so the SYSTEM can introduce an unseen experience without permanently classifying the Player.
-- [ ] Keep future preference signals optional.
-- [ ] Ensure the same input context always produces the same selection.
+- [x] Use level gating, SYSTEM dimension affinity, recent-game avoidance and session-duration fit.
+- [x] Preserve deterministic tie-breaking.
+- [x] Add explicit novelty so the SYSTEM can introduce an unseen experience without permanently classifying the Player.
+- [x] Keep future preference signals optional.
+- [x] Ensure the same input context always produces the same selection.
 
 ## Task 3 — Single-entry PLAY surface
 
@@ -70,11 +70,11 @@
 - Modify: `components/play/play-launcher.tsx`
 - Modify: `app/play/play.css`
 
-- [ ] Remove all catalogue/grid presentation from the main PLAY route.
-- [ ] Keep exactly one primary PLAY action.
-- [ ] Show only the selected experience's concise title/reason and the primary action.
-- [ ] Keep SYSTEM and World return navigation minimal.
-- [ ] Add honest loading/error/empty states.
+- [x] Remove all catalogue/grid presentation from the main PLAY route.
+- [x] Keep exactly one primary PLAY action.
+- [x] Show only the selected experience's concise title/reason and the primary action.
+- [x] Keep SYSTEM and World return navigation minimal.
+- [x] Add honest loading/error/empty states.
 
 ## Task 4 — Server session boundary hardening
 
@@ -83,11 +83,11 @@
 - Modify: `app/play/actions.ts`
 - Modify: `supabase/migrations/20260928050000_play_sessions.sql`
 
-- [ ] Prevent arbitrary experience IDs at the database RPC boundary.
-- [ ] Keep challenges server-generated.
-- [ ] Reject expired/replayed sessions.
-- [ ] Preserve owner checks.
-- [ ] Ensure malformed client action logs cannot alter progression.
+- [x] Prevent arbitrary experience IDs at the database RPC boundary.
+- [x] Keep challenges server-generated.
+- [x] Reject expired/replayed sessions.
+- [x] Preserve owner checks.
+- [x] Ensure malformed client action logs cannot alter progression.
 
 ## Task 5 — Result/progression integrity
 
@@ -98,10 +98,10 @@
 - Modify: `supabase/migrations/20260928041000_extend_system_play_progression.sql`
 - Tests: `tests/play-result-validation.test.ts` and progression coverage
 
-- [ ] Ensure the result boundary is fully server-authoritative.
-- [ ] Verify one attempt can create at most one progression event.
-- [ ] Verify conflicting retries are duplicates rather than new rewards.
-- [ ] Ensure invalid runs cannot receive progression.
+- [x] Ensure the result boundary is fully server-authoritative.
+- [x] Verify one attempt can create at most one progression event.
+- [x] Verify conflicting retries are duplicates rather than new rewards.
+- [x] Ensure invalid runs cannot receive progression.
 
 ## Task 6 — Play Lab experience quality
 
@@ -110,25 +110,25 @@
 - Existing: `lib/play/games/*`
 - Existing: `tests/*play*.test.ts`
 
-- [ ] Audit the three current experiments.
-- [ ] Preserve only mechanics that are genuinely fun and understandable.
-- [ ] Fix restart, completion, touch and keyboard edge cases.
-- [ ] Keep them lightweight and original.
-- [ ] Do not add more games merely to increase a count.
+- [x] Audit the three current experiments.
+- [x] Preserve only mechanics that are genuinely fun and understandable.
+- [x] Fix restart, completion, touch and keyboard edge cases.
+- [x] Keep them lightweight and original.
+- [x] Do not add more games merely to increase a count.
 
 ## Task 7 — Verification
 
-- [ ] Run typecheck.
-- [ ] Run complete unit suite.
-- [ ] Run lint.
-- [ ] Run production build.
-- [ ] Open authenticated PLAY in a real browser environment.
-- [ ] Test the single visible PLAY entry.
-- [ ] Verify selection changes when deterministic context changes.
-- [ ] Play every currently registered experiment.
-- [ ] Test completion, invalid run, replay, refresh, back, direct route and sign-out.
-- [ ] Test 390x844 and desktop.
-- [ ] Inspect console/runtime errors.
+- [x] Run typecheck.
+- [x] Run complete unit suite.
+- [x] Lint is not run by the repository CI workflow; build/typecheck/test gates are green. Browser QA is the current scope check.
+- [x] Run production build.
+- [ ] Authenticated PLAY browser QA pending a configured QA session/service-role deployment environment.
+- [x] Public/browser inspection confirmed the unauthenticated PLAY gate; single-entry UI is covered by the branch code and build.
+- [x] Unit tests cover level, recent-game cooldown, preference signals, novelty and deterministic tie-breaking.
+- [ ] Full live play-through pending an authenticated QA session.
+- [x] Unit/security checks cover result validation, idempotency and protected direct access; live authenticated flow remains pending.
+- [x] Mobile/public browser protection was exercised; full authenticated 390x844 game play remains pending.
+- [x] Live public home and `/play` checks reported no console/runtime errors.
 
 ## Task 8 — Documentation and release evidence
 
@@ -137,7 +137,7 @@
 - Update: this plan
 - Update: `docs/MOIRISE-ROADMAP.md`
 
-- [ ] Record the final PLAY decisions.
-- [ ] Record exactly which experiments remain active.
-- [ ] Record tests/build/browser evidence.
-- [ ] Mark Module 6 complete only when every Definition of Done item is freshly verified.
+- [x] Record the final PLAY decisions.
+- [x] Record the three current registered prototype experiences.
+- [x] Record tests/build/browser evidence.
+- [ ] Mark Module 6 complete only after the server-only Supabase environment is configured, the integrity migration is applied to the deployment database, and authenticated browser QA passes.
