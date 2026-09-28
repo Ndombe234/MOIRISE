@@ -1,6 +1,6 @@
 import type { GameDefinition } from "@/lib/play/types";
 
-export const PLAY_LAB_DEFINITIONS: GameDefinition[] = [
+export const PLAY_EXPERIENCE_DEFINITIONS: readonly GameDefinition[] = [
   {
     id: "echo-trace",
     family: "pulse",
@@ -36,6 +36,16 @@ export const PLAY_LAB_DEFINITIONS: GameDefinition[] = [
   },
 ];
 
+const EXPERIENCE_BY_ID = new Map(PLAY_EXPERIENCE_DEFINITIONS.map((game) => [game.id, game]));
+
+if (EXPERIENCE_BY_ID.size !== PLAY_EXPERIENCE_DEFINITIONS.length) {
+  throw new Error("Duplicate PLAY experience id.");
+}
+
 export function getGameDefinition(gameId: string): GameDefinition | null {
-  return PLAY_LAB_DEFINITIONS.find((game) => game.id === gameId) ?? null;
+  return EXPERIENCE_BY_ID.get(gameId) ?? null;
+}
+
+export function isRegisteredPlayExperience(gameId: string): boolean {
+  return EXPERIENCE_BY_ID.has(gameId);
 }
