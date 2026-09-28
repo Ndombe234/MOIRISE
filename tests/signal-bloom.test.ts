@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { generateSignalBloomChallenge, validateSignalBloomRun } from "@/lib/play/games/signal-bloom";
+import { generateSignalBloomChallenge, validateSignalBloomRun } from "../lib/play/games/signal-bloom";
 
 describe("Signal Bloom", () => {
   it("generates deterministic timing windows", () => {
