@@ -1,12 +1,21 @@
 import { describe, expect, it } from "vitest";
-import { canRoute } from "../components/play/shadow-courier";
+import { generateShadowChallenge, validateShadowRun } from "@/lib/play/games/shadow-courier";
 
 describe("Shadow Courier", () => {
-  it("finds a route through a connected light network", () => {
-    expect(canRoute([4, 9, 14, 13, 12])).toBe(true);
+  it("generates deterministic challenges", () => {
+    expect(generateShadowChallenge(77)).toEqual(generateShadowChallenge(77));
   });
 
-  it("rejects an incomplete network", () => {
-    expect(canRoute([4, 5, 10, 15])).toBe(false);
+  it("accepts the designed corridor", () => {
+    const challenge = generateShadowChallenge(77);
+    const path = [[6,0],[5,1],[4,2],[3,3],[2,4],[1,5],[0,6]] as [number, number][];
+    const result = validateShadowRun(challenge, path);
+    expect(result.valid).toBe(true);
+  });
+
+  it("rejects malformed movement", () => {
+    const challenge = generateShadowChallenge(77);
+    const result = validateShadowRun(challenge, [[6,0],[6,3]] as [number, number][]);
+    expect(result.valid).toBe(false);
   });
 });
