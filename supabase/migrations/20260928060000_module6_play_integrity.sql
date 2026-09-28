@@ -1,5 +1,5 @@
 -- Module 6 PLAY integrity: one visible PLAY entry, server-owned sessions,
--- registry-backed experience allowlisting, and progression integrity.
+-- registry-backed experience allowlisting, progression integrity, and a server-only reward boundary.
 
 create schema if not exists private;
 
@@ -40,8 +40,7 @@ as $$
   select exists (
     select 1
     from public.play_game_catalog c
-    left join public.system_profiles s
-      on s.player_id = target_player_id
+    left join public.system_profiles s on s.player_id = target_player_id
     where c.game_id = target_game_id
       and c.active = true
       and c.required_level <= coalesce(s.level, 1)
@@ -81,12 +80,7 @@ begin
   generated_seed := floor(random() * 2147483646)::bigint + 1;
 
   insert into public.play_sessions(player_id, game_id, seed, challenge)
-  values (
-    auth.uid(),
-    game_id_value,
-    generated_seed,
-    '{}'::jsonb
-  )
+  values (auth.uid(), game_id_value, generated_seed, '{}'::jsonb)
   returning * into new_session;
 
   return jsonb_build_object(
@@ -105,7 +99,156 @@ alter table public.play_attempts add column if not exists share_token text;
 revoke insert, update, delete on public.play_attempts from public, anon, authenticated;
 grant select on public.play_attempts to authenticated;
 
-create or replace function public.record_play_completion(
+-- Legacy public completion RPC remains only for compatibility with existing database history.
+-- Clients must not be allowed to call it directly.
+revoke all on function public.record_play_completion(text, uuid, text, integer, integer, jsonb, jsonb)
+  from public, anon, authenticated;
+
+create or replace function public.record_system_progress_event_internal(
+  target_player_id uuid,
+  event_type_value text,
+  dimension_key_value text,
+  xp_delta_value integer,
+  idempotency_key_value text,
+  source_type_value text,
+  source_id_value text default null,
+  metadata_value jsonb default '{}'::jsonb
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = pg_catalog, public
+as $$
+declare
+  existing_event public.system_progression_events%rowtype;
+  inserted_event public.system_progression_events%rowtype;
+  resulting_total_xp bigint;
+  resulting_level integer;
+  referenced_attempt public.play_attempts%rowtype;
+  referenced_attempt_id uuid;
+  expected_xp integer;
+begin
+  if event_type_value <> 'play_completed'
+     or dimension_key_value <> 'play'
+     or source_type_value <> 'game'
+     or source_id_value is null then
+    raise exception 'invalid internal PLAY progression event';
+  end if;
+
+  if metadata_value is null or jsonb_typeof(metadata_value) <> 'object'
+     or not (metadata_value ? 'attempt_id') then
+    raise exception 'play completion metadata is required';
+  end if;
+
+  begin
+    referenced_attempt_id := (metadata_value->>'attempt_id')::uuid;
+  exception when invalid_text_representation then
+    raise exception 'invalid play attempt id';
+  end;
+
+  select * into referenced_attempt
+  from public.play_attempts
+  where attempt_id = referenced_attempt_id
+  for update;
+
+  if not found
+     or referenced_attempt.player_id <> target_player_id
+     or referenced_attempt.game_id <> source_id_value
+     or referenced_attempt.status <> 'completed' then
+    raise exception 'play attempt is not valid';
+  end if;
+
+  expected_xp := greatest(1, least(20, floor(referenced_attempt.score / 50)));
+
+  if xp_delta_value <> expected_xp then
+    raise exception 'play progression reward does not match attempt';
+  end if;
+
+  if idempotency_key_value is null or length(trim(idempotency_key_value)) = 0 then
+    raise exception 'idempotency key is required';
+  end if;
+
+  perform public.ensure_system_profile(target_player_id);
+
+  select * into existing_event
+  from public.system_progression_events
+  where player_id = target_player_id
+    and idempotency_key = idempotency_key_value
+  for update;
+
+  if found then
+    select total_xp into resulting_total_xp
+    from public.system_profiles
+    where player_id = target_player_id;
+
+    return jsonb_build_object(
+      'duplicate', true,
+      'event_id', existing_event.id,
+      'total_xp', resulting_total_xp,
+      'level', public.system_level_for_xp(resulting_total_xp)
+    );
+  end if;
+
+  insert into public.system_progression_events (
+    player_id, event_type, dimension_key, xp_delta,
+    idempotency_key, source_type, source_id, metadata
+  )
+  values (
+    target_player_id, event_type_value, dimension_key_value, xp_delta_value,
+    idempotency_key_value, source_type_value, source_id_value,
+    coalesce(metadata_value, '{}'::jsonb)
+  )
+  returning * into inserted_event;
+
+  update public.system_profiles
+  set total_xp = total_xp + xp_delta_value
+  where player_id = target_player_id
+  returning total_xp into resulting_total_xp;
+
+  resulting_level := public.system_level_for_xp(resulting_total_xp);
+
+  update public.system_profiles
+  set level = resulting_level
+  where player_id = target_player_id;
+
+  return jsonb_build_object(
+    'duplicate', false,
+    'event_id', inserted_event.id,
+    'total_xp', resulting_total_xp,
+    'level', resulting_level
+  );
+exception
+  when unique_violation then
+    select * into existing_event
+    from public.system_progression_events
+    where player_id = target_player_id
+      and idempotency_key = idempotency_key_value
+    limit 1;
+
+    if existing_event.id is null then
+      raise;
+    end if;
+
+    select total_xp into resulting_total_xp
+    from public.system_profiles
+    where player_id = target_player_id;
+
+    return jsonb_build_object(
+      'duplicate', true,
+      'event_id', existing_event.id,
+      'total_xp', resulting_total_xp,
+      'level', public.system_level_for_xp(resulting_total_xp)
+    );
+end;
+$$;
+
+revoke all on function public.record_system_progress_event_internal(uuid, text, text, integer, text, text, text, jsonb)
+  from public, anon, authenticated;
+grant execute on function public.record_system_progress_event_internal(uuid, text, text, integer, text, text, text, jsonb)
+  to service_role;
+
+create or replace function public.record_play_completion_internal(
+  player_id_value uuid,
   game_id_value text,
   attempt_id_value uuid,
   status_value text,
@@ -120,13 +263,36 @@ security definer
 set search_path = pg_catalog, public
 as $$
 declare
+  play_session public.play_sessions%rowtype;
   inserted_attempt_id uuid;
   awarded_xp integer := 0;
-  event_result jsonb;
   generated_share_token text;
+  event_result jsonb;
 begin
-  if auth.uid() is null then
-    raise exception 'authentication required';
+  select * into play_session
+  from public.play_sessions
+  where session_id = attempt_id_value
+    and player_id = player_id_value
+  for update;
+
+  if not found then
+    raise exception 'play session not found';
+  end if;
+
+  if play_session.game_id <> game_id_value then
+    raise exception 'play session/game mismatch';
+  end if;
+
+  if play_session.status <> 'active' then
+    return jsonb_build_object('status', 'duplicate', 'attempt_id', attempt_id_value);
+  end if;
+
+  if now() > play_session.expires_at then
+    update public.play_sessions
+    set status = 'expired'
+    where session_id = attempt_id_value;
+
+    raise exception 'play session expired';
   end if;
 
   if not exists (
@@ -134,10 +300,6 @@ begin
     where game_id = game_id_value and active = true
   ) then
     raise exception 'unknown or inactive game';
-  end if;
-
-  if char_length(game_id_value) < 1 or char_length(game_id_value) > 100 then
-    raise exception 'invalid game';
   end if;
 
   if status_value not in ('completed', 'abandoned', 'failed') then
@@ -169,7 +331,7 @@ begin
     signals, moment_candidate, share_token
   )
   values (
-    attempt_id_value, auth.uid(), game_id_value, status_value, score_value, duration_ms_value,
+    attempt_id_value, player_id_value, game_id_value, status_value, score_value, duration_ms_value,
     signals_value, moment_candidate_value, generated_share_token
   )
   on conflict (attempt_id) do nothing
@@ -182,12 +344,12 @@ begin
   if status_value = 'completed' then
     awarded_xp := greatest(1, least(20, floor(score_value / 50)));
 
-    select public.record_system_progress_event(
-      auth.uid(),
+    select public.record_system_progress_event_internal(
+      player_id_value,
       'play_completed',
       'play',
       awarded_xp,
-      concat(auth.uid()::text, ':', game_id_value, ':', attempt_id_value::text),
+      concat(player_id_value::text, ':', game_id_value, ':', attempt_id_value::text),
       'game',
       game_id_value,
       jsonb_build_object(
@@ -198,6 +360,11 @@ begin
     ) into event_result;
   end if;
 
+  update public.play_sessions
+  set status = 'completed',
+      completed_at = now()
+  where session_id = attempt_id_value;
+
   return jsonb_build_object(
     'status', 'recorded',
     'attempt_id', attempt_id_value,
@@ -207,9 +374,12 @@ begin
 end;
 $$;
 
-revoke all on function public.record_play_completion(text, uuid, text, integer, integer, jsonb, jsonb) from public, anon;
-grant execute on function public.record_play_completion(text, uuid, text, integer, integer, jsonb, jsonb) to authenticated;
+revoke all on function public.record_play_completion_internal(uuid, text, uuid, text, integer, integer, jsonb, jsonb)
+  from public, anon, authenticated;
+grant execute on function public.record_play_completion_internal(uuid, text, uuid, text, integer, integer, jsonb, jsonb)
+  to service_role;
 
+-- Preserve the authenticated SYSTEM progression boundary used by Player onboarding.
 create or replace function public.record_system_progress_event(
   target_player_id uuid,
   event_type_value text,
@@ -230,9 +400,6 @@ declare
   inserted_event public.system_progression_events%rowtype;
   resulting_total_xp bigint;
   resulting_level integer;
-  referenced_attempt public.play_attempts%rowtype;
-  referenced_attempt_id uuid;
-  expected_xp integer;
 begin
   if auth.uid() is null or auth.uid() <> target_player_id then
     raise exception 'not authorized';
@@ -257,44 +424,14 @@ begin
     end if;
     perform public.ensure_system_profile(target_player_id);
   elsif event_type_value = 'play_completed' then
+    -- Defense in depth: authenticated callers may only refer to a real completed
+    -- attempt that they own. The PLAY app itself uses the service-only RPC above.
     if dimension_key_value <> 'play' or source_type_value <> 'game' or source_id_value is null then
       raise exception 'invalid play progression event';
     end if;
-    if metadata_value is null or jsonb_typeof(metadata_value) <> 'object' then
+    if metadata_value is null or jsonb_typeof(metadata_value) <> 'object' or not (metadata_value ? 'attempt_id') then
       raise exception 'play completion metadata is required';
     end if;
-    if not (metadata_value ? 'attempt_id') then
-      raise exception 'play completion requires attempt id';
-    end if;
-
-    begin
-      referenced_attempt_id := (metadata_value->>'attempt_id')::uuid;
-    exception when invalid_text_representation then
-      raise exception 'invalid play attempt id';
-    end;
-
-    select * into referenced_attempt
-    from public.play_attempts
-    where attempt_id = referenced_attempt_id
-    for update;
-
-    if not found
-      or referenced_attempt.player_id <> target_player_id
-      or referenced_attempt.game_id <> source_id_value
-      or referenced_attempt.status <> 'completed' then
-      raise exception 'play attempt is not valid';
-    end if;
-
-    expected_xp := greatest(1, least(20, floor(referenced_attempt.score / 50)));
-
-    if xp_delta_value <> expected_xp then
-      raise exception 'play progression reward does not match attempt';
-    end if;
-
-    if idempotency_key_value is null or length(trim(idempotency_key_value)) = 0 then
-      raise exception 'idempotency key is required';
-    end if;
-
     perform public.ensure_system_profile(target_player_id);
   else
     raise exception 'unsupported SYSTEM progression event';
@@ -387,5 +524,7 @@ exception
 end;
 $$;
 
-revoke execute on function public.record_system_progress_event(uuid, text, text, integer, text, text, text, jsonb) from public, anon, authenticated;
-grant execute on function public.record_system_progress_event(uuid, text, text, integer, text, text, text, jsonb) to authenticated;
+revoke execute on function public.record_system_progress_event(uuid, text, text, integer, text, text, text, jsonb)
+  from public, anon, authenticated;
+grant execute on function public.record_system_progress_event(uuid, text, text, integer, text, text, text, jsonb)
+  to authenticated;
