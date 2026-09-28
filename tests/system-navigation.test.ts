@@ -6,36 +6,32 @@ const layout = readFileSync(resolve(process.cwd(), "app/system/layout.tsx"), "ut
 const navigation = readFileSync(resolve(process.cwd(), "components/morise-navigation.tsx"), "utf8");
 
 describe("MORISE primary navigation", () => {
-  it("keeps the five understandable destinations visible", () => {
+  it("keeps the five primary destinations visible", () => {
     expect(layout).toContain("<MoriseNavigation />");
+    expect(navigation).toContain('{ href: "/system", label: "SYSTEM"');
+    expect(navigation).toContain('{ href: "/player", label: "PLAYER"');
     expect(navigation).toContain('{ href: "/home", label: "WORLD"');
-    expect(navigation).toContain('{ href: "/communities", label: "ALLIES"');
-    expect(navigation).toContain('{ href: "/social", label: "LINK"');
+    expect(navigation).toContain('{ href: "/social", label: "SOCIAL"');
     expect(navigation).toContain('{ href: "/play", label: "PLAY"');
     expect(navigation).toContain('aria-label="MORISE primary navigation"');
-    expect(navigation).toContain('aria-label="Open MORISE menu"');
   });
 
-  it("provides the Facebook-like menu structure without copying its branding", () => {
-    expect(navigation).toContain('aria-label="MORISE menu"');
-    expect(navigation).toContain('PLAYER');
-    expect(navigation).toContain('SOCIAL');
-    expect(navigation).toContain('WORLD');
-    expect(navigation).toContain('SYSTEM');
-    expect(navigation).toContain('href: "/player"');
-    expect(navigation).toContain('href: "/discover"');
-    expect(navigation).toContain('href: "/create"');
-    expect(navigation).toContain('href: "/system/progression"');
+  it("keeps the hamburger menu dedicated to secondary tabs", () => {
+    expect(navigation).toContain('aria-label="Onglets secondaires MORISE"');
+    expect(navigation).toContain('title="Menu secondaire"');
+    expect(navigation).toContain('Onglets secondaires');
+    expect(navigation).toContain('href: "/messages"');
+    expect(navigation).toContain('href: "/friends"');
+    expect(navigation).toContain('href: "/communities"');
+    expect(navigation).toContain('href: "/reels"');
+    expect(navigation).toContain('href: "/marketplace"');
+    expect(navigation).toContain('href: "/settings"');
+    expect(navigation).toContain('href: "/referral"');
   });
 
-  it("keeps secondary utilities available and Disconnect as a form action", () => {
-    expect(layout).toContain('href: "/system/progression"');
-    expect(layout).toContain('href: "/system/history"');
-    expect(layout).toContain('href: "/system/memories"');
-    expect(layout).toContain('href: "/communities"');
-    expect(layout).toContain('href: "/activities"');
-    expect(layout).toContain('href: "/events"');
-    expect(layout).toContain('<form action={signOut} className="system-disconnect-form">');
-    expect(layout).toContain('>Disconnect</button>');
+  it("keeps secondary SYSTEM tabs out of the main SYSTEM page", () => {
+    expect(layout).not.toContain("system-secondary-links");
+    expect(layout).not.toContain("system-disconnect-form");
+    expect(layout).toContain("SECONDARY TABS ARE IN MENU");
   });
 });
