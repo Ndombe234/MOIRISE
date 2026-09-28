@@ -690,3 +690,11 @@ export type SystemProfile = Database["public"]["Tables"]["system_profiles"]["Row
 export type SystemDimension = Database["public"]["Tables"]["system_dimensions"]["Row"];
 export type SystemProgressionEvent = Database["public"]["Tables"]["system_progression_events"]["Row"];
 export type SystemMemory = Database["public"]["Tables"]["system_memories"]["Row"];
+
+export type Player = Database["public"]["Tables"]["players"]["Row"];
+export type PlayerInsert = Database["public"]["Tables"]["players"]["Insert"];
+export type PlayerUpdate = Database["public"]["Tables"]["players"]["Update"];
+export type SystemProfile = Database["public"]["Tables"]["system_profiles"]["Row"];
+export type SystemDimension = Database["public"]["Tables"]["system_dimensions"]["Row"];
+export type SystemProgressionEvent = Database["public"]["Tables"]["system_progression_events"]["Row"];
+export type SystemMemory = Database["public"]["Tables"]["system_memories"]["Row"];
