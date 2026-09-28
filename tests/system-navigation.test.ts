@@ -6,7 +6,7 @@ const layout = readFileSync(resolve(process.cwd(), "app/system/layout.tsx"), "ut
 
 describe("SYSTEM primary navigation", () => {
   it("keeps the five primary destinations directly visible in the SYSTEM shell", () => {
-    expect(layout).toContain('href: "/system"');
+    expect(layout).toContain('href="/system"');
     expect(layout).toContain('href: "/player"');
     expect(layout).toContain('href: "/home"');
     expect(layout).toContain('href: "/social"');
@@ -21,7 +21,7 @@ describe("SYSTEM primary navigation", () => {
     expect(layout).toContain('href: "/communities"');
     expect(layout).toContain('href: "/activities"');
     expect(layout).toContain('href: "/events"');
-    expect(layout).toContain('<form action={signOut}>');
+    expect(layout).toContain('<form action={signOut} className="system-disconnect-form">');
     expect(layout).toContain('>Disconnect</button>');
   });
 });
