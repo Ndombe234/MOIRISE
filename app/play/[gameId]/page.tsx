@@ -6,6 +6,8 @@ import { PlayGameHost } from "@/components/play/play-game-host";
 import { EchoTrace } from "@/components/play/echo-trace";
 import { SignalBloom } from "@/components/play/signal-bloom";
 import { ShadowCourier } from "@/components/play/shadow-courier";
+import { MirrorRun } from "@/components/play/mirror-run";
+import { LastSecond } from "@/components/play/last-second";
 import type { GameDefinition } from "@/lib/play/types";
 
 type PlayControls = {
@@ -29,32 +31,17 @@ export default async function PlayGamePage({ params }: { params: Params }) {
 
   const renderGame = (game: GameDefinition, controls: PlayControls) => {
     switch (game.id) {
-      case "echo-trace":
-        return <EchoTrace definition={game} challenge={controls.challenge as import("@/lib/play/games/echo-trace").EchoChallenge} onComplete={controls.complete} />;
-      case "signal-bloom":
-        return <SignalBloom definition={game} challenge={controls.challenge as import("@/lib/play/games/signal-bloom").SignalBloomChallenge} onComplete={controls.complete} />;
-      case "shadow-courier":
-        return <ShadowCourier definition={game} challenge={controls.challenge as import("@/lib/play/games/shadow-courier").ShadowChallenge} onComplete={controls.complete} />;
-      default:
-        return <div className="game-board"><strong>Cette expérience n’est pas encore disponible.</strong></div>;
+      case "echo-trace": return <EchoTrace definition={game} challenge={controls.challenge as import("@/lib/play/games/echo-trace").EchoChallenge} onComplete={controls.complete} />;
+      case "signal-bloom": return <SignalBloom definition={game} challenge={controls.challenge as import("@/lib/play/games/signal-bloom").SignalBloomChallenge} onComplete={controls.complete} />;
+      case "shadow-courier": return <ShadowCourier definition={game} challenge={controls.challenge as import("@/lib/play/games/shadow-courier").ShadowChallenge} onComplete={controls.complete} />;
+      case "mirror-run": return <MirrorRun definition={game} onComplete={controls.complete as never} />;
+      case "last-second": return <LastSecond definition={game} onComplete={controls.complete as never} />;
+      default: return <div className="game-board"><strong>Cette expérience n’est pas encore disponible.</strong></div>;
     }
   };
 
-  return (
-    <main className="play-main">
-      <section className="play-shell">
-        <header className="play-topbar">
-          <Link href="/play" className="play-brand">MORISE PLAY</Link>
-          <nav aria-label="Play game navigation">
-            <Link href="/system">SYSTEM</Link>
-            <Link href="/social">SOCIAL</Link>
-          </nav>
-        </header>
-
-        <PlayGameHost definition={definition}>
-          {(controls) => renderGame(definition, controls)}
-        </PlayGameHost>
-      </section>
-    </main>
-  );
+  return <main className="play-main"><section className="play-shell">
+    <header className="play-topbar"><Link href="/play" className="play-brand">MORISE PLAY</Link><nav aria-label="Play game navigation"><Link href="/system">SYSTEM</Link><Link href="/social">SOCIAL</Link></nav></header>
+    <PlayGameHost definition={definition}>{(controls) => renderGame(definition, controls)}</PlayGameHost>
+  </section></main>;
 }
