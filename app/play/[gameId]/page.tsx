@@ -3,7 +3,6 @@ import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getGameDefinition } from "@/lib/play/definitions";
 import { PlayGameHost } from "@/components/play/play-game-host";
-import "./play.css";
 
 type Params = Promise<{ gameId: string }>;
 
