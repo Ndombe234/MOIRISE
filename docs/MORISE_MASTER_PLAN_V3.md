@@ -3037,6 +3037,395 @@ For emergence:
 
 ---
 
+## MORISE INFRASTRUCTURE-LIGHT RETENTION ENGINE — CORE RULES / STATE / EVENTS / EXPERIENCE
+
+MORISE must be able to create a deep, replayable and socially shareable experience using **software rules, state, events and deterministic generation**, without requiring a new server, GPU, external AI API or separate infrastructure for every new feature.
+
+This is an internal/cross-module SYSTEM layer. It extends existing PLAY, WORLD, MORISE Moment, Living Objects, Evolution Engine, Convergence, World Memory, Creation Runtime and SOCIAL capabilities. It must not become a new permanent navigation category.
+
+### Central architecture principle
+
+The reusable core is:
+
+`MORISE CORE (RULES + STATE + EVENTS) → EXPERIENCE ENGINE → MANY EXPERIENCES`
+
+The Experience Engine should be able to assemble many variations from shared primitives such as:
+
+- rules;
+- state variables;
+- objects;
+- characters;
+- environments;
+- conditions;
+- consequences;
+- branches;
+- timers;
+- challenge parameters;
+- deterministic randomization;
+- event triggers;
+- rewards/titles;
+- discovery flags;
+- replay/history data.
+
+A new experience should prefer configuration and composition of existing primitives over a new infrastructure service.
+
+### 1. World that remembers
+
+MORISE may maintain a lightweight personal or contextual world state derived from permitted PLAYER actions.
+
+Examples:
+
+- a door remains open because the PLAYER opened it;
+- an object changes after repeated use;
+- a character remembers an authorized interaction;
+- a discovered location becomes available later;
+- a previous choice modifies a future branch;
+- a world element evolves after a validated event.
+
+Core loop:
+
+`PLAYER ACTION → VALIDATED STATE CHANGE → WORLD REMEMBERS → FUTURE EXPERIENCE REACTS`
+
+The system must not use fake personalization. A world change must correspond to an actual state transition or validated rule.
+
+### 2. Evolving puzzles with multiple solutions
+
+MORISE may generate or assemble puzzles from reusable rules and variables rather than requiring a new AI model for each puzzle.
+
+A puzzle may support:
+
+- multiple valid solutions;
+- alternative routes;
+- difficulty scaling;
+- hidden interactions;
+- state-dependent clues;
+- time-based variants;
+- deterministic procedural variation.
+
+Successful and unsuccessful attempts can change the next eligible puzzle state while preserving fairness and auditability.
+
+The system should prefer **discovery of legitimate rules** over arbitrary difficulty inflation.
+
+### 3. Auditable anomalies and unpredictable events
+
+MORISE may trigger controlled, pseudo-random or state-driven events:
+
+- anomalies;
+- surprise encounters;
+- world changes;
+- unusual object behavior;
+- alternate rules;
+- hidden events;
+- rare discoveries.
+
+Every event must be reproducible or auditable from its seed, triggering state, rule version or event lineage whenever technically appropriate.
+
+MORISE must never fabricate an anomaly merely to create engagement.
+
+### 4. Secret and discovery-based titles
+
+Titles may be unlocked through real actions, discoveries and combinations.
+
+Examples:
+
+- first validated discovery;
+- solving an unusual puzzle;
+- never using a specific shortcut;
+- finding a hidden route;
+- completing a rare sequence;
+- creating a valid unusual combination.
+
+Titles must be derived from actual state/history and must not be granted through fake activity.
+
+The existence of some secret titles may remain undisclosed as a legitimate discovery mechanic.
+
+### 5. Hidden and discoverable map areas
+
+Worlds may contain locations whose existence is not immediately revealed.
+
+Discovery may occur through:
+
+- exploration;
+- puzzle solutions;
+- item combinations;
+- state transitions;
+- event triggers;
+- story progression;
+- community clues.
+
+Hidden areas must remain auditable and must not be used to conceal material economic or account consequences.
+
+### 6. Personal Memory Cards
+
+MORISE may turn meaningful events into compact **Memory Cards** containing validated context.
+
+A card may include:
+
+- date/time;
+- event title;
+- relevant result;
+- visual representation;
+- earned title;
+- selected statistics;
+- lineage/reference;
+- optional share link.
+
+Memory Cards are a presentation layer over existing MORISE Moment/history state. They are not a duplicate memory database.
+
+### 7. No-AI deterministic Remix
+
+Eligible public/shared creations may support remixing without AI.
+
+A deterministic Remix Engine can modify approved parameters such as:
+
+- color/theme;
+- difficulty;
+- objective;
+- rule;
+- timing;
+- environment;
+- music layer;
+- object behavior;
+- text;
+- layout;
+- speed.
+
+The source version, transformation parameters and resulting version must be recorded.
+
+`ORIGINAL → PARAMETER TRANSFORMATION → NEW VERSION → VALIDATION → SHARE / PLAY`
+
+This provides creative participation even when AI models are unavailable.
+
+### 8. Asynchronous community challenges
+
+Players do not need to be online together.
+
+Examples:
+
+`PLAYER A CREATES CHALLENGE → PLAYER B ATTEMPTS LATER → RESULT → PLAYER A RECEIVES RESULT → NEW CHALLENGE`
+
+Supported mechanics include:
+
+- beat-my-score;
+- beat-my-time;
+- solve-my-puzzle;
+- survive-my-rules;
+- remix-my-world;
+- continue-my-story.
+
+The system must preserve contribution lineage and prevent fabricated results.
+
+### 9. MORISE Laboratory
+
+An internal player-facing experimentation space may allow controlled combinations of reusable elements.
+
+Examples:
+
+`OBJECT A + OBJECT B`
+`RULE A + RULE B`
+`CHARACTER + ENVIRONMENT`
+`MUSIC LAYER + WORLD STATE`
+`PUZZLE + PHYSICS PARAMETER`
+
+The laboratory should execute safe combinations against explicit schemas and permissions, record outcomes and expose interesting valid discoveries.
+
+This mechanism should use existing Creation Tools, Creation Runtime and deterministic rules whenever possible rather than requiring a new infrastructure component.
+
+### 10. Distributed community secrets
+
+MORISE may distribute separate clues across independent experiences.
+
+Example:
+
+`PLAYER A FINDS CLUE 1`
+`PLAYER B FINDS CLUE 2`
+`PLAYER C FINDS CLUE 3`
+`COMMUNITY COMBINES CLUES → VALID DISCOVERY`
+
+The system must not expose private information to manufacture a secret. Only eligible public/shareable clues may participate.
+
+### 11. Collective legends and history
+
+Validated community achievements can become persistent historical records such as:
+
+- first community mystery solved;
+- first completed World Event;
+- first major Living Object transformation;
+- first validated collaborative creation.
+
+A legend must represent a real event and preserve attribution, date/version and provenance.
+
+### 12. Consequence-based choices and branching
+
+MORISE may use state-based branching for stories, worlds and games.
+
+`PLAYER CHOICE → STATE CHANGE → CONSEQUENCE → NEW BRANCH`
+
+Branches should be reversible where appropriate, or clearly communicate material irreversible effects before they occur.
+
+Branching must not be used for hidden account penalties or manipulative punishment.
+
+### 13. SYSTEM presentation styles
+
+The SYSTEM may have configurable presentation styles that alter its tone and presentation without creating psychological profiles.
+
+Examples include:
+
+- calm;
+- mysterious;
+- humorous;
+- serious;
+- competitive;
+- cinematic.
+
+These are explicit player/system presentation preferences, not inferred mental-health, personality or sensitive-trait assessments.
+
+### 14. Seasons
+
+MORISE may organize groups of experiences into bounded seasons.
+
+A season can contain:
+
+- narrative arc;
+- discoveries;
+- challenges;
+- secrets;
+- collection goals;
+- community events;
+- conclusion/epilogue.
+
+At season end, MORISE may produce a real retrospective of the PLAYER's actions and contributions.
+
+Seasons must not punish ordinary absence or require payment to preserve progress.
+
+### 15. Deterministic player construction
+
+Players may construct their own small experiences from reusable components:
+
+- object;
+- character;
+- environment;
+- rule;
+- objective;
+- sound/music layer;
+- text;
+- trigger;
+- reward;
+- condition.
+
+The player can share or challenge others with the resulting experience.
+
+This must use existing Creation Runtime / tools where needed and should support a lightweight browser-only mode for simple constructions.
+
+### 16. Shareable Memory / Moment cards
+
+A real completed event may produce a compact shareable artifact optimized for mobile/web.
+
+It may include:
+
+`EVENT → RESULT → VISUAL → TITLE → LINK TO EXPERIENCE`
+
+The recipient should be able to enter a related challenge or experience when permissions allow.
+
+The artifact must never claim a result that did not occur.
+
+### 17. Easter eggs
+
+MORISE may contain non-essential hidden interactions, references and behaviors discovered through exploration.
+
+Easter eggs should be:
+
+- harmless;
+- technically real;
+- auditable;
+- optional;
+- separated from material account/economic consequences.
+
+### 18. Rare objects and transparent rarity
+
+MORISE may include rare, epic, legendary or mythic objects where the rarity is supported by explicit rules.
+
+The system must:
+
+- define real probability or deterministic acquisition conditions;
+- preserve provenance;
+- prevent fake scarcity;
+- prevent fake ownership claims;
+- disclose material odds/conditions when legally or economically relevant;
+- prevent hidden manipulation.
+
+Rare objects should not become pay-to-win merely because they are rare.
+
+### Infrastructure-light requirement
+
+All mechanics in this section must prefer existing MORISE infrastructure.
+
+They should not require, by default:
+
+- a new dedicated server;
+- a new GPU;
+- a new AI API;
+- a new external vendor;
+- a new database service;
+- a new permanent worker cluster.
+
+Existing MORISE persistence, storage, runtime and current services may be used.
+
+The key rule is:
+
+**NEW EXPERIENCE ≠ NEW INFRASTRUCTURE**
+
+A new experience should normally be created by adding configuration, content, rules, state transitions, reusable components and validation logic.
+
+### Offline / degraded operation
+
+Where technically validated, deterministic mechanics should continue working offline or with reduced connectivity.
+
+When persistence or multiplayer synchronization is unavailable:
+
+- local progress may be cached;
+- the user must see the real state;
+- synchronization should resume when available;
+- no success must be claimed before server-authoritative validation when required.
+
+### Anti-manipulation and integrity
+
+The Infrastructure-Light Retention Engine must never depend on:
+
+- fake engagement;
+- fake activity;
+- fabricated anomalies;
+- fake rarity;
+- coercive sharing;
+- hidden psychological profiling;
+- forced daily attendance;
+- punitive absence;
+- manufactured social proof;
+- artificial notification spam.
+
+Retention should come from:
+
+`DISCOVERY + CONSEQUENCE + CREATION + MEMORY + EVOLUTION + ASYNC SOCIAL TRACE + NEW POSSIBILITY`
+
+### Acceptance criteria
+
+The engine is architecturally ready when MORISE can demonstrate:
+
+1. deterministic state transitions for supported mechanics;
+2. auditable event generation;
+3. reproducible procedural variation where applicable;
+4. multiple valid puzzle solutions;
+5. persistent world consequences using existing storage;
+6. asynchronous challenges;
+7. deterministic no-AI remix;
+8. discoverable secrets and titles;
+9. mobile-compatible lightweight experiences;
+10. graceful degraded/offline behavior where actually validated;
+11. replayability without requiring a new infrastructure component;
+12. no new permanent navigation category.
+
+---
+
 # UNIVERSAL MODULE GATE
 
 Every module follows:
