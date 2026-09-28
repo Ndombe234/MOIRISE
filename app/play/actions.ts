@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getGameDefinition } from "@/lib/play/definitions";
-import { generatePlayChallenge } from "@/lib/play/session-actions";
+import { generatePlayChallenge, startPlaySession } from "@/lib/play/session-actions";
 import { validateEchoRun, type EchoChallenge } from "@/lib/play/games/echo-trace";
 import { validateSignalBloomRun, type SignalBloomChallenge } from "@/lib/play/games/signal-bloom";
 import { validateShadowRun, type ShadowChallenge, type ShadowPoint } from "@/lib/play/games/shadow-courier";
