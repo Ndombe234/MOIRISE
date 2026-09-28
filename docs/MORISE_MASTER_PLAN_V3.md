@@ -827,6 +827,58 @@ English (`en`) is the canonical reference locale for product-controlled localiza
 
 ### No mandatory API keys
 
+### Private messaging translation and deferred local translation node
+
+Private one-to-one and group conversations must support the canonical 20 MORISE languages from the beginning. Translation is an additional SYSTEM capability layered on top of messaging; the messaging system itself must remain available independently of the translation engine.
+
+Core flow:
+
+`PLAYER A MESSAGE → ORIGINAL MESSAGE STORED → LANGUAGE DETECTION / SOURCE LOCALE → TRANSLATION ENGINE → CACHE → PLAYER B DISPLAY LOCALE`
+
+The original message must always remain preserved and recoverable. A translated rendering must never silently replace or destroy the source message.
+
+The conversation UI should allow the recipient, where appropriate, to inspect the original message and the translated version.
+
+### Local translation execution on an owner-controlled computer
+
+MORISE may use an owner-controlled computer as a **local translation/AI node** when such a computer is available. The product architecture must be implemented before that computer is available; the computer is an optional execution resource, not a prerequisite for building or launching the rest of MORISE.
+
+Conceptual topology:
+
+`MORISE → INTERNAL TRANSLATION INTERFACE → SECURE CONNECTIVITY / TUNNEL → OWNER-CONTROLLED COMPUTER → LOCAL TRANSLATION MODEL / ENGINE → RESULT → MORISE`
+
+The computer-side component must expose a versioned internal translation contract, for example:
+
+`translate(text, source_locale, target_locale, context, capability_version) → translated_text + confidence + provenance`
+
+The MORISE application must never depend on `localhost` or a private LAN address of the owner's computer. When remote access is required, connectivity must use a secure authenticated tunnel or equivalent protected channel rather than exposing an unauthenticated translation port directly to the public Internet.
+
+The computer-side translation node must be replaceable. MORISE should be able to switch from the owner-controlled computer to a dedicated server, another approved local node or another validated translation provider without changing the PLAYER-facing messaging contract.
+
+### Translation-node availability and fallback
+
+If the owner-controlled computer is unavailable, switched off, disconnected or overloaded, private messaging must continue to work normally. MORISE must use the next validated translation path or display the original message and apply the configured English (`en`) fallback where a translated representation is required.
+
+Conceptual execution order:
+
+`LOCAL / ON-DEVICE → OWNER-CONTROLLED LOCAL NODE WHEN AVAILABLE → PROTECTED SERVER / SELF-HOSTED FALLBACK → OPTIONAL EXTERNAL PROVIDER → ORIGINAL MESSAGE + ENGLISH (en) FALLBACK`
+
+Availability of the local computer must never block message sending, message storage, authentication or conversation history.
+
+### Deferred physical deployment requirement
+
+No physical computer is required during the initial MORISE software-development phase. The repository must contain the contracts, abstractions, configuration points, health checks, authentication model, fallback behavior and test fixtures necessary to attach the local translation node later.
+
+When the computer becomes available, the technical implementation may add the local model, runtime, secure tunnel and production configuration without redesigning the private messaging subsystem.
+
+### Translation security and privacy for private conversations
+
+Private-message translation must preserve the privacy boundary of the conversation. Messages must not be sent to an external provider merely because translation is enabled unless the applicable permissions, privacy model and provider policy explicitly authorize that transfer.
+
+The translation layer must maintain provenance indicating, where applicable, the translation engine/version, source locale, target locale, timestamp and confidence. Translation cache entries must respect conversation permissions and retention rules.
+
+
+
 MORISE's core AI, translation and internationalization architecture must **not require an external API key to function**.
 
 The preferred execution hierarchy is provider-agnostic:
