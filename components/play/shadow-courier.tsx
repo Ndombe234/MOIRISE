@@ -1,97 +1,75 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import type { GameDefinition } from "@/lib/play/types";
-
-const SIZE = 5;
-const SOLUTION = [4, 9, 14, 13, 12];
-
-function neighbors(cell: number) {
-  const row = Math.floor(cell / SIZE);
-  const col = cell % SIZE;
-  return [
-    row > 0 ? cell - SIZE : -1,
-    row < SIZE - 1 ? cell + SIZE : -1,
-    col > 0 ? cell - 1 : -1,
-    col < SIZE - 1 ? cell + 1 : -1,
-  ].filter((value) => value >= 0);
-}
-
-export function canRoute(gates: number[]) {
-  const gateSet = new Set(gates);
-  const queue = [4];
-  const visited = new Set(queue);
-
-  while (queue.length) {
-    const current = queue.shift()!;
-    if (current === 12) return true;
-    for (const next of neighbors(current)) {
-      if (!gateSet.has(next) || visited.has(next)) continue;
-      visited.add(next);
-      queue.push(next);
-    }
-  }
-  return false;
-}
+import type { ShadowChallenge, ShadowPoint } from "@/lib/play/games/shadow-courier";
 
 export function ShadowCourier({
   definition,
+  challenge,
   onComplete,
 }: {
   definition: GameDefinition;
-  onComplete: (result: {
-    status: "completed" | "failed";
-    score: number;
-    durationMs: number;
-    signals: Record<string, number>;
-    momentCandidate: { kind: "discovery"; title: string; summary: string } | null;
-  }) => void;
+  challenge: ShadowChallenge;
+  onComplete: (actions: unknown) => void;
 }) {
-  const [gates, setGates] = useState<number[]>([4]);
-  const [sent, setSent] = useState(false);
-  const objective = useMemo(() => canRoute(gates), [gates]);
+  const [path, setPath] = useState<ShadowPoint[]>([challenge.start]);
+  const current = path[path.length - 1];
 
-  function toggle(cell: number) {
-    if (sent || cell === 4 || cell === 12) return;
-    setGates((current) => current.includes(cell) ? current.filter((v) => v !== cell) : current.length < 7 ? [...current, cell] : current);
-  }
+  const blocked = new Set(challenge.blocked);
+  const key = (point: ShadowPoint) => point[0] + ":" + point[1];
+  const isAdjacent = (a: ShadowPoint, b: ShadowPoint) => Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]) === 1;
 
-  function send() {
-    setSent(true);
-    onComplete({
-      status: objective ? "completed" : "failed",
-      score: objective ? Math.max(300, 1000 - gates.length * 45) : 80,
-      durationMs: Math.max(250, gates.length * 500),
-      signals: { planning: objective ? 95 : 20, exploration: gates.length * 9 },
-      momentCandidate: objective ? {
-        kind: "discovery",
-        title: "Route trouvée",
-        summary: "Tu as créé un chemin de lumière viable pour le messager d’ombre.",
-      } : null,
-    });
+  function move(point: ShadowPoint) {
+    if (!isAdjacent(current, point)) return;
+    if (blocked.has(key(point))) return;
+    const destination = challenge.portals[key(point)] ?? point;
+    const next = [...path, point];
+    setPath(next);
+    if (destination[0] === challenge.exit[0] && destination[1] === challenge.exit[1]) {
+      onComplete({ path: next });
+    }
   }
 
   return (
     <div className="game-board game-shadow" aria-label={definition.title}>
       <div className="game-status">
-        <span>Portails {gates.length}/7</span>
-        <strong>{objective ? "Chemin ouvert" : "Chemin incomplet"}</strong>
+        <span>Route {Math.max(0, path.length - 1)} moves</span>
+        <strong>Guide the shadow</strong>
       </div>
       <div className="shadow-grid">
-        {Array.from({ length: SIZE * SIZE }, (_, cell) => {
-          const active = gates.includes(cell);
-          const start = cell === 4;
-          const goal = cell === 12;
+        {Array.from({ length: challenge.size * challenge.size }, (_, index) => {
+          const row = Math.floor(index / challenge.size);
+          const col = index % challenge.size;
+          const point: ShadowPoint = [row, col];
+          const cellKey = key(point);
+          const isBlocked = blocked.has(cellKey);
+          const isStart = row === challenge.start[0] && col === challenge.start[1];
+          const isExit = row === challenge.exit[0] && col === challenge.exit[1];
+          const isPath = path.some(([r, c]) => r === row && c === col);
+          const isPortal = Boolean(challenge.portals[cellKey]);
           return (
-            <button key={cell} type="button" className={"shadow-cell" + (active ? " is-gate" : "") + (start ? " is-start" : "") + (goal ? " is-goal" : "")} onClick={() => toggle(cell)} aria-label={"Tile " + (cell + 1)}>
-              {start ? "◆" : goal ? "◎" : active ? "•" : ""}
+            <button
+              key={cellKey}
+              type="button"
+              disabled={isBlocked}
+              className={[
+                "shadow-cell",
+                isBlocked ? "is-blocked" : "",
+                isPath ? "is-path" : "",
+                isStart ? "is-start" : "",
+                isExit ? "is-exit" : "",
+                isPortal ? "is-portal" : "",
+              ].filter(Boolean).join(" ")}
+              onClick={() => move(point)}
+              aria-label={isBlocked ? "Blocked" : isExit ? "Exit" : isPortal ? "Portal" : "Route cell"}
+            >
+              {isStart ? "◆" : isExit ? "◎" : isPortal ? "◇" : ""}
             </button>
           );
         })}
       </div>
-      <button type="button" className="signal-strike" onClick={send} disabled={sent}>ENVOYER L’OMBRE</button>
-      <p className="game-instruction">Ne dessine pas un chemin classique. Construis seulement les passages de lumière dont l’ombre a besoin.</p>
-      <p className="game-microcopy">Indice de conception : les cases déjà ouvertes comptent comme des portails.</p>
+      <p className="game-instruction">Les portails déplacent la destination. Construis une route légale, pas une simple ligne droite.</p>
     </div>
   );
 }
