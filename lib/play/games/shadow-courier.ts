@@ -21,16 +21,23 @@ export function generateShadowChallenge(seed: number): ShadowChallenge {
   const corridor: ShadowPoint[] = [];
   for (let row = 6; row >= 0; row -= 1) corridor.push([row, row]);
   corridor.push([0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6]);
-  const safe = new Set(corridor.map(key));
-  const cells = Array.from({ length: 49 }, (_, index) => [Math.floor(index / 7), index % 7] as ShadowPoint);
-  const candidates = shuffle(cells.filter((cell) => !safe.has(key(cell)) && key(cell) !== key(start) && key(cell) !== key(exit)), random);
-  const blocked = candidates.slice(0, 10).map(key);
   const portals: Record<string, ShadowPoint> = {
-    "5:1": [5, 5],
-    "5:5": [5, 1],
-    "2:5": [1, 2],
-    "1:2": [2, 5],
+    "5:2": [2, 6],
+    "2:6": [5, 2],
+    "4:6": [1, 3],
+    "1:3": [4, 6],
   };
+  const safe = new Set([
+    ...corridor.map(key),
+    ...Object.keys(portals),
+    ...Object.values(portals).map(key),
+  ]);
+  const cells = Array.from({ length: 49 }, (_, index) => [Math.floor(index / 7), index % 7] as ShadowPoint);
+  const candidates = shuffle(
+    cells.filter((cell) => !safe.has(key(cell)) && key(cell) !== key(start) && key(cell) !== key(exit)),
+    random,
+  );
+  const blocked = candidates.slice(0, 10).map(key);
   return { size: 7, start, exit, blocked, portals };
 }
 
