@@ -9,7 +9,8 @@
 .system-core-ring-inner{border-color:rgba(180,198,228,.12);box-shadow:inset 0 0 18px rgba(137,164,215,.10)}
 .system-stage-orbit{border-color:rgba(168,188,222,.14)}
 .system-stage-line{background:linear-gradient(90deg,transparent,rgba(137,167,214,.20),transparent)}
-.system-secondary-nav{background:rgba(18,22,36,.76);border-color:rgba(165,181,211,.15)}
+/* Secondary tabs belong to the hamburger menu; they must not compete with the main navigation. */
+.system-secondary-nav{display:none!important}
 .system-secondary-links a{background:rgba(255,255,255,.025);border-color:rgba(165,181,211,.13);color:#9ca6ba}
 .system-secondary-links a:hover,.system-secondary-links a:focus-visible{color:#f0f4ff;border-color:rgba(169,192,229,.34);background:rgba(95,126,204,.10)}
 .system-secondary-caption{color:#7d879c}.system-secondary-heading small{color:#667188}
