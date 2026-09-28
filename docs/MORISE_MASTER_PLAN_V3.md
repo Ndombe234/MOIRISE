@@ -176,7 +176,7 @@ The AI remains technically separated from production-critical systems while expe
 
 `MORISE AI → observes MORISE performance → identifies MORISE-specific weakness → proposes/codes a MORISE-native modification → isolated experiment → uses available compute → evaluates against MORISE benchmarks → keeps/improves/rejects candidate → next MORISE AI version`
 
-The evolution loop can include code refactoring, recommendation experiments, translation/context improvements, personal and collective memory/context strategies, MORISE DNA, Convergence, Emergent Missions, World Memory quality, the MORISE Collective Intelligence Engine, MORISE Creation Runtime, MORISE World Agents, game discovery, game-design assistance, adaptive game assignment, social/community recommendations, benchmark generation and model fine-tuning/training when the required hardware, data and licensing are available.
+The evolution loop can include code refactoring, recommendation experiments, translation/context improvements, personal and collective memory/context strategies, MORISE DNA, Convergence, Emergent Missions, **MORISE Emergent Experience Engine**, World Memory quality, the MORISE Collective Intelligence Engine, MORISE Creation Runtime, MORISE World Agents, game discovery, game-design assistance, adaptive game assignment, social/community recommendations, benchmark generation and model fine-tuning/training when the required hardware, data and licensing are available.
 
 **The ability to call a model or API is not considered proof that MORISE AI has been built.** A MORISE AI capability is complete only when the corresponding MORISE-native mechanism, state, evaluation path and integration are implemented and validated.
 
@@ -330,9 +330,78 @@ This feedback contributes to controlled MORISE-specific learning and experiments
 
 The Evolution Engine must remain valuable when the PLAYER is completely alone. Social recommendations, collaborators, communities or collective Living Object opportunities may be proposed only when the signals justify them and the user remains in control.
 
+### MORISE Emergent Experience Engine
+
+The Evolution Engine also contains an internal **MORISE Emergent Experience Engine** for creating unusual, adaptive, replayable and experimental experiences from the PLAYER's permitted journey and the wider MORISE world. It does **not** create a new navigation tab or a second experience platform. It orchestrates existing Living Objects, Creation Tools, Creation Runtime, Convergence, World Agents, World Memory, CIE and MORISE AI capabilities.
+
+Its purpose is to make MORISE capable of producing experiences that were not fully predetermined at product-design time while remaining safe, explainable enough for material decisions, reversible and measurable.
+
+#### Core loop
+
+PLAYER EXPERIENCE / CURRENT CONTEXT → HYPOTHESIS / MUTATION → EXPERIENCE GENERATION OR ASSEMBLY → PLAYER INTERACTION → OBSERVE → CONSEQUENCE → REVEAL / DISCOVERY → VALIDATE → REMEMBER → FUTURE EXPERIENCE
+
+#### Supported emergent experience patterns
+
+The engine may generate, combine or retire patterns such as:
+
+- **What If:** create a playable alternative branch from a meaningful past choice, Living Object state, game decision or story state;
+- **You Missed Something:** surface a deliberately hidden but legitimate element that the PLAYER did not discover, then allow a return exploration;
+- **Hidden Rule:** create experiences where a non-obvious rule is discoverable through experimentation rather than explained in advance;
+- **Play Against Your Trace:** reconstruct a bounded, non-sensitive strategy or decision pattern from the PLAYER's previous gameplay and let the PLAYER challenge that historical trace;
+- **Worlds That Remember:** allow eligible abandoned or inactive creations to preserve their lineage and become discoverable again when permissions allow, so later PLAYERs can reactivate, continue or solve them;
+- **One Problem, Many Approaches:** present related PLAYERs with controlled variants of a shared problem and compare validated solution strategies without exposing private information;
+- **Mutation:** let an eligible game, Living Object, rule set or experience evolve through controlled single-rule or component mutations, with branch history and rollback;
+- **Role Inversion:** temporarily change the PLAYER's functional role inside an experience, such as becoming an opponent, world controller, event trigger or rules participant;
+- **Mystery Investigation:** turn unexplained state changes or anomalies into contextual, optional investigative experiences with clues and auditable causes;
+- **AI Fallibility:** when MORISE makes a non-critical prediction that proves wrong, it may expose the discrepancy as an optional experiment rather than hiding the failure, enabling the PLAYER to investigate how the experience changes after the correction;
+- **Player Laboratory:** offer controlled experimental mechanics that have not yet been broadly validated, with explicit lightweight participation framing and the ability to reject, restart or leave;
+- **Emergent Experience:** combine recent validated signals, mechanics, Living Objects, problems, strategies or experiences to generate a new playable or interactive experience that did not exist as a predefined item.
+
+These are **experience patterns**, not permanent features or separate systems. MORISE AI decides contextually whether any pattern is appropriate.
+
+#### Procedural and generative behavior
+
+When required infrastructure is available, MORISE AI may use Creation Tools + Creation Runtime to generate or assemble the environment, rules, code, scenes, assets and test configuration needed for an emergent experience. A validated fallback must exist for latency-sensitive or unavailable capabilities.
+
+World Agents may participate as bounded opponents, playtesters, investigators, simulators or evaluators. Their observations enter the existing validation pipeline rather than becoming unrestricted autonomous authority.
+
+#### Discovery and suspense
+
+The system may intentionally withhold non-essential information and reveal it through PLAYER action, as long as this does not conceal material permissions, safety conditions, purchases, privacy consequences or other consequential facts.
+
+The intended experience pattern is:
+
+CURIOSITY → ACTION → UNEXPECTED CONSEQUENCE → QUESTION → EXPERIMENT → DISCOVERY → NEW POSSIBILITY
+
+The system should optimize for **curiosity and agency**, not compulsive engagement. PLAYers can leave, restart, reject or skip an experiment where appropriate.
+
+#### Collective experiments
+
+The engine can extend beyond solo play. MORISE may give multiple PLAYERs related but non-identical variants of the same problem, mechanic or mystery, then compare validated outcomes.
+
+Example:
+
+> **MORISE EXPERIMENT**
+>
+> `127 PLAYERs tried different solutions.`
+>
+> `A new strategy emerged.`
+
+Only validated, appropriately attributed knowledge may enter World Memory/CIE.
+
+#### Evolutionary history
+
+Every meaningful mutation, experiment, branch or emergent experience should preserve provenance when appropriate: source experience, rules/components changed, version, creator/contributor attribution, validation results, PLAYER feedback, World Agent observations and resulting branch.
+
+This lets MORISE evolve experiences as **histories of experiments**, not disposable generated content.
+
+#### Anti-pattern
+
+MORISE must not generate random novelty for its own sake. An emergent experience must have a reason grounded in the current context, an approved experiment objective, a validated learning hypothesis, a meaningful creative transformation or a clearly defined entertainment purpose.
+
 ### No new navigation tab
 
-Trace, Living World, Hidden Possibilities, Unexplored Paths, Evolving Identity, MORISE Double and Fun & Surprise are **internal Evolution Engine mechanics**, not separate tabs or modules.
+Trace, Living World, Hidden Possibilities, Unexplored Paths, Evolving Identity, MORISE Double, Fun & Surprise and the **MORISE Emergent Experience Engine** are **internal Evolution Engine mechanics**, not separate tabs or modules.
 
 ---
 
@@ -808,7 +877,7 @@ SYSTEM recommends and surfaces games according to the PLAYER's explicit choices,
 
 The discovery system must treat **2D and 3D as first-class game formats**, alongside justified hybrid experiences. MORISE AI may determine which format or combination to surface for a PLAYER or context, while preserving novelty and exploration. Behavior is an input to contextual discovery, not a fixed label that limits the PLAYER to one category.
 
-Living Object discovery may surface playable objects and game branches based on player interests while preserving novelty and exploration. Evolution Engine may introduce unexpected but relevant game discoveries and personalized experiments. Convergence may detect independent game-mechanic trajectories and propose a safe experiment or playable Emergence Event. Validated game discoveries, strategies and experiment results may become World Memory knowledge when they satisfy collective-memory validation rules.
+Living Object discovery may surface playable objects and game branches based on player interests while preserving novelty and exploration. Evolution Engine may introduce unexpected but relevant game discoveries and personalized experiments through the MORISE Emergent Experience Engine, including alternate branches, hidden rules, controlled mutations and new experiments. Convergence may detect independent game-mechanic trajectories and propose a safe experiment or playable Emergence Event. Validated game discoveries, strategies and experiment results may become World Memory knowledge when they satisfy collective-memory validation rules.
 
 ## MODULE 8 — GAME A→Z FACTORY
 
@@ -914,6 +983,8 @@ MORISE DNA describes demonstrated capabilities and can unlock contextual MORISE-
 
 The **Fun & Surprise** layer can generate rare contextual experiences, humorous SYSTEM moments, personal mysteries, unusual discoveries, legendary moments, controlled visual surprises, mystery gifts and tasteful memory callbacks.
 
+The **MORISE Emergent Experience Engine** can then turn validated context into playable or interactive experiments: alternate branches, hidden-rule experiences, historical-trace challenges, reactivation of eligible abandoned creations, controlled mutations, role inversions, mystery investigations, transparent AI-fallibility experiments, player-laboratory mechanics and entirely new emergent experiences. These patterns use the existing Creation Runtime, World Agents, Convergence, CIE and World Memory instead of creating parallel systems.
+
 ### Game intelligence: adaptive discovery + 2D/3D generation
 
 At maturity, the SYSTEM can reason about games as both **content and executable experiences**. MORISE AI can select and surface games using explicit PLAYER choices, demonstrated non-sensitive behavior, preferences, progression, game reactions and contextual needs while preserving novelty and exploration.
@@ -1000,7 +1071,7 @@ A module is only `DONE` after code, UX, mobile, security and production validati
 
 ## Documentation rule
 
-This file is the authoritative plan for modules, AI mechanics, the MORISE First Contact experience, adaptive social behavior, adaptive game discovery/assignment, 2D/3D game creation and runtime architecture, MORISE Creation Runtime, MORISE Creation Tools, MORISE World Agents, translation, Living Objects, Evolution Engine/Fun & Surprise, MORISE DNA, Convergence, Missions From Reality, World Memory and the MORISE Collective Intelligence Engine. These capabilities are cross-module SYSTEM mechanics unless a module explicitly owns their implementation. They must not be implemented as duplicate systems or permanent navigation tabs.
+This file is the authoritative plan for modules, AI mechanics, the MORISE First Contact experience, adaptive social behavior, adaptive game discovery/assignment, 2D/3D game creation and runtime architecture, MORISE Creation Runtime, MORISE Creation Tools, MORISE World Agents, the MORISE Emergent Experience Engine, translation, Living Objects, Evolution Engine/Fun & Surprise, MORISE DNA, Convergence, Missions From Reality, World Memory and the MORISE Collective Intelligence Engine. These capabilities are cross-module SYSTEM mechanics unless a module explicitly owns their implementation. They must not be implemented as duplicate systems or permanent navigation tabs.
 
 MORISE AI is a **coded, MORISE-native runtime system**. External models/APIs may assist implementation or provide optional auxiliary capabilities, but no external API is itself MORISE AI. The AI development process must progressively implement the native mechanisms that allow MORISE AI to operate, learn from permitted signals, evaluate outcomes and improve through controlled MORISE AI Lab experiments.
 
