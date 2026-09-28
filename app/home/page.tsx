@@ -48,9 +48,13 @@ export default async function HomeWorldPage() {
             </Link>
           ))}
         </nav>
-        <section className="world-note" aria-label="Solo first">
+        <section className="world-note" aria-label="Solo first and social">
           <span className="world-note-dot" />
-          <div><strong>Solo-first</strong><p>You can explore MORISE alone. Connections appear naturally as your actions create opportunities.</p></div>
+          <div>
+            <strong>Solo-first</strong>
+            <p>You can explore MORISE alone. Connections appear naturally as your actions create opportunities.</p>
+            <Link className="world-social-link" href="/social">Open Social →</Link>
+          </div>
         </section>
       </section>
     </main>
