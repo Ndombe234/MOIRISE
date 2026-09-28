@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { normalizeCommentBody, normalizeMediaUrl, normalizePostBody } from "@/lib/social/validation";
+import { normalizeCommentBody, normalizeMediaUrl, normalizePostBody } from "../lib/social/validation";
 
 describe("social validation", () => {
   it("normalizes post and comment text", () => {
