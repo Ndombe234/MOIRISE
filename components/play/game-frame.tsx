@@ -1,39 +1,21 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import type { GameDefinition, PlayResult, PlayRuntimeProps } from "@/lib/play/types";
+import { useState } from "react";
+import type { GameDefinition } from "@/lib/play/types";
 
-type Props = PlayRuntimeProps & {
+export function GameFrame({
+  definition,
+  onComplete,
+  onAbandon,
+  children,
+}: {
+  definition: GameDefinition;
+  onComplete: (actions: unknown) => void;
+  onAbandon: () => void;
   children: React.ReactNode;
-};
-
-export function GameFrame({ definition, onComplete, onAbandon, children }: Props) {
+}) {
   const [startedAt] = useState(() => performance.now());
-  const attemptId = useRef<string>(crypto.randomUUID());
-
-  useEffect(() => {
-    const onVisibilityChange = () => {
-      if (document.visibilityState === "hidden") {
-        // The run remains resumable; we do not silently fail a game on tab switches.
-      }
-    };
-    document.addEventListener("visibilitychange", onVisibilityChange);
-    return () => document.removeEventListener("visibilitychange", onVisibilityChange);
-  }, []);
-
-  const complete = (result: Omit<PlayResult, "gameId" | "attemptId">) => {
-    onComplete({
-      ...result,
-      durationMs: Math.max(250, Math.round(performance.now() - startedAt)),
-    });
-  };
-
-  const abandon = () => {
-    onAbandon({
-      durationMs: Math.max(250, Math.round(performance.now() - startedAt)),
-    });
-  };
-
+  void startedAt;
   return (
     <section className="play-frame" aria-labelledby="play-frame-title">
       <header className="play-frame-header">
@@ -44,7 +26,7 @@ export function GameFrame({ definition, onComplete, onAbandon, children }: Props
         </div>
         <div className="play-frame-meta">
           <span>~{definition.estimatedSeconds}s</span>
-          <button type="button" className="play-quiet-button" onClick={abandon}>Exit</button>
+          <button type="button" className="play-quiet-button" onClick={onAbandon}>Exit</button>
         </div>
       </header>
       <div className="play-canvas">{children}</div>
@@ -54,6 +36,5 @@ export function GameFrame({ definition, onComplete, onAbandon, children }: Props
 }
 
 export function useGameAttempt() {
-  const attemptId = useRef<string>(crypto.randomUUID());
-  return attemptId.current;
+  return undefined;
 }
