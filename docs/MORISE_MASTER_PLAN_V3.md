@@ -498,11 +498,33 @@ No future feature should create separate systems named “Resonance Engine”, �
 
 ### MORISE Creation Runtime
 
-MORISE AI must not require a pre-existing game/world environment for every new creation. When an approved creation requires an environment that does not yet exist, the MORISE Creation Runtime can assemble or configure an isolated creation environment from available MORISE-native runtime capabilities.
+MORISE Creation Runtime is a **PLAYER-facing creation capability**. MORISE AI must not require a pre-existing game/world environment for every new creation. When a PLAYER asks MORISE to create an interactive experience and the required environment does not yet exist, the runtime can assemble or configure an isolated creation environment from available MORISE-native runtime capabilities.
+
+MORISE AI is the intelligence/orchestrator, but it is **not assumed to be able to create a game without technical tools**. The PLAYER-facing creation system therefore depends on an explicit **MORISE Creation Tools layer**: a set of controlled tools that MORISE AI can select and invoke to perform concrete creation, build, execution, testing and optimization operations.
+
+### MORISE Creation Tools
+
+The Creation Tools layer provides the capabilities required for MORISE AI to turn a PLAYER intention into a real executable experience. Depending on the target, it may include tools for:
+
+- code generation, inspection, modification and refactoring;
+- 2D/3D scene and world construction;
+- asset generation, import, transformation and configuration;
+- characters, animation, materials, textures, lighting and cameras;
+- input, collision, physics, gameplay rules and state management;
+- UI/HUD, audio and other experience components;
+- level/world generation and procedural content assembly;
+- persistence, networking and multiplayer services when required;
+- build, packaging, deployment-to-test and runtime execution;
+- automated testing, diagnostics, error detection, correction and regression checks;
+- performance profiling and optimization for supported web/mobile targets.
+
+Tools are permissioned, versioned and observable. MORISE AI may only perform operations exposed by available and authorized tools. If a required capability is missing, MORISE must not pretend that the game has been created; it must either use another compatible capability, implement/prepare the missing tool inside the protected MORISE development/AI infrastructure, or report the concrete limitation before proposing the result to PLAY.
+
+The PLAYER does not need to know these tools or program them manually. The visible interaction can remain simple: the PLAYER expresses an intention, while MORISE AI chooses and orchestrates the necessary tools behind the existing MORISE experience.
 
 The creation loop is:
 
-`PLAYER / SYSTEM INTENT → MORISE AI DESIGN → FORMAT SELECTION → RUNTIME ASSEMBLY → CODE / SCENE / ASSET / RULE GENERATION → BUILD → EXECUTE → AUTOMATED TEST → CORRECT → OPTIMIZE → VALIDATE → PLAY / EXPERIENCE`
+`PLAYER / SYSTEM INTENT → MORISE AI DESIGN → CREATION-TOOL SELECTION → FORMAT SELECTION → RUNTIME ASSEMBLY → CODE / SCENE / ASSET / RULE GENERATION → BUILD → EXECUTE → AUTOMATED TEST → CORRECT → OPTIMIZE → VALIDATE → PLAY / EXPERIENCE`
 
 The runtime must support the existing **2D, 3D and justified hybrid** game architecture and may also support non-game interactive experiences when a future module requires them.
 
@@ -635,7 +657,7 @@ Validated design discoveries and reusable solutions can contribute to World Memo
 
 AI may assist research, design, content, balancing, documentation, testing and format-specific 2D/3D production workflows.
 
-MORISE Creation Runtime is the execution foundation for generated prototypes and environments. If the required environment does not already exist, MORISE AI may assemble an isolated runtime from approved reusable components, generate the required code/scenes/assets/rules, build and execute the prototype, run automated tests, iterate on failures and only then propose the experience for PLAY. The runtime must support reproducible builds, diagnostics, rollback and secure isolation.
+MORISE Creation Runtime is the execution foundation for generated prototypes and environments **for PLAYER-facing creation as well as internal validated production flows**. If the required environment does not already exist, MORISE AI may assemble an isolated runtime from approved reusable components, select the required MORISE Creation Tools, generate/configure the required code/scenes/assets/rules, build and execute the prototype, run automated tests, diagnose failures, iterate and optimize, and only then propose the experience for PLAY. The runtime must support reproducible builds, diagnostics, rollback and secure isolation. MORISE AI may only claim successful creation when the required creation operations were actually performed by available authorized tools and validated by the runtime/test pipeline.
 
 MORISE World Agents may be deployed inside the creation/test loop as scoped playtesters, opponents, evaluators or simulation participants. Their observations can inform balancing and validation but do not bypass human/player control or production authorization.
 
@@ -731,7 +753,7 @@ The mature GAME A→Z Factory and Shared Game Engine support **2D, 3D and justif
 
 The AI can learn from accepted, rejected, completed, abandoned and corrected game experiences within the existing privacy, anti-manipulation and controlled-learning rules. Player behavior informs discovery and adaptation but must not create a coercive filter bubble. Format and game assignment remain explainable enough to the PLAYER when material.
 
-At maturity, MORISE Creation Runtime can assemble a missing execution environment when a new game or interactive experience requires capabilities that do not yet exist as a ready-made environment. MORISE AI can generate/configure the required code, scenes, assets, rules and runtime components, build them in isolation, execute automated tests, diagnose failures, iterate and produce a reproducible candidate before production exposure.
+At maturity, MORISE Creation Runtime becomes a PLAYER-facing foundation for creating new games and interactive experiences even when no ready-made environment exists. MORISE AI selects the appropriate authorized **MORISE Creation Tools**, assembles the missing execution environment, generates/configures code, scenes, assets, rules and runtime components, builds them in isolation, executes automated tests, diagnoses failures, iterates and optimizes, and produces a reproducible candidate before production exposure. The tool layer is part of the architecture: AI orchestration alone is not treated as sufficient proof of real game creation.
 
 MORISE World Agents become scoped functional participants of the mature world: playtesters, opponents, simulation agents, evaluators, exploration agents or other role-specific participants. MORISE AI can create or retire these agents according to controlled objectives, permissions and validation requirements. Their observations feed the existing CIE/World Memory pipeline only when validated.
 
@@ -803,7 +825,7 @@ A module is only `DONE` after code, UX, mobile, security and production validati
 
 ## Documentation rule
 
-This file is the authoritative plan for modules, AI mechanics, adaptive social behavior, adaptive game discovery/assignment, 2D/3D game creation and runtime architecture, MORISE Creation Runtime, MORISE World Agents, translation, Living Objects, Evolution Engine/Fun & Surprise, MORISE DNA, Convergence, Missions From Reality, World Memory and the MORISE Collective Intelligence Engine. These capabilities are cross-module SYSTEM mechanics unless a module explicitly owns their implementation. They must not be implemented as duplicate systems or permanent navigation tabs.
+This file is the authoritative plan for modules, AI mechanics, adaptive social behavior, adaptive game discovery/assignment, 2D/3D game creation and runtime architecture, MORISE Creation Runtime, MORISE Creation Tools, MORISE World Agents, translation, Living Objects, Evolution Engine/Fun & Surprise, MORISE DNA, Convergence, Missions From Reality, World Memory and the MORISE Collective Intelligence Engine. These capabilities are cross-module SYSTEM mechanics unless a module explicitly owns their implementation. They must not be implemented as duplicate systems or permanent navigation tabs.
 
 MORISE AI is a **coded, MORISE-native runtime system**. External models/APIs may assist implementation or provide optional auxiliary capabilities, but no external API is itself MORISE AI. The AI development process must progressively implement the native mechanisms that allow MORISE AI to operate, learn from permitted signals, evaluate outcomes and improve through controlled MORISE AI Lab experiments.
 
