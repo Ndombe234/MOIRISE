@@ -20,9 +20,21 @@ The SYSTEM must reveal capabilities progressively and contextually when they bec
 
 ## MORISE-ONLY AI MISSION — NON-NEGOTIABLE
 
-The AI being built for MORISE exists **only to operate, assist, understand, personalize and evolve within MORISE**. Its role and purpose are strictly limited to MORISE. It is not being built as a general autonomous agent for the outside world.
+**MORISE AI is a coded, MORISE-native AI system, not a simple API, wrapper, chatbot shell or recommendation layer.** It is built as part of the MORISE software architecture and exists only to operate, assist, understand, personalize and evolve within MORISE. Its role and purpose are strictly limited to MORISE.
 
 Its domain is exclusively MORISE: PLAYERs, WORLD, SOCIAL, PLAY, games, GUILDS, activities, events, creator tools, translation, recommendations, moderation, progression, memory, emergence and internal SYSTEM operations.
+
+External models, APIs or hosted AI services may be used as **auxiliary components** when appropriate, but they do not constitute MORISE AI itself. The product must retain MORISE-native mechanisms for orchestration, context, memory, learning, evaluation, permissions and controlled evolution.
+
+### MORISE AI construction model
+
+The AI used to build MORISE is expected to progressively **code the mechanisms that make MORISE AI learn and operate**. Building the product and building its native AI therefore advance together:
+
+`DEVELOPMENT AI / CODING PROCESS → IMPLEMENTS MORISE AI MECHANISMS → MORISE AI RUNTIME → OBSERVES MORISE → LEARNS FROM PERMITTED SIGNALS → EVALUATES → IMPROVES THROUGH CONTROLLED EXPERIMENTS`
+
+This does **not** mean the development AI is silently granted unrestricted runtime control over MORISE. Development-time coding, testing and architecture changes remain subject to the normal repository, security, review, validation and deployment controls. The resulting MORISE AI is the runtime system embedded in MORISE.
+
+MORISE AI must progressively contain, as native software components, its own MORISE-specific orchestration, memory/context handling, learning/feedback loops, capability discovery, evaluation/benchmarking, specialist-mechanic coordination and controlled self-improvement mechanisms.
 
 The AI may improve its own MORISE-specific mechanisms, algorithms, models, prompts, ranking strategies and supporting code inside the MORISE AI Lab when the required infrastructure is available. This self-improvement exists solely to make MORISE better. It must not acquire a product mission outside MORISE or unrestricted authority over external systems, unrelated applications, arbitrary internet services, user devices or financial accounts.
 
@@ -30,9 +42,11 @@ The AI remains technically separated from production-critical systems while expe
 
 ## Self-evolving MORISE AI architecture
 
-`MORISE AI → observes MORISE performance → identifies MORISE-specific weakness → proposes/creates modification → isolated experiment → uses available compute → evaluates against MORISE benchmarks → keeps/improves/rejects candidate → next MORISE AI version`
+`MORISE AI → observes MORISE performance → identifies MORISE-specific weakness → proposes/codes a MORISE-native modification → isolated experiment → uses available compute → evaluates against MORISE benchmarks → keeps/improves/rejects candidate → next MORISE AI version`
 
-The evolution loop can include code refactoring, recommendation experiments, translation/context improvements, personal and collective memory/context strategies, game discovery, game-design assistance, social/community recommendations, emergence detection, World Memory quality, benchmark generation and model fine-tuning/training when the required hardware, data and licensing are available.
+The evolution loop can include code refactoring, recommendation experiments, translation/context improvements, personal and collective memory/context strategies, MORISE DNA, Convergence, Emergent Missions, World Memory quality, game discovery, game-design assistance, social/community recommendations, benchmark generation and model fine-tuning/training when the required hardware, data and licensing are available.
+
+**The ability to call a model or API is not considered proof that MORISE AI has been built.** A MORISE AI capability is complete only when the corresponding MORISE-native mechanism, state, evaluation path and integration are implemented and validated.
 
 **Compute is a constraint, not proof of intelligence:** stronger machines enable larger experiments, but every claimed improvement must be measured with repeatable MORISE-specific evaluations.
 
@@ -607,5 +621,7 @@ A module is only `DONE` after code, UX, mobile, security and production validati
 ## Documentation rule
 
 This file is the authoritative plan for modules, AI mechanics, adaptive social behavior, translation, Living Objects, Evolution Engine/Fun & Surprise, MORISE DNA, Convergence, Missions From Reality and World Memory. These capabilities are cross-module SYSTEM mechanics unless a module explicitly owns their implementation. They must not be implemented as duplicate systems or permanent navigation tabs.
+
+MORISE AI is a **coded, MORISE-native runtime system**. External models/APIs may assist implementation or provide optional auxiliary capabilities, but no external API is itself MORISE AI. The AI development process must progressively implement the native mechanisms that allow MORISE AI to operate, learn from permitted signals, evaluate outcomes and improve through controlled MORISE AI Lab experiments.
 
 When a new feature proposal overlaps an existing capability, update and extend the existing canonical definition instead of creating a parallel feature with a new name. Future AI agents must treat this file as the implementation contract and preserve the current working point unless the plan explicitly changes it.
