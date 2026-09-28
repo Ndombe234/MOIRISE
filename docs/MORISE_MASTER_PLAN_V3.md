@@ -54,41 +54,15 @@ A Living Object can begin as an idea and evolve into different forms without bei
 
 `IDEA → STORY → GAME → CHALLENGE → COMMUNITY → EVENT → NEW BRANCH`
 
-The same mechanism can support:
-
-- game creation;
-- stories and universes;
-- art/creative works;
-- collaborative ideas and solutions;
-- music concepts;
-- projects;
-- challenges;
-- community concepts;
-- experiments and collective creations.
+The same mechanism can support game creation, stories/universes, art/creative works, collaborative ideas/solutions, music concepts, projects, challenges, community concepts, experiments and collective creations.
 
 ### Core object model
 
-Each Living Object has:
-
-- immutable origin/seed;
-- owner/creator attribution;
-- version history;
-- contribution history;
-- branches/variants;
-- contributors and permissions;
-- current state/type;
-- transformation lineage;
-- engagement/quality signals;
-- invitations/share links;
-- optional conversion target such as game, challenge, event or community.
+Each Living Object has immutable origin/seed, owner/creator attribution, version history, contribution history, branches/variants, contributors and permissions, current state/type, transformation lineage, engagement/quality signals, invitations/share links and an optional conversion target such as game, challenge, event or community.
 
 The system must preserve attribution and lineage when branches merge or transform.
 
 ### Viral loop
-
-The viral unit is not simply **"share my post"**.
-
-The core loop is:
 
 `CREATE → INVITE → CONTRIBUTE → TRANSFORM → BRANCH → SHARE → NEW PLAYER CONTRIBUTES`
 
@@ -96,36 +70,80 @@ A recipient becomes a participant instead of only a viewer. Sharing therefore ex
 
 ### MORISE AI role
 
-The existing MORISE-only AI architecture operates this mechanic; Living Objects do **not** replace the AI plan.
+The existing MORISE-only AI architecture operates this mechanic; Living Objects do not replace the AI plan.
 
-AI may:
+AI may detect meaningful evolution patterns, suggest compatible contributors, identify complementary branches, propose a merge or fork, suggest converting an object into a game/challenge/event/community, recommend discovery surfaces, explain why a transformation is proposed, help create/balance/test/document the resulting creation, and learn from accepted, rejected, corrected and completed proposals.
 
-- detect meaningful evolution patterns;
-- suggest compatible contributors;
-- identify complementary branches;
-- propose a merge or fork;
-- suggest converting an object into a game, challenge, event or community;
-- recommend discovery surfaces;
-- explain why a transformation is proposed;
-- help create, balance, test and document the resulting creation;
-- learn from accepted, rejected, corrected and completed proposals.
-
-AI suggestions never silently grant permissions, expose private information, merge branches or create persistent communities without the required user action.
+AI suggestions never silently grant permissions, expose private information, merge branches or create persistent communities without required user action.
 
 ### Privacy and integrity
 
-- Private messages/content cannot be exposed through inferred Living Object relationships.
-- Sensitive attributes must not be inferred for recommendations.
-- Contributors control visibility and permissions.
-- Blocking, reporting and mute controls remain authoritative.
-- Server-side authorization/RLS validates every mutation.
-- AI is not an authorization boundary.
-- Branches and merges are auditable.
-- Anti-spam, anti-abuse, anti-poisoning and rate-limit controls are required.
+Private messages/content cannot be exposed through inferred Living Object relationships. Sensitive attributes must not be inferred for recommendations. Contributors control visibility and permissions. Blocking/reporting/mute controls remain authoritative. Server-side authorization/RLS validates every mutation. AI is not an authorization boundary. Branches and merges are auditable. Anti-spam, anti-abuse, anti-poisoning and rate-limit controls are required.
 
 ### Cross-module rule
 
-Living Objects are a **cross-module primitive**, not Module 16 and not a replacement for existing modules. Each module adopts the primitive where it creates genuine value.
+Living Objects are a **cross-module primitive**, not a separate module and not a replacement for existing modules. Each module adopts the primitive where it creates genuine value.
+
+---
+
+# MORISE EVOLUTION ENGINE — SOLO + EXPERIENCE EVOLUTION
+
+The **MORISE Evolution Engine** is a cross-module SYSTEM/AI layer. It does not create new navigation tabs. It operates behind the existing MORISE experience and progressively adapts the user's personal journey from permitted, non-sensitive signals.
+
+Its purpose is to make MORISE feel progressively more alive without forcing the user into social interaction.
+
+The engine can maintain and evolve:
+
+- **Trace:** a persistent history of meaningful actions, discoveries, creations, decisions and milestones.
+- **Living World:** a personal micro-world that changes as the PLAYER explores, creates, plays and experiments.
+- **Hidden Possibilities:** contextual possibilities that can become discoverable through legitimate patterns of use.
+- **Unexplored Paths:** a record of meaningful experiences the PLAYER has not yet explored, without presenting a simplistic completion percentage.
+- **Evolving Identity:** dynamic titles/archetypes derived from demonstrated behavior and achievements rather than a fixed questionnaire.
+- **MORISE Double:** a non-human, non-sensitive representation of the PLAYER's MORISE journey and patterns; it is not a copy of the person and is not a general-purpose agent.
+
+### Evolution loop
+
+`PLAYER ACTION → PERMITTED SIGNAL → MORISE EVOLUTION ENGINE → CONTEXTUAL CHANGE/PROPOSAL → PLAYER RESPONSE → FEEDBACK → CONTROLLED LEARNING`
+
+The engine must prioritize relevance, novelty and exploration rather than creating a closed behavioral filter bubble.
+
+### Fun & Surprise layer
+
+The Evolution Engine also contains a **Fun & Surprise** layer designed to make MORISE entertaining in SOLO mode without requiring a new tab or constant notifications.
+
+Possible mechanics include:
+
+- **SYSTEM personality moments:** occasional contextual humor, mystery or playful challenges while respecting user preferences and frequency limits;
+- **rare events:** unusual mini-events, discoveries, objects or challenges triggered by legitimate combinations of activity;
+- **personal mysteries:** clues that gradually reveal why an unusual element appeared;
+- **contextual coincidences:** playful connections between the PLAYER's MORISE activities;
+- **legendary moments:** rare, auditable experiences generated by genuinely unusual accomplishments or combinations;
+- **controlled visual glitches:** explicitly designed harmless visual surprises that never damage data or imply a real security failure;
+- **mystery gifts:** optional surprises whose meaning can be discovered through play;
+- **SYSTEM memory moments:** tasteful references to meaningful past MORISE actions when useful and appropriate.
+
+These events must be **rare enough to remain special**, configurable where appropriate, and never used as manipulative engagement traps. The system should learn which experiences are welcomed, ignored or rejected.
+
+### Learning from fun
+
+The AI may use validated feedback from this layer to learn:
+
+- which surprise types users enjoy;
+- which interventions are ignored or considered annoying;
+- which challenges encourage healthy participation;
+- which contextual discoveries generate useful exploration;
+- which experiences lead to meaningful return behavior;
+- which Living Object interactions produce creative or collaborative activity.
+
+This feedback contributes to controlled MORISE-specific learning and experiments. User reactions do **not** directly rewrite the global production AI.
+
+### Solo-first rule
+
+The Evolution Engine must remain valuable when the PLAYER is completely alone. Social recommendations, collaborators, communities or collective Living Object opportunities may be proposed only when the signals justify them and the user remains in control.
+
+### No new navigation tab
+
+Trace, Living World, Hidden Possibilities, Unexplored Paths, Evolving Identity, MORISE Double and Fun & Surprise are **internal Evolution Engine mechanics**, not separate tabs or modules.
 
 ---
 
@@ -147,7 +165,7 @@ Living Objects are a **cross-module primitive**, not Module 16 and not a replace
 | 12 | EVENTS | PLANNED | Solo + collective recurring experiences and Living Object conversions |
 | 13 | ADAPTIVE WORLD | PLANNED | Platform-wide personalization, Living Object discovery and exploration |
 | 14 | COLLECTION / REWARD ECONOMY | PLANNED | Fair collection, rewards, creator/reward mechanics |
-| 15 | META SYSTEM | PLANNED / first-cycle ceiling | Unified mature MORISE SYSTEM AI + MORISE AI Lab + Living Objects |
+| 15 | META SYSTEM | PLANNED / first-cycle ceiling | Unified mature MORISE SYSTEM AI + MORISE AI Lab + Living Objects + Evolution Engine |
 
 ## MODULE 1 — FOUNDATION
 
@@ -155,7 +173,7 @@ Stable application, routing, auth, responsive UI, database conventions, security
 
 ## MODULE 2 — PLAYER
 
-Persistent PLAYER identity with profile, preferences, progression, titles, achievements, history and visibility controls. AI learns useful non-sensitive personal preferences from explicit choices and permitted activity. PLAYER owns attribution and consent controls for Living Object contributions.
+Persistent PLAYER identity with profile, preferences, progression, titles, achievements, history and visibility controls. AI learns useful non-sensitive personal preferences from explicit choices and permitted activity. PLAYER owns attribution and consent controls for Living Object contributions. Evolution Engine stores only permitted, useful signals for personal adaptation.
 
 ## MODULE 3 — SOCIAL + PRIVATE MESSAGING
 
@@ -165,17 +183,23 @@ Living Objects integrate with SOCIAL as shareable collaborative creations. Shari
 
 Adaptive community signals remain proposal-only: sustained meaningful interactions can produce a candidate GUILD, but the SYSTEM waits for user acceptance before persistent creation or membership changes.
 
+Evolution Engine can use social participation as one permitted signal, but solo experience remains first-class.
+
 ## MODULE 4 — WORLD
 
 WORLD exploration with Discover, Play, Create, Communities, Activities and Events. AI provides contextual discovery, ranking and recommendation while preserving exploration.
 
 Living Objects receive a discovery surface based on relevance, novelty, quality, diversity and legitimate participation signals. The WORLD must not become a closed popularity feed.
 
+Evolution Engine can alter discovery context, surface unexplored paths and create rare discoveries without adding a new navigation section.
+
 ## MODULE 5 — SYSTEM / PROGRESSION
 
 Unified XP, levels, missions, achievements, titles, rewards and progression history. AI provides SYSTEM conversational and orchestration foundations grounded in MORISE context and tools.
 
 Living Object participation can produce validated progression events such as creation, contribution, successful collaboration, testing or completion, without rewarding spam volume alone.
+
+Evolution Engine is orchestrated from SYSTEM and may create contextual titles, discoveries, missions, surprises and progression moments.
 
 ## MODULE 6 — PLAY — CURRENT FINAL QA
 
@@ -191,7 +215,7 @@ QA gate: SYSTEM/PLAYER/WORLD/SOCIAL/PLAY visibility; WORLD subcommands; SOCIAL m
 
 SYSTEM recommends games based on PLAYER. Research market demand, comparable games, reviews/community feedback, trends, engagement, risks and differentiation. AI starts with deterministic ranking and progressively learns from player feedback and permitted behavior.
 
-Living Object discovery may surface playable objects and game branches based on player interests while preserving novelty and exploration.
+Living Object discovery may surface playable objects and game branches based on player interests while preserving novelty and exploration. Evolution Engine may introduce unexpected but relevant game discoveries and personalized experiments.
 
 ## MODULE 8 — GAME A→Z FACTORY
 
@@ -225,11 +249,15 @@ Recurring solo and collective experiences. AI provides event discovery, scheduli
 
 A Living Object can become an event when its contributors choose that transformation: idea → event, challenge → event, game tournament → event, or collaborative project → event.
 
+Fun & Surprise can generate optional rare solo moments or contextual event proposals without requiring a permanent new tab.
+
 ## MODULE 13 — ADAPTIVE WORLD
 
 Personalize WORLD without creating a closed filter bubble. AI balances relevance, novelty and exploration across people, communities, games, activities and events.
 
 Living Object discovery adds another dimension: MORISE can surface an evolving creation, its active branch, a compatible contribution opportunity or a related emerging community rather than only showing finished content.
+
+Evolution Engine adds personal world changes, unexplored paths, rare discoveries and harmless surprises.
 
 ## MODULE 14 — COLLECTION / REWARD ECONOMY
 
@@ -237,9 +265,11 @@ Fair collections, cosmetics, rewards, creator incentives, referral/share systems
 
 Living Object contributions can receive transparent attribution and non-pay-to-win recognition/rewards. Reward design must prevent contribution spam and coordinated manipulation.
 
+Fun & Surprise rewards must be bounded, transparent enough to preserve trust and never become gambling-like or manipulative.
+
 ## MODULE 15 — META SYSTEM + MORISE AI LAB
 
-Integrate the mature MORISE SYSTEM and the MORISE-only self-evolution environment into one coherent experience. The SYSTEM becomes conversational like a modern general AI assistant, but all knowledge, memory, tools and actions are grounded in MORISE.
+Integrate the mature MORISE SYSTEM, MORISE-only self-evolution environment, Living Objects and Evolution Engine into one coherent experience. The SYSTEM becomes conversational like a modern general AI assistant, but all knowledge, memory, tools and actions are grounded in MORISE.
 
 ### MORISE AI Lab
 
@@ -255,6 +285,14 @@ At maturity, the SYSTEM can understand Living Object state, lineage, branches, c
 
 It can also identify complementary branches and propose merges or collaborations. These are proposals, not autonomous authority.
 
+### Evolution Engine intelligence
+
+At maturity, the SYSTEM can combine permitted signals from the PLAYER's MORISE journey to evolve the experience across Trace, Living World, Hidden Possibilities, Unexplored Paths, Evolving Identity and MORISE Double.
+
+The **Fun & Surprise** layer can generate rare contextual experiences, humorous SYSTEM moments, personal mysteries, unusual discoveries, legendary moments, controlled visual surprises, mystery gifts and tasteful memory callbacks.
+
+The AI continuously evaluates feedback such as acceptance, rejection, dismissal, repetition, engagement quality and explicit preference signals to improve which experiences it proposes. It must optimize for healthy, meaningful engagement rather than compulsive engagement.
+
 ### Compute scaling
 
 The Lab can begin on one capable computer and later use additional machines/GPU resources. `1 machine → experiments → more machines → larger experiments → GPU/cluster → larger workloads.` More compute never counts as proof of improvement.
@@ -267,9 +305,13 @@ Self-modification happens in the Lab first. Production remains protected by auth
 
 `PLAYER → MORISE SYSTEM understands context → correct specialist mechanic → useful response/proposal/action → feedback → MORISE AI Lab experiments → measured improvement → next MORISE AI version`
 
-And for creation:
+For creation:
 
 `PLAYER → seed Living Object → invite → contribute → transform → branch → share → new contributors → validated conversion → game/community/event/etc.`
+
+For personal evolution:
+
+`PLAYER → everyday MORISE activity → Evolution Engine → contextual change/discovery/surprise → PLAYER reaction → controlled learning → better future experience`
 
 ---
 
@@ -283,4 +325,4 @@ A module is only `DONE` after code, UX, mobile, security and production validati
 
 ## Documentation rule
 
-This file is the authoritative plan for modules, AI mechanics, adaptive social behavior, translation and Living Objects. Superseded standalone roadmaps must not be used as implementation instructions.
+This file is the authoritative plan for modules, AI mechanics, adaptive social behavior, translation, Living Objects and Evolution Engine/Fun & Surprise. Superseded standalone roadmaps must not be used as implementation instructions.
