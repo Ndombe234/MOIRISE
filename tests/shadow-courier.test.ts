@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { generateShadowChallenge, validateShadowRun } from "@/lib/play/games/shadow-courier";
+import { generateShadowChallenge, validateShadowRun } from "../lib/play/games/shadow-courier";
 
 describe("Shadow Courier", () => {
   it("generates deterministic challenges", () => {
