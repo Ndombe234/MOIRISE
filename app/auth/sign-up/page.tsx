@@ -20,12 +20,23 @@ export default function SignUpPage() {
     setNotice("");
     setLoading(true);
 
+    const referralCode = document.cookie
+      .split(";")
+      .map((part) => part.trim())
+      .find((part) => part.startsWith("morise_referral="))
+      ?.split("=")[1]
+      ?.trim()
+      ?.toLowerCase();
+
     const supabase = createClient();
     const { data, error: signUpError } = await supabase.auth.signUp({
       email: email.trim(),
       password,
       options: {
-        data: { display_name: displayName.trim() },
+        data: {
+          display_name: displayName.trim(),
+          ...(referralCode && /^[a-f0-9]{10}$/.test(referralCode) ? { referral_code: referralCode } : {}),
+        },
         emailRedirectTo: window.location.origin + "/auth/callback",
       },
     });
