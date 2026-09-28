@@ -1469,6 +1469,98 @@ Default conceptual flow:
 
 MORISE AI may summarize the reason for the alert and the recommended next permitted action, but the underlying threshold event and eligibility state must remain deterministic, auditable and independently verifiable.
 
+### MORISE OWNER / ADMIN CONTROL CENTER
+
+The MORISE platform must include a dedicated **Administrator Control Center / Back Office**. It is an operational control surface for the platform owner and authorized staff; it is not a normal PLAYER-facing navigation destination.
+
+#### Initial owner account
+
+The **already-created account of the project owner** is the canonical initial `OWNER / SUPER ADMIN` account of MORISE. This role must be established deterministically during initial production configuration and must never depend on signup order or on whichever account happens to register first after launch.
+
+The real account identifier must be supplied through secure production configuration rather than hard-coded as personal data in this Master Plan.
+
+The OWNER is the highest-authority platform role and has operational control over the platform capabilities exposed by the Back Office, including global configuration, user and role administration, moderation, content/experience governance, feature activation, Creator Economy configuration, system alerts, and authorized operational controls.
+
+OWNER protections:
+
+- the OWNER role cannot be granted or removed by a normal ADMIN or MODERATOR action;
+- role changes must be server-enforced and permission-checked;
+- ownership changes, when ever necessary, require a dedicated secure transfer/recovery procedure;
+- sensitive OWNER actions remain auditable and attributable;
+- AI must never silently grant itself OWNER privileges or elevate another account.
+
+#### Administrative hierarchy and permissions
+
+`OWNER / SUPER ADMIN → ADMINISTRATOR → MODERATOR → PLAYER`
+
+The hierarchy is implemented through **server-side role-based access control with granular permissions**, not through UI visibility alone.
+
+**OWNER / SUPER ADMIN** may:
+
+- control global platform configuration;
+- manage users, accounts, suspensions and recoveries within authorized policy boundaries;
+- create, modify, suspend and revoke ADMIN and MODERATOR roles;
+- assign granular permissions to staff roles;
+- manage content, experiences, reports and moderation policies;
+- configure and monitor Creator Economy eligibility thresholds and program states;
+- receive and manage high-priority system and economic alerts;
+- manage feature activation/deactivation and controlled rollout settings;
+- inspect audit logs and operational evidence;
+- supervise MORISE AI capabilities, tooling availability and protected operational settings;
+- access all other administrative capabilities exposed by the Back Office.
+
+**ADMINISTRATOR** receives only the permissions explicitly assigned by the OWNER and never inherits OWNER authority automatically.
+
+**MODERATOR** receives only the moderation permissions explicitly assigned by the OWNER/ADMIN, such as reviewing reports, handling permitted content actions, applying authorized sanctions and recording moderation decisions.
+
+Permissions must be granular enough to support least-privilege administration, for example:
+
+`USERS.READ`, `USERS.SUSPEND`, `ROLES.MANAGE`, `CONTENT.MODERATE`, `EXPERIENCES.MANAGE`, `ECONOMY.CONFIGURE`, `ALERTS.MANAGE`, `AUDIT.READ`, `SYSTEM.CONFIGURE`.
+
+Exact permission identifiers are technical-design data and may be expanded later without creating new PLAYER-facing modules.
+
+#### Full operational control through one Back Office
+
+The Back Office should provide one coherent administrative surface from which the OWNER can navigate the operational areas of MORISE without needing separate hidden administration products. Internal subsystems remain distinct, but administration is centralized.
+
+Indicative areas include:
+
+- dashboard / system status;
+- PLAYER and account management;
+- roles and staff permissions;
+- content and experience governance;
+- reports, moderation and sanctions;
+- Creator Economy / eligibility monitoring;
+- threshold and alert management;
+- system configuration and feature flags;
+- WORLD / EXPERIENCE operational controls where authorized;
+- AI/tooling status and capability configuration;
+- audit logs, provenance and change history;
+- incidents, failures and recovery state;
+- notification and escalation configuration.
+
+The Back Office is an **administrative control plane**, not a replacement for the player-facing MORISE SYSTEM.
+
+#### Administrative audit and safety
+
+Every sensitive administrative action must produce an immutable/auditable event containing, as applicable:
+
+`ACTOR → ROLE → ACTION → TARGET → BEFORE → AFTER → TIMESTAMP → RESULT → CORRELATION / REASON`
+
+High-impact actions such as ownership changes, role changes, account sanctions, economy configuration, payout-state changes and destructive operations must require appropriate confirmation, authorization checks and audit evidence.
+
+MORISE AI may summarize evidence, surface anomalies and recommend permitted actions, but it must not bypass OWNER permissions, RBAC, audit controls, security boundaries or explicit economic rules.
+
+#### Automatic economic threshold alerts to the OWNER
+
+When an individual creator or a qualifying group reaches the highest configured eligibility threshold, the system must notify the OWNER account automatically, with any additional authorized ADMIN recipients configured by the OWNER.
+
+`VALIDATED ACTIVITY → ELIGIBILITY ENGINE → TOP THRESHOLD REACHED → THRESHOLD_REACHED EVENT → NOTIFICATION SERVICE → OWNER / AUTHORIZED ADMIN → REVIEW / APPROVE / DEFER`
+
+The notification must identify the relevant creator(s), project(s), threshold/stage, measurement window, validated evidence and current eligibility state. It must be durable, server-side, deduplicated and auditable, including when the OWNER is offline.
+
+The alert itself must never create money, grant a payout or silently activate an economic program. It informs the OWNER that the configured condition has been reached; the applicable deterministic eligibility and economic rules remain authoritative.
+
 ### Technical conception requirement
 
 The later technical conception must define the exact schemas, event pipeline, aggregation and measurement jobs, eligibility rules, anti-fraud signals, provenance model, creator states, audit logs, economy/ledger boundaries, payment adapters, permissions, appeals, privacy controls, configuration management and failure/recovery behavior.
