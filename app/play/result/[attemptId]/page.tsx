@@ -60,7 +60,7 @@ export default async function PlayResultPage({ params }: { params: Params }) {
           ) : null}
           <div className="play-result-actions">
             <Link className="play-primary-button" href={game?.launchPath ?? "/play"}>Rejouer</Link>
-            attempt.share_token ? <ShareMomentButton url={shareUrl} /> : <Link className="play-result-secondary" href={shareUrl}>Lien du résultat</Link>
+            {attempt.share_token ? <ShareMomentButton url={shareUrl} /> : <Link className="play-result-secondary" href={shareUrl}>Lien du résultat</Link>}
           </div>
           <p className="play-hint">{attempt.share_token ? "Ce Moment partage uniquement le résultat de jeu. Aucun profil ou historique privé n’est exposé." : "Ce résultat reste privé car aucun Moment partageable n’a été généré."}</p>
         </section>
