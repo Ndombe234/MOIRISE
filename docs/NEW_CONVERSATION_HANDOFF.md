@@ -1,50 +1,50 @@
 # MOIRISE — New Conversation Handoff
 
-Use this file as the first continuity checkpoint when a new ChatGPT conversation starts.
+Use this file as the continuity checkpoint when a new conversation starts.
 
-## Current baseline
+## Canonical source of truth
 
 - Repository: `Ndombe234/MOIRISE`
-- Current module: **Module 6 — PLAY**
-- Module 6 state: **INTEGRATED / FINAL QA**
-- Next module: **Module 7 — Game Discovery Engine**
-- Do not skip the Module 6 final QA gate.
+- Canonical plan: `docs/MORISE_MASTER_PLAN_V3.md`
+- AI architecture: `docs/MORISE_AI_MECHANICS_MAP.md`
+- Adaptive social: `docs/MORISE_ADAPTIVE_SOCIAL_SYSTEM.md`
+- Navigation: `docs/MORISE_NAVIGATION_SPEC.md`
+- Current status: `docs/MODULE_STATUS_V2.md`
+- Execution template: `docs/MODULE_EXECUTION_TEMPLATE.md`
 
-## Read first
+## Current position
 
-1. `docs/MOIRISE_MASTER_PLAN.md`
-2. `docs/MODULE_STATUS.md`
-3. `docs/GAME_MARKET_RESEARCH_PROTOCOL.md`
+**MODULE 6 — PLAY — FINAL QA**
+
+Do not move to Module 7 implementation until the Module 6 QA gate is closed.
 
 ## Product doctrine
 
-MOIRISE is an Otaku social platform where the SYSTEM is the central interaction layer connecting PLAYER, WORLD, SOCIAL and PLAY. Every relevant feature must support both SOLO and COLLECTIVE use cases.
+MORISE is a general-purpose social platform. The SYSTEM is the central intelligent interaction layer connecting PLAYER, WORLD, SOCIAL, PLAY, GUILDS, games, creation and recommendations. Every relevant feature supports SOLO and COLLECTIVE use cases when appropriate.
 
-## Module 6 continuity
+The SYSTEM is designed to evolve toward a true conversational AI experience: context + memory + specialized mechanics + orchestration + tools + controlled learning.
 
-The PLAY engine / Play Lab and play-session/result-validation infrastructure already exist. There is also a game experience in the product interface, but that game is **not yet a fully programmed finished game**. Preserve it; do not assume it is complete and do not replace it without a documented reason.
+## AI requirements
 
-The final QA must verify:
+- AI is multi-mechanic, not a chatbot pasted onto the site.
+- Personal adaptation can learn from permitted user feedback and behavior from V1.
+- Global learning is validated and protected against manipulation/data poisoning.
+- Private information is never exposed through hidden inference.
+- Translation is a V1 SYSTEM capability and is browser/on-device first, with caching and controlled fallbacks.
+- The system must function even when an external AI provider is unavailable for core product workflows.
 
-- SYSTEM / PLAYER / WORLD / SOCIAL / PLAY navigation;
-- WORLD: Discover, Play, Create, Communities, Activities, Events;
-- SOCIAL: World, Following;
-- authenticated PLAY;
-- session lifecycle;
-- result validation and tamper rejection;
-- duplicate protection;
-- progression integration;
-- mobile layout;
-- loading/error/empty states;
-- no blank-screen navigation failures;
-- production Render smoke test.
+## Adaptive social requirement
 
-## Future game rule
+MORISE is not niche-locked. If people with different profiles repeatedly interact around a shared topic, the SYSTEM may detect a non-sensitive affinity signal and propose a GUILD. It must ask for appropriate user confirmation; it must not silently create a persistent group.
 
-Never start by coding a requested game blindly. First perform current market research using `GAME_MARKET_RESEARCH_PROTOCOL.md`: demand signals, comparable games, player feedback, platform trends, risks, differentiation, technical feasibility, and solo/collective quality. Do not invent market numbers. Prototype before full implementation.
+## Game requirement
+
+The existing game interface is not a finished programmed game. Preserve it. Every future game is built A→Z using market research, concept, design, prototype, SOLO/COLLECTIVE, content, infrastructure, security, balancing, QA, production and iteration.
 
 ## Execution rule
 
-For each module: **PLAN → current-market research → design → implementation → authenticated/unauthenticated testing where relevant → mobile testing → production verification → documentation update → next module.**
+For every module:
 
-When this file and the repository disagree with remembered conversation history, inspect the repository and update the documentation rather than guessing.
+**PLAN → CURRENT MARKET RESEARCH → DESIGN → IMPLEMENT → SECURITY/AUTH TEST → MOBILE TEST → PRODUCTION TEST → DOCUMENT → NEXT MODULE**
+
+When repository evidence conflicts with remembered conversation history, inspect the repository and update the canonical documentation rather than guessing.
