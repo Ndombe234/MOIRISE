@@ -1,6 +1,6 @@
 # MOIRISE Module 6 — PLAY Engine & Play Lab
 
-**Status:** IMPLEMENTATION IN PROGRESS
+**Status:** CODE IMPLEMENTED / LIVE DEPLOYMENT GATE PENDING
 **Date:** 2026-09-28
 
 ## Goal
@@ -126,8 +126,10 @@ The server:
 - validates the action log;
 - enforces expiry;
 - records the result;
-- awards progression through the existing SYSTEM RPC;
+- awards progression through a service-only completion RPC;
 - uses an idempotency key based on Player + experience + attempt.
+
+The public/authenticated client must not be able to call the reward RPC directly. The Next.js server uses a server-only Supabase service-role client for the internal completion boundary. The service-role key must never be exposed to browser code.
 
 Direct client calls must not be able to invent arbitrary experience IDs/challenges that are outside the active experience registry.
 
@@ -181,3 +183,7 @@ Module 6 is complete only when:
 13. Production build passes.
 14. Browser QA covers launch, play, completion, replay, refresh, back navigation, mobile viewport and direct route access.
 15. Documentation records the final decisions and verification evidence.
+
+### Current verification state
+
+Code, typecheck, unit tests and production build are green on the Module 6 feature branch. Public browser QA verified the live home and unauthenticated PLAY protection without console/runtime errors. Full authenticated PLAY completion/replay QA and live application of the new integrity migration remain deployment-gated until the server-only Supabase service-role environment variable is configured on the deployment target.
