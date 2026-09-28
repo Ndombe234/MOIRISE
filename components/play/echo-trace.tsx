@@ -44,7 +44,7 @@ export function EchoTrace({
     momentCandidate: { kind: "precision"; title: string; summary: string } | null;
   }) => void;
 }) {
-  const sequence = useMemo(() => buildTraceSequence(attemptId), [attemptId]);
+  const [seed] = useState(() => crypto.randomUUID());\n  const sequence = useMemo(() => buildTraceSequence(seed), [seed]);
   const [phase, setPhase] = useState<"reveal" | "play" | "done">("reveal");
   const [index, setIndex] = useState(0);
   const [correct, setCorrect] = useState(0);
