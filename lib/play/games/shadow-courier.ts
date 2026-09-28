@@ -19,7 +19,7 @@ export function generateShadowChallenge(seed: number): ShadowChallenge {
   const start: ShadowPoint = [6, 0];
   const exit: ShadowPoint = [0, 6];
   const corridor: ShadowPoint[] = [];
-  for (let row = 6; row >= 0; row -= 1) corridor.push([row, row]);
+  for (let row = 6; row >= 0; row -= 1) corridor.push([row, 0]);
   corridor.push([0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6]);
   const portals: Record<string, ShadowPoint> = {
     "5:2": [2, 6],
