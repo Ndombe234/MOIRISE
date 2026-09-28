@@ -678,6 +678,110 @@ The architecture is considered implemented only when MORISE AI can:
 
 ---
 
+## MORISE CREATIVE MEDIA ENGINES — LOCAL-FIRST + PROVIDER GATEWAY
+
+MORISE must treat **image, music and video generation as three distinct but coordinated creative media capabilities** that are structurally prepared in the architecture from the beginning.
+
+The three engines are:
+
+- **IMAGE ENGINE** — generation/transformation of still images, illustrations, cards, scene assets and other visual media;
+- **MUSIC ENGINE** — generation/transformation of music, themes, sound identities and adaptive musical material;
+- **VIDEO ENGINE** — generation/transformation of short videos, clips, animated moments and other supported audiovisual experiences.
+
+These engines must be integrated behind a common internal **Creative Gateway** so the PLAYER-facing MORISE SYSTEM does not depend on one model, one provider or one execution location.
+
+### Ready-by-architecture
+
+The application architecture must contain the interfaces, capability contracts, job lifecycle, permission checks, storage model, provenance, status handling, validation and fallback paths for all three creative engines **before the owner has access to the final production computer or before any external provider is configured**.
+
+This allows MORISE software development to continue immediately. Physical model deployment is an execution/infrastructure step and must not block construction of the rest of the product.
+
+Conceptual flow:
+
+`PLAYER / SYSTEM INTENT → CREATIVE GATEWAY → SELECT ENGINE → SELECT EXECUTION PROVIDER → GENERATE → VALIDATE → STORE / DELIVER → PROVENANCE → OPTIONAL MOMENT / SHARE`
+
+### Local-first execution
+
+The initial implementation should prioritize **local or self-hosted execution** where technically and legally appropriate.
+
+Possible local execution targets include the owner's future computer, an owner-controlled server, or another authorized local/self-hosted runtime.
+
+Conceptual topology:
+
+`MORISE → CREATIVE GATEWAY → LOCAL / SELF-HOSTED ENGINE → IMAGE / MUSIC / VIDEO RESULT`
+
+The owner does not need to possess the final computer during the initial development phase. MORISE must expose a stable abstraction so the local engine can be attached later without redesigning the Creative Gateway or PLAYER experience.
+
+### Provider/API optionality
+
+External API providers may be connected later through protected adapters, but **no external API key is mandatory for the core MORISE architecture**.
+
+If an external provider is selected, credentials must remain server-side in the appropriate protected secret/configuration mechanism. API keys must never be hard-coded into the client bundle, exposed in public frontend code or stored as ordinary publicly readable database data.
+
+The same Creative Gateway contract must support:
+
+`LOCAL → SELF-HOSTED SERVER → OPTIONAL EXTERNAL PROVIDER`
+
+without changing the PLAYER-facing request.
+
+### Engine-neutral job contract
+
+All three engines should share a common asynchronous job model where appropriate:
+
+`REQUESTED → QUEUED → GENERATING → VALIDATING → COMPLETED / FAILED / CANCELED`
+
+A job must include, as applicable:
+
+- creator / requesting PLAYER;
+- capability and engine type;
+- input request and permitted context;
+- selected model/tool/provider and version;
+- resource requirements;
+- safety, rights and permission checks;
+- provenance;
+- output location;
+- validation result;
+- failure reason and retry state;
+- cost/resource accounting where applicable.
+
+### Availability and fallback
+
+If the preferred local engine is unavailable, MORISE must not pretend the generation succeeded.
+
+It must use a validated alternative execution path, defer the request, or fail gracefully. The creative feature must never create a false output status.
+
+The PLAYER experience should clearly distinguish:
+
+`GENERATING` / `COMPLETED` / `FAILED` / `UNAVAILABLE`
+
+and must never display a blank screen because a creative engine is offline.
+
+### Creative media rights and monetization readiness
+
+Every generated image, music or video asset must retain relevant provenance and licensing information, including the engine/model version and the applicable model/provider license state where available.
+
+Before an asset enters a monetization-eligible pathway, MORISE must validate the relevant rights, model/license restrictions, source material permissions and contribution lineage.
+
+Free/local software availability does not automatically mean that every model's output is commercially unrestricted. The technical architecture therefore separates **engine availability** from **commercial eligibility**.
+
+### Cross-engine composition
+
+MORISE AI may compose the three engines with existing capabilities:
+
+`STORY → IMAGE → MUSIC → VIDEO → MORISE MOMENT`
+
+or:
+
+`PLAYER ACTION → GAME / WORLD EVENT → MUSIC REACTION → VIDEO MOMENT → SHAREABLE EXPERIENCE`
+
+The engines remain internal capabilities. They do not create new permanent PLAYER-facing navigation tabs.
+
+### No hard dependency on one computer
+
+An owner-controlled computer may initially provide local execution, but MORISE must never hard-code a dependency on one physical device, fixed LAN address or `localhost` endpoint.
+
+When remote execution is required, the connection must use a secure authenticated channel/tunnel. The Creative Gateway must be able to switch to another authorized execution node without changing the public application contract.
+
 ## INTERNATIONALIZATION — 20 LANGUAGES
 
 Internationalization is a **core MORISE architectural requirement**, not an optional enhancement. MORISE must be designed so that the complete product can operate internationally from launch, with the full user-facing and administrative experience localizable in the canonical V1 language set.
