@@ -14,6 +14,156 @@ export type Database = {
   }
   public: {
     Tables: {
+      play_attempts: {
+        Row: {
+          attempt_id: string
+          created_at: string
+          duration_ms: number
+          game_id: string
+          moment_candidate: Json | null
+          player_id: string
+          score: number
+          signals: Json
+          status: string
+        }
+        Insert: {
+          attempt_id: string
+          created_at?: string
+          duration_ms: number
+          game_id: string
+          moment_candidate?: Json | null
+          player_id: string
+          score: number
+          signals?: Json
+          status: string
+        }
+        Update: {
+          attempt_id?: string
+          created_at?: string
+          duration_ms?: number
+          game_id?: string
+          moment_candidate?: Json | null
+          player_id?: string
+          score?: number
+          signals?: Json
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "play_attempts_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      play_game_runs: {
+        Row: {
+          client_run_id: string
+          completed_at: string | null
+          created_at: string
+          duration_ms: number | null
+          game_id: string
+          game_version: number
+          id: string
+          idempotency_key: string
+          metadata: Json
+          player_id: string
+          score: number | null
+          seed: string
+          started_at: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          client_run_id: string
+          completed_at?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          game_id: string
+          game_version: number
+          id?: string
+          idempotency_key: string
+          metadata?: Json
+          player_id: string
+          score?: number | null
+          seed: string
+          started_at?: string
+          status: string
+          updated_at?: string
+        }
+        Update: {
+          client_run_id?: string
+          completed_at?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          game_id?: string
+          game_version?: number
+          id?: string
+          idempotency_key?: string
+          metadata?: Json
+          player_id?: string
+          score?: number | null
+          seed?: string
+          started_at?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "play_game_runs_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      play_sessions: {
+        Row: {
+          challenge: Json
+          completed_at: string | null
+          expires_at: string
+          game_id: string
+          player_id: string
+          seed: number
+          session_id: string
+          started_at: string
+          status: string
+        }
+        Insert: {
+          challenge: Json
+          completed_at?: string | null
+          expires_at?: string
+          game_id: string
+          player_id: string
+          seed: number
+          session_id?: string
+          started_at?: string
+          status?: string
+        }
+        Update: {
+          challenge?: Json
+          completed_at?: string | null
+          expires_at?: string
+          game_id?: string
+          player_id?: string
+          seed?: number
+          session_id?: string
+          started_at?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "play_sessions_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       players: {
         Row: {
           avatar_url: string | null
@@ -354,17 +504,41 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      close_play_session: {
+        Args: { session_id_value: string }
+        Returns: string
+      }
+      create_play_session: {
+        Args: {
+          challenge_value: Json
+          game_id_value: string
+          seed_value: number
+        }
+        Returns: Json
+      }
       ensure_system_profile: {
         Args: { target_player_id: string }
         Returns: undefined
       }
+      record_play_completion: {
+        Args: {
+          attempt_id_value: string
+          duration_ms_value: number
+          game_id_value: string
+          moment_candidate_value?: Json
+          score_value: number
+          signals_value?: Json
+          status_value: string
+        }
+        Returns: Json
+      }
       record_system_progress_event: {
         Args: {
-          dimension_key_value: string | null
+          dimension_key_value: string
           event_type_value: string
           idempotency_key_value: string
           metadata_value?: Json
-          source_id_value?: string | null
+          source_id_value?: string
           source_type_value: string
           target_player_id: string
           xp_delta_value: number
@@ -509,7 +683,6 @@ export const Constants = {
   },
 } as const
 
-
 export type Player = Database["public"]["Tables"]["players"]["Row"];
 export type PlayerInsert = Database["public"]["Tables"]["players"]["Insert"];
 export type PlayerUpdate = Database["public"]["Tables"]["players"]["Update"];
@@ -517,3 +690,4 @@ export type SystemProfile = Database["public"]["Tables"]["system_profiles"]["Row
 export type SystemDimension = Database["public"]["Tables"]["system_dimensions"]["Row"];
 export type SystemProgressionEvent = Database["public"]["Tables"]["system_progression_events"]["Row"];
 export type SystemMemory = Database["public"]["Tables"]["system_memories"]["Row"];
+;
