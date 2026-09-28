@@ -27,7 +27,9 @@ export function selectNextGame(context: PlayContext, definitions: readonly GameD
   if (!available.length) throw new Error("No PLAY experience is available.");
 
   const recentIndex = new Map(context.recentGameIds.map((id, index) => [id, index]));
-  const scored = available.map((game) => {
+  const fresh = available.filter((game) => !recentIndex.has(game.id));
+  const pool = fresh.length > 0 ? fresh : available;
+  const scored = pool.map((game) => {
     const recentPosition = recentIndex.get(game.id);
     const wasRecentlyPlayed = recentPosition !== undefined;
     const affinity = dimensionAffinity(game, context.dimensions, context.preferenceSignals);
