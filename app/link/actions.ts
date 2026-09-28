@@ -1,5 +1,6 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 
@@ -17,7 +18,7 @@ function cleanBody(value: unknown) {
   return body;
 }
 
-export async function startConversationAction(formData: FormData) {
+export async function startConversationAction(formData: FormData): Promise<void> {
   const { supabase, user } = await requireUser();
   const handle = String(formData.get("handle") ?? "").trim().replace(/^@/, "").toLowerCase();
   if (!/^[a-z0-9_]{3,24}$/.test(handle)) throw new Error("Enter a valid player handle.");
@@ -28,17 +29,16 @@ export async function startConversationAction(formData: FormData) {
 
   const { data: existingMemberships, error: membershipError } = await supabase
     .from("social_conversation_members")
-    .select("conversation_id, social_conversations!inner(id)")
+    .select("conversation_id")
     .eq("player_id", user.id);
   if (membershipError) throw membershipError;
 
   for (const membership of existingMemberships ?? []) {
-    const conversationId = membership.conversation_id as string;
+    const conversationId = membership.conversation_id;
     const { data: targetMember, error } = await supabase.from("social_conversation_members").select("player_id").eq("conversation_id", conversationId).eq("player_id", target.id).maybeSingle();
     if (error) throw error;
     if (targetMember) {
-      revalidatePath("/link");
-      return conversationId;
+      redirect(`/link/${conversationId}`);
     }
   }
 
@@ -52,10 +52,10 @@ export async function startConversationAction(formData: FormData) {
   if (membersError) throw membersError;
 
   revalidatePath("/link");
-  return conversation.id;
+  redirect(`/link/${conversation.id}`);
 }
 
-export async function sendMessageAction(formData: FormData) {
+export async function sendMessageAction(formData: FormData): Promise<void> {
   const { supabase, user } = await requireUser();
   const conversationId = String(formData.get("conversation_id") ?? "");
   if (!/^[0-9a-f-]{36}$/i.test(conversationId)) throw new Error("Invalid conversation.");
@@ -67,7 +67,7 @@ export async function sendMessageAction(formData: FormData) {
   revalidatePath("/link");
 }
 
-export async function markConversationReadAction(formData: FormData) {
+export async function markConversationReadAction(formData: FormData): Promise<void> {
   const { supabase, user } = await requireUser();
   const conversationId = String(formData.get("conversation_id") ?? "");
   if (!/^[0-9a-f-]{36}$/i.test(conversationId)) throw new Error("Invalid conversation.");
