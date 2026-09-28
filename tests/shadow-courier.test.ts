@@ -16,6 +16,15 @@ describe("Shadow Courier", () => {
     expect(result.valid).toBe(true);
   });
 
+  it("accepts a portal route using the teleported current position", () => {
+    const challenge = generateShadowChallenge(77);
+    const path = [
+      [6,0],[5,0],[5,1],[5,2],[1,6],[0,6],
+    ] as [number, number][];
+    const result = validateShadowRun(challenge, path);
+    expect(result.valid).toBe(true);
+  });
+
   it("rejects malformed movement", () => {
     const challenge = generateShadowChallenge(77);
     const result = validateShadowRun(challenge, [[6,0],[6,3]] as [number, number][]);
