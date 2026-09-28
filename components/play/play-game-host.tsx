@@ -1,54 +1,96 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import type { GameDefinition, PlayResult } from "@/lib/play/types";
-import { submitPlayResultAction } from "@/app/play/actions";
+import type { GameDefinition } from "@/lib/play/types";
+import { startGameSessionAction, completePlaySessionAction, abandonPlaySessionAction } from "@/app/play/actions";
 
-type RuntimeResult = Omit<PlayResult, "gameId" | "attemptId">;
+type RuntimeControls = {
+  sessionId: string;
+  challenge: unknown;
+  complete: (actions: unknown) => void;
+  fail: (actions: unknown) => void;
+  abandon: () => void;
+};
 
 export function PlayGameHost({
   definition,
   children,
 }: {
   definition: GameDefinition;
-  children: (controls: {
-    complete: (result: RuntimeResult) => void;
-    fail: (result: RuntimeResult) => void;
-    abandon: () => void;
-  }) => React.ReactNode;
+  children: (controls: RuntimeControls) => React.ReactNode;
 }) {
-  const [attemptId] = useState(() => crypto.randomUUID());
+  const [session, setSession] = useState<{ session_id: string; challenge: unknown } | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const submit = async (result: RuntimeResult) => {
-    if (submitting) return;
+  useEffect(() => {
+    let cancelled = false;
+    setSession(null);
+    setError(null);
+    startGameSessionAction(definition.id)
+      .then((value) => {
+        if (!cancelled) setSession({ session_id: value.session_id, challenge: value.challenge });
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err instanceof Error ? err.message : "Impossible de préparer cette expérience.");
+      });
+    return () => { cancelled = true; };
+  }, [definition.id]);
+
+  const submit = async (actions: unknown) => {
+    if (!session || submitting) return;
     setSubmitting(true);
     setError(null);
     try {
-      await submitPlayResultAction(definition.id, attemptId, result);
-      window.location.assign("/play/result/" + attemptId);
+      const result = await completePlaySessionAction(session.session_id, actions);
+      if (result.status === "recorded") {
+        window.location.assign("/play/result/" + session.session_id);
+        return;
+      }
+      setError(result.summary ?? "La validation du run a échoué.");
+      setSubmitting(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Impossible d'enregistrer cette partie.");
       setSubmitting(false);
     }
   };
 
+  const abandon = async () => {
+    if (!session || submitting) return;
+    setSubmitting(true);
+    try {
+      await abandonPlaySessionAction(session.session_id);
+      window.location.assign("/play");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Impossible de quitter cette expérience.");
+      setSubmitting(false);
+    }
+  };
+
+  if (error && !session) {
+    return (
+      <div className="play-session">
+        <p className="play-error" role="alert">{error}</p>
+        <Link href="/play" className="play-back-link">Retour au PLAY</Link>
+      </div>
+    );
+  }
+
+  if (!session) {
+    return <div className="play-session"><div className="game-board"><strong>Préparation de ton run…</strong></div></div>;
+  }
+
   return (
     <div className="play-session">
       {children({
-        complete: (result) => submit(result),
-        fail: (result) => submit(result),
-        abandon: () => submit({
-          status: "abandoned",
-          score: 0,
-          durationMs: 250,
-          signals: {},
-          momentCandidate: null,
-        }),
+        sessionId: session.session_id,
+        challenge: session.challenge,
+        complete: submit,
+        fail: submit,
+        abandon,
       })}
-      {submitting ? <div className="play-saving" role="status">Synchronisation avec le SYSTEM…</div> : null}
+      {submitting ? <div className="play-saving" role="status">Validation serveur du run…</div> : null}
       {error ? <p className="play-error" role="alert">{error}</p> : null}
       <Link href="/play" className="play-back-link">Quitter l’expérience</Link>
     </div>
