@@ -6,7 +6,13 @@ import { PlayGameHost } from "@/components/play/play-game-host";
 import { EchoTrace } from "@/components/play/echo-trace";
 import { SignalBloom } from "@/components/play/signal-bloom";
 import { ShadowCourier } from "@/components/play/shadow-courier";
-import type { GameDefinition } from "@/lib/play/types";
+import type { GameDefinition, PlayResult } from "@/lib/play/types";
+
+type PlayControls = {
+  complete: (result: Omit<PlayResult, "gameId" | "attemptId">) => void;
+  fail: (result: Omit<PlayResult, "gameId" | "attemptId">) => void;
+  abandon: () => void;
+};
 
 type Params = Promise<{ gameId: string }>;
 
@@ -19,7 +25,7 @@ export default async function PlayGamePage({ params }: { params: Params }) {
   const definition = getGameDefinition(gameId);
   if (!definition || definition.requiredLevel > 1) notFound();
 
-  const renderGame = (game: GameDefinition, controls: Parameters<Parameters<typeof PlayGameHost>[0]["children"]>[0]) => {
+  const renderGame = (game: GameDefinition, controls: PlayControls) => {
     switch (game.id) {
       case "echo-trace":
         return <EchoTrace definition={game} onComplete={controls.complete} />;
