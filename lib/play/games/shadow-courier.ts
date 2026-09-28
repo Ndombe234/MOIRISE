@@ -1,4 +1,4 @@
-import { mulberry32, shuffle } from "@/lib/play/seed";
+import { mulberry32, shuffle } from "../seed";
 
 export type ShadowPoint = [number, number];
 export type ShadowChallenge = {
