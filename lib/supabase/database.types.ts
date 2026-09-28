@@ -58,6 +58,33 @@ export type Database = {
           },
         ]
       }
+      play_game_catalog: {
+        Row: {
+          active: boolean
+          created_at: string
+          game_id: string
+          game_version: number
+          required_level: number
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          game_id: string
+          game_version?: number
+          required_level?: number
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          game_id?: string
+          game_version?: number
+          required_level?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       play_game_runs: {
         Row: {
           client_run_id: string
@@ -690,4 +717,7 @@ export type SystemProfile = Database["public"]["Tables"]["system_profiles"]["Row
 export type SystemDimension = Database["public"]["Tables"]["system_dimensions"]["Row"];
 export type SystemProgressionEvent = Database["public"]["Tables"]["system_progression_events"]["Row"];
 export type SystemMemory = Database["public"]["Tables"]["system_memories"]["Row"];
-;
+export type PlayAttempt = Database["public"]["Tables"]["play_attempts"]["Row"];
+export type PlaySession = Database["public"]["Tables"]["play_sessions"]["Row"];
+export type PlayGameRun = Database["public"]["Tables"]["play_game_runs"]["Row"];
+export type PlayGameCatalog = Database["public"]["Tables"]["play_game_catalog"]["Row"];
