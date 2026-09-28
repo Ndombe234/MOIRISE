@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { generateEchoChallenge, validateEchoRun, visibleEchoSequence } from "@/lib/play/games/echo-trace";
+import { generateEchoChallenge, validateEchoRun, visibleEchoSequence } from "../lib/play/games/echo-trace";
 
 describe("Echo Trace", () => {
   it("generates deterministic transformed sequences", () => {
