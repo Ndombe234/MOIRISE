@@ -7,42 +7,49 @@ const difficultyPenalty: Record<GameDefinition["difficulty"], number> = {
   intense: 2,
 };
 
-function dimensionAffinity(game: GameDefinition, dimensions: PlayContext["dimensions"]) {
+function dimensionAffinity(
+  game: GameDefinition,
+  dimensions: PlayContext["dimensions"],
+  preferences: PlayContext["preferenceSignals"] = {},
+) {
   return Object.entries(game.dimensions).reduce((total, [key, weight]) => {
-    const playerValue = dimensions[key as SystemDimensionKey] ?? 0;
-    return total + playerValue * (weight ?? 0);
+    const dimension = key as SystemDimensionKey;
+    const systemValue = dimensions[dimension] ?? 0;
+    const preferenceValue = preferences?.[dimension] ?? 0;
+    return total + systemValue * (weight ?? 0) + preferenceValue * (weight ?? 0) * 0.5;
   }, 0);
 }
 
-export function selectNextGame(context: PlayContext, definitions: GameDefinition[]): PlaySelection {
+export function selectNextGame(context: PlayContext, definitions: readonly GameDefinition[]): PlaySelection {
   const candidates = definitions.filter((game) => game.requiredLevel <= context.systemLevel);
-  const available = candidates.length ? candidates : definitions.filter((game) => game.requiredLevel === 1);
+  const available = candidates.length > 0 ? candidates : definitions.filter((game) => game.requiredLevel === 1);
+
   if (!available.length) throw new Error("No PLAY experience is available.");
 
-  const recent = new Set(context.recentGameIds);
-  const fresh = available.filter((game) => !recent.has(game.id));
+  const recentIndex = new Map(context.recentGameIds.map((id, index) => [id, index]));
+  const fresh = available.filter((game) => !recentIndex.has(game.id));
   const pool = fresh.length > 0 ? fresh : available;
-
   const scored = pool.map((game) => {
-    const affinity = dimensionAffinity(game, context.dimensions);
+    const recentPosition = recentIndex.get(game.id);
+    const wasRecentlyPlayed = recentPosition !== undefined;
+    const affinity = dimensionAffinity(game, context.dimensions, context.preferenceSignals);
     const sessionDelta = Math.abs(game.estimatedSeconds - context.sessionSeconds) / 30;
-    const score = affinity - sessionDelta - difficultyPenalty[game.difficulty];
-    return { game, affinity, score };
+    const noveltyBonus = wasRecentlyPlayed ? 0 : 2;
+    const cooldownPenalty = wasRecentlyPlayed ? Math.max(0, 2 - recentPosition * 0.35) : 0;
+    const score = affinity + noveltyBonus - sessionDelta - difficultyPenalty[game.difficulty] - cooldownPenalty;
+    return { game, affinity, score, wasRecentlyPlayed };
   });
 
   scored.sort((a, b) => {
     if (b.score !== a.score) return b.score - a.score;
+    if (b.affinity !== a.affinity) return b.affinity - a.affinity;
     return a.game.id.localeCompare(b.game.id);
   });
 
   const chosen = scored[0];
-  return {
-    game: chosen.game,
-    affinity: chosen.affinity,
-    reason: context.recentGameIds.includes(chosen.game.id)
-      ? "Toutes les expériences disponibles ont été jouées récemment : cette rotation revient à ton affinité SYSTEM."
-      : chosen.affinity > 4
-        ? "Ton SYSTEM montre une affinité avec cette expérience."
-        : "Cette expérience complète ton prochain moment de jeu.",
-  };
+  const reason = !chosen.wasRecentlyPlayed
+    ? (chosen.affinity > 4 ? "Ton SYSTEM montre une affinité avec cette expérience." : "Le SYSTEM te fait découvrir une nouvelle expérience.")
+    : "Le SYSTEM revient vers une expérience qui correspond à ton évolution.";
+
+  return { game: chosen.game, affinity: chosen.affinity, reason };
 }

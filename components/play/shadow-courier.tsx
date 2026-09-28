@@ -14,7 +14,7 @@ export function ShadowCourier({
   onComplete: (actions: unknown) => void;
 }) {
   const [path, setPath] = useState<ShadowPoint[]>([challenge.start]);
-  const current = path[path.length - 1];
+  const [current, setCurrent] = useState<ShadowPoint>(challenge.start);
 
   const blocked = new Set(challenge.blocked);
   const key = (point: ShadowPoint) => point[0] + ":" + point[1];
@@ -26,6 +26,7 @@ export function ShadowCourier({
     const destination = challenge.portals[key(point)] ?? point;
     const next = [...path, point];
     setPath(next);
+    setCurrent(destination);
     if (destination[0] === challenge.exit[0] && destination[1] === challenge.exit[1]) {
       onComplete({ path: next });
     }
@@ -35,7 +36,7 @@ export function ShadowCourier({
     <div className="game-board game-shadow" aria-label={definition.title}>
       <div className="game-status">
         <span>Route {Math.max(0, path.length - 1)} moves</span>
-        <strong>Guide the shadow</strong>
+        <strong>{current[0] + ":" + current[1]}</strong>
       </div>
       <div className="shadow-grid">
         {Array.from({ length: challenge.size * challenge.size }, (_, index) => {
@@ -48,6 +49,7 @@ export function ShadowCourier({
           const isExit = row === challenge.exit[0] && col === challenge.exit[1];
           const isPath = path.some(([r, c]) => r === row && c === col);
           const isPortal = Boolean(challenge.portals[cellKey]);
+          const isCurrent = current[0] === row && current[1] === col;
           return (
             <button
               key={cellKey}
@@ -60,9 +62,10 @@ export function ShadowCourier({
                 isStart ? "is-start" : "",
                 isExit ? "is-exit" : "",
                 isPortal ? "is-portal" : "",
+                isCurrent ? "is-current" : "",
               ].filter(Boolean).join(" ")}
               onClick={() => move(point)}
-              aria-label={isBlocked ? "Blocked" : isExit ? "Exit" : isPortal ? "Portal" : "Route cell"}
+              aria-label={isBlocked ? "Blocked" : isExit ? "Exit" : isPortal ? "Portal" : isCurrent ? "Current position" : "Route cell"}
             >
               {isStart ? "◆" : isExit ? "◎" : isPortal ? "◇" : ""}
             </button>

@@ -2,9 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { getGameDefinition } from "@/lib/play/definitions";
-import { generateEchoChallenge } from "@/lib/play/games/echo-trace";
-import { generateSignalBloomChallenge } from "@/lib/play/games/signal-bloom";
-import { generateShadowChallenge } from "@/lib/play/games/shadow-courier";
+import { generatePlayChallenge } from "@/lib/play/challenge";
 
 export async function startPlaySession(slug: string) {
   const supabase = await createClient();
@@ -15,23 +13,22 @@ export async function startPlaySession(slug: string) {
   const game = getGameDefinition(slug);
   if (!game) throw new Error("Unknown PLAY experience.");
 
-  const seed = Math.floor(Math.random() * 2147483647);
-  const challenge =
-    slug === "echo-trace" ? generateEchoChallenge(seed) :
-    slug === "signal-bloom" ? generateSignalBloomChallenge(seed) :
-    generateShadowChallenge(seed);
-
   const { data, error } = await supabase.rpc("create_play_session", {
     game_id_value: game.id,
-    seed_value: seed,
-    challenge_value: challenge,
+    seed_value: 0,
+    challenge_value: {},
   });
   if (error) throw new Error("Unable to start PLAY session.");
-  return data as {
+
+  const session = data as {
     session_id: string;
     game_id: string;
     seed: number;
-    challenge: unknown;
     expires_at: string;
+  };
+
+  return {
+    ...session,
+    challenge: generatePlayChallenge(game.id, Number(session.seed)),
   };
 }

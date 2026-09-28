@@ -1,160 +1,143 @@
-# PLAY Engine & Play Lab Implementation Plan
+# MOIRISE Module 6 — PLAY Engine & Single PLAY Entry Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build a reusable MORISE PLAY engine plus a small experimental set of original browser games that can later host the canonical 40-game inventory without changing the product shell.
+**Goal:** Finish Module 6 as a simple single-entry PLAY system whose server-side selector chooses one appropriate experience for each Player, while the engine remains extensible to a very large internal universe.
 
-**Architecture:** Authenticated PLAY shell -> deterministic selection service -> typed game definitions -> client game runtime -> server-side result/progression boundary. Small experiments use React state and pointer/keyboard input; persistence and XP remain server-controlled.
+**Architecture:** Authenticated PLAY shell → server-side Player/SYSTEM context → deterministic selector → typed experience registry → server-owned play session → game runtime → server validation → idempotent SYSTEM progression → private result/Moment route.
 
-**Tech Stack:** Next.js App Router, TypeScript, React, Supabase SSR/RPC, Vitest, CSS, browser-native DOM/SVG/Canvas only where useful.
+**Tech Stack:** Next.js App Router, TypeScript, React, Supabase SSR/RPC/PostgreSQL, Vitest, DOM/SVG/Canvas.
 
 **Spec:** `docs/superpowers/specs/2026-09-28-play-engine-design.md`
 
 ## Global Constraints
 
-- Do not redefine or claim ownership of the canonical 40-game inventory until its authoritative source is recovered.
-- Keep the PLAY surface simple: one entry point, one selected experience, optional deeper browse.
-- Experiences must be solo-valid and must not require live population.
-- No fake players, fake scores, fake activity, or fake engagement counts.
-- Client code may propose a result but must never authoritatively assign XP.
-- Completion idempotency key format: `playerId:gameId:attemptId`.
-- Small 2D experiments must work at 390px width without horizontal overflow.
-- Avoid new third-party game engines for this phase.
+- One visible primary PLAY action; no catalogue grid on the main PLAY page.
+- The old canonical 40-game inventory is retired and must not be referenced as a requirement.
+- Current experiments are prototypes and may be replaced.
+- Selection must use real persisted Player/SYSTEM state and recent history.
+- Selection must be deterministic and explainable.
+- Client code never authoritatively assigns score or XP.
+- Play sessions and challenges are server-owned.
+- Replayed completions must be idempotent.
+- Direct unauthenticated access redirects to authentication.
+- Mobile target: 390x844 without horizontal overflow.
+- No fake players, fake scores, fake activity or fake popularity.
 
-## Review Focus
-
-- Rapid restart/double submit: one attempt must not award progression twice.
-- Refresh during a running or completed game: result URL/state must remain coherent and safe.
-- Invalid game/result payload: server must reject it rather than trusting the client.
-- Mobile touch and keyboard input: controls must remain operable and readable.
-- Direct access to an experiment without auth: must redirect to sign-in.
-
-### Task 1: PLAY domain contracts and selector
+## Task 0 — Repository preflight and state ledger
 
 **Files:**
-- Create: `lib/play/types.ts`
-- Create: `lib/play/definitions.ts`
-- Create: `lib/play/validation.ts`
-- Create: `lib/play/selector.ts`
-- Test: `tests/play-selector.test.ts`
+- Update: this plan
+- Create/Update: `docs/MOIRISE-ROADMAP.md` if missing
 
-**Interfaces:**
-- Produces `GameDefinition`, `PlayContext`, `PlaySelection`, and `PlayResult` types.
-- `selectNextGame(context: PlayContext, definitions: GameDefinition[]): PlaySelection` must be deterministic for the same inputs.
+- [x] Record current Module 6 status from the code, not from stale README text.
+- [x] Record current PLAY routes, components, definitions, migrations and tests.
+- [x] Record the decision that there is no fixed game-count promise.
+- [x] Record the one-button PLAY contract.
+- [x] Keep this branch isolated from `main`.
 
-- [ ] Write failing tests for level gating, recent-game avoidance, dimension affinity, and deterministic tie-breaking.
-- [ ] Run `npm test -- tests/play-selector.test.ts` and verify failure.
-- [ ] Implement typed game definitions and selector scoring.
-- [ ] Run the focused tests and verify they pass.
-- [ ] Commit `feat(play): add typed play engine contracts`.
-
-### Task 2: Result validation and SYSTEM progression boundary
-
-**Files:**
-- Create: `lib/play/result-validation.ts`
-- Create: `app/play/actions.ts`
-- Create: `supabase/migrations/20260928040000_play_progression.sql`
-- Test: `tests/play-result-validation.test.ts`
-
-**Interfaces:**
-- `validatePlayResult(input: unknown): PlayResult` rejects malformed status, score, duration, attempt ID, and signal payloads.
-- `recordPlayCompletion(gameId: string, attemptId: string, result: PlayResult)` writes one SYSTEM progression event through the existing RPC with idempotency.
-
-- [ ] Write failing validation tests for malformed payloads and replayed attempts.
-- [ ] Verify failure.
-- [ ] Implement strict result validation and the authenticated server action.
-- [ ] Add SQL constraints/indexes needed by the progression boundary without weakening existing SYSTEM security.
-- [ ] Run unit tests and database verification.
-- [ ] Commit `feat(play): validate results and connect progression`.
-
-### Task 3: PLAY shell and experiment routing
-
-**Files:**
-- Modify: `app/play/page.tsx`
-- Create: `app/play/play.css`
-- Create: `app/play/[gameId]/page.tsx`
-- Create: `app/play/result/[attemptId]/page.tsx`
-- Create: `lib/play/server.ts`
-
-**Interfaces:**
-- `/play` authenticates the Player, chooses or accepts a game ID, and launches an experience.
-- `/play/[gameId]` resolves a typed `GameDefinition` and renders the matching experiment.
-- `/play/result/[attemptId]` renders a safe result context and shareable route.
-
-- [ ] Implement the authenticated PLAY shell with loading/empty/error states.
-- [ ] Add accessible game selection labels and an explicit restart action.
-- [ ] Add direct result routing and share-link construction.
-- [ ] Verify protected-route behavior and mobile layout.
-- [ ] Commit `feat(play): build authenticated play shell`.
-
-### Task 4: Experimental game — Echo Trace
-
-**Files:**
-- Create: `components/play/echo-trace.tsx`
-- Create: `components/play/game-frame.tsx`
-- Test: `tests/echo-trace.test.ts`
-
-**Interfaces:**
-- Renders a short memory/precision loop and returns a normalized `PlayResult` callback.
-
-- [ ] Write tests for generated path length, input acceptance, completion, and restart reset.
-- [ ] Implement the game using SVG/DOM rather than an external engine.
-- [ ] Add keyboard and pointer/touch input.
-- [ ] Verify the result is deterministic from the seeded round input.
-- [ ] Commit `feat(play): add Echo Trace experiment`.
-
-### Task 5: Experimental game — Signal Bloom
-
-**Files:**
-- Create: `components/play/signal-bloom.tsx`
-- Test: `tests/signal-bloom.test.ts`
-
-**Interfaces:**
-- A timing/observation loop where the player adjusts a moving signal into a target window.
-
-- [ ] Write tests for timing windows, success/failure, and restart.
-- [ ] Implement the interaction with pointer and keyboard controls.
-- [ ] Ensure the game remains legible at mobile widths.
-- [ ] Commit `feat(play): add Signal Bloom experiment`.
-
-### Task 6: Experimental game — Shadow Courier
-
-**Files:**
-- Create: `components/play/shadow-courier.tsx`
-- Test: `tests/shadow-courier.test.ts`
-
-**Interfaces:**
-- A compact spatial planning game in which the player places light gates to route a shadow toward a destination.
-
-- [ ] Write tests for valid gate placement, route completion, and failed route.
-- [ ] Implement a bounded 2D board with no external engine.
-- [ ] Add touch-friendly placement and reset.
-- [ ] Commit `feat(play): add Shadow Courier experiment`.
-
-### Task 7: Adaptive launch context and SYSTEM metadata
+## Task 1 — Active experience registry
 
 **Files:**
 - Modify: `lib/play/definitions.ts`
-- Modify: `app/play/page.tsx`
-- Modify: `lib/play/server.ts`
-- Test: `tests/play-context.test.ts`
+- Test: `tests/play-selector.test.ts`
 
-- [ ] Test that SYSTEM level and dimensions alter the selected experiment without revealing implementation internals.
-- [ ] Add a transparent `Why this game?` explanation based on the selection signals.
-- [ ] Ensure recently completed games cool down rather than disappearing permanently.
-- [ ] Verify no fabricated ranking or player population is displayed.
-- [ ] Commit `feat(play): adapt selection to Player SYSTEM`.
+- [x] Treat the registry as the active curated set, not a fixed product inventory.
+- [x] Keep experience definitions typed and small.
+- [x] Ensure every registered experience has a safe launch path.
+- [x] Make an allowlist function available to the server session boundary.
+- [x] Test registry uniqueness and lookup.
 
-### Task 8: Full verification and browser QA
+## Task 2 — Player-specific deterministic selection
 
 **Files:**
-- Modify docs and README status only after fresh evidence.
+- Modify: `lib/play/selector.ts`
+- Modify: `lib/play/types.ts`
+- Modify: `lib/play/server.ts`
+- Test: `tests/play-selector.test.ts`
+- Create/Modify: `tests/play-context.test.ts`
 
-- [ ] Run `npm run typecheck`.
-- [ ] Run `npm test` and record test count.
-- [ ] Run `npm run build`.
-- [ ] Verify migrations in Supabase.
-- [ ] Verify security/performance advisors.
-- [ ] Run browser QA on desktop and 390x844 for `/play`, all three experiments, restart, completion, result route, refresh, back navigation, and direct route access.
-- [ ] Retest rapid clicks and replay/idempotency.
-- [ ] Only after all gates pass, merge the PR and mark the module phase accordingly.
+- [x] Use level gating, SYSTEM dimension affinity, recent-game avoidance and session-duration fit.
+- [x] Preserve deterministic tie-breaking.
+- [x] Add explicit novelty so the SYSTEM can introduce an unseen experience without permanently classifying the Player.
+- [x] Keep future preference signals optional.
+- [x] Ensure the same input context always produces the same selection.
+
+## Task 3 — Single-entry PLAY surface
+
+**Files:**
+- Modify: `app/play/page.tsx`
+- Modify: `components/play/play-launcher.tsx`
+- Modify: `app/play/play.css`
+
+- [x] Remove all catalogue/grid presentation from the main PLAY route.
+- [x] Keep exactly one primary PLAY action.
+- [x] Show only the selected experience's concise title/reason and the primary action.
+- [x] Keep SYSTEM and World return navigation minimal.
+- [x] Add honest loading/error/empty states.
+
+## Task 4 — Server session boundary hardening
+
+**Files:**
+- Modify: `lib/play/session-actions.ts`
+- Modify: `app/play/actions.ts`
+- Modify: `supabase/migrations/20260928050000_play_sessions.sql`
+
+- [x] Prevent arbitrary experience IDs at the database RPC boundary.
+- [x] Keep challenges server-generated.
+- [x] Reject expired/replayed sessions.
+- [x] Preserve owner checks.
+- [x] Ensure malformed client action logs cannot alter progression.
+
+## Task 5 — Result/progression integrity
+
+**Files:**
+- Modify: `lib/play/result-validation.ts`
+- Modify: `app/play/actions.ts`
+- Modify: `supabase/migrations/20260928040000_play_progression.sql`
+- Modify: `supabase/migrations/20260928041000_extend_system_play_progression.sql`
+- Tests: `tests/play-result-validation.test.ts` and progression coverage
+
+- [x] Ensure the result boundary is fully server-authoritative.
+- [x] Verify one attempt can create at most one progression event.
+- [x] Verify conflicting retries are duplicates rather than new rewards.
+- [x] Ensure invalid runs cannot receive progression.
+
+## Task 6 — Play Lab experience quality
+
+**Files:**
+- Existing: `components/play/*`
+- Existing: `lib/play/games/*`
+- Existing: `tests/*play*.test.ts`
+
+- [x] Audit the three current experiments.
+- [x] Preserve only mechanics that are genuinely fun and understandable.
+- [x] Fix restart, completion, touch and keyboard edge cases.
+- [x] Keep them lightweight and original.
+- [x] Do not add more games merely to increase a count.
+
+## Task 7 — Verification
+
+- [x] Run typecheck.
+- [x] Run complete unit suite.
+- [x] Lint is not run by the repository CI workflow; build/typecheck/test gates are green. Browser QA is the current scope check.
+- [x] Run production build.
+- [ ] Authenticated PLAY browser QA pending a configured QA session/service-role deployment environment.
+- [x] Public/browser inspection confirmed the unauthenticated PLAY gate; single-entry UI is covered by the branch code and build.
+- [x] Unit tests cover level, recent-game cooldown, preference signals, novelty and deterministic tie-breaking.
+- [ ] Full live play-through pending an authenticated QA session.
+- [x] Unit/security checks cover result validation, idempotency and protected direct access; live authenticated flow remains pending.
+- [x] Mobile/public browser protection was exercised; full authenticated 390x844 game play remains pending.
+- [x] Live public home and `/play` checks reported no console/runtime errors.
+
+## Task 8 — Documentation and release evidence
+
+**Files:**
+- Update: Module 6 spec
+- Update: this plan
+- Update: `docs/MOIRISE-ROADMAP.md`
+
+- [x] Record the final PLAY decisions.
+- [x] Record the three current registered prototype experiences.
+- [x] Record tests/build/browser evidence.
+- [ ] Mark Module 6 complete only after the server-only Supabase environment is configured, the integrity migration is applied to the deployment database, and authenticated browser QA passes.

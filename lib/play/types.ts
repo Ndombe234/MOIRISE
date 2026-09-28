@@ -6,13 +6,15 @@ export type PlayFamily = (typeof PLAY_FAMILIES)[number];
 export const PLAY_DIFFICULTIES = ["calm", "focused", "intense"] as const;
 export type PlayDifficulty = (typeof PLAY_DIFFICULTIES)[number];
 
+export type DimensionSignals = Partial<Record<SystemDimensionKey, number>>;
+
 export type GameDefinition = {
   id: string;
   family: PlayFamily;
   title: string;
   description: string;
   estimatedSeconds: number;
-  dimensions: Partial<Record<SystemDimensionKey, number>>;
+  dimensions: DimensionSignals;
   difficulty: PlayDifficulty;
   requiredLevel: number;
   launchPath: string;
@@ -21,7 +23,8 @@ export type GameDefinition = {
 export type PlayContext = {
   playerId: string;
   systemLevel: number;
-  dimensions: Partial<Record<SystemDimensionKey, number>>;
+  dimensions: DimensionSignals;
+  preferenceSignals?: DimensionSignals;
   recentGameIds: string[];
   sessionSeconds: number;
 };
