@@ -19,7 +19,7 @@ Core doctrine:
 
 The PLAYER expresses intent. The AI Orchestrator resolves context, capabilities, policy, provider availability, execution and validation. The OWNER/Superadmin controls policy, permissions and exceptions rather than manually operating every feature.
 
-## 1. Global architecture
+## 1. System layers
 
 ```text
 PLAYER
@@ -32,438 +32,463 @@ MORISE CORE
   ├─ State
   ├─ Events
   ├─ Policy / Permissions
-  └─ Capability Registry
+  ├─ Capability Registry
+  └─ Dependency Registry
   ↓
 AI ORCHESTRATOR
+  ├─ Browser AI
+  ├─ Local Computer AI
+  ├─ Cloud AI
+  └─ External APIs
   ↓
 EXPERIENCE ENGINE
   ├─ World
   ├─ Play
-  ├─ Social
   ├─ Creation
+  ├─ Social
   ├─ Memory
-  ├─ Translation
+  ├─ Challenges
   └─ Economy
   ↓
-PROVIDER ROUTER
-  ├─ Browser / WebGPU / WASM
-  ├─ Local computer
-  ├─ Optional cloud
-  └─ Optional external APIs
+VALIDATOR / AUDIT
   ↓
-VALIDATOR
-  ↓
-PERSISTENCE / STORAGE / ANALYTICS
+DATABASE / STORAGE / EVENTS
 ```
 
-## 2. Capability lifecycle
+Cross-cutting concerns: authentication, authorization, RLS, validation, rate limiting, localization, telemetry, feature flags, health checks, accessibility, performance and privacy.
 
-Every capability has a runtime state: `AVAILABLE`, `DISABLED`, `PENDING`, `MAINTENANCE`, `DEGRADED`, `ERROR`, or `UNAVAILABLE`.
+## 2. Capability and provider abstraction
 
-Resolution:
+A capability describes the desired outcome; a provider describes the execution mechanism.
 
-`PLAYER INTENT → CAPABILITY → DEPENDENCY CHECK → POLICY CHECK → HEALTH CHECK → PROVIDER SELECTION → EXECUTION → VALIDATION → STATE/EVENT COMMIT → PLAYER RESULT`
+Example: `VIDEO_GENERATION` may use Browser/WebCodecs, a local PC/GPU, a local model, a cloud GPU, an external API, deterministic composition, or no provider yet.
 
-Missing infrastructure must never be treated as available. MORISE chooses a valid fallback or gives a coherent unavailable/deferred result. No missing capability may produce a blank screen.
+Application code must depend on capability contracts, never directly on one provider SDK.
 
-Activation lifecycle:
+Every capability has states:
 
-`PLANNED → IMPLEMENTED → CONFIGURED → AVAILABLE → ENABLED`
+`PLANNED → AVAILABLE → CONFIGURED → AUTHORIZED → ENABLED → EXECUTING`
+
+Exceptional states:
+
+`PENDING_DEPENDENCY`, `DISABLED`, `MAINTENANCE`, `DEGRADED`, `ERROR`, `UNAVAILABLE`.
+
+Architecture can contain future capabilities without activating them.
 
 ## 3. AI Orchestrator
 
-Responsibilities:
+```text
+USER INTENT
+  ↓
+CONTEXT RESOLUTION
+  ↓
+CAPABILITY MATCHING
+  ↓
+POLICY CHECK
+  ↓
+DEPENDENCY / HEALTH CHECK
+  ↓
+PROVIDER SELECTION
+  ↓
+EXECUTION
+  ↓
+VALIDATION
+  ↓
+PERSISTENCE
+  ↓
+RESPONSE
+```
 
-- interpret intent and context;
-- identify required capabilities;
-- consult policies and permissions;
-- inspect provider availability and health;
-- select an execution path;
-- execute tools/providers;
-- validate output;
-- persist state/events;
-- return a natural SYSTEM response.
+The PLAYER normally asks for an outcome. The AI chooses the technical path according to availability, policy, privacy, device capability, latency, cost and quality.
 
-The orchestrator is the default coordinator. PLAYER-facing UX must not require technical provider selection for ordinary tasks.
+Normal PLAYERS do not choose GPUs, models, APIs, encoders or storage backends.
 
-## 4. Provider abstraction
+## 4. Provider possibilities
 
-A capability is independent of its provider. Every provider is an adapter behind a normalized contract.
+### Text / reasoning
 
-Example:
+Browser AI, WebAssembly, WebGPU, local computer models, Ollama, llama.cpp, cloud LLMs, external APIs and deterministic rules for non-AI tasks.
 
-`VIDEO_GENERATION → Browser | Local GPU | Cloud GPU | API A | API B | Deterministic fallback | UNAVAILABLE`
+### Translation
 
-### Browser/device possibilities
+Local dictionaries, limited deterministic rules, Browser AI, WebAssembly/WebGPU, local models, server models, optional future Cloudflare Workers AI, external translation APIs, cached translations and English fallback.
 
-- Web APIs;
-- WebGPU;
-- WebAssembly;
-- WebCodecs;
-- Canvas;
-- Web Audio API;
-- browser-native AI where supported;
-- quantized models;
-- local cache.
+Required languages:
 
-### Local computer possibilities
+`fr, en, hi, es, de, it, pt, ar, ja, ko, ru, tr, id, th, vi, pl, nl, ro, bn, ur`
 
-- Ollama;
-- llama.cpp;
-- ComfyUI;
-- Whisper-compatible local speech recognition;
-- local text/image/audio/music/video models;
-- local GPU acceleration.
+English is the default display fallback.
 
-### Optional cloud/API possibilities
+### Image
 
-- Cloudflare Workers AI;
-- LLM providers;
-- image providers;
-- music providers;
-- video providers;
-- speech providers;
-- translation providers;
-- anime/data APIs;
-- future services.
+Canvas/SVG/CSS procedural generation, Browser AI, WebGPU/WASM, local image models, ComfyUI/local workflows, cloud providers, external APIs and user import.
 
-Cloudflare AI remains optional and disabled until explicitly configured.
+### Music/audio
 
-## 5. Infrastructure Control Plane
+Web Audio API, procedural synthesis, local assets, local models, Browser AI, cloud models, external APIs and user import.
 
-The system computes readiness from required and optional dependencies. The OWNER/Superadmin may change policy states, but ordinary PLAYERS do not configure infrastructure.
+### Video
 
-Example:
+Canvas, WebCodecs, browser processing, local PC/GPU, local video workflows/models, cloud GPU, external APIs, user import and deterministic editing/composition.
 
-`VIDEO_GENERATION: required video provider; optional GPU/encoder/cloud; current=PENDING`
+### Speech
 
-Health failure:
+Browser speech APIs, local speech models, WebAssembly/WebGPU, local PC, cloud speech services and external APIs.
 
-`Provider health failure → DEGRADED/MAINTENANCE → orchestrator excludes provider → fallback/unavailable result → OWNER alert`
+No listed provider is mandatory.
 
-### 5.1 AI-coordinated capability control
+## 5. Infrastructure and capability control plane
 
-MORISE must not expose a separate technical configuration button for every capability. The AI Orchestrator coordinates the majority of capability selection automatically.
-
-The OWNER/Superadmin defines policy, permissions, maintenance state and provider eligibility. The orchestrator then determines what can actually be executed at runtime.
-
-`OWNER POLICY → CAPABILITY REGISTRY → DEPENDENCY/HEALTH CHECK → AI ORCHESTRATOR → BEST VALID EXECUTION PATH`
-
-A missing infrastructure is not an error in the whole application. The affected capability is isolated and represented as `PENDING`, `UNAVAILABLE`, `DEGRADED` or `MAINTENANCE` as appropriate.
-
-### 5.2 Progressive infrastructure activation
-
-Any capability may be designed and coded before its final infrastructure exists. It can remain disabled or pending without breaking unrelated features.
+The AI coordinates capability selection. The OWNER/Superadmin controls high-level policy, authorization, maintenance, provider authorization, thresholds, dependency visibility, audit and monetization policy.
 
 Example:
 
 ```text
-VIDEO GENERATION
-├─ implementation: READY
-├─ video provider: NOT CONFIGURED
-├─ local GPU: NOT AVAILABLE
-├─ browser fallback: NOT AVAILABLE
-└─ runtime state: PENDING
+PLAYER asks for VIDEO
+        ↓
+AI ORCHESTRATOR
+        ↓
+Capability + dependency check
+        ↓
+Provider unavailable?
+        ├─ YES → valid fallback
+        │          └─ none → honest unavailable state + optional OWNER alert
+        └─ NO  → execute → validate
 ```
 
-When a valid provider later becomes available, the orchestrator can discover it through the capability/provider registry and use it without redesigning the feature.
+If video, music, image, local AI or another infrastructure is not yet available, that capability can remain `PENDING_DEPENDENCY` or `DISABLED` while unrelated MORISE functionality remains operational.
 
-## 6. Experience Engine
+The OWNER does not need a button for every internal decision. Manual controls are policy-level exceptions; normal coordination remains AI-driven.
 
-Reusable primitives:
+## 6. MORISE Core
 
-- rules;
-- state variables;
-- objects;
-- characters;
-- environments;
-- conditions;
-- triggers;
-- consequences;
-- branches;
-- events;
-- discoveries;
-- titles;
-- memories;
-- challenges;
-- seasons;
-- rewards.
+### Rules Engine
 
-Architecture:
+Evaluates conditions, consequences, unlocks, deterministic variants, rarity and challenge outcomes. Rules should be versioned when historical reproducibility matters.
 
-`MORISE CORE (RULES + STATE + EVENTS) → EXPERIENCE ENGINE → MANY EXPERIENCES`
+### State Engine
 
-A new experience should normally require configuration/content and reusable rules, not a new server, GPU or vendor.
+Tracks validated transitions with actor, previous state/reference, event/rule, resulting state, timestamp, version and validation status.
 
-## 7. World / State / Events
+### Event Engine
 
-State must be explicit and versionable. It may represent player, world, object, discovery, challenge, season, creation-version and memory state.
+Immutable events include discovery, challenge completion, object evolution, title unlock, world change, memory creation and creator milestones. Record seeds/rule versions for deterministic generation where practical.
 
-Events should preserve, where appropriate:
-
-- event id;
-- type;
-- actor;
-- source/context;
-- timestamp;
-- rule/version reference;
-- deterministic seed;
-- input state reference;
-- consequence;
-- visibility;
-- validation status.
-
-Core world-memory loop:
-
-`ACTION → VALIDATED STATE CHANGE → WORLD REMEMBERS → FUTURE EXPERIENCE REACTS`
-
-No fake personalization.
-
-## 8. Puzzles, secrets and anomalies
-
-Support:
-
-- multiple valid puzzle solutions;
-- procedural variations;
-- hidden rules;
-- secret titles;
-- hidden map areas;
-- Easter eggs;
-- auditable anomalies;
-- community-distributed clues;
-- consequence-based branches.
-
-Randomness must be auditable when materially relevant. Anomalies must be real system events, not fabricated engagement bait.
-
-## 9. Remix, Laboratory and asynchronous challenges
-
-### Deterministic Remix
-
-`ORIGINAL → PARAMETERS → NEW VERSION → VALIDATION → SHARE/PLAY`
-
-Parameters may modify theme, difficulty, objective, timing, environment, object behavior, text, layout, sound/music layer or speed.
-
-### Laboratory
-
-Controlled combinations such as `OBJECT + OBJECT`, `RULE + RULE`, `CHARACTER + ENVIRONMENT`, or `PUZZLE + PARAMETER`, executed against schemas, permissions and validation.
-
-### Async challenges
-
-`CREATOR → CHALLENGE → PLAYER ATTEMPT → VALIDATED RESULT → CREATOR NOTIFICATION`
-
-No simultaneous presence is required.
-
-## 10. Creation Engine
-
-Reserve provider-independent pipelines for:
-
-- novels;
-- comics;
-- manga/manhwa-style works;
-- images;
-- music;
-- audio;
-- video;
-- interactive experiences;
-- remixes.
-
-Every artifact should have owner, creation id, version, provenance, validation state, visibility and lifecycle metadata. AI is optional at execution time.
-
-## 11. MORISE Memory Vault — personal photos and videos
-
-The Memory Vault is the explicit personal-memory layer. It extends MORISE Moments/Memory Cards and covers user-owned memories, not only generated content.
-
-A PLAYER may voluntarily preserve:
-
-- personal photos;
-- personal videos;
-- audio recordings;
-- text memories;
-- personal creations;
-- MORISE Moments;
-- Memory Cards;
-- selected experience results;
-- albums/collections.
-
-### Storage separation
-
-Large binary media belongs in the configured object/media storage layer. Database records hold metadata and references, not duplicate media blobs.
-
-Conceptual record:
+### Capability Registry
 
 ```text
-MEMORY RECORD
-├─ owner_id
-├─ media_reference
-├─ media_type
-├─ created_at
-├─ captured_at (optional)
-├─ title
-├─ description
-├─ collection_id (optional)
-├─ visibility
-├─ consent flags
-├─ provenance
-└─ deletion/export state
+capability_id
+name
+category
+required_dependencies
+optional_dependencies
+providers
+fallbacks
+policy
+status
+risk_level
 ```
 
-### Privacy
+### Dependency Registry
+
+```text
+dependency_id
+kind
+provider
+required_config
+health_state
+availability
+cost_class
+privacy_class
+supported_targets
+```
+
+## 7. Experience Engine
+
+Central architecture:
+
+```text
+MORISE CORE (RULES + STATE + EVENTS)
+                 ↓
+        EXPERIENCE ENGINE
+                 ↓
+          MANY EXPERIENCES
+```
+
+Internal capabilities include worlds that remember, evolving puzzles, auditable anomalies, secret titles, hidden areas, evolving objects, Memory Cards, deterministic Remix, asynchronous challenges, Laboratory combinations, distributed secrets, collective legends, branching choices, SYSTEM presentation styles, seasons, player construction, Easter eggs and transparent rarity.
+
+These are cross-module capabilities, not automatic navigation tabs.
+
+## 8. Personal Memory Vault — photos, videos and life memories
 
-Default visibility is private. Supported states include private, selected-person, and public/community sharing when explicitly chosen.
+### 8.1 Purpose
 
-The system must support deletion, export/download, access control and lifecycle management.
+**MORISE Memory Vault** is a privacy-first personal memory layer. A PLAYER can intentionally preserve personal photos and videos as memories, alongside audio, text, stories, creations, MORISE Moments, Memory Cards and selected world/play milestones.
 
-MORISE must never automatically publish, sell, advertise against, or share personal photos/videos merely because they exist in the Vault.
+This is distinct from the generated Memory Card concept: the Vault preserves the user's original personal media, while a Memory Card is a derived presentation/reference artifact.
+
+### 8.2 Storage separation
+
+Separate:
+
+1. binary media/object storage;
+2. metadata;
+3. memory/event references;
+4. visibility and permissions;
+5. derived previews/cards.
+
+Conceptual model:
+
+```text
+memory_items
+├── id
+├── owner_id
+├── type                  # photo | video | audio | text | creation | moment
+├── storage_reference
+├── title
+├── description
+├── captured_at           # optional/user supplied
+├── created_at
+├── visibility            # private by default
+├── status                # pending | ready | failed | deleted
+├── checksum/reference
+└── metadata_reference
+
+memory_collections
+├── id
+├── owner_id
+├── title
+├── description
+└── visibility
 
-### AI consent
+memory_collection_items
+├── collection_id
+└── memory_item_id
 
-`STORE ≠ ANALYZE ≠ SHARE`
+memory_moments
+├── id
+├── owner_id
+├── event_id
+├── title
+├── summary
+├── created_at
+└── provenance
+```
 
-Storing personal media does not grant permission to analyze it. Analysis does not grant permission to share it.
+The final schema must be reconciled with the production Supabase schema before implementation.
 
-Where authorized, the orchestrator may organize memories, build timelines, group collections, create captions/summaries or generate Memory Cards. It must not invent dates, people, events or claims unsupported by the source or user input.
+### 8.3 AI coordination
 
-### Memory Cards
+When explicitly authorized, MORISE AI may organize memories, suggest collections, create captions, generate Memory Cards, search authorized memories or summarize a selected set.
 
-`EVENT → RESULT → VISUAL → TITLE → LINK`
+The AI does not automatically publish, share, delete or repurpose private memories.
 
-A Memory Card is a presentation artifact over real underlying media/state. It cannot create a false event.
+```text
+PERSONAL PHOTO / VIDEO / EVENT
+            ↓
+AUTHORIZED MEMORY INDEX
+            ↓
+       AI ORCHESTRATOR
+            ↓
+collection / caption / card / search suggestion
+            ↓
+       PLAYER DECISION
+            ↓
+       optional save/share
+```
 
-## 12. Translation architecture
+### 8.4 Privacy and ownership
 
-Target: 20 languages, with English as the default fallback when a requested language is unavailable.
+Private memories are private by default.
 
-Possible layers:
+MORISE must not:
 
-1. static/local dictionaries;
-2. browser-native/local AI;
-3. local computer model;
-4. configured cloud model;
-5. specialized translation API;
-6. cached translations;
-7. English fallback.
+- publish personal media automatically;
+- share memories automatically;
+- use private media for advertising without appropriate explicit authorization;
+- infer sensitive traits from private memories for profiling;
+- train external models on private media without an explicit valid consent flow;
+- silently delete memories.
 
-Private conversation translation must respect privacy boundaries and use local/browser routes when configured before requiring a paid external API.
+### 8.5 Export, deletion and sharing
 
-## 13. Social and communication
+The PLAYER must be able to inspect visibility, revoke sharing, delete memories/collections and export/download personal media where supported.
 
-The Social Engine covers profiles, posts, comments, reactions, private conversations, groups/guilds, asynchronous challenges and sharing of eligible creations/memories.
+Deletion behavior must clearly distinguish immediate deletion from provider backup-retention behavior.
 
-Authorization and privacy checks occur before AI orchestration or translation.
+### 8.6 Storage failure
 
-## 14. OWNER / Superadmin
+If storage is unavailable, MORISE must not claim an upload succeeded. It should expose honest `PENDING`/`FAILED` state, allow retry and keep unrelated functionality working.
 
-The already-created OWNER account is the highest-authority administrative identity.
+## 9. Creation Engine
 
-Roles: OWNER/Superadmin, Admin, Moderator, Player.
+```text
+CREATION REQUEST
+ ↓
+Intent
+ ↓
+Creation Spec
+ ↓
+Provider Selection
+ ↓
+Generation / Composition
+ ↓
+Validation
+ ↓
+Version
+ ↓
+Storage
+ ↓
+Provenance
+```
 
-The control plane governs roles, permissions, capability policy, provider configuration, maintenance, security, moderation, creator thresholds, monetization, advertising, analytics visibility and audit logs.
+Supported creation families: roman/novel, BD/comic, manga, manhwa, image, music, audio, video, interactive experiences and deterministic remix.
 
-The AI coordinates ordinary operations; the Superadmin is the authority for policy and exceptions.
+## 10. Social and translation
 
-## 15. Creator Economy and monetization
+Social capabilities include profiles, feed/posts, comments/reactions, private conversations, groups/guilds, asynchronous challenges and sharing.
 
-Eligibility may use validated views, engagement, project completion, activity and fraud/abuse checks. The orchestrator can monitor thresholds and alert OWNER automatically.
+Private conversation translation must respect permissions and privacy and use configured local/browser/cache routes before optional cloud/API routes according to policy.
 
-Advertising starts with discreet responsive banners. The architecture does not require popunders, forced redirects or disruptive overlays.
+## 11. Creator Economy and advertising
 
-Reserved revenue adapters: advertising, affiliate links, sponsorships, sponsored placements, creator revenue sharing, premium features, voluntary support, digital products and future partner programs.
+Potential models include discreet banner advertising, affiliation, direct sponsorship, sponsored placements, creator rewards, future premium capabilities, tips/donations where supported and digital products.
 
-No revenue adapter is active merely because it exists in the architecture.
+Creator features may unlock after verified thresholds such as views, engagement or completed projects. The AI/Rules layer evaluates eligibility and the OWNER receives configured high-value milestone alerts.
 
-## 16. Data architecture
+Initial advertising policy: discreet banners only; no forced popups/popunders or deceptive redirects.
 
-Separate identity/auth, profiles, social data, world state, events, creations, versions, media references, memories, challenges, titles, seasons, permissions, capability/provider state and analytics/audit data.
+## 12. Admin / OWNER security model
 
-Where Supabase is used, RLS must enforce ownership and role boundaries. Service-role credentials must never be exposed to the client.
+The already-created OWNER account is the highest-control account.
 
-Large media belongs in object storage and is referenced from relational records.
+```text
+OWNER / SUPERADMIN
+  ↓
+ADMIN
+  ↓
+MODERATOR
+  ↓
+PLAYER
+```
 
-## 17. Security
+OWNER controls global policy, role assignment, capability policy, provider authorization, feature maintenance, monetization policy, thresholds, audit review and security controls. Critical operations must be authorized and auditable.
 
-Required controls:
+## 13. Performance and device strategy
 
-- authenticated identity;
-- server-authoritative authorization;
-- RLS/ownership checks;
-- least privilege;
-- input/output validation;
-- rate limiting;
-- abuse prevention;
-- audit trails;
-- safe provider credentials;
-- private-memory isolation;
-- explicit consent for AI analysis of personal media.
+Support capability-aware operation across approximately 2 GB RAM-class phones where browser/runtime limits permit, standard phones, high-end phones/tablets, PCs without GPUs, PCs with GPUs, workstations and future dedicated/cloud GPU infrastructure.
 
-Client-provided roles/OWNER flags are never trusted for authorization.
+Heavy AI/media work must not be assumed to run on low-end phones. Use progressive enhancement and lightweight fallbacks.
 
-## 18. Device/performance profiles
+## 14. Offline/degraded operation
 
-Support low-end phones, standard phones, high-end phones, tablets, PCs without dedicated GPU, GPU PCs, workstations and future cloud/server GPU.
+Where validated, deterministic experiences may use localStorage, IndexedDB, service workers/PWA caching, WebAssembly, WebGPU, Web Audio, Canvas and WebCodecs.
 
-`DETECT → SELECT LIGHTEST VALID PATH → EXECUTE → FALLBACK`
+Server-authoritative operations remain authoritative for security, multiplayer, ownership, economy and shared persistent state. Never claim synchronization before it succeeds.
 
-Use lazy loading, code splitting, compressed assets, cache reuse, memory budgets, battery-aware behavior and reduced visual effects on constrained devices.
+## 15. Security and data integrity
 
-## 19. Offline/degraded mode
+Deny by default; RLS for user-owned data; server-side authorization for sensitive operations; no secrets in client bundles; input/output validation; rate limits; audit logs; idempotency for retryable mutations; provenance; explicit privacy boundaries; safe errors.
 
-Where technically validated, deterministic mechanics can continue locally: puzzles, deterministic remix, selected creation tools, cached memory browsing and presentation preferences.
+Personal memory media receives the same or stronger access controls as other private user data.
 
-Server-authoritative operations must not be falsely marked successful offline. Synchronization must use explicit conflict handling and idempotent operations where required.
+## 16. Observability
 
-## 20. Contracts and events
+Important telemetry should identify capability requested, provider selected, selection reason, dependency health, outcome, latency, failure category, fallback and user-visible result.
 
-Recommended typed contracts:
+Do not log private media contents or unnecessary sensitive data.
 
-`CapabilityRequest`, `CapabilityResult`, `ProviderHealth`, `StateTransition`, `DomainEvent`, `ValidationResult`, `MemoryRecord`, `MediaReference`, `CreationVersion`, `PermissionDecision`.
+## 17. Testing architecture
 
-Retryable commands require idempotency behavior. Async work requires explicit `pending`, `running`, `succeeded`, `failed`, `cancelled` and `unavailable` states.
+### Unit
 
-## 21. Observability
+Rules, state transitions, eligibility, feature guards, provider selection and localization fallback.
 
-Separate product analytics, operational logs, security audit logs, AI/provider telemetry and creator/economy events.
+### Integration
 
-PostHog may provide product analytics when configured. Private memory contents must not be sent to analytics events. Provider failures should be visible to OWNER without exposing secrets.
+Database/RLS, storage permissions, Memory Vault, event persistence and provider adapters.
 
-## 22. Verification
+### E2E
 
-Every major capability requires proportionate unit, integration, authorization/security, persistence, fallback, mobile and end-to-end verification. Offline/degraded behavior is tested where supported.
+First Contact, authentication, creation, memory upload/view/delete, sharing permissions, private conversation translation, admin controls and graceful unavailable capabilities.
 
-Critical QA path:
+### Mobile
 
-`DEPLOY → OPEN → VISUAL CHECK → INTERACT → CONSOLE/RUNTIME CHECK → AUTH/PERMISSIONS → DATA/STATE → MOBILE → PROVIDER FALLBACK → REGRESSION`
+Low-memory behavior, touch interactions, responsive layout and offline/degraded flows.
 
-No completion claim is valid without fresh verification evidence for the affected surface.
+### Regression
 
-## 23. Capability dependency matrix
+Missing providers must never regress unrelated features.
 
-Every capability records:
+## 18. Capability dependency matrix
 
-| Field | Meaning |
-|---|---|
-| Capability | What MORISE wants to accomplish |
-| Required dependencies | Must exist |
-| Optional dependencies | Enhancements only |
-| Providers | Execution options |
-| Fallback | Safe alternative |
-| Current state | Available/Pending/etc. |
-| Owner policy | Allowed/blocked |
-| Security class | Required authorization |
-| Persistence | What must be saved |
-| Verification | How it is tested |
+| Capability | Code | DB | Storage | Browser | Local PC | GPU | Cloud/API | Fallback |
+|---|---:|---:|---:|---:|---:|---:|---:|---|
+| Profile | ✓ | ✓ | optional | ✓ | no | no | no | local read-only |
+| Puzzle | ✓ | optional | no | ✓ | no | no | no | deterministic |
+| Deterministic Remix | ✓ | optional | optional | ✓ | no | no | no | reduced remix |
+| Memory Vault | ✓ | ✓ | ✓ | ✓ | no | no | no | pending upload |
+| Roman AI | ✓ | optional | optional | possible | possible | optional | optional | deterministic drafting |
+| Image AI | ✓ | optional | optional | possible | possible | optional | optional | procedural/import |
+| Music AI | ✓ | optional | optional | possible | possible | optional | optional | procedural/import |
+| Video AI | ✓ | optional | ✓ | limited | possible | often | optional | composition/import |
+| Translation | ✓ | optional | optional | possible | possible | optional | optional | English |
+| Social | ✓ | ✓ | optional | ✓ | no | no | no | read-only/degraded |
 
-This matrix prevents hidden infrastructure dependencies.
+Final production matrix must be reconciled against the actual implementation repository.
 
-## 24. Integrity rules
+## 19. Feature state machine
 
-MORISE must not depend on fake engagement, fake social proof, fabricated anomalies, fake rarity, fake activity, hidden psychological profiling, coercive sharing, deceptive monetization, unauthorized personal-media use or silent publication of private memories.
+```text
+PLANNED
+  ↓ dependency discovered
+PENDING_DEPENDENCY
+  ↓ dependency available
+AVAILABLE
+  ↓ configuration complete
+CONFIGURED
+  ↓ OWNER policy allows
+AUTHORIZED
+  ↓ capability enabled
+ENABLED
+  ↓ request
+EXECUTING
+  ├─ success → ENABLED
+  ├─ recoverable failure → DEGRADED / RETRY
+  ├─ dependency failure → PENDING_DEPENDENCY
+  └─ policy action → DISABLED / MAINTENANCE
+```
 
-Retention comes from genuine discovery, creation, consequences, memory, social participation and new possibilities.
+The AI Orchestrator reads this state before execution.
 
-## 25. Implementation rule
+## 20. No-button principle
 
-This document is the technical design. It does not authorize activating every capability immediately. Implementation order remains governed by the canonical Master Plan and its current module position.
+Normal PLAYERS request outcomes. They do not select technical infrastructure.
 
-Future capabilities may be implemented behind capability flags and provider adapters before the required infrastructure exists.
+Example:
 
-**THE ARCHITECTURE MUST BE READY BEFORE THE INFRASTRUCTURE IS READY.**
+> PLAYER: “Fais une vidéo de cette scène.”
+
+MORISE decides the valid route. The OWNER/Superadmin retains high-level policy controls, not a technical button for every internal action.
+
+## 21. Implementation gate
+
+Before a capability is production-ready, verify: contract exists; dependencies are documented; provider adapter or deterministic implementation exists; capability state is represented; fallback exists; authorization is enforced; tests exist; mobile behavior is verified; failure isolation works; observability exists; privacy/security review is complete; and no unnecessary infrastructure dependency was introduced.
+
+## 22. Current activation policy
+
+Future capabilities may remain unactivated.
+
+- Cloudflare AI is optional and not required until explicitly configured.
+- Future local PC AI may remain pending until the computer/environment exists.
+- Video and music engines may remain pending/disabled until an appropriate execution path exists.
+- Browser AI may be used when supported by the actual browser/device.
+- Existing MORISE capabilities continue independently of unavailable future engines.
+
+The OWNER must be able to see the reason for a capability state without exposing technical complexity to normal PLAYERS.
+
+## 23. Relationship to the Master Plan
+
+This document is the technical interpretation of `docs/MORISE_MASTER_PLAN_V3.md`. If implementation details conflict with product doctrine, the conflict must be surfaced and resolved rather than silently changing the product plan.
+
+**Current functional position remains MODULE 6 — PLAY / FINAL QA.**
