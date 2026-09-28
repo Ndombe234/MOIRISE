@@ -678,6 +678,141 @@ The architecture is considered implemented only when MORISE AI can:
 
 ---
 
+## INTERNATIONALIZATION — 20 LANGUAGES
+
+Internationalization is a **core MORISE architectural requirement**, not an optional enhancement. MORISE must be designed so that the complete product can operate internationally from launch, with the full user-facing and administrative experience localizable in the canonical V1 language set.
+
+### Canonical V1 languages
+
+MORISE V1 must support these **20 languages**:
+
+`fr` — Français  
+`en` — English  
+`hi` — हिन्दी / Hindi  
+`es` — Español  
+`de` — Deutsch  
+`it` — Italiano  
+`pt` — Português  
+`ar` — العربية  
+`ja` — 日本語  
+`ko` — 한국어  
+`ru` — Русский  
+`tr` — Türkçe  
+`id` — Bahasa Indonesia  
+`th` — ไทย  
+`vi` — Tiếng Việt  
+`pl` — Polski  
+`nl` — Nederlands  
+`ro` — Română  
+`bn` — বাংলা  
+`ur` — اردو`
+
+These locales are the canonical V1 language registry. Additional languages may be added later through the same localization architecture without creating a parallel translation system.
+
+### Everything must be translatable
+
+The requirement applies to **the entire MORISE product**, including but not limited to:
+
+- public and authenticated UI;
+- MORISE SYSTEM messages, prompts, progression, missions and contextual reactions;
+- PLAYER onboarding and First Contact;
+- social feed, posts, comments, reactions and profiles;
+- private messaging and group/community interfaces;
+- notifications, alerts, empty/loading/error states and validation messages;
+- search, discovery, settings, help and accessibility surfaces;
+- games, experiences, Living Objects and Creation Runtime interfaces where text is presented;
+- AI-generated explanations, recommendations and contextual SYSTEM responses;
+- moderation workflows, reports, safety messages and policy notices;
+- OWNER / SUPER ADMIN Back Office, ADMIN and MODERATOR surfaces;
+- Creator Economy eligibility, threshold notifications and administrative notices;
+- transactional/system emails and other product-controlled communications;
+- metadata and SEO/localized public discovery content where applicable.
+
+No newly implemented user-facing feature is considered complete if it contains user-visible text that bypasses the localization system.
+
+### Localization architecture
+
+Every translatable string must use a stable localization key rather than hard-coded user-visible text.
+
+`SOURCE STRING / KEY → LOCALE RESOLUTION → TRANSLATION RESOURCE → RENDERED EXPERIENCE`
+
+The locale-resolution order should support, where appropriate:
+
+`EXPLICIT PLAYER LOCALE → SAVED PLAYER PREFERENCE → DEVICE / BROWSER LOCALE → MORISE DEFAULT LOCALE`
+
+The saved PLAYER locale must be independent from account role. OWNER, ADMIN, MODERATOR and PLAYER interfaces all follow the same localization foundation while respecting their authorized content.
+
+### Dynamic AI and user-generated content
+
+MORISE must distinguish between:
+
+1. **Product-controlled text** — translated through the canonical localization resources and release process.
+2. **Dynamic MORISE AI output** — generated or translated at runtime using the MORISE Translation capability with validation and appropriate caching.
+3. **PLAYER-created content** — stored in its original form with provenance, then translated on demand when the viewer selects another supported language.
+
+The original content and provenance must remain recoverable. A translation must never silently replace or destroy the source version.
+
+Conceptual flow:
+
+`ORIGINAL CONTENT → LANGUAGE IDENTIFICATION → PERMITTED TRANSLATION → QUALITY / SAFETY CHECK → CACHE → DISPLAY IN PLAYER LOCALE`
+
+Where a user chooses to edit translated content, the system must make clear whether the edit changes the translated representation, the original content, or creates a distinct localized version.
+
+### Browser / on-device first
+
+Translation should prefer browser/on-device processing where the target device and quality level make it suitable, followed by a validated MORISE translation cache and protected local/server fallback. Optional external translation providers may be used through an internal abstraction, but no external provider becomes the MORISE translation architecture itself.
+
+The architecture must be cost-aware: repeated translations should be cached, deduplicated and reusable across permitted viewers and contexts.
+
+### RTL and locale formatting
+
+The localization layer must support both **LTR** and **RTL** languages. Arabic (`ar`) and Urdu (`ur`) require full RTL-aware rendering, layout mirroring where appropriate, bidirectional text handling and correct mixed-script rendering.
+
+Locale-aware formatting must cover, as applicable:
+
+- dates and times;
+- numbers and decimal separators;
+- currencies;
+- percentages;
+- units and measurement display;
+- pluralization and grammatical variants;
+- text direction;
+- collation and sorting;
+- locale-sensitive input and validation formats.
+
+UTC/storage and user-display timezone rules must remain separate from language/locale selection.
+
+### Translation quality and fallback
+
+Every supported locale must have a defined fallback chain. Missing translations must never produce broken UI, raw localization keys, accidental mixed-language interfaces or blank screens.
+
+When a localized string is unavailable, MORISE must use the configured fallback locale according to deterministic rules and record the missing localization for later correction where appropriate.
+
+AI-generated translations may be used for dynamic content, but critical product-controlled text, permissions, safety notices, legal text and high-impact administrative messages require validated localization resources rather than unreviewed runtime generation.
+
+### Internationalization QA gate
+
+Internationalization is part of the normal implementation and release gate. A feature is not complete until localization has been checked for supported V1 languages and relevant responsive/RTL cases.
+
+Minimum validation includes:
+
+- no hard-coded user-visible strings outside approved localization mechanisms;
+- all 20 canonical locales resolve correctly;
+- missing-key detection and fallback behavior;
+- RTL layout checks for Arabic and Urdu;
+- text expansion / contraction checks;
+- long-string and overflow checks on mobile and desktop;
+- dynamic AI translation fallback and cache behavior;
+- localized notifications, errors and administrative messages;
+- regression checks ensuring newly added UI strings are registered.
+
+Localization failures must be observable through development/QA tooling and must not silently pass into production.
+
+### No separate translation product surface
+
+Translation and internationalization remain a cross-module MORISE SYSTEM capability. They must not create a new permanent PLAYER-facing navigation tab merely because they support 20 languages.
+
+
 ## Translation architecture — browser/on-device first
 
 Translation is a first-class V1 SYSTEM capability. Prefer browser/on-device processing where suitable, then translation cache, local/server fallback and an optional external API behind an internal abstraction. V1 must already provide useful translation quality.
