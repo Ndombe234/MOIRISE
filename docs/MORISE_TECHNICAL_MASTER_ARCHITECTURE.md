@@ -141,6 +141,33 @@ Health failure:
 
 `Provider health failure → DEGRADED/MAINTENANCE → orchestrator excludes provider → fallback/unavailable result → OWNER alert`
 
+### 5.1 AI-coordinated capability control
+
+MORISE must not expose a separate technical configuration button for every capability. The AI Orchestrator coordinates the majority of capability selection automatically.
+
+The OWNER/Superadmin defines policy, permissions, maintenance state and provider eligibility. The orchestrator then determines what can actually be executed at runtime.
+
+`OWNER POLICY → CAPABILITY REGISTRY → DEPENDENCY/HEALTH CHECK → AI ORCHESTRATOR → BEST VALID EXECUTION PATH`
+
+A missing infrastructure is not an error in the whole application. The affected capability is isolated and represented as `PENDING`, `UNAVAILABLE`, `DEGRADED` or `MAINTENANCE` as appropriate.
+
+### 5.2 Progressive infrastructure activation
+
+Any capability may be designed and coded before its final infrastructure exists. It can remain disabled or pending without breaking unrelated features.
+
+Example:
+
+```text
+VIDEO GENERATION
+├─ implementation: READY
+├─ video provider: NOT CONFIGURED
+├─ local GPU: NOT AVAILABLE
+├─ browser fallback: NOT AVAILABLE
+└─ runtime state: PENDING
+```
+
+When a valid provider later becomes available, the orchestrator can discover it through the capability/provider registry and use it without redesigning the feature.
+
 ## 6. Experience Engine
 
 Reusable primitives:
