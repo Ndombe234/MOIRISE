@@ -110,6 +110,62 @@ The final message may be:
 
 The PLAYER then receives a contextual next experience or choice rather than a generic feature tour.
 
+
+### Post-Contact curiosity continuation
+
+The end of First Contact must not collapse into a generic dashboard, feature tour or arbitrary reward screen. The approximately two-minute experience is the **beginning of MORISE's contextual trajectory**, not the end of the SYSTEM interaction.
+
+Immediately after First Contact, MORISE may leave the PLAYER with a **concrete, non-sensitive unanswered possibility** derived from what actually happened during the experience. The purpose is to create legitimate curiosity and agency: the PLAYER should have a reason to continue because something meaningful remains to be discovered, not because MORISE artificially withholds a reward.
+
+The continuation loop is:
+
+`CURIOSITY → ACTION → CONSEQUENCE → DISCOVERY → NEW QUESTION → EXPERIENCE → CURIOSITY`
+
+The open question may take forms such as:
+
+- an unexplained but auditable anomaly;
+- an incomplete discovery;
+- a new path revealed by the PLAYER's valid approach;
+- an object, Living Object or world element that can evolve;
+- a contextual mission;
+- a new 2D or 3D micro-experience;
+- a music/audio reaction that suggests another interaction;
+- a controlled mystery or experiment;
+- a collective possibility emerging from compatible non-sensitive activity.
+
+MORISE AI must select or assemble the continuation through the existing capability registry and permitted context. It may use PLAY, WORLD, PLAYER, Living Objects, Evolution Engine, World Memory, Convergence, World Agents, Music / Audio, Creation Tools and Creation Runtime without exposing those mechanisms as separate navigation items.
+
+The continuation should be **caused by the PLAYER's actual actions**, whenever technically appropriate. Examples include an unusual valid solution opening a different path, an object changing because of a permitted interaction, a discovered rule creating a follow-up experiment, or several related actions contributing to a collective possibility. The system must avoid fake personalization in which an identical generic experience is merely relabeled as being "for you".
+
+### Open possibility rather than artificial progression
+
+MORISE may intentionally reveal only enough information to establish a meaningful question while leaving non-essential details undisclosed until the PLAYER explores further. Suspense is permitted as a game-design mechanism when it preserves safety, transparency about material consequences and PLAYER control.
+
+The SYSTEM must not fabricate anomalies, discoveries or evidence that do not exist merely to manufacture engagement. Every revealed mystery or continuation hook must correspond to a real system state, validated experiment, permitted world rule, genuine generated content or auditable player-created consequence.
+
+There must be no mandatory grind, artificial waiting period, hidden purchase pressure, social punishment or irreversible consequence used to force continuation. A PLAYER may leave, ignore, restart or return later without losing essential rights or suffering account-level disadvantage.
+
+### World reaction after First Contact
+
+When a PLAYER continues interacting with MORISE, their permitted non-sensitive actions may begin to influence eligible experiences through controlled state changes. The visible result may be small at first: a different route, music layer, object behavior, challenge variant, encounter, mission or world detail.
+
+Over time, validated discoveries can feed the existing World Memory, Living Objects, Evolution Engine and Convergence systems. A PLAYER therefore does not simply accumulate points after First Contact; they can **change what MORISE can show them next**.
+
+The experience path should therefore preserve the principle:
+
+`PLAYER ACTION → MORISE LEARNS PERMITTED SIGNAL → WORLD / EXPERIENCE REACTS → PLAYER DISCOVERS CONSEQUENCE → NEW POSSIBILITY`
+
+This is an experiential continuation of First Contact and does not create a new module, tab or navigation category.
+
+### Contextual continuation selection
+
+When several legitimate continuations are available, MORISE AI may select one according to permitted context, novelty, readiness, device/runtime constraints, previous validated outcomes and the PLAYER's explicit choices.
+
+The selection should balance familiarity with discovery. MORISE must not reduce the PLAYER to a fixed behavioral label or send them permanently into a narrow content category because of one first-session action.
+
+A continuation can also be deferred when the required capability is not ready, too expensive to execute immediately or unsuitable for the current device. In that case MORISE should use a validated fallback that preserves the underlying mystery or possibility rather than displaying a broken or empty state.
+
+
 ### Procedural variation
 
 First Contact must not become one fixed script forever. MORISE may combine validated micro-world templates, rules, objectives, objects, characters, pacing, anomalies and endings to create multiple first-session variants.
