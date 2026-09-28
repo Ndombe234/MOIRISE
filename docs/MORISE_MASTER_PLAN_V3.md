@@ -1292,6 +1292,149 @@ No future feature should create separate permanent modules named “Creation Run
 
 ---
 
+## MORISE CREATOR ECONOMY — AI-ORCHESTRATED ELIGIBILITY
+
+MORISE may later support a creator economy, but monetization is **not required for the initial product launch**. The architecture must anticipate it so the platform does not need a structural redesign when the business model becomes ready.
+
+Core principle:
+
+`PLAYER CREATES → CONTENT / EXPERIENCE VALIDATED → REAL AUDIENCE / USAGE → ELIGIBILITY ENGINE → MORISE AI ORCHESTRATES ACCESS → ECONOMIC CAPABILITY ACTIVATED`
+
+MORISE AI coordinates the workflow, but **economic eligibility is enforced by explicit, auditable rules and dedicated system components**. MORISE AI must not arbitrarily grant, remove or invent monetary benefits.
+
+### Progressive activation by configurable thresholds
+
+Creator-economic capabilities are activated progressively according to **configurable eligibility thresholds**. Thresholds are configuration data, not hard-coded promises, and may change according to platform maturity, operating costs, available revenue sources, legal requirements, rights, fraud risk and real platform data.
+
+Possible eligibility signals include:
+
+- qualified views / real plays;
+- unique players or viewers where measurable;
+- meaningful time spent, completion or replay;
+- genuine interactions;
+- repeat participation / retention;
+- creation of derivative experiences or valid contributions;
+- community feedback and quality signals;
+- policy and rights compliance;
+- fraud / abuse risk;
+- creator account standing;
+- provenance and contribution validity.
+
+A raw view count alone must not be sufficient when it can be artificially inflated.
+
+Example:
+
+`THRESHOLD CONFIGURATION → ELIGIBILITY ENGINE → FRAUD / QUALITY / RIGHTS CHECKS → CREATOR STATUS → ECONOMIC CAPABILITY`
+
+A project therefore remains free to create and share while more advanced creator capabilities can unlock only after measurable conditions are satisfied.
+
+### Eligibility stages
+
+The architecture may support configurable stages such as:
+
+1. **Creator** — normal creation and sharing.
+2. **Established Creator** — additional creation, distribution or discovery capabilities after validated activity.
+3. **Eligible Creator** — access to an approved monetization program when all requirements are satisfied.
+4. **Revenue Participant** — participation in an authorized revenue-sharing mechanism subject to applicable legal, identity, tax, payment and rights requirements.
+
+These names and thresholds are architectural placeholders, not promises of future income.
+
+### Creator Eligibility Engine
+
+A dedicated **Creator Eligibility Engine** evaluates configured rules using validated platform data.
+
+MORISE AI may:
+
+- orchestrate eligibility checks;
+- explain the current status;
+- identify which permitted condition is missing;
+- recommend actions that legitimately improve eligibility;
+- coordinate re-evaluation after new validated activity.
+
+The Eligibility Engine itself remains deterministic/auditable for rules governing economic status.
+
+It must support:
+
+- configurable thresholds;
+- rolling measurement windows;
+- multiple qualification signals;
+- anti-fraud and anti-abuse checks;
+- rights / provenance checks;
+- minimum quality requirements;
+- creator/project eligibility states;
+- eligibility history;
+- suspension and reactivation;
+- re-evaluation after rule changes;
+- clear reason codes;
+- appeal/review workflows where appropriate.
+
+### Economic capability activation
+
+When eligibility is confirmed, MORISE may activate only the economic capabilities authorized for that creator and project.
+
+The architecture may later support, where legitimately available:
+
+- creator revenue sharing;
+- voluntary fan support;
+- creator subscriptions;
+- marketplace participation;
+- paid optional experiences;
+- licensing / distribution opportunities;
+- creator programs or partner programs;
+- other approved economic capabilities.
+
+The architecture does **not** imply that all of these exist at launch.
+
+### MORISE AI + economy separation
+
+The economic architecture must explicitly separate:
+
+**MORISE AI** — observes permitted signals, orchestrates workflows, explains status and selects the next permitted action.
+
+**Creator Eligibility Engine** — evaluates explicit qualification rules.
+
+**Fraud / Trust Systems** — detect invalid, manipulated or coordinated activity.
+
+**Provenance / Rights Systems** — verify ownership, permissions, contribution lineage and authorized reuse.
+
+**Economy / Ledger Systems** — record eligible economic events, balances and adjustments.
+
+**Payment / Distribution Adapters** — handle actual payouts or external distribution only when the corresponding legal, identity, tax, payment-provider and regulatory requirements are satisfied.
+
+This prevents a generative AI model from directly inventing balances, payouts or eligibility decisions.
+
+### Creator contribution chains
+
+The existing MORISE Moment, Relay, Living Story and Living Object systems may later feed a contribution graph:
+
+`CREATOR A → CHARACTER / WORLD → CREATOR B → STORY → CREATOR C → MUSIC → CREATOR D → GAME → AUDIENCE`
+
+When an authorized revenue program exists, provenance and contribution lineage can be used to determine eligible participation according to explicit rules.
+
+No contributor is promised automatic revenue merely because their contribution appears somewhere in a chain.
+
+### Anti-manipulation rule
+
+MORISE must never manufacture views, plays, reactions, users, time spent, retention or other activity to activate a creator's economic eligibility.
+
+MORISE must also not pressure PLAYERS to share or consume content solely to push another creator over a monetization threshold.
+
+Eligibility should be based on **validated, legitimate platform activity**.
+
+### Free-first growth model
+
+The initial MORISE experience should prioritize free access, creation, discovery, sharing and community growth. Monetization can be introduced progressively once the platform has sufficient users, infrastructure, rights processes, legal readiness and legitimate revenue sources.
+
+The core MORISE experience should not require intrusive advertising or user payment merely to participate.
+
+### Technical conception requirement
+
+The later technical conception must define the exact schemas, event pipeline, aggregation and measurement jobs, eligibility rules, anti-fraud signals, provenance model, creator states, audit logs, economy/ledger boundaries, payment adapters, permissions, appeals, privacy controls, configuration management and failure/recovery behavior.
+
+Thresholds remain configurable and are intentionally **not fixed in the Master Plan** until business economics, operating costs, legal requirements and actual platform data justify concrete values.
+
+This is an internal architecture capability orchestrated by MORISE AI. It does not create a new PLAYER-facing navigation tab.
+
 # MODULE MAP
 
 | Module | Name | Status | Purpose |
