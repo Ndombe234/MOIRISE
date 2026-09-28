@@ -25,7 +25,7 @@ export default async function PlayGamePage({ params }: { params: Params }) {
 
   const { gameId } = await params;
   const definition = getGameDefinition(gameId);
-  if (!definition || definition.requiredLevel > 1) notFound();
+  if (!definition) notFound();
 
   const renderGame = (game: GameDefinition, controls: PlayControls) => {
     switch (game.id) {
