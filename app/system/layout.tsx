@@ -3,10 +3,10 @@ import { signOut } from "@/app/auth/actions";
 import "./system-nav.css";
 
 const primaryLinks = [
-  { href: "/player", label: "PLAYER", code: "01", note: "Identity" },
-  { href: "/home", label: "WORLD", code: "02", note: "Explore" },
-  { href: "/social", label: "SOCIAL", code: "03", note: "Connect" },
-  { href: "/play", label: "PLAY", code: "04", note: "Experience" },
+  { href: "/player", label: "PLAYER", code: "01", note: "Identity", position: "top-left" },
+  { href: "/home", label: "WORLD", code: "02", note: "Explore", position: "top-right" },
+  { href: "/social", label: "SOCIAL", code: "03", note: "Connect", position: "bottom-left" },
+  { href: "/play", label: "PLAY", code: "04", note: "Experience", position: "bottom-right" },
 ];
 
 const secondaryLinks = [
@@ -34,10 +34,15 @@ export default function SystemLayout({ children }: Readonly<{ children: React.Re
             </span>
           </Link>
 
-          <div className="system-command-rail">
+          <div className="system-command-constellation">
+            <span className="system-constellation-line system-constellation-line-a" aria-hidden="true" />
+            <span className="system-constellation-line system-constellation-line-b" aria-hidden="true" />
+            <span className="system-constellation-line system-constellation-line-c" aria-hidden="true" />
+            <span className="system-constellation-line system-constellation-line-d" aria-hidden="true" />
+
             <nav className="system-primary-nav" aria-label="Primary SYSTEM navigation">
               {primaryLinks.map((link) => (
-                <Link key={link.href} href={link.href} className="system-command-node">
+                <Link key={link.href} href={link.href} className={`system-command-node system-command-node-${link.position}`}>
                   <span className="system-command-orbit" aria-hidden="true" />
                   <span className="system-command-code">{link.code}</span>
                   <span className="system-command-label">{link.label}</span>
@@ -45,8 +50,10 @@ export default function SystemLayout({ children }: Readonly<{ children: React.Re
                 </Link>
               ))}
             </nav>
+
             <Link className="system-core-command" href="/system" aria-current="page">
-              <span className="system-core-ring" aria-hidden="true" />
+              <span className="system-core-ring system-core-ring-outer" aria-hidden="true" />
+              <span className="system-core-ring system-core-ring-inner" aria-hidden="true" />
               <span className="system-core-code">CORE</span>
               <strong>SYSTEM</strong>
               <small>ONLINE</small>
@@ -70,7 +77,7 @@ export default function SystemLayout({ children }: Readonly<{ children: React.Re
 
         <footer className="system-footer">
           <span className="system-footer-status"><span aria-hidden="true" /> SYSTEM ONLINE</span>
-          <span className="system-footer-hint">PRIMARY COMMANDS ALWAYS AVAILABLE</span>
+          <span className="system-footer-hint">PRIMARY COMMANDS SURROUND THE CORE</span>
         </footer>
       </section>
     </main>
