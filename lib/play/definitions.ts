@@ -7,7 +7,7 @@ export const PLAY_LAB_DEFINITIONS: GameDefinition[] = [
     title: "Echo Trace",
     description: "Mémorise une trace spectrale, puis reconstruis-la sans voir son chemin.",
     estimatedSeconds: 45,
-    dimensions: { play: 2, knowledge: 1, precision: 1 } as never,
+    dimensions: { play: 2, knowledge: 1 } as never,
     difficulty: "focused",
     requiredLevel: 1,
     launchPath: "/play/echo-trace",
