@@ -23,6 +23,7 @@ export type Database = {
           moment_candidate: Json | null
           player_id: string
           score: number
+          share_token: string | null
           signals: Json
           status: string
         }
@@ -34,6 +35,7 @@ export type Database = {
           moment_candidate?: Json | null
           player_id: string
           score: number
+          share_token?: string | null
           signals?: Json
           status: string
         }
@@ -45,6 +47,7 @@ export type Database = {
           moment_candidate?: Json | null
           player_id?: string
           score?: number
+          share_token?: string | null
           signals?: Json
           status?: string
         }
@@ -546,6 +549,10 @@ export type Database = {
       ensure_system_profile: {
         Args: { target_player_id: string }
         Returns: undefined
+      }
+      get_public_play_moment: {
+        Args: { share_token_value: string }
+        Returns: Json
       }
       record_play_completion: {
         Args: {
