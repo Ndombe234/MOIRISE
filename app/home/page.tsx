@@ -4,13 +4,10 @@ import { createClient } from "@/lib/supabase/server";
 import { MoriseNavigation, WorldQuickNav } from "@/components/morise-navigation";
 import "./home-world.css";
 
-const actions = [
-  { href: "/discover", label: "Discover", index: "01", text: "Find something unexpected." },
-  { href: "/play", label: "Play", index: "02", text: "Start a solo experience." },
-  { href: "/create", label: "Create", index: "03", text: "Make something that can grow." },
-  { href: "/communities", label: "Communities", index: "04", text: "Find people around an interest." },
-  { href: "/activities", label: "Activities", index: "05", text: "Try something short or deep." },
-  { href: "/events", label: "Events", index: "06", text: "See what is happening." },
+const moments = [
+  { href: "/discover", label: "Something new", text: "Let the SYSTEM find a small experience that fits your current context.", tone: "teal" },
+  { href: "/play", label: "A solo moment", text: "Start something you can enjoy even when the world is quiet.", tone: "lavender" },
+  { href: "/create", label: "Make something", text: "Create a piece of your world and keep it as a memory.", tone: "amber" },
 ];
 
 export default async function HomeWorldPage() {
@@ -24,32 +21,69 @@ export default async function HomeWorldPage() {
       <section className="world-shell" aria-labelledby="world-title">
         <MoriseNavigation />
         <WorldQuickNav />
+
         <header className="world-header">
-          <Link className="world-brand" href="/home">MORISE</Link>
-          <nav aria-label="World navigation"><Link href="/system">SYSTEM</Link></nav>
-        </header>
-        <div className="world-intro">
           <div>
-            <p className="world-kicker">PLAYER WORLD / ONLINE</p>
-            <h1 id="world-title">What will you do now?</h1>
-            <p>One world. Many paths. Start with one action and let your Player evolve from what you actually do.</p>
+            <span className="world-brand">MORISE</span>
+            <span className="world-header-sub">A world coordinated by your SYSTEM</span>
           </div>
-          <Link className="world-system-card" href="/system">
-            <span>SYSTEM</span><strong>Enter your evolution</strong><small>View Player progression →</small>
-          </Link>
-        </div>
-        <nav className="world-actions" aria-label="Primary world actions">
-          {actions.map((action) => (
-            <Link className="world-action" href={action.href} key={action.href}>
-              <span className="world-action-index">{action.index}</span>
-              <span className="world-action-copy"><strong>{action.label}</strong><small>{action.text}</small></span>
-              <span aria-hidden="true" className="world-action-arrow">↗</span>
-            </Link>
-          ))}
-        </nav>
-        <section className="world-note" aria-label="Solo first and social">
-          <span className="world-note-dot" /><div><strong>Solo-first</strong><p>You can explore MORISE alone. Connections appear naturally as your actions create opportunities.</p><Link className="world-social-link" href="/social">Open Social →</Link></div>
+          <Link className="world-system-link" href="/system">SYSTEM <span>↗</span></Link>
+        </header>
+
+        <section className="world-intro" aria-labelledby="world-title">
+          <div className="world-intro-copy">
+            <p className="world-kicker">YOUR WORLD · READY</p>
+            <h1 id="world-title">What feels right <em>now?</em></h1>
+            <p className="world-lead">You do not have to learn a catalogue of features. Start with one real action. MORISE will keep the rest of the experience around it.</p>
+          </div>
+          <aside className="world-system-card" aria-label="SYSTEM guidance">
+            <span className="world-card-label">SYSTEM / GUIDANCE</span>
+            <strong>Your next step can stay simple.</strong>
+            <p>No crowded dashboard. No forced path. Your actions create the history that shapes your Player.</p>
+            <div className="world-card-state"><i /> Ready · solo-friendly</div>
+          </aside>
         </section>
+
+        <section className="world-moments" aria-labelledby="moments-title">
+          <div className="world-section-heading">
+            <div>
+              <span className="world-kicker">SUGGESTED BY CONTEXT</span>
+              <h2 id="moments-title">Three quiet openings</h2>
+            </div>
+            <span className="world-section-note">The SYSTEM can change these as you act.</span>
+          </div>
+          <div className="world-action-grid">
+            {moments.map((moment, index) => (
+              <Link className={`world-action world-action-${moment.tone}`} href={moment.href} key={moment.href}>
+                <span className="world-action-index">0{index + 1}</span>
+                <span className="world-action-orb" aria-hidden="true" />
+                <span className="world-action-copy"><strong>{moment.label}</strong><small>{moment.text}</small></span>
+                <span className="world-action-arrow" aria-hidden="true">↗</span>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section className="world-lower-grid">
+          <article className="world-soft-panel">
+            <span className="world-kicker">SOLO-FIRST</span>
+            <h2>You are not waiting for a crowd.</h2>
+            <p>MORISE remains useful when you are the only Player online. Social connections appear when real activity gives them a reason to exist.</p>
+            <Link className="world-text-link" href="/play">Enter a solo experience <span>→</span></Link>
+          </article>
+          <article className="world-soft-panel world-memory-panel">
+            <span className="world-kicker">MEMORY</span>
+            <h2>Your moments can stay with you.</h2>
+            <p>Photos, videos, audio and creations can become private memories. Nothing is shared or used for learning without the corresponding permission.</p>
+            <Link className="world-text-link" href="/system/memories">Open Memory <span>→</span></Link>
+          </article>
+        </section>
+
+        <footer className="world-footer">
+          <span><i /> SYSTEM context active</span>
+          <span>English fallback · 20 locales ready</span>
+          <span>Real actions only</span>
+        </footer>
       </section>
     </main>
   );
