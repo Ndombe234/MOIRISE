@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
 import "./morise-calm.css";
+import "./morise-v4.css";
 
 export const metadata: Metadata = {
   title: "MORISE",
