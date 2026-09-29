@@ -99,6 +99,32 @@ Creative Gateway : image, musique, audio et vidéo sont des capacités optionnel
 
 Capability State : PLANNED → IMPLEMENTED → PENDING_DEPENDENCY → AVAILABLE → CONFIGURED → AUTHORIZED → ENABLED → EXECUTING → VALIDATING, puis COMPLETED/DEGRADED/FAILED/DISABLED/MAINTENANCE/UNAVAILABLE.
 
+### Provider Router — APIs et services externes
+
+Les APIs externes sont des providers remplaçables. Aucun module métier ne doit coder en dur un SDK ou une URL provider.
+
+Providers candidats : Jikan, AniList, Kitsu, Nekos.best, Waifu.im, LibreTranslate, Frankfurter, OpenStreetMap/Nominatim sous contraintes, PostHog, ainsi que de futurs providers image, vidéo, musique, TTS, STT, LLM, embeddings et modération.
+
+Pour chaque provider : `provider_id`, `category`, `base_url`, `authentication_type`, `secret_name`, `free_tier`, `rate_limit`, `commercial_usage`, `license`, `attribution_required`, `fallback_priority`, `enabled`, `health_status`, `last_success`, `last_failure`.
+
+Un provider non configuré ne bloque jamais MORISE : `PLANNED/PENDING_DEPENDENCY/DISABLED/UNAVAILABLE` avec fallback si disponible.
+
+### Creative Providers — ORIGINAL-FIRST
+
+MORISE peut utiliser des providers créatifs pour générer des images personnalisées, avatars, cartes, récompenses, illustrations, vidéo, musique/ambiances, voix/TTS, STT, textes/scénarios et traitements de médias.
+
+**Règle obligatoire : tout contenu créatif généré pour MORISE doit être original et ne doit pas reproduire volontairement une propriété intellectuelle tierce identifiable.**
+
+À éviter : personnages connus d'anime/manga/jeux, logos et marques tiers, scènes ou assets reconnaissables, designs propriétaires reconnaissables et imitation d'un artiste identifiable.
+
+À privilégier : personnages originaux, créatures originales, mondes originaux, fantasy/science-fiction originale, avatars originaux, cartes/récompenses originales et styles décrits par des caractéristiques générales.
+
+MORISE ne doit jamais affirmer que toute image générée par IA est automatiquement libre de droits. Avant publication : provenance, licence du provider, attribution éventuelle, modération et politique de droits doivent être vérifiées.
+
+Pipeline créatif : `REQUEST → POLICY FILTER → PROVIDER → OUTPUT → RIGHTS/PROVENANCE CHECK → SAFETY/MODERATION → STORAGE → PUBLISH/PRIVATE`.
+
+Les médias privés utilisateur restent privés et ne sont pas automatiquement envoyés à un provider pour entraînement ou publication.
+
 ### PostHog — OBSERVABILITY / LEARNING SIGNALS
 
 PostHog est ajouté comme **couche optionnelle d'observation et d'expérimentation**, principalement pour le Module 15 et les besoins transversaux d'analytics.
