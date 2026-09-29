@@ -1683,11 +1683,11 @@ A reused key with a different request hash must produce `CONFLICT`.
 
 # 30. DEFINITION OF DONE — TECHNICAL
 
-Un module n'est techniquement terminé que lorsque:
+Un module n'est techniquement terminé que lorsque tout le périmètre ci-dessous est **implémenté, testé et validé avec des preuves fraîches** :
 
 ```text
 SQL / schema
-+ RLS
++ RLS / authorization
 + TypeScript contract
 + service implementation
 + event definitions
@@ -1698,13 +1698,37 @@ SQL / schema
 + integration tests
 + security tests
 + E2E
-+ browser verification
-+ mobile verification
++ real browser verification
++ mobile/responsive verification
++ loading/empty/error/unavailable verification
++ disabled-dependency verification
++ regression verification
 + observability
 + documentation
 ```
 
-est vérifié pour son périmètre.
+### Module gate
+
+```text
+IMPLEMENT
+→ AUTOMATED TESTS
+→ BUILD / TYPECHECK / LINT
+→ REAL BROWSER (OPERA ONE)
+→ MOBILE / RESPONSIVE
+→ ERROR / EMPTY / UNAVAILABLE
+→ REGRESSION
+→ CORRECT
+→ RETEST
+→ ACCEPT
+```
+
+Un build réussi ou des tests précédents ne suffisent pas.
+
+Une correction importante impose un nouveau test du comportement concerné dans le navigateur lorsque celui-ci possède une interface.
+
+Une régression d'un module déjà validé bloque la clôture du module courant.
+
+Le **temps de développement estimé d'un module inclut la QA, le diagnostic, les corrections et les retests**.
 
 ---
 
