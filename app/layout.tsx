@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
+import "./morise-calm.css";
 
 export const metadata: Metadata = {
   title: "MORISE",
-  description: "A social world shaped by every Player.",
+  description: "A calm SYSTEM-first world shaped by every real Player action.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
