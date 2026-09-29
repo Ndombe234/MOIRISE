@@ -8,7 +8,7 @@ Branch: reset/modules-1-6-clean
 
 Ce document verrouille la numérotation officielle de MORISE.
 
-MORISE possède 15 modules fonctionnels. Les nombres de sections présents dans les documents techniques ne sont pas des modules.
+**MORISE possède 15 modules fonctionnels.** Les nombres de sections présents dans les documents techniques ne sont pas des modules.
 
 La conception distingue strictement : 15 modules fonctionnels; briques transversales; sections techniques; providers et infrastructure.
 
@@ -99,6 +99,20 @@ Creative Gateway : image, musique, audio et vidéo sont des capacités optionnel
 
 Capability State : PLANNED → IMPLEMENTED → PENDING_DEPENDENCY → AVAILABLE → CONFIGURED → AUTHORIZED → ENABLED → EXECUTING → VALIDATING, puis COMPLETED/DEGRADED/FAILED/DISABLED/MAINTENANCE/UNAVAILABLE.
 
+### PostHog — OBSERVABILITY / LEARNING SIGNALS
+
+PostHog est ajouté comme **couche optionnelle d'observation et d'expérimentation**, principalement pour le Module 15 et les besoins transversaux d'analytics.
+
+Il ne constitue pas le cerveau de MORISE et ne modifie jamais directement le comportement de production.
+
+Flux autorisé :
+
+`USER ACTION → MORISE EVENT → POSTHOG OBSERVATION → ANALYSIS → CANDIDATE SIGNAL → OFFLINE EVALUATION → POLICY/SAFETY CHECK → CANARY → APPROVE/ROLLBACK`
+
+PostHog peut fournir des signaux sur les parcours, l'engagement, les erreurs, les abandons et les résultats d'expériences afin d'aider MORISE à améliorer progressivement ses recommandations et politiques. Les données privées et la Memory Vault restent séparées de la télémétrie analytique.
+
+PostHog doit être désactivable si le provider n'est pas configuré. Son absence ne doit jamais bloquer le fonctionnement principal de MORISE.
+
 ## 6. ORDRE OFFICIEL
 
 MODULE 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10 → 11 → 12 → 13 → 14 → 15.
@@ -111,7 +125,7 @@ Les Modules 7→15 sont documentés pour verrouiller l'architecture future, mais
 
 Les nombres 24 et 25 visibles dans la conception technique sont des numéros de sections techniques, pas des modules.
 
-Donc : NOMBRE OFFICIEL DE MODULES MORISE = 15.
+Donc : **NOMBRE OFFICIEL DE MODULES MORISE = 15.**
 
 ## 8. SOURCES CANONIQUES
 
