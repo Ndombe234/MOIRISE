@@ -315,6 +315,67 @@ Le FINAL QA du Module 6 vérifie également les interfaces avec les modules 1→
 
 ---
 
+# 22 bis. MODULE COMPLETION GATE — TEST-FIRST VALIDATION CONSTRAINT
+
+**Règle obligatoire : un module n'est jamais considéré comme terminé uniquement parce que le code compile ou que le build réussit.**
+
+Un module ne peut passer au module suivant que lorsque les éléments suivants sont tous validés pour son périmètre :
+
+1. **Tests unitaires** — logique métier et composants critiques.
+2. **Tests d'intégration** — services, persistance, événements et frontières.
+3. **Tests SQL/RLS/autorisation** — accès légitimes et refus des accès illégitimes.
+4. **Tests API/actions** — contrats d'entrée, sortie, erreurs et idempotence.
+5. **Test navigateur réel** — parcours réel dans Opera One lorsque le module possède une interface.
+6. **Test utilisateur simulé** — ouverture, navigation, clics, formulaires, états et parcours critiques.
+7. **Test responsive/mobile** — au minimum un petit écran et un chemin tactile lorsque pertinent.
+8. **Tests de résilience** — loading, empty, unavailable, erreur, réseau dégradé et dépendance optionnelle absente.
+9. **Test de régression** — les modules déjà validés doivent continuer à fonctionner.
+10. **Correction + retest** — chaque anomalie critique ou bloquante doit être corrigée puis retestée.
+11. **Validation finale** — les critères d'acceptation du module doivent être démontrés par des résultats frais.
+
+### Gate de passage
+
+```text
+IMPLEMENTATION
+    ↓
+UNIT
+    ↓
+INTEGRATION / SQL / RLS
+    ↓
+BUILD / TYPECHECK / LINT
+    ↓
+REAL BROWSER — OPERA ONE
+    ↓
+MOBILE / RESPONSIVE
+    ↓
+ERROR / EMPTY / UNAVAILABLE
+    ↓
+REGRESSION
+    ↓
+CRITICAL ISSUE ?
+   ├── YES → CORRECT → RETEST
+   └── NO
+        ↓
+MODULE VALIDÉ
+        ↓
+MODULE SUIVANT
+```
+
+### Règles non négociables
+
+- Un **build vert ne constitue jamais à lui seul une validation**.
+- Un bouton visible mais non fonctionnel constitue un échec du module.
+- Une fonctionnalité qui fonctionne uniquement sur le chemin nominal mais échoue dans un état attendu loading/error/empty/unavailable n'est pas terminée.
+- Une régression d'un module précédent bloque le passage au module suivant.
+- Une vérification navigateur doit être fraîche après une correction importante.
+- Les affirmations « terminé », « fonctionnel » ou « validé » doivent reposer sur des résultats réellement observés, pas sur un raisonnement ou une exécution antérieure.
+- Les modules futurs peuvent rester désactivés ; leur présence documentaire ne déclenche pas leur implémentation.
+
+### Critère pratique
+
+Le temps de développement d'un module inclut **le temps de test, de diagnostic, de correction et de retest**. Les estimations de planning ne doivent donc jamais traiter la QA comme une étape séparée et facultative.
+
+
 # 23. MATRICE D’ACTIVATION
 
 | Module | Sans IA externe | Sans Cloudflare AI | Infrastructure future possible | Fallback |
