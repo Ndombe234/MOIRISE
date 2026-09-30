@@ -175,3 +175,25 @@ M15 est fonctionnel lorsque :
 ## AI-INTÉGRATION M15 — CONTRAT DE COMPRÉHENSION POUR L'IA DE FABRICATION
 
 M15 est le seul cerveau MORISE AI et l'owner de l'AI Lab. Il connaît les modules via leurs contrats, manifests cognitifs, capabilities, scopes, dependencies, validators et authority boundaries. Cette connaissance permet à M15 de comprendre où intervenir et où s'arrêter. Elle ne transforme jamais M15 en owner des tables M01–M14. M15 possède Request Gate, Context Engine, Intent Compiler, Requirements Compiler, Reasoning, Planner, Policy, Capability/Tool Registry, Provider Router, Resource Planner, Validation, Memory, Experience, Evaluation et Evolution. AI Lab reste isolé de production secrets/admin/service-role. Evolution = limitation → gap → root cause → candidate → sandbox → tests → benchmark → security/policy → canary → promotion/rejection → monitor → rollback. DONE exige un seul cerveau et aucun router concurrent.
+
+## GAME PLATFORM — RÔLE M15
+
+M15 orchestre la fabrication et l'évolution des jeux mais ne possède pas la fabrication métier de M08 ni l'exécution M09.
+
+Pour une demande de jeu, M15 doit :
+1. comprendre l'intention ;
+2. compiler GameRequirements ;
+3. choisir 2D/3D selon les contraintes et la valeur réelle ;
+4. résoudre les capabilities disponibles ;
+5. construire le TaskGraph ;
+6. planifier ressources et workers ;
+7. sélectionner les templates/components compatibles ;
+8. coordonner génération, build, tests et validation ;
+9. analyser les échecs ;
+10. produire une correction bornée ;
+11. recommencer dans le budget autorisé ;
+12. remettre à M08/M09/M06 les contrats validés.
+
+M15 peut utiliser Codex comme agent de fabrication assistée lorsque cet outil est autorisé. Codex reste un worker/agent dans un workspace candidat. M15 conserve l'orchestration, la policy et la validation des handoffs.
+
+M15 doit privilégier la réutilisation des fondations de la Game Platform avant de demander une nouvelle implémentation.
