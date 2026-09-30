@@ -43,3 +43,12 @@ Private membership existence is filtered before projection.
 
 ## 12. Community candidate persistence
 Candidate records source event refs and a proposal policy version. A rejected proposal remains suppressed for a defined cooldown to prevent annoyance.
+
+## Commands
+CREATE_COMMUNITY; UPDATE_COMMUNITY; INVITE_MEMBER; ACCEPT_INVITE; REQUEST_JOIN; APPROVE_JOIN; CHANGE_MEMBER_ROLE; REMOVE_MEMBER; LEAVE_COMMUNITY; ARCHIVE_COMMUNITY. Each command has idempotency and a role guard.
+
+## Reads
+GET_COMMUNITY; LIST_COMMUNITIES; LIST_MEMBERS; GET_MEMBERSHIP; LIST_REQUESTS; GET_ACTIVITY. Private membership visibility is filtered before projection.
+
+## AI candidate persistence
+A candidate stores evidence references, proposal policy version, confidence, existing community matches and a suppression deadline. A rejected proposal is not immediately repeated.
