@@ -63,3 +63,17 @@ La 3D n'est retenue que si elle apporte une valeur réelle. La génération doit
 
 ### F. DONE
 Un jeu généré n'est publiable que si tous les nodes du DAG sont VALID, les artifacts sont validés, le manifest runtime est compatible et les tests passent.
+
+## GAME PLATFORM — FONDATION PERMANENTE M08
+
+M08 possède la Game Factory Platform : GameSpecification, templates, composants réutilisables, artifact lineage, build orchestration et réparation bornée.
+
+La chaîne est : demande → requirements → GameSpecification → recherche de fondations compatibles → TaskGraph → génération → build → tests → réparation → validation → GameBuild.
+
+Avant de créer une nouvelle brique, M08 cherche template 2D/3D, gameplay component, input, UI, audio, save, share hook, test fixture, runtime adapter et artifact validé compatibles.
+
+Le choix 2D/3D vient de la GameSpecification. La 3D doit expliciter scene graph, camera, collisions, lighting, physics, asset budget, loading et device/performance profile.
+
+Codex peut agir comme agent de modification sur un workspace candidat limité. Il n'est jamais l'autorité de publication et n'obtient pas automatiquement les secrets de production.
+
+Build/test error → diagnostic → correction ciblée → nouvelle revision → tests → validation. La stable build n'est jamais modifiée directement.
