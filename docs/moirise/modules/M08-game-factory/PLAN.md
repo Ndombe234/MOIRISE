@@ -1,36 +1,45 @@
-# M08 GAME A→Z FACTORY
+# M08 — GAME A→Z FACTORY — PLAN D'IMPLÉMENTATION DÉTAILLÉ REPRIS À ZÉRO
 
-Idea→Intent→GameSpecification→Engine→Content→Assets→Validate→Simulate→Test→Preview→Version→Publish.
+## 0. Granularité
+Créer un jeu ne signifie pas « appeler un modèle ». La chaîne complète est : idée → exigences → GameSpecification → task graph → moteur → règles → contenu/assets/code → build → sécurité → simulation → tests → playtest → balance → preview → version → publish.
 
-2D: Adventure/Battle/Puzzle. 3D: approved adapters. Generated code never runs unvalidated.
+## 1. Owner
+M08 possède le pipeline de fabrication. M09 possède le runtime. M15 possède l'orchestration AI/ressources. Le code généré reste non fiable jusqu'à validation.
 
-M15 orchestrates AI/provider/resource routing; M08 owns the factory.
+## 2. Natural-language intake
+Acteur : creator. Déclencheur : entrer une idée dans CREATE.
+Préconditions : texte reçu; capability de création disponible.
+Étapes : extraire goal/genre/mode/core loop → détecter ambiguïtés bloquantes → poser seulement les questions nécessaires → créer DraftSpec → permettre édition.
+Une ambiguïté non bloquante doit devenir un défaut explicite et réversible, pas une décision cachée.
 
-## Detailed feature behavior
+## 3. GameSpecification
+La spec contient au minimum : identity, genre, 2D/3D mode, engine, camera, scenes, entities, controls, rules, difficulty, win/loss, quests, rewards, assets, audio, save, share, multiplayer, accessibility, performance, security, testPlan, publication.
+Chaque version possède specVersion et hash d'entrée.
 
-### Natural-language creation
-Player idea → requirement extraction → clarification if ambiguous → GameSpecification proposal → editable checkpoint when required.
+## 4. Task graph
+La spec validée devient un DAG. Chaque node possède taskId, dependencies, capabilityId, capabilityVersion, inputRefs, outputRefs, resourceProfile, timeout, validatorRef et idempotencyKey.
+Un cycle ou une dépendance impossible bloque le graph avant exécution.
 
-### A→Z stages
-Research → concept → core loop → visual direction → prototype → Solo/Collective decision → content → code/data → security → testing → balancing → mobile/web optimization → preview → publication → iteration.
+## 5. 2D
+Adventure 2D : exploration, NPC, quêtes.
+Battle 2D : combat, stats, loot.
+Puzzle 2D : logique, états et interactions déterministes.
+L'engine est choisi depuis la spec, jamais arbitrairement parce qu'un provider le propose.
 
-### Engine selection
-Adventure 2D for exploration/NPC/quest loops.
-Battle 2D for combat/stats/loot loops.
-Puzzle 2D for logic/rules/interactions.
-3D only when spatial interaction materially improves the design.
+## 6. 3D
+3D est retenu lorsque la spatialité apporte une valeur réelle. Avant génération : scene graph, camera model, collisions, lighting, asset budget, loading strategy, device capability, fallback et test budget sont définis.
 
-### Generated artifacts
-Code, scenes, assets, audio and data are versioned artifacts with provenance and validation evidence.
+## 7. Artifacts
+Code, data, scenes, images, audio, vidéo et manifest sont des ArtifactRefs versionnés. Chaque artifact conserve creator/source, generating node, hash, validation status et provenance.
 
-### Correction
-A failed stage produces a structured failure report. M15 may generate a bounded correction candidate; only the candidate workspace changes until promotion.
+## 8. Validation / correction
+Échecs classés : schema, static/type, build, security, runtime, behavior, content, resource. M15 peut générer un candidat de correction dans un workspace isolé. La version stable reste inchangée tant que le candidat n'est pas promu.
 
-### Publication
-No model response can publish directly. Publication requires manifest, validated build, security checks, preview, version and authorized publish command.
+## 9. Publication
+Gates obligatoires : manifest, build valide, static checks, security/resource checks, simulation, behavior tests, preview, policy checks et authorized publish command. La version publiée est immuable; activeVersion pointe vers elle.
 
-### Living Object
-A Living Object can seed the game. Branch lineage and contributor attribution are retained through conversion.
+## 10. Living Object
+Un Living Object peut devenir seed de projet. Fork/merge/conversion conserve owner, attribution, lineage, contributors et source refs. Une conversion ne modifie pas silencieusement l'original.
 
-### Completion evidence
-A complete A→Z game can be reproduced from its versioned specification and artifacts; failed builds can recover without corrupting prior stable versions.
+## 11. Tests / DONE
+Tester idée ambiguë, spec incohérente, cycle DAG, build failure, malicious dependency, 2D, 3D, resource overrun, rollback et publication non autorisée. DONE seulement avec version reproductible et rollback.
