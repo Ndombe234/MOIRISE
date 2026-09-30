@@ -1,153 +1,163 @@
-# M03 — SOCIAL + PRIVATE MESSAGING — PLAN D'IMPLÉMENTATION REPRIS À ZÉRO
+# M03 — SOCIAL + PRIVATE MESSAGING — PLAN D'IMPLÉMENTATION DÉTAILLÉ REPRIS À ZÉRO
 
-## 0. Règle de granularité
-La documentation doit descendre comme « France → Paris → rue → bâtiment → appartement → porte ». Dire seulement « le module gère les groupes » est insuffisant. Chaque capability ci-dessous fixe acteur, déclencheur, préconditions, entrées, ordre d'exécution, mutation, projection, événements, erreurs, récupération, sécurité et tests.
+## 0. Granularité obligatoire
+La description doit aller de la « France » jusqu'à la « porte » quand cela est nécessaire : acteur → déclencheur → préconditions → entrées → ordre précis → mutation → projection → événements → erreurs → reprise → sécurité → tests. Aucune phrase ne doit laisser une décision d'implémentation importante à deviner.
 
-## 1. Mission et ownership
-feed, posts, comments, relations, private chat, attachments, translation
-**Owner unique : M03.** Les autres modules consomment le résultat mais ne recopient pas la règle métier.
+## 1. Owner
+feed, contenu social, relations, conversations privées, pièces jointes et traduction
+**Owner unique : M03.** Un consommateur peut afficher une projection mais ne peut pas recopier la règle métier.
 
-## 2. Capacités opérationnelles
+## 2. Capacités
 ### M03.1 Post
-**Acteur :** publish
-**Déclencheur :** validate content/media → visibility → moderation hook → persist → event
-**Préconditions :** private visibility enforced
+**Acteur :** player
+**Déclencheur :** publish
+**Préconditions :** content and visibility valid
+**Entrées minimales :** identité serveur, targetRef si nécessaire, payload validé, expectedVersion et commandId pour mutation rejouable.
 **Ordre exact :**
-1. Authentifier/dériver l'acteur côté serveur.
-2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
-3. Valider schéma, taille, format, état et policy.
-4. Post.
-5. Effectuer la mutation autoritative : **failure keeps draft, no phantom post**.
-6. Construire la projection depuis la donnée commitée.
-7. Émettre l'événement seulement après le commit.
-**Échec :** undefined
-**Sécurité :** undefined
-**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
-**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
-**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
-**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
-**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
+1. dériver l'acteur réel ;
+2. charger le minimum de contexte ;
+3. vérifier permissions/visibilité ;
+4. valider schéma, tailles, format et policy ;
+5. validate → moderation hook → persist → event → feed projection ;
+6. commit atomique si plusieurs écritures font une seule opération ;
+7. construire la projection depuis la donnée autoritative ;
+8. publier l'événement après commit.
+**Mutation :** Post
+**Échec/reprise :** failure leaves draft; no phantom post
+**Sécurité :** visibility/block enforced
+**Idempotence :** même commandId + même payload retourne le résultat précédent; même commandId + payload différent = conflict.
+**Concurrence :** contrainte unique ou expectedVersion; aucune écriture partielle.
+**Réseau :** perte de réponse après commit = récupération par commandId, jamais seconde mutation.
+**Tests :** nominal, chaque guard, double clic, deux clients concurrents, session expirée, cible supprimée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
 ### M03.2 Comment/reaction
-**Acteur :** interact with post
-**Déclencheur :** target access → state check → idempotent mutation → projection
-**Préconditions :** target policy enforced
+**Acteur :** player
+**Déclencheur :** interact target
+**Préconditions :** target visible and active
+**Entrées minimales :** identité serveur, targetRef si nécessaire, payload validé, expectedVersion et commandId pour mutation rejouable.
 **Ordre exact :**
-1. Authentifier/dériver l'acteur côté serveur.
-2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
-3. Valider schéma, taille, format, état et policy.
-4. Comment/Reaction.
-5. Effectuer la mutation autoritative : **deleted target: safe unavailable**.
-6. Construire la projection depuis la donnée commitée.
-7. Émettre l'événement seulement après le commit.
-**Échec :** undefined
-**Sécurité :** undefined
-**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
-**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
-**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
-**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
-**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
+1. dériver l'acteur réel ;
+2. charger le minimum de contexte ;
+3. vérifier permissions/visibilité ;
+4. valider schéma, tailles, format et policy ;
+5. authorize target → validate state → idempotent mutation → projection ;
+6. commit atomique si plusieurs écritures font une seule opération ;
+7. construire la projection depuis la donnée autoritative ;
+8. publier l'événement après commit.
+**Mutation :** Comment/Reaction
+**Échec/reprise :** deleted target = safe unavailable
+**Sécurité :** no cross-scope access
+**Idempotence :** même commandId + même payload retourne le résultat précédent; même commandId + payload différent = conflict.
+**Concurrence :** contrainte unique ou expectedVersion; aucune écriture partielle.
+**Réseau :** perte de réponse après commit = récupération par commandId, jamais seconde mutation.
+**Tests :** nominal, chaque guard, double clic, deux clients concurrents, session expirée, cible supprimée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
-### M03.3 Relation
-**Acteur :** follow/unfollow
-**Déclencheur :** block/privacy/self-follow checks → unique relation
-**Préconditions :** block overrides recommendations
+### M03.3 Follow
+**Acteur :** player
+**Déclencheur :** follow/unfollow
+**Préconditions :** target policy permits
+**Entrées minimales :** identité serveur, targetRef si nécessaire, payload validé, expectedVersion et commandId pour mutation rejouable.
 **Ordre exact :**
-1. Authentifier/dériver l'acteur côté serveur.
-2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
-3. Valider schéma, taille, format, état et policy.
-4. Follow.
-5. Effectuer la mutation autoritative : **conflict returns prior state**.
-6. Construire la projection depuis la donnée commitée.
-7. Émettre l'événement seulement après le commit.
-**Échec :** undefined
-**Sécurité :** undefined
-**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
-**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
-**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
-**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
-**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
+1. dériver l'acteur réel ;
+2. charger le minimum de contexte ;
+3. vérifier permissions/visibilité ;
+4. valider schéma, tailles, format et policy ;
+5. check block/privacy/self → unique relation → event ;
+6. commit atomique si plusieurs écritures font une seule opération ;
+7. construire la projection depuis la donnée autoritative ;
+8. publier l'événement après commit.
+**Mutation :** Follow
+**Échec/reprise :** duplicate = prior state
+**Sécurité :** block dominates ranking
+**Idempotence :** même commandId + même payload retourne le résultat précédent; même commandId + payload différent = conflict.
+**Concurrence :** contrainte unique ou expectedVersion; aucune écriture partielle.
+**Réseau :** perte de réponse après commit = récupération par commandId, jamais seconde mutation.
+**Tests :** nominal, chaque guard, double clic, deux clients concurrents, session expirée, cible supprimée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
 ### M03.4 Conversation
-**Acteur :** open/create private chat
-**Déclencheur :** membership policy → create/resolve → bounded history
-**Préconditions :** member-scoped
+**Acteur :** participant
+**Déclencheur :** open/create
+**Préconditions :** participant policy passes
+**Entrées minimales :** identité serveur, targetRef si nécessaire, payload validé, expectedVersion et commandId pour mutation rejouable.
 **Ordre exact :**
-1. Authentifier/dériver l'acteur côté serveur.
-2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
-3. Valider schéma, taille, format, état et policy.
-4. Conversation+Participant.
-5. Effectuer la mutation autoritative : **invalid participant: no partial membership**.
-6. Construire la projection depuis la donnée commitée.
-7. Émettre l'événement seulement après le commit.
-**Échec :** undefined
-**Sécurité :** undefined
-**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
-**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
-**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
-**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
-**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
+1. dériver l'acteur réel ;
+2. charger le minimum de contexte ;
+3. vérifier permissions/visibilité ;
+4. valider schéma, tailles, format et policy ;
+5. resolve/create conversation → membership → bounded history ;
+6. commit atomique si plusieurs écritures font une seule opération ;
+7. construire la projection depuis la donnée autoritative ;
+8. publier l'événement après commit.
+**Mutation :** Conversation/Participant
+**Échec/reprise :** invalid membership = no partial create
+**Sécurité :** member-scoped access
+**Idempotence :** même commandId + même payload retourne le résultat précédent; même commandId + payload différent = conflict.
+**Concurrence :** contrainte unique ou expectedVersion; aucune écriture partielle.
+**Réseau :** perte de réponse après commit = récupération par commandId, jamais seconde mutation.
+**Tests :** nominal, chaque guard, double clic, deux clients concurrents, session expirée, cible supprimée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
 ### M03.5 Message
-**Acteur :** send/edit/delete
-**Déclencheur :** membership → payload/attachment checks → idempotency → persist → delivery
-**Préconditions :** private content excluded from broad logs
+**Acteur :** participant
+**Déclencheur :** send/edit/delete
+**Préconditions :** membership + payload + attachments valid
+**Entrées minimales :** identité serveur, targetRef si nécessaire, payload validé, expectedVersion et commandId pour mutation rejouable.
 **Ordre exact :**
-1. Authentifier/dériver l'acteur côté serveur.
-2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
-3. Valider schéma, taille, format, état et policy.
-4. Message.
-5. Effectuer la mutation autoritative : **retry same result; dead attachment reject**.
-6. Construire la projection depuis la donnée commitée.
-7. Émettre l'événement seulement après le commit.
-**Échec :** undefined
-**Sécurité :** undefined
-**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
-**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
-**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
-**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
-**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
+1. dériver l'acteur réel ;
+2. charger le minimum de contexte ;
+3. vérifier permissions/visibilité ;
+4. valider schéma, tailles, format et policy ;
+5. validate → idempotency → persist → delivery/read receipt separately ;
+6. commit atomique si plusieurs écritures font une seule opération ;
+7. construire la projection depuis la donnée autoritative ;
+8. publier l'événement après commit.
+**Mutation :** Message
+**Échec/reprise :** retry returns same result; failed upload blocks send
+**Sécurité :** private content absent general telemetry
+**Idempotence :** même commandId + même payload retourne le résultat précédent; même commandId + payload différent = conflict.
+**Concurrence :** contrainte unique ou expectedVersion; aucune écriture partielle.
+**Réseau :** perte de réponse après commit = récupération par commandId, jamais seconde mutation.
+**Tests :** nominal, chaque guard, double clic, deux clients concurrents, session expirée, cible supprimée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
 ### M03.6 Translation
-**Acteur :** translate visible message
-**Déclencheur :** noTranslate mask → local/cache → provider fallback → translated view only
-**Préconditions :** source remains canonical
+**Acteur :** participant
+**Déclencheur :** request language view
+**Préconditions :** source accessible, locale supported
+**Entrées minimales :** identité serveur, targetRef si nécessaire, payload validé, expectedVersion et commandId pour mutation rejouable.
 **Ordre exact :**
-1. Authentifier/dériver l'acteur côté serveur.
-2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
-3. Valider schéma, taille, format, état et policy.
-4. TranslationView/Cache.
-5. Effectuer la mutation autoritative : **provider down shows source**.
-6. Construire la projection depuis la donnée commitée.
-7. Émettre l'événement seulement après le commit.
-**Échec :** undefined
-**Sécurité :** undefined
-**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
-**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
-**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
-**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
-**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
+1. dériver l'acteur réel ;
+2. charger le minimum de contexte ;
+3. vérifier permissions/visibilité ;
+4. valider schéma, tailles, format et policy ;
+5. mask handles/URLs/IDs/code → local/cache → provider if necessary → show translated view ;
+6. commit atomique si plusieurs écritures font une seule opération ;
+7. construire la projection depuis la donnée autoritative ;
+8. publier l'événement après commit.
+**Mutation :** TranslationCache/View
+**Échec/reprise :** provider down leaves source intact
+**Sécurité :** source canonical
+**Idempotence :** même commandId + même payload retourne le résultat précédent; même commandId + payload différent = conflict.
+**Concurrence :** contrainte unique ou expectedVersion; aucune écriture partielle.
+**Réseau :** perte de réponse après commit = récupération par commandId, jamais seconde mutation.
+**Tests :** nominal, chaque guard, double clic, deux clients concurrents, session expirée, cible supprimée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
-## 3. Données owned
-Chaque entité possède id stable, owner/actor relation, status, version, createdAt, updatedAt, privacyClass, retentionPolicy, auditRef si nécessaire et contraintes d'unicité. Une projection ne devient jamais la source d'autorité.
 
-## 4. États
-Les capacités suivent une machine d'états explicite : REQUESTED/AVAILABLE → VALIDATING → ACTIVE/SUCCESS ou REJECTED/FAILED, avec des transitions propres à la capacité. Toute transition = trigger + guards + mutation + event + projection. Une guard échouée n'écrit rien.
+## 3. États
+Chaque capacité définit explicitement ses états et transitions. Une transition est trigger → auth guard → business guard → mutation → event → projection. Une guard échouée n'écrit rien. Un résultat INCONCLUSIVE n'est jamais traité comme VALID.
 
-## 5. Contrats inter-modules
-Échanges uniquement par use-case, event ou projection versionnée. Aucun module ne modifie directement les tables privées d'un autre owner. Les noms historiques restent des alias/mécanismes, jamais des owners supplémentaires.
+## 4. Données
+Toutes les entités ont id, owner/actor relation, status, version, createdAt, updatedAt, privacyClass et retentionPolicy. Les données privées possèdent une portée de lecture explicite.
 
-## 6. UX / SYSTEM
-États obligatoires : LOADING, READY/SUCCESS, EMPTY si réellement vide, ERROR, UNAVAILABLE, DEGRADED. Les fonctionnalités internes ne créent pas de nouveaux boutons principaux automatiquement. SYSTEM peut révéler une capability contextuellement.
+## 5. Cross-module
+Échange uniquement par use-case, event ou projection versionnée. M01 reste owner des frontières; M02 de l'identité; M03 du contenu social/privé.
+
+## 6. UX
+LOADING, READY, EMPTY réel, ERROR, UNAVAILABLE et DEGRADED. Aucun écran blanc. Pas de nouvelle porte principale créée automatiquement.
 
 ## 7. IA
-Les capacités AI utilisent M15 via Capability ID. La sortie du modèle est une proposition/evidence tant que le module owner ne l'a pas validée. M15 ne peut pas modifier directement identité, membership, progression ou économie.
+Toute assistance passe par M15/CAPABILITY_ID. La sortie AI est une proposition/evidence jusqu'à validation du owner. Aucun provider n'est appelé directement par l'interface.
 
-## 8. Sécurité
-Autorité serveur; validation; auth/RLS/policies; rate limits; secrets server-only; provenance; sandbox pour code/artifacts; minimisation des données privées; logs sans contenu privé brut.
+## 8. Security
+Server authority, schema validation, access checks, rate limits, secrets server-only, provenance, private-data minimization, no raw private message telemetry.
 
-## 9. Résilience et performance
-Retries bornés; fallback déterministe lorsque possible; jobs lourds asynchrones; pagination/cursors; lazy loading des médias/3D; cache jetable et invalidable; aucune dépendance AI optionnelle ne doit provoquer un écran blanc.
-
-## 10. DONE
-Code/migrations + owner serveur + permissions + persistence + events + recovery + tests + desktop/mobile + observability + audit anti-doublon.
+## 9. DONE
+Persistence, permissions, events, idempotence, recovery, tests, browser desktop/mobile, observability et anti-doublon d'autorité validés.
