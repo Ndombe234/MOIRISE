@@ -48,3 +48,19 @@ requestId, intentId, cardId, sourceRef, decision state, suppression reason, erro
 
 ## 10. DONE
 World renders valid surfaces, contextual cards are explainable/suppressible, handoffs are revalidated by destination, private data stays private, and degraded dependencies never blank the shell.
+
+## 13. AI MODULE CONTRACT — M04
+
+### 13.1 ContextCard proposal
+AIContextCardProposal = { actionType, targetRef?, sourceEventRef, reasonKeyCandidate, relevance, expiresAt?, cooldownKey, evidenceRefs[] }.
+M04 vérifie toutes les références avant exposition.
+
+### 13.2 IntentEnvelope
+originModule, actorRef(server), intentType, targetRef?, sourceEventRef?, uiContextSafe, createdAt, expiresAt.
+Aucun targetRef n'est exécuté sans revalidation.
+
+### 13.3 AI output rules
+Provider output est candidat. M04 l'accepte, le dégrade ou le supprime. L'IA ne peut pas augmenter la fréquence au-delà de presentation budget/cooldown.
+
+### 13.4 Tests
+private signal not public, card suppression during typing, expired source, target forbidden, provider down, deterministic fallback, repeated suggestions bounded, no invented future event.
