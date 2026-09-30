@@ -1,16 +1,28 @@
-# M12 — EVENTS
+# M12 — EVENTS — TECHNICAL CONTRACT
 
-## Goal
-Events, challenges, scheduled activities and participation tracking.
+## Boundary
+M12 owns scheduled community/system events, participation, reminders, state transitions and event results.
 
-## Lifecycle
-`DRAFT → SCHEDULED → LIVE → COMPLETED → ARCHIVED`.
+## Data
+`events`, `event_participants`, `event_steps`, `event_results`.
 
-## MORISE
-May propose an event, generate copy/assets or recommend participation. Publishing requires the configured permission.
+## State machine
+`draft → scheduled → live → completed → archived` plus `cancelled` and `expired`. Every transition is server-authorized.
 
-## Reliability
-Timezone-aware dates, idempotent participation and clear cancelled/expired states.
+## Types
+```ts
+interface Event { id:string; title:string; startsAt:string; endsAt:string; status:string; creatorId:string; visibility:string; rules:unknown; }
+interface EventParticipation { eventId:string; userId:string; status:"joined"|"withdrawn"|"completed"; idempotencyKey:string; }
+```
 
-## Acceptance
-Create, schedule, join, notify, complete and archive an event without duplicate participation or timezone errors.
+## Time
+Server timestamps are authoritative. Store UTC; localize only for presentation. Device time never decides eligibility.
+
+## AI boundary
+AI can propose concepts, descriptions and recommendations through capabilities, but cannot silently publish events or change participation.
+
+## Tests
+timezone conversion, lifecycle transitions, duplicate participation, cancellation, reminders, expiry, reconnect and mobile calendar behavior.
+
+## Done gate
+Events behave deterministically across timezones and reconnects.
