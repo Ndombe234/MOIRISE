@@ -83,3 +83,41 @@ Bootstrap idempotency; handle collision; unauthorized profile mutation; privacy 
 
 ## 18. DONE
 Identity, privacy, profile, avatar, memory boundary and DNA evidence are all server-verifiable.
+
+## 19. API/use-case contracts
+getMyPlayer()
+getPublicPlayer(handle)
+updateProfile(input)
+updatePreferences(input)
+updatePrivacy(input)
+requestAvatarGeneration(spec)
+confirmAvatar(artifactRef)
+requestDataExport()
+requestDataDeletion()
+
+All mutations use authenticated actorId and optimistic version checks.
+
+## 20. Public/private projection
+Public projection may include handle, display name, avatar, bio, public titles and explicitly public activity.
+Private projection may include preferences, consent state, hidden activity and memory refs.
+SENSITIVE fields are never part of public projection.
+
+## 21. Handle rules
+Normalize case and whitespace.
+Validate allowed character set.
+Unique index case-insensitive.
+Changing handle creates a redirect/reference policy rather than breaking historical attribution.
+
+## 22. DNA evidence
+DNAEvidence = sourceEventId + capabilityDimension + ruleVersion + weight + validationState.
+Evidence is append-like. Recalculation creates a new projection version.
+
+## 23. Deletion
+Deletion process:
+request → confirmation → mark restricted → remove public projections → delete/anonymize according to retention → revoke signed media → invalidate cache → remove eligible memory.
+
+## 24. Acceptance scenarios
+Two simultaneous bootstrap requests produce one Player.
+Two handle changes to the same value → one succeeds, one conflict.
+Avatar provider fails → Player profile remains valid.
+Private preference requested by Social → denied.
