@@ -55,3 +55,15 @@ Une capability runtime AI est explicitement inscrite dans allowedCapabilities[].
 
 ### E. DONE
 Toute exécution AI/jeu est traçable, versionnée, bornée et récupérable.
+
+## GAME PLATFORM — RUNTIME COMMUN M09
+
+M09 est la fondation d'exécution réutilisée par les jeux 2D et 3D.
+
+Deux classes de runtime peuvent être supportées et versionnées : 2D et 3D. Le GameBuild déclare explicitement engineId/engineVersion et ses budgets.
+
+M09 fournit via contrat les services communs nécessaires : input, lifecycle, save bridge, asset loading, audio, timing, error boundary, resource monitoring et capability bridge.
+
+Le jeu ne peut utiliser que les APIs présentes dans RuntimeManifest.allowedCapabilities. Une capability présente dans M15 n'est pas automatiquement disponible dans un jeu.
+
+Si le budget 3D ou la compatibilité device échoue, M09 applique uniquement le fallback déclaré ou renvoie INCOMPATIBLE. Il ne réécrit pas le jeu arbitrairement.
