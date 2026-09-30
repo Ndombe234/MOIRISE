@@ -52,3 +52,19 @@ INVALID → diagnostic → bounded correction proposal → new artifact version 
 
 ### 11.5 Tests
 broken dependency, malicious code, invalid asset, oversized bundle, mobile performance, 2D/3D capability mismatch, provider output INCONCLUSIVE, retry/idempotency and clean rollback.
+
+## GAME PLATFORM — CONCEPTION TECHNIQUE M08
+
+GameProjectWorkspace contient specification, task graph, source candidate, approved assets, fixtures/tests, tool allowlist et dependency lock.
+
+ReuseResolver recherche d'abord un composant ou template compatible. L'incompatibilité doit être prouvée avant création d'une nouvelle brique.
+
+TaskGraph recommandé : requirements → spec → architecture → gameplay/UI/assets/audio/code/tests → build → security → performance → runtime manifest → integration.
+
+Artifact = artifactId + projectId + sourceTaskId + contentHash + provenance + validatorRefs + sandboxRef + status.
+
+RepairController exige failedNode + diagnosticRef, crée une nouvelle revision et impose un budget de tentatives. Répétition du même fingerprint d'échec → ESCALATED/REJECTED.
+
+Agent boundary : workspace candidat uniquement, pas de secrets prod, service-role, écriture DB arbitraire, réseau illimité ou publication directe.
+
+Gate finale : static + unit + integration + security + resource + runtime + product contracts = VALID avant handoff M09.
