@@ -1,82 +1,56 @@
-# M05 — SYSTEM / PROGRESSION / EVOLUTION — CONCEPTION TECHNIQUE DÉTAILLÉE
+# M05 — SYSTEM / PROGRESSION / EVOLUTION — CONCEPTION TECHNIQUE REPRISE À ZÉRO
 
-## 1. Execution boundary
-UI/route → server use-case → M05 policy → repository/adapter → DB/runtime → event → projection.
-
-## 2. Command schema
+## 1. Command contract
 ```
-{commandId, actorId(server-derived), capabilityId, targetRef?, expectedVersion?, payload}
+ProgressCommand {
+ commandId,
+ actorId: serverDerived,
+ sourceEventId,
+ ruleVersion,
+ actionType,
+ targetRef?,
+ expectedVersion?
+}
 ```
-Reject unknown capability, forged actorId, invalid payload, unauthorized target, stale version and commandId reuse with different payload.
 
-## 3. Capability contracts
-### M05.C1 HUD
-Input : minimal context available + actor scope.
-Execution : assemble current status → objectives → contextual candidates → suppression by activity → render.
-Mutation : SystemContext.
-Failure : AI down leaves core progression visible.
-Security : no spam.
+## 2. XP ledger
+XPTransaction possède id, playerId, sourceEventId, ruleVersion, amount, reasonKey, createdAt.
+Unique : (playerId, sourceEventId, ruleVersion).
+Le ledger est la source d'autorité; ProgressionProjection est reconstruisible.
 
-### M05.C2 XP
-Input : source signature/rule version valid + actor scope.
-Execution : eligibility → compute XP → idempotent ledger → update projection.
-Mutation : XPTransaction.
-Failure : invalid source = zero grant; retry same result.
-Security : client cannot self-award.
+## 3. Level/rank calculation
+Entrée = total XP confirmé + LevelRuleVersion.
+Sortie = level, rank, thresholdRemaining.
+Le calcul est pur et testable. Aucun modèle AI ne choisit le résultat.
 
-### M05.C3 Level/rank
-Input : rule version active + actor scope.
-Execution : calculate threshold → update level/rank → emit milestone.
-Mutation : ProgressionProjection.
-Failure : rule migration explicit; no silent rewrite.
-Security : rules versioned.
+## 4. Mission state
+Mission definition immuable par version; MissionProgress contient currentState, progress values, acceptedEventRefs, version.
+Progress update vérifie state + event type + payload constraints avant transaction.
 
-### M05.C4 Title/achievement
-Input : eligibility rule + evidence + actor scope.
-Execution : evaluate → unlock once → handoff ownership if needed.
-Mutation : UnlockRef.
-Failure : missing evidence remains locked.
-Security : AI cannot direct grant.
+## 5. Title/achievement integrity
+Unlock unique par Player + DefinitionVersion. Evidence refs sont conservées. Une invalidation d'une evidence déclenche une revue/recalculation selon policy; elle ne réécrit jamais l'historique sans event correctif.
 
-### M05.C5 Mission
-Input : candidate validated, prerequisites pass + actor scope.
-Execution : create instance → update progress from authoritative events → completion guard → reward handoff.
-Mutation : Mission/MissionProgress.
-Failure : retry/reconnect idempotent.
-Security : expiry only real.
+## 6. SYSTEM presentation
+M05 reçoit des candidates contextuelles, puis applique : activity suppression → priority → cooldown → presentation budget.
+Les candidates rejetées sont marquées suppressed avec reasonKey; elles ne sont pas repoussées immédiatement.
 
-### M05.C6 Fun & Surprise
-Input : player not busy with typing/reading/playing/creating + actor scope.
-Execution : eligibility → surprise candidate → presentation → response/cooldown.
-Mutation : SurpriseCandidate.
-Failure : no eligible signal = no surprise.
-Security : no fake scarcity/urgency.
+## 7. Errors
+INVALID_SOURCE, RULE_VERSION_UNKNOWN, DUPLICATE_EVENT, PROGRESSION_CONFLICT, MISSION_NOT_ELIGIBLE, TITLE_NOT_ELIGIBLE, SURPRISE_SUPPRESSED, DEPENDENCY_UNAVAILABLE.
 
-## 4. State/persistence
-State transitions are atomic around the business mutation. Unique constraints protect one-time operations. ExpectedVersion protects concurrent writes. Projection/cache is reconstructible.
+## 8. Recovery
+Replay exact d'un event déjà consommé → résultat existant.
+Network lost after XP commit → GET source transaction.
+Rule version retired → résoudre migration explicite ou marquer INCONCLUSIVE.
+M15 unavailable → progression core still operational.
 
-## 5. Events
-eventId, type, schemaVersion, producerModule, occurredAt, commandId, requestId, actorRef, payloadRef. Event means committed fact. Consumers dedupe.
-
-## 6. Errors
-VALIDATION, AUTH_REQUIRED, FORBIDDEN, NOT_FOUND, CONFLICT, RATE_LIMITED, TIMEOUT, DEPENDENCY_UNAVAILABLE, INCONCLUSIVE, INTERNAL.
-
-## 7. Recovery matrix
-Invalid input → no write.
-Unauthorized → 403.
-Deleted target → stale/unavailable.
-Commit + network loss → status lookup by commandId.
-Optional dependency failure → DEGRADED.
-Duplicate event → dedupe.
-
-## 8. Security
-IDOR protection; server-derived actor; policy at read and write; private data filtering; no secrets in client; no arbitrary provider endpoint; rate limit.
-
-## 9. Browser tests
-Deep-link, refresh, back, mobile narrow viewport, touch, keyboard, double tap, network loss after commit, optional dependency outage, no white screen.
+## 9. Security
+Server-side entitlement; RLS/policy; event signature/provenance; no client writes to ledger; no arbitrary reward reference from AI.
 
 ## 10. Performance
-Bounded lists, cursor pagination, async heavy work, lazy media/runtime, cache invalidation. Core path cannot depend on AI.
+Progression calculation is small and synchronous when possible. Large Trace/history reads are paginated. Context candidates are bounded.
 
-## 11. DONE
-Build/tests/security/recovery/observability proven on desktop and mobile without duplicate owner authority.
+## 11. Browser/tests
+SYSTEM deep link, refresh, mobile bottom navigation, desktop sidebar, typing suppression, mission start/progress/complete, retry after network interruption, no duplicate XP/title.
+
+## 12. DONE
+Progression is deterministic, replay-safe, explainable by source evidence and rule version, and cannot be self-awarded by client or AI.
