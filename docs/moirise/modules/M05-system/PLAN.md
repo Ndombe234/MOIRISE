@@ -1,214 +1,153 @@
-# M05 — SYSTEM / PROGRESSION / EVOLUTION — PLAN DÉTAILLÉ CANONIQUE
+# M05 — SYSTEM / PROGRESSION / EVOLUTION — PLAN D'IMPLÉMENTATION REPRIS À ZÉRO
+
+## 0. Règle de granularité
+La documentation doit descendre comme « France → Paris → rue → bâtiment → appartement → porte ». Dire seulement « le module gère les groupes » est insuffisant. Chaque capability ci-dessous fixe acteur, déclencheur, préconditions, entrées, ordre d'exécution, mutation, projection, événements, erreurs, récupération, sécurité et tests.
 
 ## 1. Mission et ownership
-Construire l'expérience SYSTEM visible et la coordination progression/mission/evolution : HUD, commandes contextuelles, XP, niveaux, titres, achievements, missions, Trace, Fun & Surprise, MORISE DNA presentation and bounded Evolution Engine hooks.
-Ce module possède les comportements listés ci-dessous. Une dépendance ne devient pas propriété locale simplement parce que le module l'affiche.
+SYSTEM HUD, progression, missions, titles, achievements, trace, surprise and evolution hooks
+**Owner unique : M05.** Les autres modules consomment le résultat mais ne recopient pas la règle métier.
 
-## 2. Fonctionnalités couvertes
-### 1. SYSTEM HUD
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M05.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+## 2. Capacités opérationnelles
+### M05.1 HUD
+**Acteur :** open SYSTEM or contextual display
+**Déclencheur :** assemble status/objectives → suppress intrusive elements → render
+**Préconditions :** no system spam
+**Ordre exact :**
+1. Authentifier/dériver l'acteur côté serveur.
+2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
+3. Valider schéma, taille, format, état et policy.
+4. SystemContext.
+5. Effectuer la mutation autoritative : **AI unavailable leaves core state usable**.
+6. Construire la projection depuis la donnée commitée.
+7. Émettre l'événement seulement après le commit.
+**Échec :** undefined
+**Sécurité :** undefined
+**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
+**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
+**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
+**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
+**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
-### 2. Primary commands
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M05.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+### M05.2 XP
+**Acteur :** validated source result
+**Déclencheur :** rule version → entitlement → idempotent ledger transaction → projection
+**Préconditions :** client never grants
+**Ordre exact :**
+1. Authentifier/dériver l'acteur côté serveur.
+2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
+3. Valider schéma, taille, format, état et policy.
+4. XPTransaction.
+5. Effectuer la mutation autoritative : **invalid source: no grant**.
+6. Construire la projection depuis la donnée commitée.
+7. Émettre l'événement seulement après le commit.
+**Échec :** undefined
+**Sécurité :** undefined
+**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
+**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
+**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
+**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
+**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
-### 3. Contextual suggestions
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M05.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+### M05.3 Level/rank
+**Acteur :** XP committed
+**Déclencheur :** threshold calculation with rule version → update progression → milestone event
+**Préconditions :** versioned rules
+**Ordre exact :**
+1. Authentifier/dériver l'acteur côté serveur.
+2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
+3. Valider schéma, taille, format, état et policy.
+4. ProgressionProjection.
+5. Effectuer la mutation autoritative : **rule migration explicit**.
+6. Construire la projection depuis la donnée commitée.
+7. Émettre l'événement seulement après le commit.
+**Échec :** undefined
+**Sécurité :** undefined
+**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
+**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
+**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
+**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
+**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
-### 4. SYSTEM history
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M05.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+### M05.4 Title/achievement
+**Acteur :** evidence event
+**Déclencheur :** evaluate eligibility → unlock once → handoff collection ownership if needed
+**Préconditions :** AI cannot direct-grant
+**Ordre exact :**
+1. Authentifier/dériver l'acteur côté serveur.
+2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
+3. Valider schéma, taille, format, état et policy.
+4. UnlockRef.
+5. Effectuer la mutation autoritative : **missing evidence: locked**.
+6. Construire la projection depuis la donnée commitée.
+7. Émettre l'événement seulement après le commit.
+**Échec :** undefined
+**Sécurité :** undefined
+**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
+**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
+**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
+**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
+**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
-### 5. SYSTEM memory surface
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M05.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+### M05.5 Mission
+**Acteur :** offer accepted
+**Déclencheur :** create instance → progress from validated events → completion guard → reward handoff
+**Préconditions :** expiry only when real
+**Ordre exact :**
+1. Authentifier/dériver l'acteur côté serveur.
+2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
+3. Valider schéma, taille, format, état et policy.
+4. MissionProgress.
+5. Effectuer la mutation autoritative : **retries don't duplicate progress**.
+6. Construire la projection depuis la donnée commitée.
+7. Émettre l'événement seulement après le commit.
+**Échec :** undefined
+**Sécurité :** undefined
+**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
+**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
+**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
+**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
+**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
-### 6. XP
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M05.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+### M05.6 Fun & Surprise
+**Acteur :** real eligible signal
+**Déclencheur :** context suppression → cooldown → candidate → presentation → response
+**Préconditions :** no manipulative urgency
+**Ordre exact :**
+1. Authentifier/dériver l'acteur côté serveur.
+2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
+3. Valider schéma, taille, format, état et policy.
+4. SurpriseCandidate.
+5. Effectuer la mutation autoritative : **no eligible signal = no surprise**.
+6. Construire la projection depuis la donnée commitée.
+7. Émettre l'événement seulement après le commit.
+**Échec :** undefined
+**Sécurité :** undefined
+**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
+**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
+**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
+**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
+**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
-### 7. Levels
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M05.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+## 3. Données owned
+Chaque entité possède id stable, owner/actor relation, status, version, createdAt, updatedAt, privacyClass, retentionPolicy, auditRef si nécessaire et contraintes d'unicité. Une projection ne devient jamais la source d'autorité.
 
-### 8. Ranks
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M05.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+## 4. États
+Les capacités suivent une machine d'états explicite : REQUESTED/AVAILABLE → VALIDATING → ACTIVE/SUCCESS ou REJECTED/FAILED, avec des transitions propres à la capacité. Toute transition = trigger + guards + mutation + event + projection. Une guard échouée n'écrit rien.
 
-### 9. Titles
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M05.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+## 5. Contrats inter-modules
+Échanges uniquement par use-case, event ou projection versionnée. Aucun module ne modifie directement les tables privées d'un autre owner. Les noms historiques restent des alias/mécanismes, jamais des owners supplémentaires.
 
-### 10. Achievements
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M05.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 11. Missions
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M05.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 12. Progression history
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M05.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 13. Trace
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M05.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 14. Living World hooks
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M05.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 15. Hidden Possibilities
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M05.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 16. Unexplored Paths
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M05.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 17. Evolving Identity
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M05.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 18. MORISE Double presentation
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M05.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 19. Fun & Surprise
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M05.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 20. Context suppression
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M05.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 21. SYSTEM milestones
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M05.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-## 3. Parcours nominaux
-1. Context display : M15 context candidate → policy → SYSTEM surface → action route.
-2. Progression : validated event → deterministic entitlement → XP ledger → projection → title/achievement checks.
-3. Mission : candidate → eligibility → offer → start → progress → completion → validated reward.
-4. Fun & Surprise : eligible state → frequency/suppression → surprise candidate → presentation → reaction learning.
-5. Evolution : permitted signal → Evolution Engine → contextual possibility → optional action → feedback.
-
-## 4. Modèle de domaine
-SystemContext; SystemCommand; XPTransaction; ProgressionProjection; Level; TitleDefinition; UnlockedTitle; Achievement; Mission; MissionProgress; TraceEntry; SurpriseCandidate; DNAProjection.
-Pour chaque entité : ownerId/actor relation, lifecycle, timestamps, version, privacy class, retention, deletion policy, indexes, uniqueness et audit lorsque nécessaire.
-
-## 5. États
-SYSTEM IDLE→CONTEXTUALIZING→READY; mission AVAILABLE→ACTIVE→COMPLETED/FAILED; title LOCKED→UNLOCKED→EQUIPPED.
-Chaque transition doit posséder une guard testable. Une mutation invalide ne produit pas d'état partiel.
-
-## 6. Interface utilisateur
-Le module fournit :
-- état initial compréhensible ;
-- loading ;
-- success ;
-- empty lorsqu'il n'y a réellement aucun résultat ;
-- error ;
-- unavailable ;
-- degraded si une dépendance optionnelle est indisponible.
-Les écrans mobiles utilisent des actions tactiles sans duplication de l'application.
+## 6. UX / SYSTEM
+États obligatoires : LOADING, READY/SUCCESS, EMPTY si réellement vide, ERROR, UNAVAILABLE, DEGRADED. Les fonctionnalités internes ne créent pas de nouveaux boutons principaux automatiquement. SYSTEM peut révéler une capability contextuellement.
 
 ## 7. IA
-M15 proposes/contextualizes. M05 owns visible presentation and progression state. Evolution Engine cannot fabricate future states.
-L'intégration se fait par Capability ID et M15. Aucun composant ne dépend directement d'un provider.
+Les capacités AI utilisent M15 via Capability ID. La sortie du modèle est une proposition/evidence tant que le module owner ne l'a pas validée. M15 ne peut pas modifier directement identité, membership, progression ou économie.
 
 ## 8. Sécurité
-client never grants XP/title/reward; deterministic server-side entitlement; AI cannot alter economy directly; no sensitive DNA inference.
+Autorité serveur; validation; auth/RLS/policies; rate limits; secrets server-only; provenance; sandbox pour code/artifacts; minimisation des données privées; logs sans contenu privé brut.
 
-## 9. Données et confidentialité
-SystemContext; SystemCommand; XPTransaction; ProgressionProjection; Level; TitleDefinition; UnlockedTitle; Achievement; Mission; MissionProgress; TraceEntry; SurpriseCandidate; DNAProjection.
-Les données privées ne sont pas ajoutées aux analytics généraux ou aux memories globales par défaut.
+## 9. Résilience et performance
+Retries bornés; fallback déterministe lorsque possible; jobs lourds asynchrones; pagination/cursors; lazy loading des médias/3D; cache jetable et invalidable; aucune dépendance AI optionnelle ne doit provoquer un écran blanc.
 
-## 10. Dépendances et contrats
-Le module communique par use cases, événements et projections. Il ne modifie pas directement les tables d'un autre module.
-
-## 11. Cas limites
-Double-clic, retry réseau, session expirée, conflit concurrent, record supprimé, cache stale, provider indisponible, worker perdu, policy changée pendant l'opération, payload malveillant, résultat tardif, changement de version.
-
-## 12. Observabilité
-Chaque mutation critique associe requestId/traceId et une preuve de résultat. Les contenus privés sont minimisés.
-
-## 13. Performance
-Les listes sont bornées/paginées ; les opérations lourdes sont asynchrones ; les médias et engines lourds sont lazy-loaded ; l'IA optionnelle ne bloque pas le shell.
-
-## 14. Acceptance
-coherent SYSTEM, progression integrity, contextual suppression, no spam, titles and achievements explainable, recovery tested.
-
-## 15. Definition of DONE
-Fonctionnalités implémentées + autorisation serveur + persistence + événements + états de récupération + tests + navigateur desktop/mobile + sécurité + observabilité + documentation de handoff.
-
-## 16. Interactions cross-module
-Les effets sortants sont des événements ou des contrats explicites. Si une fonction traverse plusieurs modules, le module source conserve son ownership et les consommateurs ne recopient pas sa règle.
-
-## 17. No-new-button rule
-Une fonctionnalité interne de SYSTEM / PROGRESSION / EVOLUTION n'ajoute pas une nouvelle porte principale sans décision d'architecture. Le SYSTEM expose la capacité au bon moment.
+## 10. DONE
+Code/migrations + owner serveur + permissions + persistence + events + recovery + tests + desktop/mobile + observability + audit anti-doublon.
