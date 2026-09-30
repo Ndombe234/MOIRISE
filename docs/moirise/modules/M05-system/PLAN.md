@@ -1,153 +1,145 @@
-# M05 — SYSTEM / PROGRESSION / EVOLUTION — PLAN D'IMPLÉMENTATION REPRIS À ZÉRO
+# M05 — SYSTEM / PROGRESSION / EVOLUTION — PLAN D'IMPLÉMENTATION DÉTAILLÉ REPRIS À ZÉRO
 
-## 0. Règle de granularité
-La documentation doit descendre comme « France → Paris → rue → bâtiment → appartement → porte ». Dire seulement « le module gère les groupes » est insuffisant. Chaque capability ci-dessous fixe acteur, déclencheur, préconditions, entrées, ordre d'exécution, mutation, projection, événements, erreurs, récupération, sécurité et tests.
+## 0. Granularité
+La documentation doit descendre de « France » à « Paris → rue → bâtiment → appartement → porte ». Pour chaque capacité, un agent doit savoir exactement qui agit, quand, avec quelles données, dans quel ordre, ce qui est écrit, affiché, émis et comment chaque panne est récupérée.
 
-## 1. Mission et ownership
-SYSTEM HUD, progression, missions, titles, achievements, trace, surprise and evolution hooks
-**Owner unique : M05.** Les autres modules consomment le résultat mais ne recopient pas la règle métier.
+## 1. Owner
+SYSTEM HUD, progression déterministe, missions, titres, achievements, Trace, Fun & Surprise et évolution bornée
+**Owner unique : M05.**
 
-## 2. Capacités opérationnelles
+## 2. Capacités
 ### M05.1 HUD
-**Acteur :** open SYSTEM or contextual display
-**Déclencheur :** assemble status/objectives → suppress intrusive elements → render
-**Préconditions :** no system spam
+**Acteur :** player
+**Déclencheur :** open SYSTEM/context refresh
+**Préconditions :** minimal context available
+**Entrées :** actor server-side, targetRef éventuel, payload validé, commandId, expectedVersion si nécessaire.
 **Ordre exact :**
-1. Authentifier/dériver l'acteur côté serveur.
-2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
-3. Valider schéma, taille, format, état et policy.
-4. SystemContext.
-5. Effectuer la mutation autoritative : **AI unavailable leaves core state usable**.
-6. Construire la projection depuis la donnée commitée.
-7. Émettre l'événement seulement après le commit.
-**Échec :** undefined
-**Sécurité :** undefined
-**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
-**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
-**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
-**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
-**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
+1. vérifier identité et permissions ;
+2. charger le contexte minimal ;
+3. vérifier l'état de la cible ;
+4. appliquer assemble current status → objectives → contextual candidates → suppression by activity → render ;
+5. commit de la mutation SystemContext ;
+6. construire la projection depuis la donnée autoritative ;
+7. émettre l'événement après commit.
+**Erreur/récupération :** AI down leaves core progression visible
+**Sécurité :** no spam
+**Double clic/concurrence :** même commandId = même résultat; payload différent sous le même commandId = conflict; expectedVersion protège les mises à jour concurrentes.
+**Réseau :** réponse perdue après commit = lecture du résultat par commandId.
+**Tests :** nominal, permission refusée, target disparu, retry, concurrence, mobile, desktop, état DEGRADED.
 
 ### M05.2 XP
-**Acteur :** validated source result
-**Déclencheur :** rule version → entitlement → idempotent ledger transaction → projection
-**Préconditions :** client never grants
+**Acteur :** system
+**Déclencheur :** validated result event
+**Préconditions :** source signature/rule version valid
+**Entrées :** actor server-side, targetRef éventuel, payload validé, commandId, expectedVersion si nécessaire.
 **Ordre exact :**
-1. Authentifier/dériver l'acteur côté serveur.
-2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
-3. Valider schéma, taille, format, état et policy.
-4. XPTransaction.
-5. Effectuer la mutation autoritative : **invalid source: no grant**.
-6. Construire la projection depuis la donnée commitée.
-7. Émettre l'événement seulement après le commit.
-**Échec :** undefined
-**Sécurité :** undefined
-**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
-**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
-**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
-**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
-**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
+1. vérifier identité et permissions ;
+2. charger le contexte minimal ;
+3. vérifier l'état de la cible ;
+4. appliquer eligibility → compute XP → idempotent ledger → update projection ;
+5. commit de la mutation XPTransaction ;
+6. construire la projection depuis la donnée autoritative ;
+7. émettre l'événement après commit.
+**Erreur/récupération :** invalid source = zero grant; retry same result
+**Sécurité :** client cannot self-award
+**Double clic/concurrence :** même commandId = même résultat; payload différent sous le même commandId = conflict; expectedVersion protège les mises à jour concurrentes.
+**Réseau :** réponse perdue après commit = lecture du résultat par commandId.
+**Tests :** nominal, permission refusée, target disparu, retry, concurrence, mobile, desktop, état DEGRADED.
 
 ### M05.3 Level/rank
-**Acteur :** XP committed
-**Déclencheur :** threshold calculation with rule version → update progression → milestone event
-**Préconditions :** versioned rules
+**Acteur :** system
+**Déclencheur :** XP commit
+**Préconditions :** rule version active
+**Entrées :** actor server-side, targetRef éventuel, payload validé, commandId, expectedVersion si nécessaire.
 **Ordre exact :**
-1. Authentifier/dériver l'acteur côté serveur.
-2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
-3. Valider schéma, taille, format, état et policy.
-4. ProgressionProjection.
-5. Effectuer la mutation autoritative : **rule migration explicit**.
-6. Construire la projection depuis la donnée commitée.
-7. Émettre l'événement seulement après le commit.
-**Échec :** undefined
-**Sécurité :** undefined
-**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
-**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
-**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
-**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
-**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
+1. vérifier identité et permissions ;
+2. charger le contexte minimal ;
+3. vérifier l'état de la cible ;
+4. appliquer calculate threshold → update level/rank → emit milestone ;
+5. commit de la mutation ProgressionProjection ;
+6. construire la projection depuis la donnée autoritative ;
+7. émettre l'événement après commit.
+**Erreur/récupération :** rule migration explicit; no silent rewrite
+**Sécurité :** rules versioned
+**Double clic/concurrence :** même commandId = même résultat; payload différent sous le même commandId = conflict; expectedVersion protège les mises à jour concurrentes.
+**Réseau :** réponse perdue après commit = lecture du résultat par commandId.
+**Tests :** nominal, permission refusée, target disparu, retry, concurrence, mobile, desktop, état DEGRADED.
 
 ### M05.4 Title/achievement
-**Acteur :** evidence event
-**Déclencheur :** evaluate eligibility → unlock once → handoff collection ownership if needed
-**Préconditions :** AI cannot direct-grant
+**Acteur :** system
+**Déclencheur :** validated evidence
+**Préconditions :** eligibility rule + evidence
+**Entrées :** actor server-side, targetRef éventuel, payload validé, commandId, expectedVersion si nécessaire.
 **Ordre exact :**
-1. Authentifier/dériver l'acteur côté serveur.
-2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
-3. Valider schéma, taille, format, état et policy.
-4. UnlockRef.
-5. Effectuer la mutation autoritative : **missing evidence: locked**.
-6. Construire la projection depuis la donnée commitée.
-7. Émettre l'événement seulement après le commit.
-**Échec :** undefined
-**Sécurité :** undefined
-**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
-**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
-**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
-**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
-**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
+1. vérifier identité et permissions ;
+2. charger le contexte minimal ;
+3. vérifier l'état de la cible ;
+4. appliquer evaluate → unlock once → handoff ownership if needed ;
+5. commit de la mutation UnlockRef ;
+6. construire la projection depuis la donnée autoritative ;
+7. émettre l'événement après commit.
+**Erreur/récupération :** missing evidence remains locked
+**Sécurité :** AI cannot direct grant
+**Double clic/concurrence :** même commandId = même résultat; payload différent sous le même commandId = conflict; expectedVersion protège les mises à jour concurrentes.
+**Réseau :** réponse perdue après commit = lecture du résultat par commandId.
+**Tests :** nominal, permission refusée, target disparu, retry, concurrence, mobile, desktop, état DEGRADED.
 
 ### M05.5 Mission
-**Acteur :** offer accepted
-**Déclencheur :** create instance → progress from validated events → completion guard → reward handoff
-**Préconditions :** expiry only when real
+**Acteur :** player/system
+**Déclencheur :** accept mission
+**Préconditions :** candidate validated, prerequisites pass
+**Entrées :** actor server-side, targetRef éventuel, payload validé, commandId, expectedVersion si nécessaire.
 **Ordre exact :**
-1. Authentifier/dériver l'acteur côté serveur.
-2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
-3. Valider schéma, taille, format, état et policy.
-4. MissionProgress.
-5. Effectuer la mutation autoritative : **retries don't duplicate progress**.
-6. Construire la projection depuis la donnée commitée.
-7. Émettre l'événement seulement après le commit.
-**Échec :** undefined
-**Sécurité :** undefined
-**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
-**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
-**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
-**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
-**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
+1. vérifier identité et permissions ;
+2. charger le contexte minimal ;
+3. vérifier l'état de la cible ;
+4. appliquer create instance → update progress from authoritative events → completion guard → reward handoff ;
+5. commit de la mutation Mission/MissionProgress ;
+6. construire la projection depuis la donnée autoritative ;
+7. émettre l'événement après commit.
+**Erreur/récupération :** retry/reconnect idempotent
+**Sécurité :** expiry only real
+**Double clic/concurrence :** même commandId = même résultat; payload différent sous le même commandId = conflict; expectedVersion protège les mises à jour concurrentes.
+**Réseau :** réponse perdue après commit = lecture du résultat par commandId.
+**Tests :** nominal, permission refusée, target disparu, retry, concurrence, mobile, desktop, état DEGRADED.
 
 ### M05.6 Fun & Surprise
-**Acteur :** real eligible signal
-**Déclencheur :** context suppression → cooldown → candidate → presentation → response
-**Préconditions :** no manipulative urgency
+**Acteur :** system
+**Déclencheur :** real signal + cooldown
+**Préconditions :** player not busy with typing/reading/playing/creating
+**Entrées :** actor server-side, targetRef éventuel, payload validé, commandId, expectedVersion si nécessaire.
 **Ordre exact :**
-1. Authentifier/dériver l'acteur côté serveur.
-2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
-3. Valider schéma, taille, format, état et policy.
-4. SurpriseCandidate.
-5. Effectuer la mutation autoritative : **no eligible signal = no surprise**.
-6. Construire la projection depuis la donnée commitée.
-7. Émettre l'événement seulement après le commit.
-**Échec :** undefined
-**Sécurité :** undefined
-**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
-**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
-**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
-**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
-**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
+1. vérifier identité et permissions ;
+2. charger le contexte minimal ;
+3. vérifier l'état de la cible ;
+4. appliquer eligibility → surprise candidate → presentation → response/cooldown ;
+5. commit de la mutation SurpriseCandidate ;
+6. construire la projection depuis la donnée autoritative ;
+7. émettre l'événement après commit.
+**Erreur/récupération :** no eligible signal = no surprise
+**Sécurité :** no fake scarcity/urgency
+**Double clic/concurrence :** même commandId = même résultat; payload différent sous le même commandId = conflict; expectedVersion protège les mises à jour concurrentes.
+**Réseau :** réponse perdue après commit = lecture du résultat par commandId.
+**Tests :** nominal, permission refusée, target disparu, retry, concurrence, mobile, desktop, état DEGRADED.
 
-## 3. Données owned
-Chaque entité possède id stable, owner/actor relation, status, version, createdAt, updatedAt, privacyClass, retentionPolicy, auditRef si nécessaire et contraintes d'unicité. Une projection ne devient jamais la source d'autorité.
 
-## 4. États
-Les capacités suivent une machine d'états explicite : REQUESTED/AVAILABLE → VALIDATING → ACTIVE/SUCCESS ou REJECTED/FAILED, avec des transitions propres à la capacité. Toute transition = trigger + guards + mutation + event + projection. Une guard échouée n'écrit rien.
+## 3. États
+Chaque transition est trigger → guard auth → guard métier → mutation → event → projection. Guard échouée = aucune écriture.
 
-## 5. Contrats inter-modules
-Échanges uniquement par use-case, event ou projection versionnée. Aucun module ne modifie directement les tables privées d'un autre owner. Les noms historiques restent des alias/mécanismes, jamais des owners supplémentaires.
+## 4. Données
+Chaque entité a id, owner relation, status, version, timestamps, privacy class et retention. Une projection n'est jamais source d'autorité.
 
-## 6. UX / SYSTEM
-États obligatoires : LOADING, READY/SUCCESS, EMPTY si réellement vide, ERROR, UNAVAILABLE, DEGRADED. Les fonctionnalités internes ne créent pas de nouveaux boutons principaux automatiquement. SYSTEM peut révéler une capability contextuellement.
+## 5. Cross-module
+M04 présente et oriente; les owners de destination exécutent. M05 possède progression; M06 possède session de jeu.
 
-## 7. IA
-Les capacités AI utilisent M15 via Capability ID. La sortie du modèle est une proposition/evidence tant que le module owner ne l'a pas validée. M15 ne peut pas modifier directement identité, membership, progression ou économie.
+## 6. IA
+Toute AI passe par M15. L'IA peut proposer une action/contextualisation mais ne contourne jamais l'autorité du owner.
 
-## 8. Sécurité
-Autorité serveur; validation; auth/RLS/policies; rate limits; secrets server-only; provenance; sandbox pour code/artifacts; minimisation des données privées; logs sans contenu privé brut.
+## 7. UX
+LOADING/READY/EMPTY/ERROR/UNAVAILABLE/DEGRADED explicites. Aucun écran blanc.
 
-## 9. Résilience et performance
-Retries bornés; fallback déterministe lorsque possible; jobs lourds asynchrones; pagination/cursors; lazy loading des médias/3D; cache jetable et invalidable; aucune dépendance AI optionnelle ne doit provoquer un écran blanc.
+## 8. Sécurité/performance
+Server authorization, rate limits, privacy filtering, lazy loading, pagination et async jobs. Aucune donnée privée injectée dans une recommandation sans contrat.
 
-## 10. DONE
-Code/migrations + owner serveur + permissions + persistence + events + recovery + tests + desktop/mobile + observability + audit anti-doublon.
+## 9. DONE
+Behavior proven, persistence, events, recovery, tests, mobile/desktop, observability and anti-duplication.
