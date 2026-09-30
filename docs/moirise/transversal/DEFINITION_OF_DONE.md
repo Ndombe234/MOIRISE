@@ -1,75 +1,51 @@
-# DEFINITION OF DONE — MOIRISE
+# DEFINITION OF DONE — MOIRISE 15 MODULES
 
-Un module n'est DONE que si :
-
-## Architecture
-- ownership unique ;
-- dépendances explicites ;
-- aucun second propriétaire caché ;
-- aucun contrat dupliqué.
+## Product
+- behavior defined;
+- owner unique;
+- user journey complete;
+- SOLO path where relevant;
+- COLLECTIVE path where relevant.
 
 ## Backend
-- schéma stable ;
-- constraints ;
-- migrations ;
-- RLS/authorization ;
-- idempotence ;
-- transactions ou jobs ;
-- erreurs normalisées.
+- schema/contracts;
+- ownership/RLS/policy;
+- idempotency;
+- state machine;
+- errors;
+- recovery;
+- events.
 
 ## Frontend
-- loading ;
-- empty ;
-- error ;
-- unavailable ;
-- degraded ;
-- actions visibles fonctionnelles ;
-- navigation retour ;
-- mobile ;
-- desktop ;
-- accessibilité de base.
+- loading;
+- empty;
+- error;
+- unavailable;
+- degraded;
+- mobile;
+- desktop;
+- touch/keyboard;
+- no blank-screen route.
 
 ## AI
-- capability ID ;
-- policy ;
-- provider adapter ;
-- fallback ;
-- validator ;
-- provenance si artefact ;
-- pas de secret ;
-- sandbox pour code.
+- capability ID;
+- context policy;
+- provider adapter;
+- fallback;
+- validator;
+- provenance for artifacts;
+- no secrets;
+- sandbox for code;
+- evolution gates where applicable.
 
-## Data
-- owner ;
-- privacy ;
-- retention ;
-- deletion ;
-- cache policy ;
-- index.
+## Security
+- unauthorized access tests;
+- replay tests;
+- injection tests;
+- privacy leakage tests;
+- abuse/rate-limit tests.
 
-## Events
-- événement canonique ;
-- schemaVersion ;
-- traceId/requestId lorsque pertinent ;
-- pas de contenu privé inutile.
+## Verification
+typecheck; tests; production build; browser; mobile; security; resilience.
 
-## Tests
-- unit ;
-- integration ;
-- auth/RLS ;
-- contract ;
-- browser ;
-- mobile ;
-- resilience ;
-- adversarial pour les surfaces sensibles.
-
-## Vérification
-- build ;
-- typecheck ;
-- lint ;
-- tests ;
-- navigateur ;
-- toutes les actions ;
-- aucune page blanche.
-
-Une fonctionnalité ne peut pas être déclarée terminée uniquement parce que son écran rend correctement.
+A visual page is never sufficient proof of completion.
