@@ -1,124 +1,119 @@
-# M03 — SOCIAL + PRIVATE MESSAGING — CONCEPTION TECHNIQUE APPROFONDIE
+# M03 — SOCIAL + PRIVATE MESSAGING — CONCEPTION TECHNIQUE REPRISE À ZÉRO
 
-## 1. Boundary
-M03 owns public/social content and one-to-one/private messaging. It is the privacy boundary for conversations.
+## 0. Boundary
+**Owner : M03.** Architecture : UI → server boundary → use-case owner → policy → repository/adapter → persistence/provider → event → projection.
 
-## 2. Feed
-Feed query pipeline:
-visibility filter → block/mute filter → moderation filter → ranking/projection → pagination.
-No fake users, counts or popularity.
+## 1. Command contract
+```
+Command {
+  commandId: string,
+  actorId: server-derived,
+  capabilityId: string,
+  targetRef?: string,
+  expectedVersion?: number,
+  payload: validated object
+}
+```
+Le serveur refuse actorId arbitraire, capability inconnue, payload hors schema, target hors scope, expectedVersion périmée ou réutilisation d'un commandId avec un payload différent.
 
-Posts support text and validated media references.
-Post lifecycle: DRAFT → PUBLISHED → EDITED → DELETED/ARCHIVED.
+## 2. Capability contracts
+### M03.C1 Post
+Entrée : actor + contexte minimal + payload validé.
+Préconditions : private visibility enforced.
+Exécution : Post.
+Sortie autoritative : failure keeps draft, no phantom post.
+Erreur principale : undefined.
+Boundary sécurité : undefined.
 
-## 3. Interactions
-Reaction commands are idempotent by actor + target + reaction type.
-Comments use bounded depth and pagination.
-Shares create share references; they do not duplicate private content.
+### M03.C2 Comment/reaction
+Entrée : actor + contexte minimal + payload validé.
+Préconditions : target policy enforced.
+Exécution : Comment/Reaction.
+Sortie autoritative : deleted target: safe unavailable.
+Erreur principale : undefined.
+Boundary sécurité : undefined.
 
-## 4. Private conversations
-Conversation creation verifies participant policy.
-Message send checks membership, block state, abuse/rate policy, attachment constraints and idempotency.
-Read receipts and presence are scoped to conversation members.
+### M03.C3 Relation
+Entrée : actor + contexte minimal + payload validé.
+Préconditions : block overrides recommendations.
+Exécution : Follow.
+Sortie autoritative : conflict returns prior state.
+Erreur principale : undefined.
+Boundary sécurité : undefined.
 
-Message state:
-COMPOSING → SENT → DELIVERED → READ.
-Failed delivery is retriable; duplicate clientMessageId returns prior proof.
+### M03.C4 Conversation
+Entrée : actor + contexte minimal + payload validé.
+Préconditions : member-scoped.
+Exécution : Conversation+Participant.
+Sortie autoritative : invalid participant: no partial membership.
+Erreur principale : undefined.
+Boundary sécurité : undefined.
 
-## 5. Attachments
-Validate MIME/magic bytes, size, ownership and malware/content scanning where available.
-Use signed scoped URLs.
-Attachment metadata excludes private URL tokens from analytics.
+### M03.C5 Message
+Entrée : actor + contexte minimal + payload validé.
+Préconditions : private content excluded from broad logs.
+Exécution : Message.
+Sortie autoritative : retry same result; dead attachment reject.
+Erreur principale : undefined.
+Boundary sécurité : undefined.
 
-## 6. Translation
-Source message remains canonical.
-Translation view = source + target locale + translation policy version.
-Cache key uses source hash, locale and policy version.
-NoTranslate markers protect handles, URLs, code, IDs and names.
+### M03.C6 Translation
+Entrée : actor + contexte minimal + payload validé.
+Préconditions : source remains canonical.
+Exécution : TranslationView/Cache.
+Sortie autoritative : provider down shows source.
+Erreur principale : undefined.
+Boundary sécurité : undefined.
 
-## 7. Moment Cards
-A validated game result, creation or discovery can become a Moment.
-Moment projection strips private data.
-Share token references public/authorized source and cannot mutate it.
-The recipient can open the relevant experience without exposing private state.
+## 3. Persistence
+Contraintes uniques pour identities/idempotency; index sur owner+status+updatedAt et clés de recherche; foreign keys uniquement lorsque coupling autorisé; version d'optimistic concurrency quand plusieurs writers existent; suppression/retention alignées avec privacyClass.
 
-## 8. Commands
-CREATE_POST; EDIT_POST; DELETE_POST; REACT; COMMENT; SHARE; CREATE_CONVERSATION; SEND_MESSAGE; EDIT_MESSAGE; DELETE_MESSAGE; MARK_READ; SET_PRESENCE; TRANSLATE_MESSAGE.
-Every mutation is authenticated and rate-limited.
+## 4. State and transaction contract
+Chaque transition définit stateBefore → trigger → guards → transaction → stateAfter → event. Les écritures formant une seule unité métier sont atomiques. Les projections sont reconstruites depuis l'autorité si elles deviennent incohérentes.
 
-## 9. Security
-Private messages do not enter normal logs, recommendations or World Memory automatically.
-Block/mute are enforced before display.
-Moderation access to private content requires explicit M13 policy and audit.
+## 5. Idempotence / concurrence
+Même commandId + même payload = même résultat. Même commandId + payload différent = CONFLICT. Les événements peuvent être délivrés deux fois; les consumers dédupliquent par eventId/sourceRef. Une réponse browser ancienne ne peut pas écraser une version plus récente.
 
-## 10. AI
-AI may help drafting, translation, social discovery and community candidate detection using allowed public/non-sensitive context.
-AI cannot infer sensitive relationships or expose another person's private conversation.
+## 6. Event envelope
+```
+eventId, eventType, schemaVersion, producerModule, occurredAt,
+commandId?, requestId?, actorRef?, payloadRef
+```
+Un event exprime un fait déjà commit. Il ne transporte pas inutilement les contenus privés.
 
-## 11. Persistence
-Tables:
-posts;
-post_media_refs;
-comments;
-reactions;
-follows;
-conversations;
-conversation_members;
-messages;
-read_receipts;
-presence;
-share_tokens;
-translation_cache.
+## 7. Failure matrix
+- validation → erreur typée, aucune écriture;
+- auth absente → 401/sign-in;
+- permission refusée → 403 sans fuite;
+- cible supprimée → NOT_FOUND/STALE;
+- conflit → 409 + nouvelle version;
+- timeout → retry borné/fallback;
+- provider down → DEGRADED si capability non critique;
+- réseau perdu après commit → récupération par commandId;
+- worker perdu → requeue uniquement si tâche idempotente.
 
-Use RLS/policy per owner/member relationship.
+## 8. Security
+Protection IDOR, actor server-derived, validation input/output, session/CSRF selon transport, SSRF allowlist, dependency allowlist, resource limits, sandbox, secret isolation, privacy checks before provider routing, prompt injection treated as untrusted data.
 
-## 12. Realtime
-Use realtime only where value is clear: message delivery, typing/presence. Throttle presence. Reconnect reconciles from source of truth.
+## 9. AI boundary
+Aucune capacité métier ne traite directement une sortie de modèle comme autorité. M15 fournit normalized result + validation report + provenance. Le owner du module décide de la mutation.
 
-## 13. Observability
-Track counts/latency/outcome, not raw private content.
+## 10. Browser proof
+Desktop : deep links, refresh, keyboard, focus, no critical console error.
+Mobile : touch targets, back navigation, keyboard, narrow viewport, media upload where applicable.
+Chaque mutation est testée en double tap et avec réseau coupé juste après commit.
+
+## 11. Observability
+requestId, traceId, commandId, moduleId, capabilityId, state transition, validation outcome, duration, provider/worker ref, errorCode. Jamais de secret, mot de passe ou contenu privé brut dans telemetry générale.
+
+## 12. Performance
+Limits explicites; pagination; lazy load; async jobs; cache invalidation; no AI blocking critical boot; runtime 3D isolé et chargé à la demande.
+
+## 13. Rollback / recovery
+Versions critiques immuables. Un nouveau comportement devient une nouvelle version de règle/capability. Les résultats historiques ne sont pas réécrits silencieusement. Les migrations destructrices exigent une stratégie forward-fix/rollback documentée.
 
 ## 14. Tests
-Visibility matrix; blocked user; private message access; duplicate send; reconnect; attachment validation; translation cache; share token privacy; mobile keyboard; loading/error states.
+Unit rules; integration persistence; auth/policy; event contract; idempotency; concurrency; failure injection; provider fallback; worker lease; artifact sandbox lorsqu'applicable; desktop; mobile; accessibility; regression; observability.
 
 ## 15. DONE
-Social and private messaging behave as one coherent product surface and remain useful without AI availability.
-
-## 16. Data constraints
-Post owner is immutable.
-Comment owner is immutable.
-Reaction uniqueness = actor + target + reaction type.
-Conversation membership uniqueness = conversation + player.
-Message clientMessageId is unique within conversation.
-Attachment belongs to a message and owner policy.
-
-## 17. Query contracts
-getFeed(cursor, limit)
-getPost(postId)
-getComments(postId,cursor,limit)
-getConversations(cursor)
-getMessages(conversationId,cursor)
-getUnreadCount()
-getPresence(conversationId)
-All queries apply privacy before projection.
-
-## 18. Message retry
-Client stores clientMessageId.
-Server either commits once or returns prior commit proof.
-Retry after reconnect never creates duplicate message.
-Late delivery acknowledgement cannot mutate message text.
-
-## 19. Abuse
-Rate limit posts/comments/messages.
-Spam signals can be sent to M15/M13 policy.
-Block immediately prevents new private message delivery.
-Mute suppresses presentation without deleting source content.
-
-## 20. Sharing
-ShareToken is opaque, scoped, expiring where needed, and never grants mutation.
-Private post share requires explicit source visibility policy.
-
-## 21. Acceptance scenarios
-Blocked user cannot send a new private message.
-Private attachment URL cannot be reused outside owner/member authorization.
-Provider translation outage leaves original message readable.
+Build/tests verts; permissions prouvées; data coherent under retry/concurrency; fallback/recovery proven; mobile+desktop verified; no duplicate authority; documentation handoff complete.
