@@ -54,3 +54,18 @@ SYSTEM deep link, refresh, mobile bottom navigation, desktop sidebar, typing sup
 
 ## 12. DONE
 Progression is deterministic, replay-safe, explainable by source evidence and rule version, and cannot be self-awarded by client or AI.
+
+## 13. AI MODULE CONTRACT — M05
+
+### 13.1 Candidate schemas
+MissionCandidate, TitleCandidate, SurpriseCandidate et ExplanationProposal contiennent sourceRefs, ruleCompatibility, policyClass, expiry/cooldown et reasonKey.
+
+### 13.2 Authority sequence
+AI proposal → evidence resolver → M05 eligibility calculation → transaction → authoritative event → projection.
+Aucun chemin AI→ledger direct.
+
+### 13.3 Rule versions
+L'IA reçoit la ruleVersion applicable ou demande sa résolution à M05. Une version inconnue produit INCONCLUSIVE et non un guess.
+
+### 13.4 Tests
+AI cannot grant XP, duplicate source event, create illegal mission, unlock title from text-only claim, bypass activity suppression, invent future event, or alter ledger on retry.
