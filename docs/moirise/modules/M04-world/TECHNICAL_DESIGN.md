@@ -70,3 +70,38 @@ First-session flow; zero social graph; populated graph; dependency outage; dismi
 
 ## 13. DONE
 World is understandable in seconds and remains a lightweight shell over a deep internal system.
+
+## 14. Context contract
+WorldContext contains:
+currentDoor;
+recentValidatedActions;
+unfinishedContinuations;
+safeRecommendations;
+availableCapabilities;
+playerExplicitPreferences;
+timeBudgetHint.
+It does not contain full private history.
+
+## 15. Door rules
+Discover → M07.
+Play → M06.
+Create → M08/M15.
+Communities → M11.
+Activities/Events → M12.
+SYSTEM → M05.
+PLAYER → M02.
+
+M04 does not execute the underlying mutation; it routes.
+
+## 16. Context card contract
+ContextCard {id, titleKey, reasonKey?, actionId, expiresAt?, sourceRef}
+Reason is explainable and based on real state.
+
+## 17. Anti-spam
+Same candidate is suppressed after dismissal for a policy-defined cooldown.
+No card chain can recursively generate infinite cards.
+
+## 18. Acceptance scenarios
+New Player with no friends sees useful Solo doors.
+A live event starting tomorrow can create a real card.
+No active event → no fake “come back tomorrow”.
