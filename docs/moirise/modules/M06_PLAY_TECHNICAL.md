@@ -1,28 +1,34 @@
-# M06 — PLAY — TECHNICAL CONTRACT
+# M06 — PLAY — TECHNICAL DESIGN
 
 ## Boundary
-M06 owns the Play surface and catalog composition. It does not own game creation (M08) or runtime execution (M09).
+M06 is the player-facing game hub: launch, resume, favorites, history, categories and play sessions. It does not create games (M08), own the shared engine (M09) or own social scoring (M10).
+
+## Data
+`game_catalog_refs`, `game_favorites`, `game_history`, `play_sessions`.
 
 ## Types
 ```ts
-interface GameCard { id:string; title:string; mode:"2d"|"3d"; status:"published"|"draft"|"disabled"; thumbnailRef?:string; tags:string[]; }
-interface PlayQuery { cursor?:string; filters?:Record<string,string>; limit:number; }
+interface PlayEntry { gameId:string; title:string; mode:"2d"|"3d"; status:"ready"|"processing"|"unavailable"; }
+interface PlaySession { id:string; gameId:string; playerId:string; startedAt:string; endedAt?:string; }
 ```
 
+## Launch flow
+`select → eligibility → package/version check → preload → runtime mount → session created → play → save/result → unmount`.
+
 ## UI
-Play is one primary door. Discovery, categories, favorites, recent games and recommendations are tabs/sections inside the surface, not permanent global buttons.
+Play is one primary door. Discovery, categories, continue-playing and created games are sections within it. No game type creates a permanent top-level button.
 
 ## Runtime boundary
-Clicking Play requests a signed `GamePackageRef` from the catalog. M06 does not execute arbitrary code. M09 owns sandboxed execution.
+Finished games run through M09. M06 never executes arbitrary generated code itself.
+
+## Offline/degraded
+If a game package is cached and marked offline-capable, it may launch without network. Otherwise show an explicit unavailable state; never show a blank screen.
 
 ## AI boundary
-AI can recommend or create game metadata through capability interfaces. No provider URL is hard-coded in M06.
-
-## Performance
-Virtualize large catalogs; lazy-load thumbnails; prefetch only the selected game's manifest.
+AI may recommend games or explain controls through capabilities. Game creation uses M08. Provider endpoints are never hard-coded here.
 
 ## Tests
-Catalog pagination, filters, empty/error states, package integrity, disabled-game behavior, mobile layout, runtime handoff.
+launch failure, corrupted package, incompatible engine version, resume, history privacy, offline cache, session cleanup, mobile controls and back navigation.
 
 ## Done gate
-A user can discover and launch a published game without M06 importing any game engine or provider SDK into the main bundle.
+A player can find, launch, resume and exit a game safely with a stable fallback when runtime/network services fail.
