@@ -135,3 +135,39 @@ When a new AI feature is proposed:
 - second Provider Router = 0
 - second Validation Engine = 0
 - active M16-M20 module files = 0
+
+
+## 10. Vérification AI ↔ modules — 2026-09-30
+
+L'architecture « AI first → environnement compris → modules adaptés » est maintenant documentée dans les 30 fichiers actifs des 15 modules.
+
+Chaque PLAN.md contient un contrat AI d'intégration spécifiant :
+- position du module par rapport à MORISE AI ;
+- responsabilités et non-responsabilités ;
+- contextes autorisés ;
+- capacités AI ;
+- frontières de mutation ;
+- fallback sans AI ;
+- critères DONE.
+
+Chaque TECHNICAL_DESIGN.md contient un contrat technique AI spécifiant :
+- structure de contexte ;
+- boundary de capability ;
+- séquence de validation/commit ;
+- sécurité ;
+- idempotence ou recovery selon le module ;
+- tests de contrat.
+
+Le détail central de la compréhension de l'IA de fabrication reste dans AI_MASTER_PLAN.md et AI_TECHNICAL_DESIGN.md. Les modules n'imitent pas le cerveau central : ils décrivent comment leur domaine communique avec lui.
+
+### Nouveaux invariants vérifiés
+- 15/15 modules possèdent un AI integration contract dans PLAN.
+- 15/15 modules possèdent un AI module contract dans TECHNICAL_DESIGN.
+- 1 seul cerveau d'orchestration.
+- 1 seul Context Engine.
+- 1 seul Capability Registry.
+- 1 seul Provider Router.
+- 1 seule Validation Engine.
+- aucun provider choisi directement par un module/UI.
+- aucune autorité métier M01–M14 transférée à M15.
+- les sorties AI restent proposition/evidence jusqu'au commit de l'owner.
