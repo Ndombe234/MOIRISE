@@ -218,3 +218,11 @@ Security=all critical rewards server-validated; XP is ledger-based; roulette out
 Acceptance=deterministic progression; no negative XP exploit; title uniqueness; auditable rewards; configured roulette baseline and limits; collection integrity.
 
 The document is incomplete if an implementation agent still has to guess ownership or critical state transitions.
+
+## 12.1 Roulette concrete contract
+Initial product configuration may expose 3 pulls/day. Each player has a server-authoritative daily allowance keyed by the configured business timezone policy. A pull transaction atomically verifies allowance, resolves the outcome from the active configuration version, persists the result and audit refs, and consumes one allowance. Duplicate command replay must return the existing pull result without consuming another allowance.
+
+The starting probability configuration is Common 50%, Rare 30%, Epic 13%, Legendary 5%, Mythic 2%. Configuration versions are immutable after activation for historical audit purposes. Future balancing creates a new version rather than changing the meaning of old results.
+
+## 12.2 One-million-title architecture
+The title system must not insert one million static rows in advance. A title identity is derived from a deterministic grammar/version plus normalized unlock evidence. The first successful unlock materializes the player-specific unlocked-title record. This permits a design space of up to one million or more distinct titles while keeping the database proportional to actual unlocks.
