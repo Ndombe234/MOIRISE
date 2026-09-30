@@ -1,39 +1,32 @@
-# M14 — COLLECTION / REWARD ECONOMY — CONCEPTION TECHNIQUE
+# M14 — COLLECTION / REWARD ECONOMY — CONCEPTION TECHNIQUE REPRISE À ZÉRO
 
-## Ledger
-RewardLedgerEntry(playerId, sourceEventId, rewardType, amount/ref, ruleVersion, idempotencyKey).
-CollectionItem(playerId, itemId, source, quantity, version).
-RoulettePull(playerId, configVersion, outcome, auditRef, idempotencyKey).
+## 1. Ledger schema
+RewardLedgerEntry {id, playerId, sourceEventId, rewardRuleVersion, itemId?, quantity, reasonKey, createdAt, status}.
+Unique: sourceEventId + rewardRuleVersion + rewardSlot where required.
+Ledger is immutable after COMMITTED; corrections are compensating entries.
 
-## Reward authority
-M05 owns progression projection. M14 owns collection/economy records. Browser never supplies reward amount or rarity.
+## 2. Roulette schema
+RouletteConfig {version, pullsPerDay:3, common:0.50, rare:0.30, epic:0.13, legendary:0.05, mythic:0.02}.
+RoulettePull {id, playerId, configVersion, commandId, reservedAt, outcome?, status}.
+RNG result is recorded before reward grant commit. Same commandId returns same pull.
 
-## Roulette transaction
-authenticate → check daily allowance → transactionally reserve allowance → resolve using immutable config version → persist outcome/audit → event → return proof.
-Duplicate command returns same pull.
+## 3. Title grammar
+TitleDefinitionRule {version, grammarId, prefixSetRef, coreSetRef, suffixSetRef, constraints}. Unlock identity can be deterministic from player evidence + rule version. Only earned title rows are materialized.
 
-## Baseline
-3 pulls/day, configurable.
-Common 50%; Rare 30%; Epic 13%; Legendary 5%; Mythic 2%.
-Historical results keep their configuration version.
+## 4. Reconciliation
+Read ledger → rebuild expected projections → compare counts/quantities → emit mismatch report. If mismatch affects money-like integrity, freeze only the affected grant path until corrected.
 
-## Titles
-Deterministic title grammar/version + normalized evidence can generate a design space of up to one million or more possible titles. Only actually unlocked titles are materialized per Player.
+## 5. Security
+No client-side grant, no model-generated outcome, no editable ledger, no negative quantity unless an explicit revocation rule exists, no direct admin mutation from Player UI.
 
-## Economy safeguards
-caps, anomaly signals, duplicate protection, contribution quality checks, non-pay-to-win core, no hidden cash payout promises.
+## 6. Failure/recovery
+Allowance reservation succeeds then network fails → query pull by commandId. RNG failure before outcome commit → mark FAILED and do not consume allowance. Duplicate source event → existing ledger entry.
 
-## AI
-M15 may simulate economy and identify anomaly candidates. It cannot mutate production economy without M14 policy/admin path.
+## 7. Observability
+rewardRuleVersion, sourceEventId, ledgerId, roulettePullId, rarity, quantity, validation code. Avoid raw private content.
 
-## Tests
-daily allowance, concurrency, duplicate, config version, negative amount, collection ownership, exploit attempts, rollback.
-## Reward commands
-CLAIM_REWARD; ADD_COLLECTION_ITEM; START_ROULETTE_PULL; EQUIP_TITLE; RECORD_CREATOR_ATTRIBUTION.
-Player identity is always session-derived. Reward eligibility and grant are atomic where possible.
+## 8. Tests
+Odds configuration, daily reset/time boundary, concurrent pulls, duplicate grants, title grammar determinism, rollback/compensation, reconciliation mismatch, mobile/desktop.
 
-## Roulette concurrency
-Simultaneous pulls use an allowance/version guard. A retry with the same idempotency key returns the previous pull and cannot consume a second allowance.
-
-## Audit
-Each pull keeps player reference, configuration version, outcome reference, timestamp and idempotency proof. The Player sees the result, not internal secure implementation details.
+## 9. DONE
+Every reward has a traceable source/rule, roulette is replay-safe, and collection state can be rebuilt from authoritative ledger data.
