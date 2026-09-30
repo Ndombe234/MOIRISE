@@ -1,22 +1,38 @@
-# M03 — SOCIAL + PRIVATE MESSAGING
+# M03 — SOCIAL + PRIVATE MESSAGING — TECHNICAL CONTRACT
 
-## Goal
-Posts, reactions, comments, follows and one-to-one private messaging.
+## Boundary
+M03 owns feed interactions, posts/comments/reactions and one-to-one private messaging. It does not own communities, events or AI memory.
 
-## Primary UX
-Social feed remains simple. Private messages are accessible from profile, notification and message surfaces; they are not required to become a permanent seventh main button.
+## Data
+`posts(id,author_id,body,media_refs,visibility,created_at,updated_at)`
+`comments(id,post_id,author_id,body,created_at)`
+`reactions(user_id,post_id,type,created_at)`
+`conversations(id,created_at)`
+`conversation_members(conversation_id,user_id)`
+`messages(id,conversation_id,sender_id,body,media_refs,created_at,edited_at)`
+`message_receipts(message_id,user_id,read_at)`
 
-## Message model
-Conversation, participant membership, message, attachment metadata, read state and delivery state. Server authorization is mandatory.
+## Contracts
+```ts
+interface FeedQuery { cursor?:string; limit:number; }
+interface SendMessageInput { conversationId:string; body:string; mediaRefs?:string[]; clientMessageId:string; }
+interface Message { id:string; conversationId:string; senderId:string; body:string; createdAt:string; editedAt?:string; }
+```
 
-## MORISE
-Can help draft, translate or summarize only when the user explicitly invokes the capability. Raw private conversations are not global learning data and are not sent to analytics by default.
+## Private messages
+A conversation is valid only when the authenticated user is a member. Message insertion checks membership server-side. RLS prevents cross-conversation reads. `clientMessageId` prevents duplicate sends.
 
-## Events
-`POST_CREATED`, `MESSAGE_SENT`, `MESSAGE_READ`, `REACTION_ADDED`, `COMMENT_CREATED`.
+## UI
+Messages are accessible from Profile, notifications and contextual SYSTEM actions. Do not add a seventh permanent navigation button just for messages. Mobile uses a dedicated full-screen conversation route; desktop can use a split-pane surface.
 
-## Safety
-Rate limiting, abuse reporting, blocking, visibility checks and moderation where required.
+## Realtime
+Use realtime subscriptions only for the active conversation/feed surface. Unsubscribe on route change. Persist messages before acknowledging success.
 
-## Acceptance
-Two users can message privately; unauthorized users cannot read; attachments fail safely; translation is optional; offline send shows pending state; duplicate sends are prevented with idempotency.
+## Moderation
+Never send all private messages to an external AI provider automatically. Moderation is policy-driven, minimal-data and auditable.
+
+## Tests
+RLS membership, send/read/edit/delete, duplicate message prevention, blocked user behavior, realtime reconnect, pagination, offline retry, mobile keyboard behavior.
+
+## Done gate
+Two users can exchange private messages securely, refresh without losing state, reconnect after network loss, and never read another user's conversation.
