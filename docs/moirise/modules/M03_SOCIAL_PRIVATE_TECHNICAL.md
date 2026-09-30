@@ -1,38 +1,37 @@
-# M03 — SOCIAL + PRIVATE MESSAGING — TECHNICAL CONTRACT
+# M03 — SOCIAL + PRIVATE MESSAGING — TECHNICAL DESIGN
 
 ## Boundary
-M03 owns feed interactions, posts/comments/reactions and one-to-one private messaging. It does not own communities, events or AI memory.
+M03 owns feed/posts/comments/reactions/follows and one-to-one private messaging. Group/community membership belongs to M11.
 
 ## Data
-`posts(id,author_id,body,media_refs,visibility,created_at,updated_at)`
-`comments(id,post_id,author_id,body,created_at)`
-`reactions(user_id,post_id,type,created_at)`
-`conversations(id,created_at)`
-`conversation_members(conversation_id,user_id)`
-`messages(id,conversation_id,sender_id,body,media_refs,created_at,edited_at)`
-`message_receipts(message_id,user_id,read_at)`
+`posts`, `post_media`, `comments`, `reactions`, `follows`, `conversations`, `conversation_members`, `messages`, `message_reads`, `message_attachments`.
 
-## Contracts
+## Types
 ```ts
-interface FeedQuery { cursor?:string; limit:number; }
-interface SendMessageInput { conversationId:string; body:string; mediaRefs?:string[]; clientMessageId:string; }
-interface Message { id:string; conversationId:string; senderId:string; body:string; createdAt:string; editedAt?:string; }
+interface Message { id:string; conversationId:string; senderId:string; body:string; createdAt:string; clientNonce:string; status:"pending"|"sent"|"failed"; }
+interface Conversation { id:string; memberIds:string[]; updatedAt:string; lastMessageId?:string; }
 ```
 
-## Private messages
-A conversation is valid only when the authenticated user is a member. Message insertion checks membership server-side. RLS prevents cross-conversation reads. `clientMessageId` prevents duplicate sends.
+## Messaging invariants
+Only conversation members may read/write messages. Sender identity comes from authenticated session, never from client-supplied `senderId`. `clientNonce` prevents duplicate sends after retries.
 
-## UI
-Messages are accessible from Profile, notifications and contextual SYSTEM actions. Do not add a seventh permanent navigation button just for messages. Mobile uses a dedicated full-screen conversation route; desktop can use a split-pane surface.
+## Feed
+Use cursor pagination, not offset pagination. Media is referenced by IDs/URLs with bounded metadata. Mutations are server-authorized and idempotent where retried.
 
 ## Realtime
-Use realtime subscriptions only for the active conversation/feed surface. Unsubscribe on route change. Persist messages before acknowledging success.
+Realtime subscriptions are scoped by user/conversation. Disconnects move pending messages to retry state. Never assume delivery from a successful websocket send; persist server acknowledgement.
 
-## Moderation
-Never send all private messages to an external AI provider automatically. Moderation is policy-driven, minimal-data and auditable.
+## AI boundary
+AI may translate, summarize or assist composition only through capabilities. AI never reads private messages unless the user explicitly invokes an action whose authorization permits the exact conversation data. Provider prompts must be minimized and not retain secrets.
+
+## UI
+Feed is part of Home. Private messages are accessible from message icon/contextual profile actions and have a dedicated screen/drawer, but are not a seventh permanent navigation door.
+
+## Security
+RLS/authorization for every table; attachment MIME/size validation; rate limits; block/report checks; message access audit for privileged tooling.
 
 ## Tests
-RLS membership, send/read/edit/delete, duplicate message prevention, blocked user behavior, realtime reconnect, pagination, offline retry, mobile keyboard behavior.
+message authorization, duplicate send, offline retry, read receipts, pagination, reaction idempotency, block behavior, private-media access, realtime reconnect and notification deep links.
 
 ## Done gate
-Two users can exchange private messages securely, refresh without losing state, reconnect after network loss, and never read another user's conversation.
+Users can publish, interact, privately message and recover from network failures without cross-user data leakage.
