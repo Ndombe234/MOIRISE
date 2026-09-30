@@ -84,3 +84,20 @@ Pagination/cursor, bounded payloads, async heavy work, lazy assets, cache invali
 
 ## 12. DONE
 Build + tests + security + recovery + observability + mobile/desktop + no duplicate authority.
+
+## 13. AI MODULE CONTRACT — M03
+
+### 13.1 Context classes
+SOCIAL_PUBLIC, SOCIAL_PRIVATE, DM_PRIVATE, SHARE_PUBLIC_CANDIDATE, MODERATION_RESTRICTED.
+Chaque classe possède un allowlist de champs.
+
+### 13.2 Translation contract
+Input = sourceText + sourceLocale + targetLocale + protectedRanges[] + privacyClass.
+Output = translatedText + preservedRanges + modelEvidence + validationStatus.
+Handles, URLs, IDs, code et termes protégés restent inchangés.
+
+### 13.3 Moderation contract
+AI output = candidate labels/evidence, pas décision de mutation automatique si la policy exige une revue. M03 applique la décision selon son owner policy.
+
+### 13.4 Tests
+DM not leaked to public context, private prompt injection blocked, translation preserves protected ranges, provider failure keeps source, duplicate translation idempotent, revoked share token invalidated, moderation output INCONCLUSIVE handled safely.
