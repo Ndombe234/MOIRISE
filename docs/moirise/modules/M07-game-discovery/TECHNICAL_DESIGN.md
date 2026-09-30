@@ -1,77 +1,34 @@
-# M07 — GAME DISCOVERY ENGINE — CONCEPTION TECHNIQUE APPROFONDIE
+# M07 — GAME DISCOVERY — CONCEPTION TECHNIQUE REPRISE À ZÉRO
 
-## 1. Boundary
-M07 owns candidate retrieval, evidence collection, ranking policy, novelty/diversity constraints and game feedback learning. M15 supplies semantic capabilities.
+## 1. Search contract
+SearchQuery {query, locale, cursor?, limit, filters}. SearchPage {items[], nextCursor, rankingVersion}. Server bounds limit and validates filters.
 
-## 2. Candidate sources
-- local curated registry;
-- approved public metadata;
-- Player's explicit preferences;
-- validated game history;
-- public community signals;
-- Living Object playable branches;
-- approved market research evidence.
+## 2. Pipeline
+candidate generation → visibility/block filter → safety filter → dedupe → diversity → novelty → ranking → reason projection. Filtering happens before scoring so hidden items cannot influence presentation.
 
-Private messages and sensitive attributes are excluded by default.
+## 3. Recommendation evidence
+RecommendationSet stores rankingVersion, candidate refs, reason keys, generatedAt and expiry. A reason key is an enumerated safe explanation, not a free text dump of private data.
 
-## 3. Research
-Research records source, timestamp, claim, evidence strength and market relevance.
-The engine may compare genres, loops, platform constraints, demand signals and differentiation opportunities.
-External research is evidence, not truth.
+## 4. Feedback
+DiscoveryFeedback = actor, item, action, createdAt, policyVersion, dedupeKey. Rate limits and duplicate checks happen before the write used by ranking.
 
-## 4. Ranking pipeline
-query/context → candidates → ACL/moderation → relevance → quality → novelty → diversity → freshness → player fit → explanation.
+## 5. Research
+ResearchEvidence = sourceRef, retrievedAt, claimRef, confidence, status, licenseNote. VERIFIED means source was captured/checked according to policy, not absolute truth. INCONCLUSIVE items cannot be treated as facts.
 
-The ranking must prevent a single creator or repeated action from dominating automatically.
+## 6. Failure / recovery
+AI/reranker down → lexical/baseline ranking. Provider source down → claim INCONCLUSIVE. Cache stale → recompute safe projection. Duplicate feedback → dedupe. Block/privacy change → invalidate affected recommendation projections.
 
-## 5. Novelty
-Novelty budget avoids showing only familiar genres.
-The engine can intentionally surface an unusual but plausible experience as a Detour.
+## 7. Security
+Visibility and block checks before ranking. External text is untrusted input. No sensitive inference. No arbitrary URL execution from search results. No private user data in general logs.
 
-## 6. Feedback
-Signals:
-play start;
-completion;
-abandonment;
-explicit like/dislike;
-dismiss;
-share;
-challenge;
-creation request.
-Signals are normalized and protected against manipulation.
+## 8. Performance
+Cursor pagination, bounded candidate pool, asynchronous research, safe projection cache and no full-catalog rerank per request.
 
-## 7. Convergence
-Repeated independent game mechanic patterns can form a Convergence candidate, passed to M15 with evidence and privacy checks.
+## 9. Observability
+query hash, rankingVersion, candidate count, filtered count, fallback reason, latency. Avoid raw private query content in broad telemetry.
 
-## 8. World Memory
-Validated game discoveries/strategies can become World Memory candidates but only after evidence validation and attribution rules.
-
-## 9. APIs/contracts
-SEARCH_GAMES; GET_RECOMMENDATIONS; GET_RESEARCH_BRIEF; RECORD_FEEDBACK; GET_SIMILAR_EXPERIENCES.
-
-## 10. Tests
-Ranking determinism; novelty; diversity; blocked content; stale metadata; source provenance; feedback poisoning; empty search; provider outage; mobile result card.
+## 10. Browser tests
+Mobile/desktop search, empty state, deterministic pagination, recommendation dismissal, provider outage and confirmation that blocked/private items never reappear.
 
 ## 11. DONE
-Discovery works with and without AI, remains diverse, explainable and privacy-respecting.
-
-## 12. Ranking contract
-RankingInput contains candidateRefs, playerContextAllowed, explicitPrefs, freshness, noveltyBudget, diversityBudget.
-RankingOutput contains candidateRef, rank, reasonKey, evidenceRefs.
-
-## 13. Research evidence
-ResearchEvidence stores URL/source ref, retrievedAt, claim, confidence, marketDimension, license/usage policy.
-No external source becomes truth merely because it ranks high.
-
-## 14. Feedback protection
-Signals are weighted by validation and anti-manipulation rules.
-Burst activity from a new/untrusted account cannot immediately dominate ranking.
-
-## 15. Cold-start
-With no history:
-use explicit preferences + curated candidates + diversity + novelty.
-Do not invent “players like you” metrics.
-
-## 16. Provider degradation
-If semantic search is unavailable:
-keyword search + deterministic ranking remain usable.
+Discovery works without AI, has explainable ranking inputs and cannot leak private, blocked or unsafe content.
