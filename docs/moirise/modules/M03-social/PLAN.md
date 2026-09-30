@@ -161,3 +161,26 @@ Server authority, schema validation, access checks, rate limits, secrets server-
 
 ## 9. DONE
 Persistence, permissions, events, idempotence, recovery, tests, browser desktop/mobile, observability et anti-doublon d'autorité validés.
+
+## AI-INTÉGRATION M03 — CONTRAT DE COMPRÉHENSION POUR L'IA DE FABRICATION
+
+### A. Position
+M03 est l'autorité sociale et privée. Il peut embarquer de nombreuses fonctionnalités IA, mais toutes passent par MORISE AI et restent soumises à la privacy de M03.
+
+### B. Cas AI
+Traduction, modération, résumé, suggestion de réponse, aide à la création de post, classification, détection de contenu à risque, génération de projection de partage, recommandation sociale bornée.
+
+### C. Contexte
+Pour un post public : contenu et métadonnées publiques nécessaires. Pour un DM : uniquement participants, message/cadre strictement nécessaire et policy applicable. Les DMs ne sont pas utilisés comme mémoire globale par défaut.
+
+### D. Séquence DM
+M03 reçoit le message → policy/privacy → capability TRANSLATION/MODERATION si nécessaire → M15 → provider/worker → validation → M03 décide l'affichage/envoi → event.
+
+### E. Partage
+Une sortie AI ne transforme jamais un contenu privé en public. M03 construit la projection partageable, vérifie privacy et émet le token.
+
+### F. Fallback
+Message original conservé. Si traduction/modération AI indisponible, le produit utilise le fallback déterministe/politiques existantes et n'invente pas un résultat.
+
+### G. DONE
+Aucune capability AI de M03 ne permet un provider direct depuis UI; chaque action possède privacy class, validator, reason/error code et recovery.
