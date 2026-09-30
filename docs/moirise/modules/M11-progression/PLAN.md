@@ -42,3 +42,8 @@ deterministic progression; no negative XP exploit; title uniqueness; auditable r
 
 ## 13. Definition of done
 Behavior + authorization + persistence + events + UI states + tests + browser mobile/desktop + observability + recovery.
+
+## Roulette baseline
+The initial configurable baseline is 3 pulls per day. Probabilities can use the documented starting distribution 50% common, 30% rare, 13% epic, 5% legendary and 2% mythic. These values belong to a versioned server-side configuration; they are not client-controlled. Every resolved pull records the configuration version and the authoritative outcome evidence.
+
+Roulette is an in-platform progression mechanic. It is not a cash wagering system and does not create a promise of monetary payout.
