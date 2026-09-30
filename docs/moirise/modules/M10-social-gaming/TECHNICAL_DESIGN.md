@@ -41,3 +41,13 @@ M10 validates participant existence, permission, availability, duplicate members
 
 ### 11.4 Tests
 private participant data leakage, forbidden invite, duplicate join, stale party version, provider outage, proposal expiry, concurrency and rollback.
+
+## GAME PLATFORM — CONCEPTION TECHNIQUE M10
+
+GameSocialManifest = gameId + supportedHooks[] + participantPolicy + maxPartySize + visibilityPolicy + resultHooks[] + moderationPolicy.
+
+Le runtime émet des signaux de gameplay autorisés → M10 valide source/result/session → met à jour l'état social → émet les événements M10.
+
+AI request = gameRef + playSessionRef + participant projection + explicit preferences + permitted social hooks. La proposition ne peut pas créer un participant ni modifier un rôle.
+
+Tests : jeu solo sans hook, party join, blocked participant, duplicate invite, score sharing privacy, challenge validation, AI proposal expiry, network loss, membership revoked.
