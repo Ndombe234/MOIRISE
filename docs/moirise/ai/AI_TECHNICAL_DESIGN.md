@@ -2549,3 +2549,72 @@ https://aihorde.net/api/swagger.json
 Kilo :
 https://kilo.ai/docs/gateway
 https://kilo.ai/docs/gateway/api-reference
+
+# 93. TECHNICAL FABRICATION CONTRACT — RELATION IA ↔ MODULES
+
+## 93.1 ModuleManifest
+ModuleManifest = {
+  moduleId,
+  schemaVersion,
+  ownerModule,
+  authority,
+  dependencies,
+  capabilities[],
+  contextContract,
+  handoffs[],
+  doneContractRef
+}.
+
+Chaque capability référencée par un module possède au minimum : capabilityId, capabilityVersion, inputSchemaRef, outputSchemaRef, policyClass, autonomy, privacyClass, resourceProfile, validatorRef, fallbackRef.
+
+## 93.2 Algorithme de compilation de fabrication
+1. Parser la demande en intention.
+2. Déterminer les surfaces produit touchées.
+3. Résoudre l'ownership de chaque donnée et mutation.
+4. Charger les manifests des modules concernés.
+5. Charger le PLAN et le TECHNICAL_DESIGN exacts.
+6. Charger les contrats transversaux et dépendances.
+7. Résoudre les capabilities AI via CapabilityRegistry.
+8. Résoudre les scopes via ContextEngine.
+9. Construire un DAG avec frontières explicites.
+10. Attribuer chaque write à exactement un owner.
+11. Attacher policy, validator, resource profile, idempotency et recovery à chaque node.
+12. Générer seulement après compilation.
+13. Exécuter unit/contract/integration/security tests.
+14. Vérifier events, projections et handoffs.
+15. Vérifier absence de mécanisme dupliqué et d'écriture cross-owner.
+16. Produire un fabrication report.
+
+## 93.3 IA dans un module : exemple M03
+M03 message → capability request → M01 actor/session/privacy validation → ContextEngine avec scope DM minimal → M15 planification → Router → provider/worker non fiable → ValidationEngine → M03 décide display/publication → M03 commit → event → projection.
+
+Le module contient donc une fonctionnalité IA, mais MORISE AI reste le cerveau unique.
+
+## 93.4 IA de fabrication de jeux : exemple M08
+M08 brief → requirements → GameSpecification → DAG → capabilities design/code/assets/tests → resource planning → sandbox → artifact validation → M08 acceptance → M09 runtime validation → build/publish.
+
+## 93.5 Progression : exemple M05
+M15 peut proposer une mission, un titre, une explication ou une surprise. M05 vérifie l'éligibilité à partir des sources autoritatives et réalise le commit final.
+
+## 93.6 Économie : exemple M14
+M15 peut analyser la collection ou expliquer un reward. M14 calcule et commit le reward/roulette. Une sortie AI contenant item, quantité ou rareté est descriptive jusqu'à validation M14.
+
+## 93.7 Placement du code
+Central orchestration = lib/ai/**.
+Business logic = boundary du module owner.
+AI capability adapter = contrat du module + orchestration centrale.
+Providers/workers = couche centrale.
+Persistence = owner uniquement.
+Events = owner émet, consumers consomment idempotemment.
+
+## 93.8 Questions obligatoires avant merge
+Who owns this state?
+Who may write it?
+Which capability is used?
+Which context crosses the boundary?
+Which validator accepts the output?
+Which event proves commit?
+What is the deterministic fallback?
+What happens on retry, privacy change or provider outage?
+
+Une réponse inconnue bloque la génération au stade design/analysis.
