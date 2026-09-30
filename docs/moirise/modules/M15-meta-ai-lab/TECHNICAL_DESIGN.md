@@ -231,3 +231,26 @@ Module cognition input = moduleId, owner, capabilities, schemas, event contracts
 Execution = REQUEST → ACTOR → CONTEXT → INTENT → REQUIREMENTS → PLAN → POLICY → RESERVE → EXECUTE → VALIDATE → OWNER COMMIT → EVENT → MEMORY → EVALUATE.
 Evolution candidates are isolated; benchmark baseline is mandatory; security/policy before canary; promotion reversible.
 Tests : single-brain invariant, forbidden cross-owner write, context leakage, provider invalid output, capability mismatch, planner cycle, memory scope violation, failed canary rollback.
+
+## GAME PLATFORM — INTERFACE TECHNIQUE M15
+
+### GameCreationGraph
+GameCreationGraph = requestRef + gameRequirementsRef + gameSpecificationRef + taskGraphId + selectedComponents[] + runtimeTarget + resourcePlan + validatorRefs[] + repairBudget + autonomy + status.
+
+### Capability families
+GAME_SPECIFICATION, GAME_TEMPLATE_RESOLUTION, GAME_CODE_GENERATION, GAME_ASSET_GENERATION, GAME_AUDIO_GENERATION, GAME_TEST_GENERATION, GAME_BUILD, GAME_STATIC_VALIDATION, GAME_SECURITY_VALIDATION, GAME_RESOURCE_VALIDATION, GAME_RUNTIME_VALIDATION, GAME_REPAIR, GAME_INTEGRATION.
+
+### Orchestration rule
+M15 peut planifier et exécuter ces capabilities. Les commits restent chez M08, M09, M06 et autres owners selon la phase.
+
+### Agent adapter
+Un agent comme Codex est résolu comme execution target spécialisée. Contract : workspaceRef + taskNode + toolAllowlist + resourceProfile + deadline + outputRefs. Son output reste candidate artifact.
+
+### Game repair loop
+M15 ne corrige pas en boucle sans borne. Chaque cycle exige diagnosticRef, hypothesis, candidateRevision, impactedTests, attemptNumber et maxAttempts. Même échec répété = oscillation/escalade.
+
+### Provider/agent independence
+Ni Codex ni un provider de code/image/audio ne devient le moteur de décision de MORISE. Leur sortie entre dans le même pipeline validation → owner commit.
+
+### Final orchestration test
+Une demande de jeu 2D et une demande de jeu 3D doivent traverser le même orchestrateur, différer seulement par les exigences/runtime capabilities pertinentes, puis aboutir à des artifacts et manifests validés avant intégration.
