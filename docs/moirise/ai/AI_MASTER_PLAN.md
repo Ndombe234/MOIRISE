@@ -1,104 +1,220 @@
-# MOIRISE AI — PLAN MAÎTRE EXCLUSIF — RECONSTRUCTION À ZÉRO
 
-## 0. Rôle du document
-Ce document est l'unique plan comportemental de MORISE AI. Il ne remplace pas les plans des modules M01–M15 : il décrit uniquement le cerveau/orchestrateur IA et renvoie aux modules pour leurs mutations métier. Aucun provider externe n'est le cerveau.
+# MORISE AI — PLAN MAÎTRE EXCLUSIF — RECONSTRUCTION À ZÉRO
 
-## 1. Mission
-MORISE AI doit comprendre une demande, déterminer ce qui est nécessaire, choisir une stratégie, utiliser les capacités disponibles, vérifier le résultat, apprendre de l'expérience autorisée et proposer des améliorations contrôlées. Ajouter du code ou des données n'est jamais considéré comme une preuve d'intelligence.
+## 0. Statut et règle
+Ce document est l'unique plan comportemental de MORISE AI. Il ne remplace pas les plans M01–M15 : il décrit uniquement le cerveau/orchestrateur IA, ses capacités, ses ressources, sa mémoire, ses validations, ses providers, ses workers et son évolution contrôlée.
 
-## 2. Règle de précision « France → Paris → rue → bâtiment → appartement → porte »
-Toute affirmation générale doit être décomposée jusqu'à ce qu'une IA développeuse puisse implémenter sans deviner. Pour chaque mécanisme : ACTEUR → DÉCLENCHEUR → PRÉCONDITIONS → ENTRÉES EXACTES → ORDRE DES ÉTAPES → DÉCISION → SORTIE → MUTATION AUTORISÉE → ÉVÉNEMENT → ERREURS → RÉCUPÉRATION → SÉCURITÉ → OBSERVABILITÉ → TESTS → DONE.
-Si un mécanisme possède une sous-décision, la même règle s'applique à la sous-décision.
+Règle de précision obligatoire : France → Paris → rue → bâtiment → appartement → porte. Une phrase comme « MORISE choisit un modèle » est insuffisante. Il faut préciser : qui demande, quand, quelles données, quelles vérifications, quelles branches de décision, quel résultat, quelle mutation, quelle récupération et quel test.
 
-## 3. Ce que MORISE AI est
-MORISE AI = orchestration + contexte + intention + raisonnement + planification + politiques + capacités + outils + ressources + validation + mémoire + expérience + apprentissage contrôlé + évolution contrôlée.
-Un LLM, une API ou un endpoint n'est qu'un exécuteur possible.
+## 1. MORISE AI en trois pièces de puzzle
 
-## 4. Boucle canonique
-OBSERVE → AUTHENTICATE → CLASSIFY → MINIMIZE → CONTEXT → UNDERSTAND → REQUIREMENTS → PLAN → POLICY → RESERVE → EXECUTE → VALIDATE → CORRECT/ASK → COMMIT → EVENT → EXPERIENCE → EVALUATE → IMPROVE.
-Une demande simple peut utiliser un sous-ensemble. Une création de jeu, une action longue ou une amélioration du système utilise la chaîne complète.
+### Pièce A — CERVEAU
+AUTH → CONTEXT → INTENT → REQUIREMENTS → REASONING → PLAN → POLICY.
 
-## 5. Identité et frontières
-MORISE ne s'accorde jamais elle-même de nouvelles permissions. M01 garde la frontière identité/sécurité; M02 l'identité Player; M03 les messages et données sociales privées; M05 la progression/SYSTEM; M11 les permissions communautaires; M12 l'état des événements; M14 le ledger économie/récompenses; M15 l'orchestration IA.
+### Pièce B — MAINS
+CAPABILITY → TOOL → RESOURCE ROUTER → LOCAL/WORKER/PROVIDER → SANDBOX.
 
-## 6. Les 5–6 portes visibles
-SYSTEM, PLAYER, SOCIAL, WORLD, PLAY, CREATE. Les capacités internes n'ajoutent pas de boutons globaux. MORISE coordonne contextuellement les fonctions. Exemple : traduction, création d'image, formation de groupe, recommandation ou génération de jeu apparaissent dans le contexte où elles sont utiles.
+### Pièce C — MÉMOIRE + PREUVE
+VALIDATE → COMMIT → EVENT → MEMORY/EXPERIENCE → EVALUATE → EVOLVE/ROLLBACK.
 
-## 7. Parcours utilisateur et comportement
-À l'arrivée, MORISE doit observer sans harceler. Elle peut créer une première expérience courte, proposer une action claire et conserver une raison réelle de revenir, mais elle ne doit jamais fabriquer de faux compteurs, fausse urgence, fausse rareté ou faux événement. Une promesse « reviens demain » n'est affichée que si un véritable état futur existe. Pendant lecture, saisie, jeu ou création, les interruptions non critiques sont réduites.
+Ces trois pièces ne sont pas trois IA : elles constituent une seule MORISE AI.
 
-## 8. Compréhension
-Entrée minimale : texte/action/événement + actorId serveur + module source + refs autorisées. MORISE identifie objectif, entités, contraintes, sortie attendue, effets secondaires, niveau d'autonomie et ambiguïtés. Une ambiguïté qui peut changer une mutation irréversible entraîne clarification ou chemin réversible autorisé.
+## 2. Contrat maître
+Entrée : acteur serveur, module source, intention, références de données, contraintes, autonomie, confidentialité, budget, deadline éventuelle.
 
-## 9. Contexte
-MORISE construit le plus petit contexte utile. Sources possibles : session, Player, module courant, entité, conversation, jeu actif, création active, mémoire autorisée, événements et World Memory autorisée. Secrets et données privées non autorisées sont exclus. Chaque snapshot a provenance, classe de confidentialité, expiration et hash.
+Sortie : résultat normalisé, artifact refs, validation refs, événements, trace et éventuelle expérience mémorisable.
 
-## 10. Raisonnement
-Le raisonnement est indépendant du fournisseur. Il peut combiner règles déterministes, algorithmes locaux, petits modèles locaux et fournisseurs externes. Il produit hypothèses, assumptions, plan et questions ouvertes. Il n'exécute pas directement une mutation privilégiée.
+Le modèle/provider externe n'est jamais retourné directement comme vérité métier.
 
-## 11. Planification
-Les tâches longues deviennent un graphe DAG. Chaque nœud précise capacité/version, entrées, sorties, dépendances, ressources, trust class, timeout, retry, idempotence et validator. Une dépendance circulaire est rejetée avant exécution.
+## 3. Cycle exact d'une demande
+1. recevoir la requête ;
+2. authentifier ;
+3. dériver actorId serveur ;
+4. vérifier tenant/scope ;
+5. limiter débit et taille ;
+6. classifier les données ;
+7. vérifier privacy/destination ;
+8. construire ContextSnapshot ;
+9. comprendre l'intention ;
+10. compiler les exigences ;
+11. détecter les ambiguïtés ;
+12. choisir autonomie autorisée ;
+13. construire le plan ;
+14. résoudre les capabilities ;
+15. réserver les ressources ;
+16. choisir la cible d'exécution ;
+17. exécuter ;
+18. valider ;
+19. corriger ou demander clarification ;
+20. committer uniquement par l'owner métier ;
+21. publier événements ;
+22. mémoriser uniquement ce qui est autorisé ;
+23. évaluer ;
+24. créer une candidate d'amélioration seulement si les preuves suffisent.
 
-## 12. Autonomie
-A0 répondre; A1 proposer; A2 exécuter après confirmation; A3 graphe borné; A4 workflow long borné. Une capability ne peut jamais dépasser la policy du contexte.
+## 4. Intent
+MORISE extrait : goal, entities, constraints, outputType, sideEffects, requiredCapabilities, ambiguity, assumptions, privacyClass et requestedAutonomy.
 
-## 13. Capability Registry
-Familles initiales : texte, raisonnement, vision, image, vidéo, audio, musique, TTS, STT, traduction, recherche, embeddings, modération, code, tests, jeu 2D, jeu 3D, résumé, classification, recommandation, proposition de communautés, Living Objects, Convergence, World Memory, génération de candidats d'évolution.
-Chaque capability possède version, schémas, policy, targets, validator, ressources, timeout, concurrence, payload maximal et health.
+Ambiguïté non bloquante = défaut explicite et réversible.
+Ambiguïté bloquante = clarification nécessaire lorsqu'elle change le résultat, la confidentialité ou une action irréversible.
 
-## 14. Tool Registry
-Un outil = actionId + ownerModule + inputSchema + permission + confirmationMode + sideEffectClass + rateLimit + validator + auditLevel. Aucun wildcard « execute anything ».
+## 5. Requirement compiler
+Exemple : « crée un petit jeu 3D de chasse partageable ».
 
-## 15. Ressources
-Ordre par défaut : ON_DEVICE/LOCAL → CACHE → TRUSTED_WORKER → COMMUNITY_WORKER opt-in → provider vérifié gratuit/client-side → provider avec secret → provider payant explicitement activé → degraded.
-Le routeur applique d'abord les filtres durs : capability, confidentialité, confiance, CPU/RAM/GPU, réseau, quota, délai. Le score de santé/coût/latence ne peut pas contourner un filtre dur.
+La compilation doit produire : browser runtime, mode 3D, core loop chasse, durée de session, partage du résultat, direction visuelle originale, contrôles, win/loss, save si nécessaire, tests lancement/mouvement/chasse/completion, budget mobile, sandbox, owner M08 et runtime owner M09.
 
-## 16. Workers et ordinateurs
-Trusted Worker = ordinateur explicitement autorisé. Community Worker = participation explicite. Un worker fournit du calcul, pas de la RAM partagée : la machine distante ne devient pas une extension directe de la RAM de l'ordinateur de l'utilisateur.
-Profil Community par défaut : 1 CPU logique, 512 MiB RAM, GPU désactivé, stockage persistant désactivé, réseau borné. Aucun secret de production, clé service-role, credential admin ou message privé brut n'est envoyé.
+Le provider n'est pas choisi pendant cette étape.
 
-## 17. Providers : rôle et inventaire
-Les providers de la conception historique sont des adaptateurs : Pollinations, Puter, LLM7, Vireonix, Murakumo, Kilo AI, AI Horde, AI Horde OpenAI API, Cehpoint AI, OVH AI Endpoints, Quillly, Openverse, Internet Archive, ainsi que Gemini, DeepSeek, OpenRouter et d'autres adapters vérifiés.
-Ils sont facultatifs. MORISE reste fonctionnelle sans eux pour les capacités locales/offline réalisables.
+## 6. Context Engine
+Scopes : SESSION, PLAYER, MODULE, ENTITY, TASK, CONVERSATION, MEMORY, GAME, CREATION.
 
-## 18. URLs et APIs
-Une URL ne doit jamais être inventée. Le registre technique doit conserver pour chaque provider : `providerId`, `baseUrl`, `endpoint(s)`, `authMode`, `secretName`, `apiVersion`, `requestSchema`, `responseSchema`, `capabilities`, `rateLimit`, `licenseRef`, `lastVerifiedAt`, `health`. Une URL seulement mentionnée dans une conversation ou une image est `UNVERIFIED` jusqu'à vérification. Les clés restent dans Supabase Secrets/Edge Functions et jamais dans React/Vite/public env.
+Ordre : scope → permission → minimum needed → visibility → block/mute → privacy filter → relevance → provenance → expiry → hash.
 
-## 19. Création IA
-Pour texte/image/vidéo/audio/musique/voix : INTENT → BRIEF → POLICY/ORIGINALITY → CAPABILITY → ROUTE → GENERATE → PROVENANCE → VALIDATE → ARTIFACT → optional PUBLISH. Un provider ne publie jamais directement.
+Une donnée hors scope est absente même si un modèle pourrait théoriquement y accéder.
 
-## 20. Jeux 2D/3D
-MORISE AI peut transformer une idée en GameSpecification : genre, 2D/3D, boucle de jeu, contrôles, caméra, difficulté, durée, partage, assets, audio, sauvegarde, performance, accessibilité, sécurité. Puis RESEARCH → IDEA → REQUIREMENTS → DESIGN → SPEC → ENGINE → CONTENT/ASSETS/CODE → BUILD → SIMULATE → TEST → PLAYTEST → BALANCE → PACKAGE → PREVIEW → PUBLISH. M08 possède la création; M09 possède l'exécution runtime.
+## 7. Mémoire
+Types : SESSION, PLAYER, EXPERIENCE, CREATOR, COMMUNITY, WORLD, SYSTEM_OBSERVATION, PROVIDER_EVIDENCE.
 
-## 21. Social / groupes
-MORISE peut proposer ou, selon policy, créer un groupe communautaire lorsque des signaux autorisés montrent un besoin réel. Elle doit déterminer objectif, thème, langue, visibilité, membres admissibles, règles, owner et expiration éventuelle. M11 reste l'autorité de membership. Les messages privés restent privés et ne deviennent pas automatiquement une mémoire générale.
+Chaque entrée : memoryId, ownerId, scope, sensitivity, consentBasis, provenance, confidence, utility, createdAt, expiresAt?, deletionPolicy, sourceHash.
 
-## 22. Mémoire
-SESSION, PLAYER, EXPERIENCE, CREATOR, COMMUNITY, WORLD, SYSTEM_OBSERVATION, PROVIDER_EVIDENCE. Chaque entrée possède owner/scope, sensitivity, provenance, confidence, utility, consent basis, retention et deletion policy. Une sortie provider reste une evidence jusqu'à validation.
+Secrets interdits. Les conversations privées ne deviennent pas mémoire globale par défaut.
 
-## 23. Apprentissage
-OBSERVATION → NORMALISATION → PATTERN → HYPOTHESIS → CANDIDATE → OFFLINE EVALUATION → POLICY → CANARY. Les clics ou lignes de code seuls ne prouvent rien. Les modifications de production sont versionnées et réversibles.
+## 8. Reasoning
+Sources possibles : règles déterministes, algorithmes locaux, retrieval, modèle externe, expérience validée.
 
-## 24. Détection des capacités manquantes
-SIGNAL D'ÉCHEC/LIMITE → CLASSIFIER LE MANQUE → distinguer connaissance/donnée/outil/algorithme/modèle/ressource/policy → formuler hypothèse → choisir une amélioration minimale → générer candidate → sandbox → tests → benchmark baseline → sécurité → canary → promotion/rejet → monitoring → rollback.
+Sorties : candidate interpretation, assumptions, plan proposal, confidence, unresolved questions.
 
-## 25. Auto-code contrôlé
-Une candidate de code est écrite uniquement dans un workspace isolé. Elle doit passer static scan, dépendance allowlist, typecheck, build, tests unitaires, intégration, comportement, sécurité, ressources et régression. Elle ne s'exécute jamais directement sur la production.
+Le reasoning ne peut pas effectuer une mutation privilégiée.
 
-## 26. AI Lab
-AI Lab est la zone de recherche contrôlée de MORISE. Elle peut générer/analyser du code, expérimenter des stratégies, benchmarker, proposer de nouvelles capabilities et préparer une version. Elle n'a pas les secrets production, l'accès admin illimité ou le droit de s'auto-attribuer une permission.
+## 9. Planner / DAG
+Une tâche longue devient un DAG. Chaque node possède taskId, graphId, nodeKey, dependencies, capabilityVersion, inputRefs, outputRefs, resources, validator, timeout, idempotencyKey, retryPolicy, lease et state.
 
-## 27. Self-correction
-FAILURE → CLASSIFY → EVIDENCE → HYPOTHESIS → MINIMAL CORRECTION → SANDBOX → VALIDATE → COMPARE → ACCEPT/REJECT. Limites : profondeur, durée, tentatives, mutation scope, ressources. Une oscillation déclenche l'arrêt.
+Un cycle produit GRAPH_INVALID et aucune tâche du graph ne démarre.
 
-## 28. Validation
-Chaque résultat critique est validé par schema, policy, security, static/type, runtime, behavior, content, artifact et integrity validators appropriés. `INCONCLUSIVE` n'est pas `VALID`.
+## 10. Autonomie
+A0 répondre ; A1 proposer ; A2 exécuter après approbation ; A3 graphe borné ; A4 workflow long borné.
 
-## 29. Living Objects / Convergence / Missions / World Memory
-Ces mécanismes sont des spécialistes coordonnés, pas des cerveaux séparés. AI propose; l'owner module autorise la mutation. Les signaux privés/sensibles sont exclus des mécanismes de convergence. World Memory conserve provenance, attribution, portée, confiance, rétention et correction.
+La policy peut réduire le niveau, jamais l'augmenter au-dessus de son plafond.
 
-## 30. Mesure de l'intelligence
-Chaque capability doit avoir benchmark, baseline, critères de réussite, coût, latence, taux d'erreur et régression critique. « Plus de code », « plus de RAM » ou « plus de providers » ne signifie pas « plus intelligent ».
+## 11. Capability Registry
+Familles initiales : TEXT, REASONING, VISION, IMAGE, VIDEO, AUDIO, MUSIC, TTS, STT, TRANSLATION, SEARCH, EMBEDDING, MODERATION, CODE_GENERATION, CODE_TESTING, GAME_2D, GAME_3D, SUMMARIZATION, CLASSIFICATION, RECOMMENDATION, COMMUNITY_PROPOSAL, LIVING_OBJECT_TRANSFORM, CONVERGENCE_DETECTION, WORLD_MEMORY_RETRIEVAL, EVOLUTION_CANDIDATE.
 
-## 31. DONE global
-MORISE AI n'est déclarée terminée que lorsque chaque capability active possède owner, contrat, code/adapter, policy, ressources, validator, observabilité, récupération, tests, version et rollback; que les providers sont vérifiés; que les secrets sont protégés; et que les mécanismes d'auto-évolution sont bornés, testables et réversibles.
+Chaque capability possède id, version, schemas, policyClass, allowedTargets, resourceClass, timeout, concurrency, payloadLimit, validator et health.
+
+## 12. Tool Registry
+Chaque outil possède actionId, ownerModule, inputSchema, permission, confirmationMode, sideEffectClass, rateLimit, validator et auditLevel.
+
+Il n'existe aucun outil wildcard « execute anything ».
+
+## 13. Policy Engine
+Ordre strict : identity → action existence → owner policy → safety → privacy → destination → quota → autonomy → confirmation → execution.
+
+Décisions : ALLOW, ALLOW_WITH_CONFIRMATION, DENY, DEGRADE.
+
+## 14. Resource / Provider Router
+Ordre :
+1. LOCAL/ON-DEVICE ;
+2. CACHE ;
+3. TRUSTED WORKER ;
+4. COMMUNITY WORKER si opt-in + policy ;
+5. VERIFIED FREE/CLIENT-SIDE PROVIDER ;
+6. API-KEY PROVIDER ;
+7. PAID PROVIDER uniquement explicitement activé ;
+8. DEGRADED/UNAVAILABLE.
+
+Hard filters avant scoring : capability, privacy, trust, ressources, réseau, quota, deadline.
+
+## 15. API/provider map — URLs vérifiées
+
+### Pollinations
+Docs : https://gen.pollinations.ai/docs
+Base : https://gen.pollinations.ai
+Chat : https://gen.pollinations.ai/v1/chat/completions
+Image : https://gen.pollinations.ai/image/{prompt}?model={model}
+Audio : https://gen.pollinations.ai/audio/{prompt}
+Embeddings : https://gen.pollinations.ai/v1/embeddings
+Secret : POLLINATIONS_API_KEY
+
+### Puter.js
+Docs : https://docs.puter.com/
+AI chat : https://docs.puter.com/AI/chat/
+CDN : https://js.puter.com/v2/
+NPM : @heyputer/puter.js
+Usage : option client-side lorsque son modèle User-Pays et sa destination de données sont acceptables.
+
+### OpenRouter
+Docs : https://openrouter.ai/docs/quickstart
+Base : https://openrouter.ai/api/v1
+Chat : https://openrouter.ai/api/v1/chat/completions
+Responses : https://openrouter.ai/api/v1/responses
+Models : https://openrouter.ai/api/v1/models
+Secret : OPENROUTER_API_KEY
+
+### Gemini
+Docs : https://ai.google.dev/gemini-api/docs
+Interactions beta : https://generativelanguage.googleapis.com/v1beta/interactions
+Interactions stable : https://generativelanguage.googleapis.com/v1/interactions
+generateContent : https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent
+Secret : GEMINI_API_KEY
+
+### Hugging Face
+Docs : https://huggingface.co/docs/inference-providers
+Chat : https://router.huggingface.co/v1/chat/completions
+Models : https://huggingface.co/api/models
+Secret : HF_TOKEN
+
+### AI Horde
+Docs/API : https://aihorde.net/api/
+Base : https://aihorde.net/api
+Toute route précise doit être prise dans le Swagger courant avant activation.
+
+### Kilo AI Gateway
+Docs : https://kilo.ai/docs/gateway
+Base : https://api.kilo.ai/api/gateway
+Chat : https://api.kilo.ai/api/gateway/chat/completions
+Models : https://api.kilo.ai/api/gateway/models
+Secret : KILO_API_KEY
+
+### Providers historiques non vérifiés
+LLM7, Vireonix, Murakumo, Quillly, Cehpoint AI, OVHcloud AI Endpoints, DeepSeek direct et tout autre provider historique restent DISABLED jusqu'à vérification de documentation officielle, endpoint, auth, schema, privacy/terms, health probe et test adapter. Aucune URL n'est inventée pour remplir le document.
+
+## 16. Code cible
+Repository actuel : Next.js 16.3.6, React 19.3.0, TypeScript 7.0.2, Node >=22, Supabase JS/SSR et Vitest.
+
+Principe : TypeScript + native fetch + AbortController + Web Crypto + validation runtime + Supabase server persistence. Les SDK externes sont optionnels et restent derrière les adapters.
+
+## 17. Puzzle de code
+lib/ai/core/* = request-gate, context, intent, requirements, reasoning, planner, policy, orchestrator.
+lib/ai/capabilities/* = registry et catalog.
+lib/ai/tools/* = registry et permissions.
+lib/ai/providers/* = router + adapters.
+lib/ai/workers/* = registry + scheduler + leases + sandbox.
+lib/ai/validation/* = schema + security + runtime + result.
+lib/ai/memory/* = store + retrieval + learning.
+lib/ai/evolution/* = candidate + benchmark + promotion + rollback.
+app/api/ai/* = frontières HTTP.
+
+Une nouvelle capability ajoute une pièce au registre, sa policy, son validator et ses tests. Elle ne crée jamais un deuxième cerveau.
+
+## 18. Creative AI
+Texte/image/video/audio/music/voice suivent : intent → brief → originality/safety policy → route → execution → provenance → validation → ArtifactRef → owner publication.
+
+## 19. Game Creator AI
+M15 produit Requirements + GameSpecification + TaskGraph. M08 fabrique. M09 exécute. M06 crée les sessions. M05/M14 reçoivent uniquement des résultats validés.
+
+## 20. Workers
+Trusted Worker = machine explicitement autorisée.
+Community Worker = opt-in.
+Défaut Community : ≤1 logical CPU, ≤512 MiB RAM, GPU/storage désactivés, réseau borné.
+Aucun worker ne reçoit secrets production, service-role, admin API ou messages privés bruts.
+
+## 21. Auto-évolution
+Limitation → gap → root cause → hypothesis → candidate → sandbox → tests → benchmark → security/policy → canary → promote/reject → monitor → rollback.
+
+L'augmentation de code n'est jamais une preuve d'intelligence.
+
+## 22. Contrôle de l'autorité
+M15 ne peut pas devenir owner de M01/M02 identité, M03 messages privés, M05 progression, M11 membership, M12 event state ou M14 économie.
+
+## 23. DONE
+Chaque capability doit avoir owner, contract, implementation/adapter, policy, resource profile, validator, tests, observability, version, integration et rollback. Aucun second AI brain/provider router n'est autorisé.
