@@ -1,37 +1,44 @@
-# M02 — PLAYER — TECHNICAL DESIGN
+# M02 — PLAYER — COMPLETE TECHNICAL CONTRACT
 
-## Boundary
-M02 owns player identity, profile, preferences, progression-facing identity fields and account settings. It does not own posts, private messages, communities or reward minting.
+## Responsibility
+M02 owns authenticated player identity, profile, preferences and public identity presentation. Progression arithmetic is M05; rewards/inventory are M14; social content/messages are M03.
 
 ## Data
 `profiles`, `profile_preferences`, `player_settings`, `player_stats_public`.
 
+## Canonical identity
+`auth.user.id` is the immutable identity key. `handle` is unique and server-validated. `displayName` is presentation only. Never use display name as a foreign key.
+
 ## Types
 ```ts
 interface PlayerProfile { id:string; handle:string; displayName:string; avatarRef?:string; bio:string; locale:string; createdAt:string; }
-interface PlayerPreferences { locale:string; theme:"dark"; interests:string[]; privacy:"public"|"friends"|"private"; }
+interface PlayerPreferences { locale:string; theme:'dark'; interests:string[]; privacy:'public'|'friends'|'private'; }
+interface PlayerPatch { displayName?:string; bio?:string; avatarRef?:string; locale?:string; interests?:string[]; privacy?:PlayerPreferences['privacy']; }
 ```
 
-## Identity rules
-The authenticated user ID is the immutable identity key. Handle uniqueness is server-enforced. Display name is mutable. Never use display name as a database foreign key.
+## Profile lifecycle
+`AUTHENTICATED → ENSURE_PROFILE → LOAD_PROFILE → READY`. Missing profile is created once through an idempotent server transaction. Deleted/disabled accounts cannot create new profile rows.
 
-## UI
-Profile is one primary door. Edit profile, preferences, inventory/collection and player statistics are contextual sections. Do not create duplicate profile pages for each setting.
+## Writes
+Validate string lengths, locale membership, avatar MIME/size and privacy enum before mutation. Use optimistic UI only for reversible preferences. Identity/security changes wait for server acknowledgement.
 
-## Security
-RLS/server authorization controls read/write scope. A user may edit only their own private profile fields. Public profile fields have explicit visibility rules. Admin operations are separate.
+## Privacy
+Public profile fields and private settings use separate authorization policies. Blocked users cannot retrieve restricted profile data. Admin access is explicit and audited.
 
 ## AI boundary
-AI may assist with bio drafting, translation, profile suggestions or personalization through typed capabilities. It cannot silently change identity, privacy or account permissions.
+AI may draft a bio, translate text, suggest interests or explain settings only after explicit invocation. It cannot change identity, privacy, email, roles or permissions.
 
 ## Caching
-Public profile cards may be cached briefly by ID. Private settings are user-scoped and never shared across accounts.
+Public profile cards may use short TTL cache keyed by player ID. Private settings are user-scoped. Invalidate profile caches after authoritative writes.
 
-## Performance
-Optimistic UI only for non-sensitive preferences. Profile image upload is asynchronous and uses bounded size/type checks.
+## UI
+Profile is one permanent door. Edit/profile settings/statistics/collection are contextual sections. Avoid separate pages for each setting.
+
+## Failure handling
+Avatar upload failure leaves previous avatar intact. Profile save conflict reloads the authoritative version. Deleted profile references render a safe fallback card.
 
 ## Tests
-handle uniqueness, authorization, privacy visibility, profile update rollback, locale persistence, avatar failure, deleted account references and mobile profile layout.
+Handle uniqueness; self-only mutation; privacy matrix; blocked-user access; avatar validation; locale persistence; concurrent edits; deleted-account references; AI-offline operation; mobile layout.
 
 ## Done gate
-A new user can create/modify their identity safely; another user cannot mutate it; profile remains usable without AI.
+A player can create and edit identity safely, another user cannot mutate it, private settings never leak, and the profile works with AI/providers completely offline.
