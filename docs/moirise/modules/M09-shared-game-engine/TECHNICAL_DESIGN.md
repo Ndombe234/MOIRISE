@@ -58,3 +58,44 @@ Manifest; runtime mount; input; state save/restore; corrupt save; network policy
 
 ## 12. DONE
 Engines are reusable, secure and isolated from provider and product navigation concerns.
+
+## 13. Engine capability manifest
+RuntimeManifest declares:
+engineId;
+2D/3D;
+input map;
+required APIs;
+asset refs;
+save schema;
+network policy;
+memory/CPU budget;
+package hash.
+
+## 14. Bridge API
+Only explicit bridge capabilities:
+getSessionContext;
+recordSafeEvent;
+requestSave;
+requestShare;
+completeAttempt.
+No arbitrary database/API bridge.
+
+## 15. Save migration
+Migrate only from known schema versions.
+Unknown version → incompatible save state, never best-effort parse that can corrupt data.
+
+## 16. 3D loading
+3D engine is code-split and mounted only after M06 launches a compatible experience.
+Initial shell must not pay 3D load cost.
+
+## 17. Runtime threat model
+Malicious package;
+infinite loop;
+memory exhaustion;
+network abuse;
+attempt to read sibling files;
+attempt to call unauthorized API.
+Sandbox/resource limits handle these cases.
+
+## 18. Acceptance
+Runtime crash is isolated; Play shell recovers.
