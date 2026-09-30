@@ -1,35 +1,41 @@
-# M08 — GAME A→Z FACTORY — TECHNICAL DESIGN
+# M08 — GAME A→Z FACTORY — COMPLETE TECHNICAL CONTRACT
 
-## Boundary
-M08 transforms a natural-language game request into a validated, portable game package. It creates; M09 executes. M08 never gives generated code production credentials.
+## Responsibility
+M08 converts a natural-language game request into a validated portable GamePackage. M09 executes it. M08 never receives production master credentials.
 
 ## Pipeline
-`request → intent extraction → GameSpecification → task graph → code/assets/audio generation → static analysis → sandbox build → tests → preview → signed package`.
+`request → intent extraction → GameSpecification → task graph → code/assets/audio/level generation → provenance → static analysis → sandbox build → tests → preview → package hash → signature`.
 
 ## Types
 ```ts
-interface GameSpecification { id:string; mode:"2d"|"3d"; engine:"phaser"|"three"|"babylon"|"playcanvas"|"custom"; scenes:SceneSpec[]; entities:EntitySpec[]; rules:RuleSpec[]; controls:ControlSpec[]; levels:LevelSpec[]; assets:AssetRef[]; audio:AssetRef[]; tests:TestSpec[]; }
-interface AssetRef { id:string; kind:string; ref:string; license:"owned"|"generated"|"open"; provenance:string; hash:string; }
+interface GameSpecification { id:string; mode:'2d'|'3d'; engine:string; scenes:SceneSpec[]; entities:EntitySpec[]; rules:RuleSpec[]; controls:ControlSpec[]; levels:LevelSpec[]; assets:AssetRef[]; audio:AssetRef[]; tests:TestSpec[]; }
+interface AssetRef { id:string; kind:string; ref:string; license:'owned'|'generated'|'open'; provenance:string; hash:string; }
 interface GamePackage { id:string; specHash:string; engineVersion:string; manifestRef:string; artifactRef:string; signature:string; }
 ```
 
 ## Task graph
-Separate code, art, audio, level design and validation tasks. Independent tasks may be distributed to trusted/community workers according to worker policy. Results are content-addressed and validated before assembly.
+Separate code, art, audio, level design, testing and packaging tasks. Independent work may be distributed through the Worker Cluster. Every result is content-addressed, provenance-tagged and validated before assembly.
 
-## Provider independence
-AI providers are adapters selected by the canonical provider registry. M08 never hard-codes provider endpoints or keys. If every provider is unavailable, M08 returns a clear degraded state rather than silently producing broken output.
+## Provider routing
+M08 requests capabilities such as `code.generate`, `image.generate`, `audio.generate` and `video.generate`; the canonical Provider Registry/Router chooses providers. M08 never hard-codes endpoints or keys.
 
-## Safety
-Generated code is untrusted. Static checks, dependency allowlists, sandbox build, runtime smoke test and resource limits are mandatory. Assets retain provenance/license metadata.
+## Generation rules
+Generated code is untrusted. Dependencies are allowlisted. Generated assets retain source/license/provenance metadata. Unsupported or unverifiable assets are rejected rather than silently published.
+
+## Validation
+Static scan → dependency validation → sandbox build → unit/smoke tests → package integrity → preview. A failed stage blocks publication.
 
 ## Runtime independence
-Published packages contain all required game resources and runtime manifest. Normal gameplay must not call the creation provider.
+Published packages include required resources and a runtime manifest. Playing a published game must not call its creation provider.
 
 ## UI
-Create is a primary door. Wizard/chat, templates, preview, diagnostics and publish controls are contextual inside Create.
+Create is one primary door. The creator workflow is a contextual wizard/chat with specification preview, generation progress, diagnostics, playable preview and publish/export actions.
+
+## Resource policy
+Long generation tasks are asynchronous and resumable. Worker/API failure requeues only the affected task. Intermediate artifacts are immutable/content-addressed.
 
 ## Tests
-small 2D game, small 3D game, malformed request, provider failure, build failure, malicious generated code, oversized asset, missing dependency, deterministic package hash and mobile preview.
+2D generation; 3D generation; malformed request; provider failure; worker failure; build failure; malicious code; oversized asset; missing dependency; license/provenance rejection; deterministic package hash; mobile preview.
 
 ## Done gate
-A requested game can reach a real playable validated preview and a portable package without coupling gameplay to an AI provider.
+A user request can reach a real playable validated preview and portable package without gameplay depending on an AI provider.
