@@ -69,3 +69,29 @@ M15 peut proposer la présentation contextuelle. M04 contrôle l'expérience et 
 
 ## 11. Tests et DONE
 Vérifier deep links, refresh, mobile/desktop, suppression pendant typing/reading/playing/creating, absence de faux contenu, handoff refusé, token révoqué, dépendance optionnelle indisponible.
+
+## AI-INTÉGRATION M04 — CONTRAT DE COMPRÉHENSION POUR L'IA DE FABRICATION
+
+### A. Position
+M04 est le contexte visible de MOIRISE : portes principales, cartes et détours. MORISE AI fournit l'intelligence de contextualisation mais M04 contrôle l'expérience et les suppressions.
+
+### B. AI responsibilities
+Classer des actions contextuelles, produire une reasonKey, proposer une carte, détecter une opportunité réelle, contextualiser l'ordre d'affichage et suggérer un handoff.
+
+### C. Context
+WorldContext = état courant + viewport + session + signaux réels autorisés + état d'activité. Les signaux sensibles sont minimisés.
+
+### D. Suppressions
+Typing, reading, playing, creating et autres tâches prioritaires suppriment les détours non critiques. L'IA ne doit pas réintroduire une carte rejetée par la policy.
+
+### E. Handoff
+M04 construit IntentEnvelope. La destination revalide toujours actor/permission/target. M15 ne possède pas la mutation destination.
+
+### F. Interdits
+Fausse rareté, faux utilisateur, faux compte à rebours, événement futur inventé, récompense inventée, exposition de signaux privés dans une card publique.
+
+### G. Fallback
+AI down = sélection World déterministe et suppression par règles. Le shell reste utilisable.
+
+### H. DONE
+Les cards AI sont explicables, suppressibles, bornées par cooldown et privacy et leurs handoffs passent par destination owner.
