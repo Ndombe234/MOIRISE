@@ -888,3 +888,96 @@ Aucun second AI router. Aucun provider directement appelé par l'UI. Aucune muta
 
 ## 92.8 Critère de raccordement cognitif
 L'IA de fabrication est raccordée lorsqu'elle peut partir d'une demande, déterminer les modules touchés, retrouver les owners, choisir les capabilities, résoudre les scopes de contexte, construire le DAG, générer au bon endroit, valider les handoffs et vérifier le résultat sans créer une seconde autorité.
+
+# 94. GAME PLATFORM NATIVE — FABRICATION ET EXÉCUTION DES JEUX 2D/3D
+
+MOIRISE ne traite pas chaque jeu comme une application indépendante construite depuis zéro. L'environnement possède une plateforme permanente de jeux réutilisable. MORISE AI orchestre cette plateforme, M08 possède la fabrication, M09 possède l'exécution commune, M06 possède l'expérience PLAY et M07 la découverte. M10 possède les interactions sociales de jeu.
+
+## 94.1 Objectif
+Une demande utilisateur telle que « crée un jeu 2D de combat avec trois ennemis et un boss » ou « crée une arène 3D de vagues d'ennemis » doit être transformée en un projet de jeu exécutable dans MOIRISE sans reconstruire le système social, l'authentification, la progression, le partage, le runtime commun ou les garde-fous à chaque fois.
+
+Le coût architectural principal est donc la plateforme initiale. Les jeux suivants réutilisent ses fondations.
+
+## 94.2 Couches permanentes
+1. Game Specification Layer : décrit les règles et objectifs du jeu.
+2. Game Factory Layer : transforme la spécification en fichiers, code, assets, tests et build.
+3. Game Runtime Layer : fournit l'exécution 2D/3D commune.
+4. Game Validation Layer : build, lint, tests, security, resource, manifest et runtime validation.
+5. Game Catalog/Discovery Layer : version publiée, visibilité, recherche, ranking et présentation.
+6. PLAY Integration Layer : session, lancement, sauvegarde, résultats et partage.
+7. Social Gaming Layer : parties et interactions partagées lorsque le jeu le permet.
+
+## 94.3 Sélection 2D / 3D
+La demande, les contraintes produit et la valeur de la spatialité déterminent le mode. L'IA ne choisit pas 3D simplement parce que la capacité existe. Le choix doit être justifié par GameSpecification et borné par les capacités du device, le budget de performance, la taille des assets, la latence et le besoin réel de spatialité.
+
+## 94.4 Infrastructure réutilisable
+Les jeux réutilisent autant que possible :
+- input et mapping clavier/tactile/manette ;
+- boucle de jeu et lifecycle ;
+- audio ;
+- assets manifest ;
+- sauvegarde/reprise ;
+- session/identité ;
+- partage ;
+- télémétrie bornée ;
+- resource profiles ;
+- validation ;
+- error boundary ;
+- compatibilité mobile/desktop ;
+- hooks de progression et récompenses après validation ;
+- hooks de social gaming ;
+- sandbox et network policy.
+
+Un jeu ne recopie pas ces mécanismes comme une nouvelle infrastructure concurrente.
+
+## 94.5 Pipeline canonique
+DEMANDE → INTENT → GAME REQUIREMENTS → GAME SPECIFICATION → TASK GRAPH → GENERATION → BUILD → TEST → DIAGNOSTIC → BOUNDED REPAIR → REBUILD → REVALIDATE → READY_FOR_INTEGRATION → PLAY INTEGRATION → PUBLISHED.
+
+Une génération de code seule n'est jamais considérée comme un jeu terminé.
+
+## 94.6 Boucle de correction
+Chaque correction doit pointer vers :
+- un diagnostic ;
+- un artifact ou task node concerné ;
+- une version candidate ;
+- une hypothèse de correction ;
+- une limite d'essais ;
+- un test de régression ;
+- un résultat VALID/INVALID/INCONCLUSIVE.
+
+Deux corrections qui oscillent sans amélioration déclenchent une sortie contrôlée : ESCALATE ou REJECTED.
+
+## 94.7 Codex et autres agents de développement
+Codex peut être utilisé comme agent de fabrication assistée dans le pipeline Game Factory. Il n'est pas le cerveau de MORISE et n'est pas une dépendance de production obligatoire.
+
+Lorsqu'un agent de développement est utilisé :
+- il reçoit uniquement le workspace/project scope autorisé ;
+- il travaille sur une branche ou workspace candidat ;
+- il n'obtient pas automatiquement les secrets production ;
+- il ne peut pas publier directement un jeu ;
+- ses modifications deviennent des artifacts candidats ;
+- build/tests/validation restent obligatoires ;
+- M08/M09/M06 conservent respectivement leurs autorités.
+
+## 94.8 Réutilisation entre jeux
+Un nouveau jeu doit chercher d'abord une fondation existante compatible : template, system component, runtime capability, asset pipeline, test fixture ou adapter validé. Une nouvelle implémentation n'est créée que lorsque l'existant est incompatible ou insuffisant.
+
+Le jeu N+1 ne doit donc pas reconstruire la plateforme du jeu N.
+
+## 94.9 Intégration dans le SYSTEM
+L'utilisateur n'a pas besoin de connaître les couches internes. Le SYSTEM peut exposer une demande de création, un état de fabrication et le résultat jouable. Les grandes portes MOIRISE restent stables ; la complexité de fabrication est absorbée par les couches internes.
+
+## 94.10 Ownership
+M15 = orchestration AI.
+M08 = GameSpecification + fabrication + artifact lineage + acceptance.
+M09 = runtime + sandbox + manifest compatibility.
+M06 = PlaySession + launch + result admission + recovery.
+M07 = discovery/catalog visibility/ranking.
+M10 = shared/social gaming.
+M05 = progression.
+M14 = rewards/collection.
+Aucun de ces owners ne peut être remplacé par un provider ou par Codex.
+
+## 94.11 DONE global
+La plateforme jeux est considérée prête lorsqu'un jeu 2D et un jeu 3D peuvent être fabriqués depuis une GameSpecification, passer build/tests/validation, recevoir un manifest runtime valide, démarrer dans M06, fonctionner dans M09, apparaître via M07 et utiliser les intégrations M05/M10/M14 uniquement par leurs contrats.
+
