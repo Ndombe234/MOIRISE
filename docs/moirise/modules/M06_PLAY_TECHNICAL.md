@@ -1,19 +1,28 @@
-# M06 — PLAY
+# M06 — PLAY — TECHNICAL CONTRACT
 
-## Goal
-The unified entry surface for playing MOIRISE games.
+## Boundary
+M06 owns the Play surface and catalog composition. It does not own game creation (M08) or runtime execution (M09).
 
-## Separation
-This module consumes finished game packages. It does not contain the AI game-generation brain.
+## Types
+```ts
+interface GameCard { id:string; title:string; mode:"2d"|"3d"; status:"published"|"draft"|"disabled"; thumbnailRef?:string; tags:string[]; }
+interface PlayQuery { cursor?:string; filters?:Record<string,string>; limit:number; }
+```
 
-## Runtime
-Game packages run in a controlled browser runtime with input, rendering, audio, persistence and telemetry contracts.
+## UI
+Play is one primary door. Discovery, categories, favorites, recent games and recommendations are tabs/sections inside the surface, not permanent global buttons.
 
-## MORISE
-Can recommend games, difficulty and contextual activities. It does not need an AI API to execute a completed game.
+## Runtime boundary
+Clicking Play requests a signed `GamePackageRef` from the catalog. M06 does not execute arbitrary code. M09 owns sandboxed execution.
+
+## AI boundary
+AI can recommend or create game metadata through capability interfaces. No provider URL is hard-coded in M06.
 
 ## Performance
-Load one game package at a time, lazy-load assets, cancel unused requests and cap runtime memory.
+Virtualize large catalogs; lazy-load thumbnails; prefetch only the selected game's manifest.
 
-## Acceptance
-Launch, pause, resume, restart, exit, save where supported, mobile controls and runtime error recovery.
+## Tests
+Catalog pagination, filters, empty/error states, package integrity, disabled-game behavior, mobile layout, runtime handoff.
+
+## Done gate
+A user can discover and launch a published game without M06 importing any game engine or provider SDK into the main bundle.
