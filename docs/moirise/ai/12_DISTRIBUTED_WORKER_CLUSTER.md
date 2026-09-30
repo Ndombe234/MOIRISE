@@ -1,13 +1,11 @@
 # MORISE AI — DISTRIBUTED WORKER CLUSTER
 
 ## Authority
-This file is the single technical contract for distributed workers. The general resource scheduler is defined in `08_RESOURCE_SCHEDULER_OBSERVABILITY.md`; this file defines worker identity, registration, security, job transport and lifecycle.
+This file is the single technical contract for distributed workers. The general resource scheduler is defined in `08_RESOURCE_SCHEDULER_OBSERVABILITY.md`; this file defines worker identity, registration, trust, quotas, job transport, security and lifecycle.
 
 ## Goal
 
 Allow MORISE to use multiple computers with different CPU, RAM and GPU capacities without making the development computer a permanent compute bottleneck.
-
-Example:
 
 ```text
 MOIRISE AI ORCHESTRATOR
@@ -27,26 +25,84 @@ MOIRISE AI ORCHESTRATOR
  CPU   GPU           2D/3D
 ```
 
-## Worker identity
+## 1. Separate MOIRISE Worker
+
+A participating user's machine does not become a trusted worker merely because the user activates `Participer`.
+
+The client must install/run a separate `MOIRISE Worker` component and explicitly consent to resource sharing.
+
+Lifecycle:
+
+`PARTICIPATE → INSTALL/ACTIVATE WORKER → DIAGNOSTIC → QUOTA CONFIGURATION → REGISTRATION → TRUST EVALUATION → VERIFIED/RESTRICTED`
+
+The worker must have visible controls to pause, resume and stop participation.
+
+It must never operate as a hidden background process.
+
+## 2. Initial machine diagnostic
+
+During registration the worker measures, without exceeding the user's selected quota:
+
+- logical CPU cores;
+- available RAM;
+- GPU presence and VRAM where permitted;
+- network latency/bandwidth class;
+- worker version;
+- heartbeat stability;
+- availability history;
+- task success history once jobs exist.
+
+The diagnostic reports capabilities, not private user files.
+
+```ts
+interface WorkerHardware {
+  cpuLogicalCores: number;
+  ramTotalMb: number;
+  ramAvailableMb: number;
+  gpu?: {
+    vendor: string;
+    model: string;
+    vramMb: number;
+  };
+  networkClass: "poor" | "normal" | "good" | "excellent";
+}
+```
+
+## 3. User resource quota
+
+The quota is a technical limit enforced by the worker sandbox/runtime, not merely a UI setting.
+
+Default levels:
+
+| Level | CPU | RAM | GPU | Storage |
+|---|---:|---:|---|---:|
+| OFF | 0 | 0 | disabled | 0 |
+| LIGHT | 0.25 logical core | 256 MB | disabled | 0 |
+| NORMAL | 0.5 logical core | 512 MB | disabled | 0 |
+| VOLUNTARY+ | 1 logical core | 1 GB | disabled by default | 0 |
+
+Network usage is separately quota-controlled.
+
+The quota is not reserved permanently. It is a maximum budget while an assigned task is executing.
+
+The worker must throttle, reject or terminate a task that exceeds its configured limits.
+
+## 4. Worker identity
 
 ```ts
 interface WorkerDescriptor {
   workerId: string;
   workerVersion: string;
   status: "online" | "busy" | "degraded" | "draining" | "offline" | "quarantined";
+  trustLevel: "unverified" | "occasional" | "reliable" | "active" | "specialized";
   capabilities: string[];
-  cpu: {
-    cores: number;
-    architecture: string;
-  };
-  memory: {
-    totalMb: number;
-    availableMb: number;
-  };
-  gpu?: {
-    vendor: string;
-    model: string;
-    vramMb: number;
+  hardware: WorkerHardware;
+  quota: {
+    cpuLogicalCores: number;
+    ramMb: number;
+    gpuEnabled: boolean;
+    storageMb: number;
+    networkMbPerDay?: number;
   };
   maxConcurrentTasks: number;
   lastHeartbeatAt: string;
@@ -56,26 +112,104 @@ interface WorkerDescriptor {
 
 A worker advertises capabilities but never receives permission to choose arbitrary server operations.
 
-## Registration
+## 5. Trust levels
 
-`INSTALL WORKER → AUTHENTICATE → ATTEST/VERSION CHECK → REGISTER → CAPABILITY CHECK → VERIFIED`
+Trust is technical reliability, not a reward or social ranking.
+
+### 🟢 Reliable worker
+
+Conditions can include:
+- stable heartbeat;
+- sufficient availability history;
+- high task success rate;
+- low failure rate;
+- current compatible worker version;
+- no security violations.
+
+Can receive normal eligible tasks.
+
+### 🔵 Active worker
+
+A worker with consistently high availability and sufficient recent capacity.
+
+Can receive larger non-sensitive workloads when policy permits.
+
+### 🟣 Specialized worker
+
+A worker with verified specialized resources, for example:
+- GPU/VRAM;
+- 3D workload capability;
+- media processing;
+- build/test capacity.
+
+Specialization never bypasses security policy.
+
+### 🟡 Occasional worker
+
+Irregular availability or insufficient history.
+
+Receives small, resumable or easily retryable tasks.
+
+### 🔴 Inactive / quarantined
+
+No new tasks.
+
+Quarantine is used for repeated failures, invalid results, security violations or incompatible software until re-verification.
+
+## 6. Technical Worker Score
+
+The orchestrator maintains an internal technical reliability profile.
+
+Example:
+
+```text
+Worker #4821
+
+CPU available       ✓
+RAM available       ✓
+Connection          ✓
+Availability        96 %
+Tasks successful    99.4 %
+Failure rate        0.6 %
+Latency             42 ms
+Last heartbeat      8 s
+```
+
+This is not a user-facing popularity score and does not grant social status.
+
+A possible internal score is composed from:
+
+```text
+reliability
++ availability
++ recent success
++ latency
++ resource headroom
++ protocol compatibility
+- failures
+- timeouts
+- invalid outputs
+- security incidents
+```
+
+Do not use a single score as the sole authorization mechanism. Hard security/privacy constraints are evaluated first.
+
+## 7. Registration and authentication
+
+`INSTALL WORKER → AUTHENTICATE → VERSION CHECK → REGISTER → CAPABILITY CHECK → TRUST EVALUATION`
 
 Unverified workers cannot receive production or private-data jobs.
 
-## Authentication
+Every worker requires:
+- unique identity;
+- short-lived scoped credentials;
+- credential rotation;
+- revocation support;
+- audit events.
 
-Every worker requires a unique identity and short-lived credentials.
+Never place Supabase, Gemini, DeepSeek, Pollinations, OpenRouter or other production secrets inside a user worker.
 
-Rules:
-- never place Supabase/Gemini/provider production secrets inside the worker;
-- use scoped worker credentials;
-- rotate credentials;
-- revoke compromised workers;
-- reject expired credentials;
-- bind jobs to worker identity;
-- audit registration and revocation.
-
-## Job contract
+## 8. Job contract
 
 ```ts
 interface WorkerJob {
@@ -87,14 +221,23 @@ interface WorkerJob {
   expiresAt: string;
   timeoutMs: number;
   permissions: string[];
+  resourceQuota: {
+    maxCpuLogicalCores: number;
+    maxRamMb: number;
+    gpuAllowed: boolean;
+    maxStorageMb: number;
+    maxNetworkMb?: number;
+  };
   outputSchema: string;
   signature: string;
 }
 ```
 
-The worker receives the minimum payload required by the task.
+The job's resource quota must never exceed the worker owner's configured quota.
 
-## Job lifecycle
+The worker receives only the minimum payload required by the task.
+
+## 9. Job lifecycle
 
 ```text
 QUEUED
@@ -112,9 +255,64 @@ VALIDATING
 COMPLETED / REJECTED
 ```
 
-Timeout, heartbeat loss or invalid output moves the job to a retry/fallback state.
+Timeout, heartbeat loss or invalid output moves the job to retry/fallback.
 
-## Worker sandbox
+## 10. Recoverable tasks
+
+MORISE must not depend on a particular user worker.
+
+Example:
+
+```text
+Task #18472
+    ↓
+Worker A
+    ↓
+A disappears
+    ↓
+Heartbeat timeout
+    ↓
+Task returned to queue
+    ↓
+Worker B
+    ↓
+Result
+    ↓
+Validation
+```
+
+Jobs must have:
+- unique IDs;
+- expiration;
+- retry policy;
+- idempotency key where appropriate;
+- output hash;
+- validation state.
+
+A disconnected worker is never assumed to have completed the task.
+
+## 11. Worker heartbeat
+
+The worker sends periodic health information containing only operational metadata:
+
+- worker ID;
+- version;
+- status;
+- resource availability;
+- current job ID if policy allows;
+- timestamp.
+
+The server tracks heartbeat age.
+
+Suggested states:
+
+```text
+healthy → degraded → offline
+```
+
+The exact thresholds are configurable and must not be hard-coded into UI components.
+
+## 12. Worker sandbox
 
 Generated code and untrusted workloads execute inside an isolated environment.
 
@@ -127,38 +325,42 @@ A worker job must not automatically access:
 - other users' jobs;
 - worker administration APIs.
 
-Use resource limits for CPU, RAM, storage, execution time and network according to the runtime available on the worker.
+Resource limits must be enforced by the runtime/sandbox, not merely by JavaScript variables.
 
-## Data isolation
+## 13. Data isolation
 
 Default policy:
 
 ```text
-PRIVATE DATA → LOCAL/AUTHORIZED TRUSTED WORKER ONLY
-PUBLIC TASK → ANY VERIFIED COMPATIBLE WORKER
-SENSITIVE TASK → EXPLICITLY TRUSTED WORKER ONLY
+PRIVATE DATA
+    → local/trusted authorized worker only
+
+PUBLIC TASK
+    → any verified compatible worker
+
+SENSITIVE TASK
+    → explicitly trusted worker only
 ```
 
-A worker owned by another user must never receive another user's private content unless the policy explicitly authorizes that exact transfer.
+A worker owned by another user must never receive another user's private content unless that exact transfer is explicitly authorized by policy.
 
-## Artifact model
+## 14. Artifact model
 
 Prefer references and hashes instead of copying large files through the orchestrator.
 
 ```text
-OBJECT STORE / ARTIFACT STORE
-          │
-          ├── input hash
-          ├── output hash
-          ├── metadata
-          └── provenance
+ARTIFACT STORE
+    ├── input hash
+    ├── output hash
+    ├── metadata
+    └── provenance
 ```
 
-Large game builds, images, audio and video should be transferred as artifacts, not embedded inside job-control messages.
+Large game builds, images, audio and video should be transferred as artifacts, not embedded in job-control messages.
 
-## Worker classes
+## 15. Worker classes
 
-Initial logical classes may include:
+Initial logical classes:
 
 - `CODE_CPU`
 - `REASONING_CPU`
@@ -170,9 +372,9 @@ Initial logical classes may include:
 - `TEST_RUNNER`
 - `BUILD_RUNNER`
 
-A physical computer may advertise several classes.
+One physical computer may advertise multiple classes.
 
-## Scheduling example
+## 16. Scheduling example
 
 For a 3D game creation request:
 
@@ -182,7 +384,7 @@ USER REQUEST
 MORISE PLAN
     ↓
 CODE TASK ─────────→ CODE_WORKER
-3D ASSET TASK ─────→ GPU_WORKER
+3D ASSET TASK ─────→ SPECIALIZED_GPU_WORKER
 AUDIO TASK ────────→ AUDIO_WORKER
 BUILD TASK ────────→ BUILD_WORKER
 TEST TASK ─────────→ TEST_WORKER
@@ -192,46 +394,60 @@ VALIDATION
 GAME PACKAGE
 ```
 
-Tasks that have dependencies wait for their required artifacts. Independent tasks may run concurrently.
+Independent tasks can run concurrently. Dependent tasks wait for their required artifacts.
 
-## Fault tolerance
+## 17. Fault tolerance
 
 If a worker disappears:
 
-`HEARTBEAT LOST → MARK DEGRADED/OFFLINE → CANCEL/EXPIRE JOB → RETRY ELSEWHERE → VALIDATE`
+`HEARTBEAT LOST → MARK DEGRADED/OFFLINE → EXPIRE/CANCEL JOB → RETRY ELSEWHERE → VALIDATE`
 
-Do not assume the previous worker completed a job merely because the connection disappeared.
+Repeated failures can move the worker to quarantine.
 
-## User-owned voluntary workers
+## 18. User-owned voluntary workers
 
 This is an opt-in feature, never an implicit requirement.
 
-A participating user's machine must run a separate worker application with:
-- explicit consent;
-- visible resource limits;
-- pause/stop controls;
-- task categories shown to the owner;
-- no access to private user data outside the worker's own scope;
-- automatic credential revocation;
-- secure update mechanism.
+The owner must be able to:
+- choose OFF/LIGHT/NORMAL/VOLUNTARY+;
+- pause;
+- stop;
+- change quota;
+- see current resource usage;
+- see task category;
+- revoke participation.
 
-The worker must never become a hidden background process.
+The worker must not secretly continue after participation is revoked.
 
-## Security boundary
+## 19. Server/worker trust separation
 
-The worker is untrusted by default even when authenticated.
+MOIRISE trusted infrastructure and user workers are separate security domains.
 
-Authentication answers: "Who is this worker?"
+User workers must never receive:
+- the complete production database;
+- Supabase service-role keys;
+- provider master keys;
+- authentication signing secrets;
+- administrative credentials;
+- instructions for controlling the central system.
 
-Authorization answers: "What may this worker do?"
+The central system sends scoped jobs; workers return scoped results.
 
-Sandbox answers: "What can this worker physically access?"
+## 20. Security boundary
 
-Validation answers: "Can MORISE trust this result?"
+Four independent questions must always be answered:
 
-All four layers are required.
+**Authentication:** Who is this worker?
 
-## Integration points
+**Authorization:** What may this worker do?
+
+**Sandbox:** What can this worker physically access?
+
+**Validation:** Can MORISE trust this result?
+
+Authentication alone is never sufficient.
+
+## 21. Integration points
 
 - `00_MASTER_AI.md` — global AI authority
 - `08_RESOURCE_SCHEDULER_OBSERVABILITY.md` — scheduling and metrics
@@ -240,6 +456,15 @@ All four layers are required.
 - `M08 Game Factory` — game generation
 - `M09 Game Runtime` — game execution
 
-## Non-negotiable rule
+## Non-negotiable rules
 
-Adding workers increases available resources; it does not magically create infinite computation. MORISE must measure actual capacity, schedule around bottlenecks and degrade gracefully when workers disappear.
+1. Participation requires explicit consent.
+2. User workers are untrusted by default.
+3. Quotas are technically enforced.
+4. GPU is disabled by default.
+5. Private data is not distributed by default.
+6. Production secrets never enter user workers.
+7. A worker disappearing must not lose the job permanently.
+8. A worker cannot become authoritative over MORISE.
+9. Adding workers increases available distributed capacity; it does not create infinite compute.
+10. The orchestrator must measure actual capacity and degrade gracefully when workers disappear.
