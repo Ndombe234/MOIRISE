@@ -30,3 +30,11 @@ Odds configuration, daily reset/time boundary, concurrent pulls, duplicate grant
 
 ## 9. DONE
 Every reward has a traceable source/rule, roulette is replay-safe, and collection state can be rebuilt from authoritative ledger data.
+
+## AI MODULE CONTRACT — M14
+
+EconomyAIContext = { playerCollectionProjection, validatedEntitlements, rewardDefinitionVersion, rouletteConfigVersion, boundedHistory, privacyClass }.
+RewardProposal is non-authoritative.
+Roulette authority = M14 configuration, selection algorithm, pull ledger, daily-limit policy.
+Commit = evidence validation → entitlement → reward transaction → event → projection.
+Tests : AI cannot mint/grant/roll; duplicate pull; version mismatch; invalid reward reference; replay safety; economic invariants.
