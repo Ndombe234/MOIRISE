@@ -1,8 +1,15 @@
 # MORISE AI — CAPABILITY REGISTRY / PROVIDER ROUTER
 
-## Principe
+## Authority
+This file is the **sole owner of capability identifiers and capability contracts**.
+Provider configuration, credentials, provider lists and provider health contracts belong only to `10_PROVIDER_REGISTRY.md`.
+AI action identifiers belong only to `09_AI_ACTIONS_AND_CONTRACTS.md`.
 
-Les modules demandent une capacité. Ils ne connaissent pas le provider.
+## Principle
+
+Modules request a capability. They never know which provider, worker or local implementation will execute it.
+
+## Canonical capability IDs
 
 ```ts
 export type CapabilityId =
@@ -24,6 +31,8 @@ export type CapabilityId =
   | "CODE_TESTING";
 ```
 
+If a new capability is required, add it here first. Do not create an alias in a module.
+
 ## Capability contract
 
 ```ts
@@ -33,90 +42,97 @@ export interface CapabilityDefinition {
   inputSchema: string;
   outputSchema: string;
   permissions: string[];
-  providers: string[];
-  fallbacks: string[];
   resourceClass: "light" | "medium" | "heavy";
+  validationContract: string;
+  fallbackPolicy: string;
 }
 ```
 
-## Provider contract
-
-```ts
-export interface AIProvider {
-  id: string;
-  capabilities: CapabilityId[];
-  health(): Promise<HealthStatus>;
-  execute(request: ProviderRequest): Promise<ProviderResponse>;
-}
-```
-
-## Router
-
-Score possible adapters using:
-- capability match;
-- privacy;
-- provider health;
-- latency;
-- configured quota;
-- estimated cost;
-- quality history;
-- local availability;
-- fallback policy.
-
-## Provider order
-
-Le Router ne suit pas un ordre fixe universel. Il utilise une policy.
-
-Exemple :
-FREE/ANONYMOUS AUTHORIZED → configured key provider → alternate provider → local → degraded.
-
-Aucune hypothèse de gratuité n'est codée sans vérification.
-
-## Exact Supabase secret names currently observed
+## Resolution pipeline
 
 ```text
-POLLINATIONS_API_KEY
-LLM7_API_KEY
-Higgins face_API_KEY
-SiliconFlow_API_KEY
-Gemin_API_KEY
-Pixelverse_API_KEY
-Groc_API_KEY
-BazaarLink AI_API_KEY
-xkiro_API_KEY
-SambaNova Cloud_API_KEY
-Openrouter_API_KEY
-Posthog_API_KEY
+REQUEST
+  ↓
+CAPABILITY ID
+  ↓
+POLICY CHECK
+  ↓
+AVAILABLE EXECUTION TARGETS
+  ↓
+RESOURCE ROUTER
+  ↓
+PROVIDER / LOCAL / WORKER ADAPTER
+  ↓
+RESULT VALIDATION
 ```
 
-Les noms avec espaces doivent être testés dans Supabase avant de coder l'intégration comme variable d'environnement.
+## Provider boundary
 
-## Health
+The router may select a provider adapter, but provider configuration is never stored here.
 
-```ts
-type HealthStatus =
-  | "unknown"
-  | "healthy"
-  | "degraded"
-  | "rate_limited"
-  | "unauthorized"
-  | "offline";
+Provider endpoint, authentication mode, Supabase secret name, health state, rate limits, privacy class and verification state are owned by `10_PROVIDER_REGISTRY.md`.
+
+## Execution targets
+
+A capability may be implemented by:
+
+- local code/model;
+- trusted worker;
+- eligible community worker;
+- configured external provider;
+- approved anonymous endpoint adapter.
+
+The capability contract does not promise that every target is always available.
+
+## Selection criteria
+
+The router evaluates:
+
+- capability compatibility;
+- permission/privacy policy;
+- resource requirements;
+- target health;
+- latency;
+- configured quota;
+- quality history;
+- estimated cost when applicable;
+- fallback policy.
+
+Hard authorization and privacy constraints are evaluated before optimization criteria.
+
+## Anonymous endpoints
+
+Anonymous access is only an execution mode. It is never assumed to be permanent, private, unlimited or free.
+
+Exact endpoint configuration belongs to `10_PROVIDER_REGISTRY.md` and must be verified before enabling production use.
+
+## Circuit behavior
+
+The router consumes target health from the authoritative health registry.
+
+When a target is degraded, rate-limited, unauthorized or offline, the router removes it from eligible candidates and evaluates the configured fallback policy.
+
+No capability failure may create a blank UI by itself.
+
+## Versioning
+
+Capability contracts are versioned independently of providers.
+
+Example:
+
+```text
+IMAGE_GENERATION:v1
+IMAGE_GENERATION:v2
 ```
 
-## Circuit breaker
+A provider may support one or more capability versions. Modules request a compatible capability contract, not a provider version.
 
-Après une série d'erreurs répétées, un provider passe temporairement `degraded` ou `offline` et le Router passe au suivant.
+## No duplicate contracts
 
-## Provider adapters
+Do not redefine:
 
-Adapters candidats :
-- Gemini;
-- DeepSeek;
-- Pollinations;
-- OpenRouter;
-- LLM7;
-- SiliconFlow;
-- SambaNova;
-- autres providers validés.
-
-Aucun module produit ne doit importer directement un SDK provider.
+- `AIRequest` — owned by `01_CORE_ORCHESTRATOR.md`;
+- `AIActionId` — owned by `09_AI_ACTIONS_AND_CONTRACTS.md`;
+- provider credentials/endpoints — owned by `10_PROVIDER_REGISTRY.md`;
+- worker identity/security — owned by `12_DISTRIBUTED_WORKER_CLUSTER.md`;
+- worker implementation — owned by `13_DISTRIBUTED_SYSTEM_IMPLEMENTATION.md`.
