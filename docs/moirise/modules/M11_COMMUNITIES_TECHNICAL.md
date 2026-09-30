@@ -1,16 +1,28 @@
-# M11 — COMMUNITIES
+# M11 — COMMUNITIES — TECHNICAL CONTRACT
 
-## Goal
-Groups/clans/communities with roles, membership, posts and moderation.
+## Boundary
+M11 owns communities/groups, membership, roles, community posts and moderation settings. Private one-to-one messaging remains M03.
+
+## Data
+`communities`, `community_members`, `community_roles`, `community_posts`, `community_moderation_events`.
 
 ## Roles
-Owner/admin/moderator/member according to explicit authorization rules.
+`owner`, `admin`, `moderator`, `member`. Every mutation checks membership and role server-side.
 
-## MORISE
-Can summarize public community activity, suggest events or surface relevant discussions. It cannot silently change roles or moderation policy.
+## Types
+```ts
+interface Community { id:string; name:string; description:string; visibility:"public"|"private"; ownerId:string; }
+interface Membership { communityId:string; userId:string; role:"owner"|"admin"|"moderator"|"member"; status:"active"|"pending"|"banned"; }
+```
 
-## Security
-Membership and private community content are authorization-scoped. Moderation actions are audited.
+## UI
+Communities is one primary door. Creation, membership and moderation are contextual within it. Avoid duplicate community management screens.
 
-## Acceptance
-Create/join/leave, role checks, moderation, mobile layout and community-specific notifications work.
+## Moderation
+Actions are logged. AI can assist classification/summarization only through capabilities; final permission-changing actions remain server-authorized.
+
+## Tests
+membership RLS, role escalation prevention, join/leave, invite, ban/unban, moderation audit, private community visibility and mobile layout.
+
+## Done gate
+Membership and permissions remain correct when the client is modified or AI services are unavailable.
