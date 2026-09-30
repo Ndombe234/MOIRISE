@@ -38,3 +38,20 @@ Chaque transition possède un owner et une preuve.
 
 ## 11. Tests / DONE
 Manifest malveillant, input inconnu, save corrompu, 3D over budget, worker loss, runtime crash, network denied, secrets scan, mobile, desktop et destruction après TTL.
+
+## AI-INTÉGRATION M09 — CONTRAT DE COMPRÉHENSION POUR L'IA DE FABRICATION
+
+### A. Position
+M09 est l'autorité du runtime commun. L'IA peut fabriquer/repair des éléments compatibles mais ne peut jamais contourner le manifest, la sandbox ou l'allowlist.
+
+### B. AI input
+Seulement GamePackage validé, runtime compatibility, capability allowlist et resource profile. Aucun code arbitraire venant directement d'un provider vers le navigateur.
+
+### C. Runtime
+Manifest → engine/version validation → resource reservation → sandbox → bridge allowlist → execute.
+
+### D. AI adaptive support
+Une capability runtime AI est explicitement inscrite dans allowedCapabilities[]. Un jeu qui ne l'a pas ne peut pas l'utiliser simplement parce que M15 la possède.
+
+### E. DONE
+Toute exécution AI/jeu est traçable, versionnée, bornée et récupérable.
