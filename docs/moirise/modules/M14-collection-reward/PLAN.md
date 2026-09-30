@@ -1,18 +1,37 @@
-# M14 — COLLECTION / REWARD ECONOMY
+# M14 — COLLECTION / REWARD ECONOMY — PLAN D'IMPLÉMENTATION DÉTAILLÉ REPRIS À ZÉRO
 
-Owner: collections, original items/cards, titles, badges, rarity, rewards, provenance, roulette and economy integrity.
+## 0. Granularité
+M14 est la seule autorité des grants, collection ownership, roulette et économie. Un modèle AI, une interface ou M05 ne peut pas écrire directement un reward ledger.
 
-Reward flow: VALIDATED ACTION → REWARD RULE → OUTCOME → PROVENANCE → GRANT → COLLECTION.
+## 1. Reward grant
+**Acteur :** M05/M06/M12 via événement validé. **Déclencheur :** entitlement event.
+**Préconditions :** source event valide, reward rule version connue, event non déjà consommé.
+**Séquence :** vérifier source → charger RewardRuleVersion → calculer grant → créer ledger entry avec sourceEventId → commit → projection collection → event REWARD_GRANTED.
+Retry = même ledger entry.
 
-Titles use deterministic grammar/evidence and are materialized on unlock instead of pre-creating millions of rows. Roulette configuration is versioned and server-authoritative; client code never chooses rarity/outcome.
+## 2. Collection ownership
+CollectionOwnership référence itemId, ownerId, quantity selon policy, acquisitionSource et version. Une acquisition doit être dérivable d'un ledger ou d'une règle explicite. Le client ne peut jamais augmenter quantity.
 
-AI can generate original assets and analyze/simulate economy behavior, but it cannot directly grant critical rewards or rewrite the economy.
+## 3. Titles
+M05 confirme l'eligibility; M14 conserve ownership/collection si ce titre est collectible. Unlock et ownership sont deux étapes distinctes pour éviter une double autorité.
 
-## Detailed economy integrity
-All reward outcomes use versioned rules. Historical rewards retain their source rule version.
-No client-side RNG decides rarity.
-No repeated network retry may consume an additional pull or grant another reward.
+## 4. Roulette
+Baseline documentée : 3 pulls/jour. Odds configurées : Common 50%, Rare 30%, Epic 13%, Legendary 5%, Mythic 2%.
+**Séquence :** vérifier allowance → réserver Pull avec commandId → choisir résultat par RNG auditable/config version → commit outcome → ledger grant → projection.
+Le modèle AI ne choisit jamais l'issue aléatoire.
+Retry de la même pull = même outcome; RNG failure avant commit = aucune consommation.
 
-## Collection semantics
-Ownership records are per Player. Public collection projection contains only items the Player chooses to expose.
-Creator attribution remains linked to source contributions.
+## 5. One-million titles
+Les 1 000 000 titres ne sont pas préinsérés comme 1 000 000 rows. Le catalogue utilise une grammaire/règle versionnée; une identité de titre est matérialisée pour un Player seulement lorsqu'elle est effectivement débloquée. Le titre débloqué conserve la règle, evidence et version qui l'ont produit.
+
+## 6. Reconciliation
+Le ledger est source d'autorité. Une tâche de reconciliation compare projections et ledger. Mismatch simple → rebuild projection. Mismatch grave → freeze du grant path concerné + rapport, jamais correction silencieuse d'un montant.
+
+## 7. Reward presentation
+Afficher source, nom, rarity, ruleVersion et delta collection. Ne pas afficher un compteur de rareté fictif ou un gain qui n'est pas encore commité.
+
+## 8. États
+Grant REQUESTED→VALIDATED→COMMITTED/FAILED. Roulette READY→RESERVED→RESOLVED/FAILED. Ownership ACTIVE/REVOKED.
+
+## 9. Tests / DONE
+Duplicate grant, invalid source, concurrent pulls, allowance limit, RNG interruption, one-million-title deterministic generation, reconciliation mismatch, mobile/desktop. DONE lorsque l'économie est entièrement server-authoritative et replay-safe.
