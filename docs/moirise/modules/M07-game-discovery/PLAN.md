@@ -32,3 +32,23 @@ M15 peut analyser ou proposer des candidats. M07 applique la policy de ranking. 
 
 ## 10. Tests / DONE
 Recherche sans AI, fuite privacy, blocage, doublons, pool novelty vide, burst feedback, source stale, pagination déterministe, panne provider, mobile et desktop. DONE seulement lorsque chaque chemin est observable et récupérable.
+
+## AI-INTÉGRATION M07 — CONTRAT DE COMPRÉHENSION POUR L'IA DE FABRICATION
+
+### A. Position
+M07 possède la chaîne de découverte : query → visibility → safety → candidates → ranking → diversity → novelty → reason → feedback.
+
+### B. AI cases
+Parsing sémantique, expansion de requête, reranking, génération de reasonKey et assistance de nouveauté.
+
+### C. Ordre de sécurité
+Visibility/privacy filter et moderation filter avant toute opération IA sur les candidats. L'IA ne doit jamais voir un item que l'utilisateur n'est pas autorisé à découvrir.
+
+### D. Ranking
+AI score = signal parmi d'autres, jamais autorité absolue. Le résultat final est assemblé par M07 et reste déterministe lorsque l'IA est indisponible.
+
+### E. Feedback
+Les retours utilisateur sont des signaux versionnés, dédupliqués et bornés. L'IA ne doit pas fabriquer des préférences à partir d'un simple clic ambigu.
+
+### F. DONE
+La découverte fonctionne avec baseline sans IA et ne réintroduit jamais blocked/private items.
