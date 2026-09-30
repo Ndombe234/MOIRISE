@@ -36,3 +36,7 @@ Living Object DISCOVERED→VIEWED→BRANCHED/TRANSFORMED via owner contract.
 
 ## 8. Tests / DONE
 Sensitive inference attempt, blocked actor, low-confidence convergence, repeated manipulation, revoked object, private memory leak, solo path, mobile/desktop, AI unavailable.
+
+## AI-INTÉGRATION M13 — CONTRAT DE COMPRÉHENSION POUR L'IA DE FABRICATION
+
+M13 est owner de l'adaptation du World, du ranking contextualisé et des réponses du monde vivant. M15 fournit l'intelligence et le calcul de propositions à partir de signaux réels. Les signaux doivent avoir sourceModule/sourceRef, timestamp, privacyClass, provenance et expiry. Une convergence ou emergence ne peut être déclenchée que par plusieurs signaux réels satisfaisant une règle versionnée. AI ne peut pas créer artificiellement des utilisateurs, événements, engagements ou récompenses pour provoquer une adaptation. Toute adaptation doit rester bornée, versionnée, explicable et, lorsque possible, réversible. Fallback = baseline déterministe.
