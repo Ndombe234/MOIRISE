@@ -197,3 +197,21 @@ Pour une demande de jeu, M15 doit :
 M15 peut utiliser Codex comme agent de fabrication assistée lorsque cet outil est autorisé. Codex reste un worker/agent dans un workspace candidat. M15 conserve l'orchestration, la policy et la validation des handoffs.
 
 M15 doit privilégier la réutilisation des fondations de la Game Platform avant de demander une nouvelle implémentation.
+
+## GAME FABRICATION MEMORY — RÔLE M15
+
+M15 utilise la mémoire centrale pour rendre la Game Factory cumulative : chaque fabrication validée peut améliorer les suivantes.
+
+Cycle :
+retrieve → apply → fabricate → validate → observe → learn candidate → benchmark/policy → promote/reject → retrieve on next task.
+
+M15 doit distinguer :
+- ce que MORISE sait déjà ;
+- ce qui a seulement été tenté ;
+- ce qui a échoué ;
+- ce qui a été validé ;
+- ce qui est devenu un pattern réutilisable.
+
+Codex peut enrichir l'expérience, mais sa présence ou absence ne doit pas supprimer le savoir accumulé.
+
+M15 ne transforme jamais une sortie de provider/agent en connaissance vraie sans evidence et validation.
