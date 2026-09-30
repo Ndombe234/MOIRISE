@@ -1,82 +1,50 @@
-# M04 — WORLD — CONCEPTION TECHNIQUE DÉTAILLÉE
+# M04 — WORLD — CONCEPTION TECHNIQUE REPRISE À ZÉRO
 
-## 1. Execution boundary
-UI/route → server use-case → M04 policy → repository/adapter → DB/runtime → event → projection.
+## 1. Boundary
+WorldRoute → M04 use-case → privacy/context policy → repositories → projection.
 
-## 2. Command schema
+## 2. IntentEnvelope
 ```
-{commandId, actorId(server-derived), capabilityId, targetRef?, expectedVersion?, payload}
+{
+  intentId,
+  originModule:"M04",
+  actorId:serverDerived,
+  intentType,
+  targetRef?,
+  sourceEventRef?,
+  uiContextSafe,
+  createdAt,
+  expiresAt?
+}
 ```
-Reject unknown capability, forged actorId, invalid payload, unauthorized target, stale version and commandId reuse with different payload.
+Aucun targetRef n'est exécuté avant revalidation par le module destination.
 
-## 3. Capability contracts
-### M04.C1 Home
-Input : shell READY + actor scope.
-Execution : load minimal context → select 5–6 doors → compose only eligible cards.
-Mutation : WorldSurfaceState.
-Failure : optional source down = DEGRADED; never invent people/activity.
-Security : no fake counters or urgency.
+## 3. ContextCard contract
+cardId, sourceRef, actionType, reasonKey, scope, expiresAt, cooldownKey, status, createdAt.
+ReasonKey est une référence à un texte localisé; il ne contient pas de donnée privée.
 
-### M04.C2 Context card
-Input : source event exists, cooldown passed + actor scope.
-Execution : check relevance → reason key → action → expiry → show.
-Mutation : ContextCard.
-Failure : dismiss suppresses repeated card.
-Security : reason must be explainable.
+## 4. Handoff state
+CREATED → ACCEPTED_BY_DESTINATION → COMPLETED ou REJECTED.
+Le reject n'efface pas les données du destination owner et ne crée jamais un état partiel.
 
-### M04.C3 Detour
-Input : not typing/reading/playing/creating unless critical + actor scope.
-Execution : suppress intrusive context → evaluate relevance/cooldown → offer optional detour.
-Mutation : Detour.
-Failure : ignored/dismissed = cooldown; source gone = remove.
-Security : no manipulative urgency.
+## 5. Cache
+World cache est jetable. Clé inclut actor/scope lorsque nécessaire. Invalidation sur changement de privacy, source deletion ou feature flag.
 
-### M04.C4 Door handoff
-Input : destination route enabled + actor scope.
-Execution : create IntentEnvelope → destination revalidates auth and executes.
-Mutation : IntentEnvelope.
-Failure : destination unavailable = return to World with useful action.
-Security : World doesn't mutate destination data.
+## 6. Failure handling
+Source unavailable → card suppressed.
+Destination unavailable → return World with action to retry.
+Session expired → auth boundary.
+AI unavailable → deterministic World presentation.
+Network lost after a mutation → command status lookup.
 
-### M04.C5 Solo orientation
-Input : no mandatory social dependency + actor scope.
-Execution : select one understandable solo action → mark orientation progress → expose optional social path.
-Mutation : OrientationState.
-Failure : resume must be idempotent.
-Security : no fake rewards.
+## 7. Security
+No IDOR through targetRef, no private-to-public share, no trusted instruction from ContextCard text, no provider call from browser.
 
-### M04.C6 Share discovery
-Input : source is shareable + actor scope.
-Execution : privacy projection → scoped expiring token → public projection.
-Mutation : ShareToken.
-Failure : later privacy revocation blocks token.
-Security : private source never leaks.
+## 8. Browser validation
+Mobile 390px class, desktop wide viewport, keyboard/focus, back navigation, deep-link, refresh, no horizontal overflow, no white screen.
 
-## 4. State/persistence
-State transitions are atomic around the business mutation. Unique constraints protect one-time operations. ExpectedVersion protects concurrent writes. Projection/cache is reconstructible.
+## 9. Observability
+requestId, intentId, cardId, sourceRef, decision state, suppression reason, errorCode; no private source payload in general logs.
 
-## 5. Events
-eventId, type, schemaVersion, producerModule, occurredAt, commandId, requestId, actorRef, payloadRef. Event means committed fact. Consumers dedupe.
-
-## 6. Errors
-VALIDATION, AUTH_REQUIRED, FORBIDDEN, NOT_FOUND, CONFLICT, RATE_LIMITED, TIMEOUT, DEPENDENCY_UNAVAILABLE, INCONCLUSIVE, INTERNAL.
-
-## 7. Recovery matrix
-Invalid input → no write.
-Unauthorized → 403.
-Deleted target → stale/unavailable.
-Commit + network loss → status lookup by commandId.
-Optional dependency failure → DEGRADED.
-Duplicate event → dedupe.
-
-## 8. Security
-IDOR protection; server-derived actor; policy at read and write; private data filtering; no secrets in client; no arbitrary provider endpoint; rate limit.
-
-## 9. Browser tests
-Deep-link, refresh, back, mobile narrow viewport, touch, keyboard, double tap, network loss after commit, optional dependency outage, no white screen.
-
-## 10. Performance
-Bounded lists, cursor pagination, async heavy work, lazy media/runtime, cache invalidation. Core path cannot depend on AI.
-
-## 11. DONE
-Build/tests/security/recovery/observability proven on desktop and mobile without duplicate owner authority.
+## 10. DONE
+World renders valid surfaces, contextual cards are explainable/suppressible, handoffs are revalidated by destination, private data stays private, and degraded dependencies never blank the shell.
