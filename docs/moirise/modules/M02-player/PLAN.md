@@ -161,3 +161,29 @@ Server authority, schema validation, access checks, rate limits, secrets server-
 
 ## 9. DONE
 Persistence, permissions, events, idempotence, recovery, tests, browser desktop/mobile, observability et anti-doublon d'autorité validés.
+
+## AI-INTÉGRATION M02 — CONTRAT DE COMPRÉHENSION POUR L'IA DE FABRICATION
+
+### A. Position
+M02 est l'autorité de l'état Player. MORISE AI comprend le Player via des projections et scopes autorisés; il ne possède jamais les tables Player.
+
+### B. Surfaces
+Bootstrap, profil public, préférences, privacy, handle, avatar, mémoire Player, preuves DNA.
+
+### C. Contextes transmis à MORISE AI
+Seulement le minimum nécessaire : playerId dérivé côté serveur, locale, préférences explicitement autorisées, intérêts déclarés, historique validé, mémoire avec scope et provenance, signaux de session. La privacy profile est appliquée avant routage.
+
+### D. Capacités AI permises
+Personnalisation, résumé de profil, suggestions, retrieval de mémoire Player, analyse de préférences, aide créative liée au profil, traduction de champs autorisés.
+
+### E. Frontière de mutation
+M15 peut proposer une modification mais M02 valide et écrit. Un provider ne peut pas écrire profile/preferences/avatar/memory.
+
+### F. Mémoire
+Une mémoire Player doit porter scope, provenance, retention, sourceRef et consentement/policy applicable. Une mémoire privée ne devient jamais mémoire World ou mémoire globale par simple sortie IA.
+
+### G. Fallback
+Sans IA, le profil, les préférences, la privacy et les projections déterministes restent opérationnels.
+
+### H. DONE AI
+Chaque capacité de personnalisation possède schema, privacy policy, validator, owner commit et tests d'isolation entre Player.
