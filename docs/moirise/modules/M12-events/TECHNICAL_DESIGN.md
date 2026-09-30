@@ -1,42 +1,30 @@
-# M12 — EVENTS — CONCEPTION TECHNIQUE
+# M12 — EVENTS — CONCEPTION TECHNIQUE REPRISE À ZÉRO
 
-## Domain
-EventDefinition(schedule, timezone, eligibility, sourceRef)
-EventInstance(status, startsAt, endsAt, organizerId)
-Registration(eventId, playerId, status)
-ActivityState(progress, checkpoints)
-Continuation(sourceEventId, futureType, targetAt, state)
+## 1. Event schema
+Event {id, ownerId, visibility, status, timezone, startAt, endAt, ruleVersion, version}
+EventRegistration unique(eventId, playerId).
+ContinuationRef unique(eventId, recipientId, continuationType) where applicable.
 
-## Lifecycle
-DRAFT → SCHEDULED → ACTIVE → COMPLETED/CANCELLED.
-Registration AVAILABLE → JOINED → WITHDRAWN.
-Activity AVAILABLE → IN_PROGRESS → COMPLETED/FAILED.
+## 2. Scheduler
+Use trusted server time. Transition uses compare-and-set on state/version. If two scheduler workers run simultaneously, only one commits the transition; the other reads the new state and exits.
 
-## Scheduling
-Persist canonical timestamps. Present localized time separately. Countdown only from persisted startsAt/endsAt. Timezone changes do not mutate historical event truth.
+## 3. Tournament
+BracketVersion immutable after LOCKED. Match result points to an authoritative result ref. No client score becomes final merely by being displayed.
 
-## Eligibility
-Server evaluates eligibility. Sensitive eligibility rules must not be derived from inferred attributes. Re-evaluate at start for events where eligibility can change.
+## 4. Notification contract
+NotificationDelivery {eventId, recipientId, type, scheduledAt, status, dedupeKey}. Delivery failure does not modify Event state.
 
-## Continuation
-Completion can schedule a real future state. Only a persisted continuation can generate a return prompt.
+## 5. Failure/recovery
+Scheduler down → state remains truthful; recovery job catches missed transitions. Duplicate registration → existing row. Event cancelled → future continuation invalidated. Network loss after registration → commandId lookup.
 
-## AI
-AI may propose event content, personalize discovery and assist scheduling. M12 owns actual event state.
+## 6. Security
+Organizer permissions checked server-side. Participant privacy is minimized. Event content cannot inject arbitrary AI instructions or provider URLs.
 
-## Living Object / Emergence
-A contributor can explicitly transform a Living Object into event/challenge/tournament. M15 can submit Emergence Event candidates; M12 validates schedule, eligibility and safety.
+## 7. Observability
+eventId, version, transition, schedulerRef, registration count, notification outcome and error code. No unnecessary private participant data.
 
-## Security
-Organizer permissions; registration idempotency; no fake participant counts; no false countdowns; audit cancellations.
+## 8. Browser/tests
+Timezone views, register/unregister, cancelled event, scheduler retry, tournament rounds, notification quiet hours, mobile/desktop.
 
-## Tests
-Timezone, duplicate registration, late join, cancellation, progress tampering, continuation existence, mobile event view, recovery after dependency outage.
-## Commands
-CREATE_EVENT; PUBLISH_EVENT; REGISTER; WITHDRAW; START_ACTIVITY; RECORD_PROGRESS; COMPLETE_ACTIVITY; CANCEL_EVENT; SCHEDULE_CONTINUATION.
-
-## Idempotency
-Registration = eventId + playerId. Progress = activityId + checkpointId + sourceEventId. Completion = activityId + completionAttemptId.
-
-## Notification handoff
-M12 emits real event/continuation facts. The notification layer applies delivery, quiet-period and deduplication policy. M12 never invents alerts.
+## 9. DONE
+Future state is factual, transitions are time/version guarded, duplicate schedules are safe, and no notification fabricates an event.
