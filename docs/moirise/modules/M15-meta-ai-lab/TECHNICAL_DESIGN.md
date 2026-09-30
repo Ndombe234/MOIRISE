@@ -1,70 +1,224 @@
-# M15 — META SYSTEM + MORISE AI LAB — CONCEPTION TECHNIQUE REPRISE À ZÉRO
+# M15 — META SYSTEM + MORISE AI LAB — CONCEPTION TECHNIQUE
 
-## 1. Core request
-AIRequest {requestId, actorId, capabilityId, autonomyLevel, privacyClass, inputRefs, outputType, sideEffects, policyVersion}.
-Actor is always server-derived.
+## 0. Autorité documentaire
 
-## 2. IntentSpec
-Goal, entities, constraints, outputType, sideEffects, requiredCapabilities, ambiguityLevel, assumptions, requestedAutonomy. User/external content remains untrusted data.
+Ce fichier décrit uniquement les contrats techniques spécifiques au module M15 :
+- boundary d'entrée/sortie ;
+- intégration avec les modules ;
+- AI Lab ;
+- projections SYSTEM ;
+- orchestration des use-cases M15.
 
-## 3. ContextBundle
-ContextBundle {scope, refs[], provenance[], privacyClass, expiry, memoryPolicy, token/resource estimate}. Context compiler rejects references outside declared scope.
+La fabrication des mécanismes centraux de MORISE AI est définie une seule fois dans :
+docs/moirise/ai/AI_TECHNICAL_DESIGN.md
 
-## 4. TaskGraph
-TaskNode {taskId, graphId, dependencies, capabilityVersion, inputRefs, outputRefs, resourceProfile, state, lease, idempotencyKey, validatorRef, attempts, timestamps}.
-Cycle detection happens before scheduling. No task executes while dependencies are unresolved.
+Ne pas recréer ici :
+- Request Gate ;
+- Actor Resolver ;
+- Context Engine ;
+- Intent Compiler ;
+- Requirements Compiler ;
+- Planner ;
+- Policy Engine ;
+- Capability Registry ;
+- Tool Registry ;
+- Provider Router ;
+- Validation Engine ;
+- Memory Service ;
+- Evolution Engine.
 
-## 5. Capability maturity / autonomy
-Capability maturity: L0 conceptual, L1 feature-flagged, L2 controlled/validated, L3 production eligible, L4 scalable/observed.
-Autonomy A0–A4. Policy is the hard ceiling.
+## 1. Interface M15
 
-## 6. Provider registry
-ProviderDefinition {providerId, capabilities, endpoint, authMode, secretName, schemaVersion, timeout, quota, privacyPolicy, licenseRef, health, fallbackIds, lastVerifiedAt}.
-Providers are adapters. Real secrets never live in docs/source.
-Routing order: local → cache → Trusted Worker → permitted Community Worker → verified free/client-side → keyed provider → explicitly enabled paid provider → degraded.
+M15 reçoit une AIRequest conforme au contrat central.
 
-## 7. Worker lease
-WorkerLease {workerId, taskId, resourceProfile, leaseStart, leaseExpiry, heartbeat, sandboxRef, state}.
-Community Worker default: 1 logical CPU, 512 MiB RAM, GPU/storage disabled, bounded network. Worker does not receive production secrets or unrestricted filesystem.
+Le module caller fournit :
+- sourceModule ;
+- intent ;
+- inputRefs ;
+- constraints ;
+- requested output ;
+- requested autonomy.
 
-## 8. Validation contract
-ValidationReport lists validator id/version, status VALID/INVALID/INCONCLUSIVE, evidence refs, policy decision and generatedAt.
-INCONCLUSIVE can never pass a production mutation requiring proof.
+Le serveur fournit :
+- actorId ;
+- permissions ;
+- requestId ;
+- traceId.
 
-## 9. Self-correction
-CorrectionTask has parentTaskId, mutationScope, attempt, hypothesis, diff/artifact refs, validators, benchmark delta and stop reason. Depth/time/resource/attempt caps and oscillation detection are mandatory.
+Le provider n'est jamais une entrée du module caller.
 
-## 10. Memory
-MemoryEntry {scope, owner, sensitivity, consent, provenance, confidence, version, retention, deletionPolicy, sourceHash}. Retrieval applies scope and privacy filters before ranking.
-Private conversation content is never general AI memory by default.
+## 2. Use-case boundary
 
-## 11. Creative artifact
-CreativeArtifact {type,text/image/video/audio/music/voice, sourceRefs, providerRef?, generationVersion, policyStatus, validationRefs, contentHash}.
-Publication is a separate owner command after validation.
+Use-cases M15 typiques :
+- runAIRequest ;
+- createTaskGraph ;
+- createCreativeArtifact ;
+- createGameSpecification ;
+- analyzeWorldSignal ;
+- proposeConvergence ;
+- proposeMission ;
+- proposeWorldMemoryCandidate ;
+- createImprovementCandidate.
 
-## 12. AI Lab isolation
-Lab has separate workspace/branch, capability allowlist and secrets boundary. It can test code candidates, but cannot read production secrets or issue production admin mutations.
+Chaque use-case appelle les services centraux AI et ne réimplémente pas leurs algorithmes.
 
-## 13. Evolution promotion
-Candidate → static checks → sandbox → tests → benchmark vs baseline → security/policy review → canary → monitor → promote or reject → rollback if regression.
-Promotion requires an auditable CapabilityVersion.
+## 3. Projection SYSTEM
 
-## 14. Failure/recovery
-Provider timeout → fallback or degraded.
-Worker lost → requeue only idempotent TaskNodes.
-Validator fails → correction candidate, not blind retry.
-Oscillation → stop.
-Resource exhausted → terminate sandbox and record reason.
-Context unavailable → ask/degrade, never silently expand scope.
+Le frontend peut recevoir une projection M15 :
+- request status ;
+- task progress ;
+- proposal ;
+- artifact ref ;
+- validation result ;
+- degraded state.
 
-## 15. Security
-Prompt injection is untrusted content. Tool selection is allowlisted. Provider SSRF blocked by endpoint registry. Secrets are referenced by secretName only. No superuser path.
+La projection ne doit pas exposer :
+- provider secrets ;
+- internal prompt ;
+- raw private context ;
+- admin diagnostics ;
+- hidden policy rules.
 
-## 16. Observability
-requestId, traceId, taskId, capabilityId/version, autonomy, worker/provider, latency, resource class, policy decision, validation status, retries. Never store raw private prompts/content in broad telemetry unless an explicit debug policy requires it.
+## 4. AI Lab boundary
 
-## 17. Tests
-Schema/intent, context scope, autonomy ceilings, provider fallback, worker lease, malicious artifact, prompt injection, sensitive-data attempt, INCONCLUSIVE handling, correction oscillation, canary rollback, creative provenance.
+Entrée :
+ImprovementCandidate.
 
-## 18. DONE
-New capability has capability contract, implementation/adapter, policy, resource profile, validator, tests, observability, version, integration and rollback. M15 remains one AI brain and one provider router.
+Le Lab crée :
+- candidate workspace ;
+- candidate branch ;
+- build/test artifacts ;
+- benchmark result ;
+- canary proposal.
+
+Sortie :
+- PROMOTE_CANDIDATE ;
+- REJECT_CANDIDATE ;
+- ROLLBACK_CANDIDATE.
+
+La promotion réelle suit le pipeline central d'évolution.
+
+## 5. M15 → M08
+
+M15 fournit :
+- GameRequirements ;
+- GameSpecification ;
+- TaskGraph reference.
+
+M08 fournit :
+- factory result ;
+- build artifact ;
+- package refs ;
+- publish proposal.
+
+M15 ne déclare pas le jeu publié.
+
+## 6. M15 → M09
+
+M15 peut produire :
+- engine configuration candidate ;
+- generated content;
+- runtime test candidate.
+
+M09 reste propriétaire du runtime.
+
+## 7. M15 → M05
+
+M15 peut fournir :
+- validated progression signal ;
+- title proposal ;
+- mission proposal ;
+- SYSTEM presentation proposal.
+
+M05 valide et committe les mutations de progression.
+
+## 8. M15 → M11
+
+M15 peut fournir :
+- affinity candidate ;
+- convergence candidate ;
+- community proposal.
+
+M11 décide :
+- création ;
+- membership ;
+- roles ;
+- visibility.
+
+## 9. M15 → M12
+
+M15 peut produire :
+- event concept ;
+- content proposal ;
+- personalization proposal.
+
+M12 reste owner de :
+- schedule ;
+- eligibility ;
+- registration ;
+- state ;
+- results.
+
+## 10. M15 → M14
+
+M15 peut analyser :
+- reward economy;
+- collection patterns;
+- title patterns;
+- balance signals.
+
+M14 reste owner :
+- ledger ;
+- reward grant ;
+- roulette outcome ;
+- title unlock.
+
+## 11. Supabase boundary
+
+M15 ne doit pas contourner les tables propriétaires des autres modules.
+
+Pour un module externe :
+1. M15 produit une proposition ;
+2. proposition transmise au module owner ;
+3. owner valide ;
+4. owner committe ;
+5. event publié ;
+6. M15 reçoit le résultat validé.
+
+## 12. API boundary
+
+Endpoint central :
+POST /api/ai
+
+Task projection :
+GET /api/ai/tasks/:taskId
+
+Provider health :
+GET /api/ai/providers/health
+
+Capability projection :
+GET /api/ai/capabilities
+
+M15 ne crée pas un deuxième endpoint par provider.
+
+## 13. Security boundary
+
+M15 ne possède aucun secret client-side.
+
+M15 ne peut pas :
+- modifier RLS ;
+- créer un admin ;
+- accéder au service role depuis un model output ;
+- exécuter arbitrary shell ;
+- écrire arbitrary files ;
+- appeler arbitrary URLs.
+
+## 14. DONE
+
+M15 technique est DONE lorsqu'il :
+- expose les use-cases M15 ;
+- consomme le cerveau AI central ;
+- respecte les owners ;
+- expose des projections sécurisées ;
+- isole AI Lab ;
+- n'introduit aucune deuxième implémentation des mécanismes centraux.
