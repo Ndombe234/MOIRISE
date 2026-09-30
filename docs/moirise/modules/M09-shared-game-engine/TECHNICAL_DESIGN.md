@@ -29,3 +29,17 @@ Desktop and mobile launch, touch/keyboard input, pause/resume, save/load, 3D mem
 
 ## 10. DONE
 Every runtime is bounded, revocable, restartable and incapable of reaching privileged MOIRISE data directly.
+
+## 11. AI MODULE CONTRACT — M09
+
+### 11.1 RuntimeManifest
+gameVersion, engineId, engineVersion, entrypoint, assetRefs, inputMap, saveSchemaVersion, networkPolicy, resourceProfile, allowedCapabilities.
+
+### 11.2 Capability check
+requested capability must exist, match version policy and be present in manifest allowlist. Otherwise CAPABILITY_DENIED.
+
+### 11.3 Sandbox
+No arbitrary filesystem, admin API, service-role, secret, unrestricted network or undeclared worker capability.
+
+### 11.4 Tests
+invalid manifest, capability mismatch, worker loss, runtime crash, AI provider outage, malicious script, oversized resource request, save schema mismatch, deterministic restart.
