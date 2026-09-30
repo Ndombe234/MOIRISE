@@ -43,3 +43,15 @@ No arbitrary filesystem, admin API, service-role, secret, unrestricted network o
 
 ### 11.4 Tests
 invalid manifest, capability mismatch, worker loss, runtime crash, AI provider outage, malicious script, oversized resource request, save schema mismatch, deterministic restart.
+
+## GAME PLATFORM — CONCEPTION TECHNIQUE M09
+
+RuntimePackage = engineId + engineVersion + runtimeBuildRef + bridgeVersion + sandboxPolicyVersion + supportedModes + resourceProfiles.
+
+RuntimeManifest = gameVersion + engineId + engineVersion + entrypoint + assetRefs + inputMap + saveSchemaVersion + networkPolicy + resourceProfile + allowedCapabilities + fallbackProfiles.
+
+Allocation : validate build → validate manifest → verify device/resource profile → reserve resources → start sandbox → initialize bridge → expose allowlist → return RuntimeRef READY.
+
+Resource policy : CPU/GPU/RAM/network/time budgets vérifiés avant launch et observés pendant runtime. Dépassement selon policy : DEGRADED, PAUSED, TERMINATED ou RESTART.
+
+Tests : sandbox escape, undeclared API, filesystem traversal, secret scan, unrestricted network, capability mismatch, malicious artifact, crash, worker loss.
