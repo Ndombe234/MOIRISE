@@ -1,32 +1,35 @@
-# M07 — DISCOVERY — TECHNICAL CONTRACT
+# M07 — GAME DISCOVERY — TECHNICAL DESIGN
 
 ## Boundary
-M07 owns search, exploration, ranking and recommendation presentation. It does not own the source-of-truth social/game data.
+M07 owns retrieval, filtering, ranking and recommendation presentation for posts, games, profiles, communities and events. It never owns the source records.
 
 ## Pipeline
-`query/filter → normalize → candidate retrieval → eligibility filter → ranking → pagination → presentation`.
+`query → normalize → retrieve candidates → permission/safety filter → deterministic ranking → optional AI enrichment → diversify → cursor pagination → presentation`.
 
 ## Types
 ```ts
-interface DiscoveryQuery { text?:string; tags?:string[]; cursor?:string; limit:number; }
-interface DiscoveryCandidate { id:string; kind:"post"|"game"|"profile"|"community"|"event"; score:number; reasons:string[]; }
-interface DiscoveryResult { items:DiscoveryCandidate[]; nextCursor?:string; }
+interface DiscoveryQuery { text?:string; kinds?:string[]; tags?:string[]; cursor?:string; limit:number; locale:string; }
+interface Candidate { id:string; kind:string; score:number; reasons:string[]; }
+interface DiscoveryResult { items:Candidate[]; nextCursor?:string; modelVersion?:string; }
 ```
 
 ## Ranking
-Use deterministic rules first: permissions, freshness, relevance, user-selected interests and diversity. AI recommendations are optional enrichment and must not bypass permissions or safety filters.
+Hard filters first: authorization, blocked users, private visibility, safety and availability. Then deterministic relevance/freshness/diversity. AI ranking is optional and cannot bypass hard filters.
 
-## UI
-Discovery is inside the Discover primary door. Search, categories and recommendations are sections/tabs; no extra global buttons.
-
-## AI boundary
-Call `CapabilityRouter` with `discover.rank` or `discover.explain`. Never call Pollinations, DeepSeek, LLM7 or another provider directly.
+## Personalization
+Use explicit player interests and recent eligible behavior. Never infer sensitive attributes. Recommendation explanations are generated from recorded non-sensitive reasons.
 
 ## Caching
-Cache normalized queries/results briefly. Invalidate after relevant content changes. Never cache private search results across users.
+Public discovery can use short-lived cache keys containing normalized query/locale. User-specific results include user scope. Never share private result caches.
+
+## AI boundary
+Only `CapabilityRouter` calls AI. AI failure falls back to deterministic ranking.
+
+## UI
+Discover is a primary door. Search, categories, recommendations and filters are internal sections/tabs.
 
 ## Tests
-permission filtering, deterministic ranking, AI failure fallback, pagination, duplicate suppression, multilingual query normalization, mobile layout.
+authorization, blocked content, multilingual normalization, duplicate suppression, stable pagination, ranking determinism, AI fallback, empty state and mobile rendering.
 
 ## Done gate
-Discovery never exposes unauthorized content and remains fully usable when AI recommendations are unavailable.
+Discovery is useful without AI and cannot leak content through ranking or caching.
