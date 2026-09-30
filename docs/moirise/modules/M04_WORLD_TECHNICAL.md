@@ -1,16 +1,26 @@
-# M04 — WORLD
+# M04 — WORLD — TECHNICAL CONTRACT
 
-## Goal
-Represent the shared Otaku world: places, discovery objects, world activities and contextual state.
+## Boundary
+M04 defines the contextual MOIRISE world: player-facing states, discovery context, system notifications and world surfaces. It does not implement the AI brain or game runtime.
 
-## Architecture
-World data is normalized and queried by region/category. UI loads only the visible slice.
+## State
+```ts
+interface WorldContext { locale:string; playerId:string; currentRoute:string; activeEntities:string[]; activeEvents:string[]; systemMode:"calm"|"active"|"alert"; }
+```
+World context is derived, short-lived state. It must not become a second memory database.
 
-## MORISE
-Coordinates discovery and can surface contextual activities, but cannot invent factual location/statistics without evidence.
+## UI
+The SYSTEM layer is elegant and contextual: status panels, alerts, missions/prompts and contextual actions. Never flood the user with repeated SYSTEM text. Persistent navigation remains 5–6 primary doors.
+
+## Data flow
+`route/player state → WorldContextBuilder → SystemPresenter → UI`.
+The builder may request AI suggestions through the AI capability interface but never calls a provider directly.
 
 ## Performance
-Virtualized lists/maps, lazy media, cache safe public metadata, pagination and bounded queries.
+World context is memoized per route/session and invalidated only when relevant state changes. Avoid polling; use events/subscriptions.
 
-## Acceptance
-World loads progressively, filters work, no fake statistics are shown, and unavailable external data produces a clear degraded state.
+## Tests
+Context derivation, route transitions, stale context invalidation, mobile rendering, alert throttling, degraded AI behavior.
+
+## Done gate
+World presentation remains coherent while social, games and AI features can fail independently.
