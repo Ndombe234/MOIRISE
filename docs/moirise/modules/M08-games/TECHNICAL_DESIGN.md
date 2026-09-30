@@ -275,3 +275,24 @@ Security: result validation server-side where competitive; share token privacy; 
 Acceptance: 2D and 3D runtime boundaries, save/resume, result validation, quiz path, share, mobile controls.
 
 Any unresolved field is a documentation defect, not a coding invitation to guess.
+
+## 18.1 Runtime contract
+Every published game version has a manifest declaring runtime mode (2D/3D), entrypoint, asset references, package hash, required runtime capabilities, input mapping, save schema version and safety policy. M08 verifies the manifest before the runtime is mounted.
+
+## 18.2 Session integrity
+A GameSession is created before the game starts. Client gameplay signals are treated as untrusted observations. Competitive or reward-bearing results require server-side validation against the session, attempt ID, allowed score bounds and timing rules. The client is never authoritative for XP or reward values.
+
+## 18.3 Save/resume
+A save contains session/version reference, serialized game state, schema version, checksum and updatedAt. Resume requires ownership and compatible schema. If a schema changes, a migration function must exist or the save is marked incompatible instead of being silently interpreted with a different schema.
+
+## 18.4 2D/3D runtime isolation
+2D and 3D engines are loaded lazily. A 3D game must not force a 3D engine into the initial Play shell. Runtime errors are contained inside the game surface and must return the Player to a recoverable Play state.
+
+## 18.5 Quiz integrity
+Quiz definitions and correct answers are not sent in a form that permits trivial client extraction when competitive integrity matters. Attempts reference a definition/version. Submission is validated against that version, timing and attempt state. A repeated submit returns the existing result.
+
+## 18.6 Sharing
+A share token references an already published result or public game version. It contains no authority to mutate the original session. Private results require explicit permission and are never exposed through an unscoped token.
+
+## 18.7 Performance gates
+Each published game declares target memory and startup budgets. Heavy assets are split from the shell. A game that exceeds the declared runtime budget may remain preview-only until fixed, even if its screen visually renders.
