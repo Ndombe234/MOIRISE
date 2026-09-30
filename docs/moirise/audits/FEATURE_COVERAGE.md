@@ -1,43 +1,61 @@
-# AUDIT DE COUVERTURE DES FONCTIONNALITÉS
+# MOIRISE — FEATURE COVERAGE AUDIT
 
-| Fonctionnalité | Propriétaire canonique | Couverture |
-|---|---|---|
-| Auth/session | M01 | plan + technique + transversal security |
-| Player/profile | M02 | plan + technique |
-| SYSTEM UI | M03 | plan + technique |
-| Feed/posts | M04 | plan + technique |
-| Messages privés | M05 | plan + technique |
-| Groups/clans | M06 | plan + technique |
-| Discovery | M07 | plan + technique |
-| Quiz | M08 | plan + technique |
-| Jeux 2D | M08/M09 | runtime + creation |
-| Jeux 3D | M08/M09 | runtime + creation |
-| Game creation AI | M09/M19 | deux frontières documentées |
-| Image AI | M10/M19 | capability + studio |
-| Video AI | M10/M19 | capability + studio |
-| Audio/music AI | M10/M19 | capability + studio |
-| Progression XP | M11 | ledger + validator |
-| Titres jusqu'à 1M | M11 | grammar/materialization |
-| Achievements | M11 | unlock evidence |
-| Collection | M11 | item ownership |
-| Roulette | M11 | audited deterministic server path |
-| Events | M12 | schedule + eligibility |
-| Suspense réel | M12/M03/M14 | future state required |
-| Moderation | M13 | authoritative |
-| Notifications | M14 | frequency/dedupe/quiet |
-| Translation | M15/M19 | source preservation |
-| Analytics | M16 | telemetry |
-| Optional monetization | M17 | isolated/disableable |
-| Trusted workers | M18 | registry/quota/sandbox |
-| Community workers | M18 | opt-in/isolation |
-| AI architecture | M19 | master + technical |
-| AI evolution | M19 | sandbox/benchmark/canary |
-| Administration | M20 | ops/audit |
+## Primary modules
+M01 Foundation
+M02 Player
+M03 Social + Private Messaging
+M04 World
+M05 System/Progression/Evolution
+M06 Play
+M07 Game Discovery
+M08 Game Factory
+M09 Shared Game Engine
+M10 Social Gaming
+M11 Communities
+M12 Events
+M13 Adaptive World
+M14 Collection/Reward Economy
+M15 Meta/AI Lab
 
-## Règle
+## Cross-module mechanisms covered
+- Living Objects
+- Evolution Engine
+- Fun & Surprise
+- MORISE DNA
+- Convergence
+- Emergence Events
+- Missions From Reality
+- World Memory
+- Moment Cards
+- Community Formation by AI
+- Zero-API/on-device AI
+- Trusted/Community Workers
+- Provider Registry/Adapters
 
-Une cellule « couverture » signifie que la conception existe. Elle ne signifie pas que le code est déjà implémenté.
+## Core feature coverage
+Player/profile ✅ M02
+Feed/posts/comments/reactions ✅ M03
+Private messaging ✅ M03
+User-created groups ✅ M11
+AI-assisted community formation ✅ M11/M15
+World/Home ✅ M04
+SYSTEM ✅ M05
+XP/levels/titles/achievements ✅ M05
+Collections/roulette ✅ M14
+Play ✅ M06
+2D games ✅ M06/M09
+3D games ✅ M06/M09
+Game discovery ✅ M07
+AI game creation ✅ M08/M15
+Creative media ✅ M08/M15
+Social gaming ✅ M10
+Events ✅ M12
+Adaptive world ✅ M13
+AI native architecture ✅ M15
+AI self-development/evolution ✅ M15
+Distributed compute ✅ M15
+Translation ✅ M03/M04/M15
+Moderation/security ✅ M01/M03/M11/M15 contracts
 
-## Garde de couverture
-
-Toute nouvelle fonctionnalité doit avoir exactement un owner. Les intégrations sont référencées dans les modules consommateurs sans recopier le contrat propriétaire.
+## Coverage rule
+A check means the specification exists. It does not mean the code is already implemented.
