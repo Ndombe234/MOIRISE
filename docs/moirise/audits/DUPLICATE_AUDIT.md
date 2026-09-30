@@ -1,133 +1,137 @@
 # DUPLICATE AUDIT — MOIRISE
 
 ## 1. Canonical ownership
-Exactly 15 product modules exist. Each business mechanism has one owner.
+Exactly 15 product modules exist. Every business mechanism has one owner.
 
-MORISE AI is M15 and owns the central AI orchestration mechanisms:
+M15 owns central AI orchestration:
 - Request Gate
+- Actor resolution
+- Data classification
 - Context Engine
-- Intent/Requirements Compiler
+- Intent Compiler
+- Requirements Compiler
 - Reasoning orchestration
 - Planner
 - Policy Engine
 - Capability Registry
 - Tool Registry
-- Resource/Provider Router
+- Resource / Provider Router
+- Provider adapters
 - Validation Engine
-- Memory/Learning
-- Evolution/AI Lab
-- provider adapters as execution infrastructure
+- AI Memory / Learning
+- Evolution / AI Lab
 
-M15 does not become owner of M01 identity, M03 private messaging, M05 progression, M11 membership, M12 event state or M14 reward/economy state.
+M15 does not own M01 identity, M03 private messaging, M05 progression, M11 membership, M12 Event state or M14 reward/economy state.
 
-## 2. Forbidden duplicate authorities
-Never create:
-- second AI brain;
-- second AI Request Gate;
-- second Context Engine;
-- second Intent Compiler;
-- second Requirements Compiler;
-- second Policy Engine;
-- second Provider Router;
-- second Capability Registry;
-- second Tool Registry;
-- second Validation Engine;
-- second Memory Service;
-- second Evolution pipeline;
-- second progression/XP authority;
-- second community membership authority;
-- second reward/roulette ledger;
-- second World Memory lifecycle;
-- second Living Object lifecycle;
-- second event scheduling/future-state authority;
-- second Play result authority.
-
-## 3. Canonical split for AI documentation
+## 2. Exactly two canonical AI documents
 
 ### AI_MASTER_PLAN.md
-The single source of truth for WHAT MORISE AI is:
-- mission;
-- global architecture;
-- three-piece puzzle;
-- global lifecycle;
-- capability families;
-- autonomy levels;
-- provider catalogue/status;
-- ownership boundaries;
-- global invariants;
-- completion criteria.
+Canonical source for WHAT:
+- identity
+- architecture
+- responsibilities
+- ownership
+- invariants
+- capability families
+- provider catalogue/status
+- global completion criteria
 
 ### AI_TECHNICAL_DESIGN.md
-The single source of truth for HOW MORISE AI is built:
-- file tree;
-- TypeScript contracts;
-- state machines;
-- exact algorithms;
-- decision branches;
-- API routes;
-- provider adapter contracts;
-- concrete provider URLs;
-- secret names;
-- Supabase persistence;
-- worker/lease/sandbox mechanics;
-- validation;
-- error recovery;
-- test matrix;
-- implementation assembly order.
+Canonical source for HOW:
+- file tree
+- TypeScript contracts
+- algorithms
+- decision branches
+- state machines
+- SQL
+- HTTP routes
+- provider adapters
+- worker scheduler
+- leases
+- sandbox
+- validation
+- memory
+- evolution
+- security
+- tests
+- assembly order
 
-These two files are complementary, not duplicate authorities. The technical file may repeat a short contract name for navigation, but it must not copy the whole master-plan behavior section.
+The technical document must not create a second AI behavior authority. The master plan must not become a second implementation manual.
+
+## 3. Removed duplicate provider registries
+The following competing documents were deliberately deleted:
+- docs/moirise/ai/PROVIDER_REGISTRY.md
+- docs/moirise/transversal/PROVIDER_REGISTRY.md
+
+Reason:
+their provider lists/contracts are now represented in the canonical AI pair. Keeping them would create a third source of truth for provider routing.
 
 ## 4. Removed aggregate duplicates
-The historical aggregate files:
+Historical aggregate files are forbidden as active authorities:
 - FUNCTIONAL_BEHAVIOR_SPEC.md
 - TECHNICAL_IMPLEMENTATION_SPEC.md
 
-must not return as competing sources of truth.
+Their useful requirements belong in canonical owner documents.
 
-Their requirements belong in the canonical owner documents.
+## 5. Forbidden duplicate authorities
+Never create:
+- second AI brain
+- second Request Gate
+- second Context Engine
+- second Intent Compiler
+- second Requirements Compiler
+- second Policy Engine
+- second Capability Registry
+- second Tool Registry
+- second Provider Router
+- second Validation Engine
+- second Memory Service
+- second Evolution pipeline
+- second progression/XP authority
+- second community membership authority
+- second reward/roulette ledger
+- second World Memory lifecycle
+- second Living Object lifecycle
+- second Event scheduling/future-state authority
+- second Play result authority
 
-## 5. Historical material
-Old M16–M20 concepts are historical inventory only and do not define active modules.
-
-## 6. AI-specific duplication rule
-When a new AI feature is requested:
-1. search for the existing central mechanism;
-2. extend that mechanism if it is the same concern;
-3. extend AI_MASTER_PLAN only when the global WHAT changes;
-4. extend AI_TECHNICAL_DESIGN when the HOW changes;
-5. add module-owner references instead of copying business rules;
-6. delete any competing implementation/documentation authority;
-7. rerun this audit.
-
-## 7. Provider duplication rule
-Providers are adapters, not brains.
+## 6. Provider rule
+Providers are execution adapters only.
 
 Forbidden:
-- module-specific provider router;
-- feature-specific hidden fallback tree;
-- direct provider calls from UI/business modules;
-- provider URL supplied by user/model as an execution destination.
+- direct provider calls from UI
+- direct provider calls from module business logic
+- module-specific provider routers
+- hidden fallback trees outside M15
+- client-supplied provider URL
+- model-supplied arbitrary provider URL
 
-All provider selection goes through the single M15 Resource/Provider Router.
+All provider selection goes through the single M15 router.
 
-## 8. Verification targets
-After the AI rebuild:
-- AI_MASTER_PLAN = 1 canonical AI behavior plan;
-- AI_TECHNICAL_DESIGN = 1 canonical AI implementation design;
-- aggregate AI specifications = 0;
-- second AI router = 0;
-- second AI brain = 0;
-- second validation authority = 0;
-- exact duplicate documentation blobs = 0;
-- active M16–M20 docs = 0.
+## 7. AI precision rule
+Every new AI mechanism must follow:
+ACTOR → TRIGGER → PRECONDITIONS → INPUTS → FILE → CONTRACT → ALGORITHM → DECISIONS → OUTPUT → STATE → EVENTS → ERRORS → RECOVERY → SECURITY → OBSERVABILITY → TESTS → DONE.
 
-## 9. Maintenance rule
-Every documentation change must preserve:
-- one owner;
-- one behavior source;
-- one technical source;
-- one provider router;
-- one validation authority;
-- no secret in Git;
-- no invented endpoint;
-- no duplicated business state machine.
+A sentence that cannot be implemented without guessing is not sufficient documentation.
+
+## 8. Maintenance rule
+When a new AI feature is proposed:
+1. identify whether a canonical M15 mechanism already exists;
+2. extend the existing mechanism if it is the same concern;
+3. update AI_MASTER_PLAN only when WHAT changes;
+4. update AI_TECHNICAL_DESIGN when HOW changes;
+5. avoid creating a third AI document;
+6. remove any competing source;
+7. re-run this audit.
+
+## 9. Final verification targets
+- canonical AI plan = 1
+- canonical AI technical design = 1
+- separate AI provider registry = 0
+- separate transversal provider registry = 0
+- aggregate functional AI spec = 0
+- aggregate technical AI spec = 0
+- second AI brain = 0
+- second Provider Router = 0
+- second Validation Engine = 0
+- active M16-M20 module files = 0
