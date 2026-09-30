@@ -1,63 +1,70 @@
-# M15 — META SYSTEM + MORISE AI LAB — CONCEPTION TECHNIQUE
+# M15 — META SYSTEM + MORISE AI LAB — CONCEPTION TECHNIQUE REPRISE À ZÉRO
 
-## Services
-AIRequestGateway; ContextEngine; Intent; Reasoning; Planner; CapabilityRegistry; ToolRegistry; ProviderRegistry; ResourceRouter; TaskEngine; Validation; Memory; Experience; Provenance; Evaluation; Evolution; AI Lab.
+## 1. Core request
+AIRequest {requestId, actorId, capabilityId, autonomyLevel, privacyClass, inputRefs, outputType, sideEffects, policyVersion}.
+Actor is always server-derived.
 
-## Request
-request → auth/tenant → context → intent → plan → policy → capability → resource → task → execution → validation → commit/event.
+## 2. IntentSpec
+Goal, entities, constraints, outputType, sideEffects, requiredCapabilities, ambiguityLevel, assumptions, requestedAutonomy. User/external content remains untrusted data.
 
-## Provider boundary
-Product modules never import provider SDKs. Registry stores providerId, capabilities, endpoint, auth mode, secret name, quotas, data policy, health and fallback.
+## 3. ContextBundle
+ContextBundle {scope, refs[], provenance[], privacyClass, expiry, memoryPolicy, token/resource estimate}. Context compiler rejects references outside declared scope.
 
-## Memory boundary
-SESSION, PLAYER, EXPERIENCE, CREATOR, COMMUNITY, WORLD and SYSTEM OBSERVATION are separate scopes. Retrieval is least-privilege.
+## 4. TaskGraph
+TaskNode {taskId, graphId, dependencies, capabilityVersion, inputRefs, outputRefs, resourceProfile, state, lease, idempotencyKey, validatorRef, attempts, timestamps}.
+Cycle detection happens before scheduling. No task executes while dependencies are unresolved.
 
-## Task execution
-Tasks persist before dispatch. Hard constraints are filtered before candidate scoring. Lease and idempotency controls worker failure.
+## 5. Capability maturity / autonomy
+Capability maturity: L0 conceptual, L1 feature-flagged, L2 controlled/validated, L3 production eligible, L4 scalable/observed.
+Autonomy A0–A4. Policy is the hard ceiling.
 
-## Self-correction
-Bounded by maximum attempts, time, resource and mutation scope. Oscillation ends the loop.
+## 6. Provider registry
+ProviderDefinition {providerId, capabilities, endpoint, authMode, secretName, schemaVersion, timeout, quota, privacyPolicy, licenseRef, health, fallbackIds, lastVerifiedAt}.
+Providers are adapters. Real secrets never live in docs/source.
+Routing order: local → cache → Trusted Worker → permitted Community Worker → verified free/client-side → keyed provider → explicitly enabled paid provider → degraded.
 
-## AI Lab
-Candidate branch → static check → sandbox → tests → benchmark → policy → canary → promote/reject → monitor → rollback.
-No production secrets, unrestricted admin privileges or arbitrary external systems.
+## 7. Worker lease
+WorkerLease {workerId, taskId, resourceProfile, leaseStart, leaseExpiry, heartbeat, sandboxRef, state}.
+Community Worker default: 1 logical CPU, 512 MiB RAM, GPU/storage disabled, bounded network. Worker does not receive production secrets or unrestricted filesystem.
 
-## Self-development
-A capability is complete only when it has contract, implementation/adapter, policy, resources, validator, tests, observability, version and rollback.
+## 8. Validation contract
+ValidationReport lists validator id/version, status VALID/INVALID/INCONCLUSIVE, evidence refs, policy decision and generatedAt.
+INCONCLUSIVE can never pass a production mutation requiring proof.
 
-## Living Object intelligence
-Read authorized lineage; propose transforms/forks/merges/conversions; preserve attribution. No silent ownership changes.
+## 9. Self-correction
+CorrectionTask has parentTaskId, mutationScope, attempt, hypothesis, diff/artifact refs, validators, benchmark delta and stop reason. Depth/time/resource/attempt caps and oscillation detection are mandatory.
 
-## Evolution Engine / DNA
-Consume permitted signals, derive demonstrated capabilities, surface context. Do not infer sensitive traits.
+## 10. Memory
+MemoryEntry {scope, owner, sensitivity, consent, provenance, confidence, version, retention, deletionPolicy, sourceHash}. Retrieval applies scope and privacy filters before ranking.
+Private conversation content is never general AI memory by default.
 
-## Convergence / Emergent Missions / World Memory
-Detect candidate convergence with privacy filters; create bounded experiments; validate outcomes; promote reusable knowledge with provenance.
+## 11. Creative artifact
+CreativeArtifact {type,text/image/video/audio/music/voice, sourceRefs, providerRef?, generationVersion, policyStatus, validationRefs, contentHash}.
+Publication is a separate owner command after validation.
 
-## Creative / Game orchestration
-Use the same task graph, resource routing, sandbox and validators for image/video/audio/music/text and Game Factory.
+## 12. AI Lab isolation
+Lab has separate workspace/branch, capability allowlist and secrets boundary. It can test code candidates, but cannot read production secrets or issue production admin mutations.
 
-## Distributed compute
-LOCAL/ON_DEVICE → TRUSTED_WORKER → COMMUNITY_WORKER → VERIFIED_PROVIDER.
-Community workers default to 1 logical CPU/512 MiB, GPU/storage disabled, network bounded.
+## 13. Evolution promotion
+Candidate → static checks → sandbox → tests → benchmark vs baseline → security/policy review → canary → monitor → promote or reject → rollback if regression.
+Promotion requires an auditable CapabilityVersion.
 
-## Observability
-Trace request→plan→task→target→result→validator→commit. No hidden chain-of-thought storage.
+## 14. Failure/recovery
+Provider timeout → fallback or degraded.
+Worker lost → requeue only idempotent TaskNodes.
+Validator fails → correction candidate, not blind retry.
+Oscillation → stop.
+Resource exhausted → terminate sandbox and record reason.
+Context unavailable → ask/degrade, never silently expand scope.
 
-## Security tests
-prompt injection, tool abuse, actor spoofing, privilege escalation, provider poisoning, sandbox escape, worker filesystem access, cross-tenant memory, reward replay, late task result.
+## 15. Security
+Prompt injection is untrusted content. Tool selection is allowlisted. Provider SSRF blocked by endpoint registry. Secrets are referenced by secretName only. No superuser path.
 
-## DONE
-Native AI architecture is functional independently of any one provider, with tested orchestration, memory, policy, task execution, validation, controlled evolution and rollback.
-## Core contracts
-AIRequest; ContextSnapshot; Intent; Plan; AITask; CapabilityDefinition; ToolDefinition; ProviderDefinition; WorkerDefinition; MemoryEntry; ImprovementCandidate; BenchmarkRun; ValidationReport; ProvenanceRecord.
+## 16. Observability
+requestId, traceId, taskId, capabilityId/version, autonomy, worker/provider, latency, resource class, policy decision, validation status, retries. Never store raw private prompts/content in broad telemetry unless an explicit debug policy requires it.
 
-## Long-job persistence
-Persist task state before dispatch. On restart, the scheduler reconstructs pending work and checks whether retry is safe before issuing a new lease.
+## 17. Tests
+Schema/intent, context scope, autonomy ceilings, provider fallback, worker lease, malicious artifact, prompt injection, sensitive-data attempt, INCONCLUSIVE handling, correction oscillation, canary rollback, creative provenance.
 
-## Provider error normalization
-Provider-specific failures map into the shared AppError categories so product modules never depend on provider SDK error types.
-
-## AI Lab promotion
-candidate → static validation → sandbox → tests → benchmark → policy → canary → promote/reject → monitor → rollback.
-The baseline remains recoverable at all times.
+## 18. DONE
+New capability has capability contract, implementation/adapter, policy, resource profile, validator, tests, observability, version, integration and rollback. M15 remains one AI brain and one provider router.
