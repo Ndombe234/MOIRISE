@@ -54,3 +54,24 @@ Ranking determinism; novelty; diversity; blocked content; stale metadata; source
 
 ## 11. DONE
 Discovery works with and without AI, remains diverse, explainable and privacy-respecting.
+
+## 12. Ranking contract
+RankingInput contains candidateRefs, playerContextAllowed, explicitPrefs, freshness, noveltyBudget, diversityBudget.
+RankingOutput contains candidateRef, rank, reasonKey, evidenceRefs.
+
+## 13. Research evidence
+ResearchEvidence stores URL/source ref, retrievedAt, claim, confidence, marketDimension, license/usage policy.
+No external source becomes truth merely because it ranks high.
+
+## 14. Feedback protection
+Signals are weighted by validation and anti-manipulation rules.
+Burst activity from a new/untrusted account cannot immediately dominate ranking.
+
+## 15. Cold-start
+With no history:
+use explicit preferences + curated candidates + diversity + novelty.
+Do not invent “players like you” metrics.
+
+## 16. Provider degradation
+If semantic search is unavailable:
+keyword search + deterministic ranking remain usable.
