@@ -1,54 +1,40 @@
-# M11 — COMMUNITIES / GUILDS — CONCEPTION TECHNIQUE
+# M11 — COMMUNITIES / GUILDS — CONCEPTION TECHNIQUE REPRISE À ZÉRO
 
-## Domain
-Community(owner, visibility, status, settingsVersion)
-Membership(communityId, playerId, role, status)
-Invitation(single-use token, expiry, inviter, invitee)
-JoinRequest
-CommunityCandidate(evidenceRefs, confidence, existingMatches, proposalState)
+## 1. Core schemas
+Community {id, ownerId, name, description, visibility, status, ruleSetVersion, createdAt, version}
+Membership {communityId, playerId, role, status, joinedAt, version}
+Invitation {id, communityId, inviterId, targetId, scope, expiresAt, status, tokenHash}
 
-## Create
-authenticate → validate → authorize → transaction(create community + owner membership) → event.
+## 2. Create transaction
+Validate fields → insert Community → insert OWNER Membership → commit → emit. Unique constraint protects owner membership. Failure of any required write rolls back the transaction.
 
-## Membership
-invite/request → eligibility → approve → active membership.
-Leave/remove are distinct operations. Owner transfer/disband is explicit.
+## 3. Membership authorization
+Every read/write first resolves current Membership status and role. Client-provided role/community owner values are ignored as authority.
 
-## Roles
-OWNER, ADMIN, MODERATOR, MEMBER. All server-authorized. Optimistic version check prevents stale role mutations.
+## 4. Invitation security
+Tokens are scoped, expiring and revocable. Acceptance rechecks community state, target block state and invitation status before creating membership.
 
-## AI community formation
-authorized non-sensitive signals → candidate cluster → remove sensitive features → search existing communities → confidence/diversity → abuse check → proposal → user/policy decision → create/onboard.
-Private messages and sensitive attributes are excluded by default.
+## 5. Role transition
+Allowed transitions are expressed by role hierarchy and explicit operations. Last-owner protection is evaluated inside the transaction to avoid race conditions.
 
-## Living Objects / Convergence
-A stable contributor pattern around a Living Object may produce a candidate. A temporary Convergence Space never automatically becomes a persistent Guild.
+## 6. AI proposal boundary
+CommunityProposal is a separate non-authoritative entity. M15 can write the proposal through a capability, but actual Community/Membership creation always passes through M11's normal command and policy path.
 
-## Security
-RLS/policy on memberships; private community visibility protection; invite replay prevention; blocked users protected; AI cannot assign roles.
+## 7. Failure/recovery
+Duplicate join → current membership.
+Expired invite → no mutation.
+Concurrent role change → optimistic conflict.
+Group closed during join → reject.
+Network loss after creation → commandId lookup.
 
-## Events
-COMMUNITY_CREATED; MEMBER_INVITED; MEMBER_JOINED; MEMBER_LEFT; ROLE_CHANGED; COMMUNITY_CANDIDATE_CREATED; COMMUNITY_PROPOSAL_ACCEPTED; COMMUNITY_PROPOSAL_REJECTED.
+## 8. Security
+IDOR tests on community/member IDs; role escalation tests; private group leakage tests; token replay tests; no sensitive-attribute clustering.
 
-## Tests
-Role matrix; invitation replay; private community access; sensitive-data exclusion; owner transfer; archive/delete; concurrent membership; mobile admin.
+## 9. Observability
+communityId, commandId, membership mutation, role transition, invitation state, policy outcome. Avoid logging private community message content here; M03 owns it.
 
-## 10. Concrete commands
-CREATE_COMMUNITY; UPDATE_COMMUNITY; INVITE_MEMBER; ACCEPT_INVITE; REQUEST_JOIN; APPROVE_JOIN; CHANGE_MEMBER_ROLE; REMOVE_MEMBER; LEAVE_COMMUNITY; ARCHIVE_COMMUNITY.
-Each command has idempotency and role guard.
+## 10. Browser tests
+Public/private create, join/leave, invite accept/reject, role management, closure, mobile and desktop.
 
-## 11. Read contracts
-GET_COMMUNITY; LIST_COMMUNITIES; LIST_MEMBERS; GET_MEMBERSHIP; LIST_REQUESTS; GET_ACTIVITY.
-Private membership existence is filtered before projection.
-
-## 12. Community candidate persistence
-Candidate records source event refs and a proposal policy version. A rejected proposal remains suppressed for a defined cooldown to prevent annoyance.
-
-## Commands
-CREATE_COMMUNITY; UPDATE_COMMUNITY; INVITE_MEMBER; ACCEPT_INVITE; REQUEST_JOIN; APPROVE_JOIN; CHANGE_MEMBER_ROLE; REMOVE_MEMBER; LEAVE_COMMUNITY; ARCHIVE_COMMUNITY. Each command has idempotency and a role guard.
-
-## Reads
-GET_COMMUNITY; LIST_COMMUNITIES; LIST_MEMBERS; GET_MEMBERSHIP; LIST_REQUESTS; GET_ACTIVITY. Private membership visibility is filtered before projection.
-
-## AI candidate persistence
-A candidate stores evidence references, proposal policy version, confidence, existing community matches and a suppression deadline. A rejected proposal is not immediately repeated.
+## 11. DONE
+Membership and role authority exists only once, is enforced server-side, and AI-assisted discovery cannot bypass it.
