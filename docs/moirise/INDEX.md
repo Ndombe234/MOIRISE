@@ -3,9 +3,9 @@
 ## Règle de lecture
 Chaque module possède exactement deux fichiers actifs :
 - PLAN.md = comportement détaillé, du déclencheur jusqu'au DONE.
-- TECHNICAL_DESIGN.md = schémas, commandes, états, concurrence, erreurs, sécurité, performance, tests.
+- TECHNICAL_DESIGN.md = schémas, commandes, états, concurrence, erreurs, sécurité, performance et tests.
 
-La précision obligatoire est « France → Paris → rue → bâtiment → appartement → porte » lorsque le domaine nécessite ces sous-niveaux. Les documents génériques ne doivent pas recopier les règles métier des owners.
+La précision obligatoire est « France → Paris → rue → bâtiment → appartement → porte » lorsque le domaine nécessite ces sous-niveaux.
 
 ## Modules
 - M01 Foundation → modules/M01-foundation/PLAN.md + TECHNICAL_DESIGN.md
@@ -24,27 +24,31 @@ La précision obligatoire est « France → Paris → rue → bâtiment → appa
 - M14 Collection / Reward Economy → modules/M14-collection-reward/PLAN.md + TECHNICAL_DESIGN.md
 - M15 Meta System + MORISE AI Lab → modules/M15-meta-ai-lab/PLAN.md + TECHNICAL_DESIGN.md
 
-## AI
-ai/AI_MASTER_PLAN.md
-ai/AI_TECHNICAL_DESIGN.md
+## MORISE AI
+Le domaine AI possède exactement deux sources canoniques :
+- ai/AI_MASTER_PLAN.md = WHAT : identité, architecture, responsabilités, ownership, invariants, capabilities, providers et critères globaux.
+- ai/AI_TECHNICAL_DESIGN.md = HOW : fichiers, interfaces, algorithmes, SQL, routes, adapters, workers, validation, tests, sécurité et ordre de fabrication.
+
+Aucun troisième document AI ne doit devenir une source de vérité concurrente sans mise à jour de cette règle.
 
 ## Transversal
-CONTRACTS.md
-DEPENDENCIES.md
-DATA_MODEL.md
-SECURITY.md
-EVENT_CATALOG.md
-ERROR_MODEL.md
-TESTING.md
-OBSERVABILITY.md
-CROSS_MODULE_MECHANICS.md
-PROVIDER_REGISTRY.md
-DOCUMENTATION_GOVERNANCE.md
-DEFINITION_OF_DONE.md
+- transversal/CONTRACTS.md
+- transversal/DEPENDENCIES.md
+- transversal/DATA_MODEL.md
+- transversal/SECURITY.md
+- transversal/EVENT_CATALOG.md
+- transversal/ERROR_MODEL.md
+- transversal/TESTING.md
+- transversal/OBSERVABILITY.md
+- transversal/CROSS_MODULE_MECHANICS.md
+- transversal/DOCUMENTATION_GOVERNANCE.md
+- transversal/DEFINITION_OF_DONE.md
 
-Ces fichiers transversaux ne sont pas des copies des plans modules : ils fixent uniquement les contrats qui traversent plusieurs owners.
+Les documents transversaux donnent des contrats communs. Ils ne doivent pas recréer l'implémentation interne de MORISE AI.
+
+Les registres provider séparés ont été supprimés pour éviter une troisième autorité. Les providers sont décrits dans AI_MASTER_PLAN.md et fabriqués dans AI_TECHNICAL_DESIGN.md.
 
 ## Audits
-FEATURE_COVERAGE.md
-DUPLICATE_AUDIT.md
-DOCUMENTATION_BUILD_REPORT.md
+- audits/FEATURE_COVERAGE.md
+- audits/DUPLICATE_AUDIT.md
+- audits/DOCUMENTATION_BUILD_REPORT.md
