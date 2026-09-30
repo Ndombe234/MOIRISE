@@ -1,5 +1,8 @@
 # MORISE AI — RESOURCE ENGINE / SCHEDULER / OBSERVABILITY
 
+## Authority
+This file owns resource classes, task scheduling, cancellation, safe caching and observability. Worker identity, worker states, trust, quotas and worker security are owned by `12_DISTRIBUTED_WORKER_CLUSTER.md`. Provider health/configuration is owned by `10_PROVIDER_REGISTRY.md`.
+
 ## Resource classes
 
 - interactive;
@@ -7,7 +10,9 @@
 - batch;
 - low priority.
 
-## Scheduler
+Interactive user requests take precedence over learning/background workloads within the limits of safety and fairness policy.
+
+## Scheduler contract
 
 ```ts
 interface TaskRequest {
@@ -31,13 +36,17 @@ interface ResourceRequirement {
 }
 ```
 
-Interactive requests get priority over learning/background tasks.
+## Target selection
 
-## Distributed workers
+The Scheduler can dispatch to:
 
-The scheduler can dispatch a task to the local runtime, a configured provider, or an authorized worker.
+- local runtime;
+- configured provider;
+- trusted worker;
+- eligible community worker.
 
 Selection considers:
+
 - capability match;
 - CPU availability;
 - RAM availability;
@@ -50,54 +59,61 @@ Selection considers:
 - quota;
 - reliability history.
 
-A worker is never selected solely because it has more raw hardware. Privacy and authorization are hard constraints.
+Hard authorization/privacy constraints are evaluated first. Raw hardware capacity alone never authorizes a target.
 
-## Worker states
+## Worker boundary
 
-`online | busy | degraded | draining | offline | quarantined`
+Worker states and worker trust levels are imported from `12_DISTRIBUTED_WORKER_CLUSTER.md`. This file must not define another worker-state enum.
 
 ## Concurrency
 
-Use capability/provider/worker-specific concurrency limits.
-Do not allow learning jobs to consume the full system while a user is playing.
+Use capability-, provider- and worker-specific concurrency limits.
+
+Do not allow background learning jobs to consume the resources required for active user interactions.
 
 ## Cancellation
 
-Cancel obsolete:
+Cancel obsolete or superseded work where technically possible:
+
 - autocomplete requests;
 - previous image drafts;
 - previous recommendation calculations;
-- background analyses no longer needed.
+- unnecessary background analyses;
+- queued distributed tasks whose result is no longer needed.
 
-Queued distributed jobs must support cancellation and expiration when technically possible.
+Cancellation is best-effort for already-running external work and must not create inconsistent state.
 
 ## Caching
 
-Cache only when safe:
+Cache only data whose policy allows sharing:
+
 - translations;
 - provider metadata;
-- model capabilities;
-- worker capabilities;
+- model capability metadata;
+- worker capability metadata;
 - repeated deterministic calculations;
 - safe generated assets by content hash.
 
-Never cache private information in a public/shared scope.
+Never place private information into a public/shared cache.
 
 ## Resource optimization
 
 Measure:
+
 - latency;
 - CPU;
-- GPU if available;
+- GPU where available;
 - RAM;
 - storage;
 - network;
 - provider quota;
 - worker utilization;
 - failure rate;
-- cache hit rate.
+- cache hit rate;
+- queue wait time.
 
 Strategies:
+
 - batching;
 - compression;
 - local execution;
@@ -111,15 +127,16 @@ Code cannot create physical RAM or compute. It can optimize usage and coordinate
 
 ## Capacity scaling
 
-Adding a worker increases available aggregate capacity only when that worker is authorized, healthy and actually has spare resources.
+Adding an authorized healthy worker increases aggregate execution capacity only when it has actual spare resources.
 
-The system must not assume that capacity scales linearly: network, synchronization, GPU contention, serialization and task dependencies can become bottlenecks.
+Scaling is not assumed linear because network, synchronization, serialization, GPU contention and task dependencies can become bottlenecks.
 
 ## PostHog
 
-PostHog is an observation/experiment layer.
+PostHog is an observation/experiment layer, not the AI brain.
 
-Allowed examples:
+Allowed aggregate signals include:
+
 - page/module usage;
 - latency;
 - error rate;
@@ -128,16 +145,12 @@ Allowed examples:
 - aggregate product signals;
 - worker utilization aggregates.
 
-No raw private messages or private media by default.
+Raw private messages and private media are not sent as normal analytics.
 
-## Health registry
-
-Provider, capability and worker health must be represented as structured state:
-unknown / healthy / degraded / rate_limited / unauthorized / offline / quarantined.
-
-## Metrics for intelligence
+## Observability metrics
 
 Track:
+
 - task success rate;
 - correction rate;
 - validation pass rate;
@@ -150,3 +163,5 @@ Track:
 - worker failure rate;
 - queue wait time;
 - resource utilization.
+
+Health state definitions for providers/workers are consumed from their authoritative registries rather than redefined here.
