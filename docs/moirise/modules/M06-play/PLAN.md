@@ -72,3 +72,23 @@ Toutes les décisions de score/récompense sont serveur-authoritative. Toute ten
 
 ## 11. Tests
 Launch double tap; expired session; runtime crash; malicious result; score overflow; replay same result; save corruption; mobile; desktop; offline/degraded network; share privacy revoked.
+
+## AI-INTÉGRATION M06 — CONTRAT DE COMPRÉHENSION POUR L'IA DE FABRICATION
+
+### A. Position
+M06 est l'autorité produit des PlaySession, du lancement/reprise et de l'admission du résultat autoritatif. M15 peut assister le jeu mais ne décide jamais du score ou de la récompense.
+
+### B. AI cases
+Aide contextuelle, adaptive content autorisé, génération de variantes de contenu déjà prévues par la GameSpecification, analyse de session et suggestions post-partie.
+
+### C. Contexte
+Player/session/gameVersion/rulesVersion/runtimeCapabilities et seulement les snapshots autorisés. Aucun accès aux secrets ou aux tables économiques.
+
+### D. Résultat
+Runtime evidence → M06 validator → VALID/INVALID/INCONCLUSIVE → AuthoritativeResult. Une sortie AI ne peut pas devenir un score valide sans passer cette chaîne.
+
+### E. Fallback
+Le jeu doit continuer sans IA lorsqu'un contenu adaptatif n'est pas critique. Sinon UNAVAILABLE explicite, jamais résultat inventé.
+
+### F. DONE
+Tests couvrent runtime AI down, résultat falsifié par AI/client, version mismatch, retry et reprise.
