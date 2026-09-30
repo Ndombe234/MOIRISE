@@ -52,3 +52,15 @@ AI proposal → M10 policy → participant checks → commit. M15 ne peut pas aj
 
 ### E. DONE
 Les suggestions sont réversibles, explicables et n'exposent aucun participant privé non nécessaire.
+
+## GAME PLATFORM — INTÉGRATION M10 / JEUX SOCIAUX
+
+M10 permet à un jeu fabriqué par M08 et exécuté par M09 d'utiliser une couche sociale commune.
+
+GameSpecification peut déclarer des hooks : party, invite, challenge, shared score, spectator ou cooperative objective.
+
+Le jeu produit des événements de gameplay validables. M10 possède l'état social partagé et vérifie membership, permissions et privacy.
+
+M15 peut proposer composition d'équipe, matchmaking assistance, résumé ou événement social. La proposition devient active seulement après validation M10.
+
+Un jeu sans hook social reste un jeu solo. Aucun social layer n'est ajouté artificiellement.
