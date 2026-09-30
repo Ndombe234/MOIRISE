@@ -1,291 +1,437 @@
 # M01 — FOUNDATION — CONCEPTION TECHNIQUE DÉTAILLÉE
 
-## 0. Statut
+## 0. Boundary
+Créer le socle invisible qui permet aux 14 autres modules d'exister sans se connaître directement : runtime, shell, identité de session, routing, sécurité primitive, contrats, événements, configuration, feature flags, observabilité et abstraction des capacités.
 
-Document technique canonique du M01. `PLAN.md` définit le comportement fonctionnel ; ce document définit les contrats techniques nécessaires pour l'implémentation, l'intégration et la validation.
-
-## 1. Responsabilité
-
-M01 fournit le socle invisible de MOIRISE : bootstrap, configuration, session boundary, routing, design system, états de récupération, événements, capability contracts, AI Gateway boundary, stockage abstrait, feature flags, observabilité, santé et sécurité primitive.
-
-M01 ne possède aucune logique métier de réseau social, jeu, monde, récompense ou apprentissage. Il doit pouvoir démarrer sans qu'un provider IA soit disponible.
-
-## 2. Architecture
-
-```text
-App Shell
-├─ Config
-├─ Session Boundary
-├─ Router
-├─ Layout / Design System
-├─ Error Boundary
-├─ Loading / Empty / Degraded States
-├─ Event Bus
-├─ Capability Registry
-├─ AI Gateway
-├─ Provider Contract
-├─ Storage Abstraction
-├─ Feature Flags
-├─ Observability
-├─ Security Boundary
-└─ Health State
-```
-
-Règle : M01 peut être importé par les modules, mais M01 ne doit pas importer leur logique métier.
-
-## 3. Bootstrap
-
-```text
-PROCESS START
-→ LOAD STATIC CONFIG
-→ VALIDATE CONFIG
-→ INITIALIZE ERROR REPORTING
-→ INITIALIZE FEATURE FLAGS
-→ INITIALIZE STORAGE ADAPTER
-→ RESTORE SESSION IF POSSIBLE
-→ INITIALIZE ROUTER
-→ REGISTER CORE EVENTS
-→ REGISTER CAPABILITY DESCRIPTORS
-→ INITIALIZE HEALTH STATE
-→ MOUNT APP SHELL
-→ RESOLVE ROUTE
-→ READY
-```
-
-Une dépendance optionnelle indisponible produit `READY_DEGRADED`. Une panne du shell produit une erreur récupérable et diagnostiquable.
-
-## 4. Configuration
-
-Le contrat `AppConfig` sépare environnement, configuration publique, feature flags, timeouts, capacités et paramètres non secrets. Les clés privées, service-role keys et secrets provider ne doivent jamais être compilés dans le bundle client.
-
-Validation au démarrage : types, valeurs autorisées, présence des paramètres obligatoires et compatibilité de version. Une configuration invalide produit `CONFIG_INVALID` et empêche seulement les parties dépendantes de démarrer lorsque cela est possible.
-
-## 5. Routing
-
-Le router connaît les portes de haut niveau : SYSTEM, PLAYER, SOCIAL, WORLD, PLAY et CREATE. Une capability interne ne crée pas automatiquement une route.
-
-Les messages privés, groupes, collections, événements et outils secondaires peuvent utiliser des sous-vues, drawers, dialogs ou sous-routes. La complexité interne ne doit pas devenir une multiplication de boutons.
-
-Deep-link et route inconnue doivent avoir des comportements testés. Une route inconnue ne doit pas produire un écran blanc.
-
-## 6. Design System
-
-Primitives partagées : Button, Card, Dialog, Drawer, Input, Avatar, Badge, Progress, Toast, Skeleton, ErrorState, EmptyState.
-
-Chaque primitive doit définir API, états, accessibilité, responsive behavior et tests critiques. Un module ne recrée pas une primitive déjà canonique sans raison documentée.
-
-## 7. États de récupération
-
-Tout écran critique doit pouvoir représenter : `loading`, `ready`, `empty`, `error`, `degraded` et, lorsque pertinent, `offline`.
-
-Une erreur technique doit être transformée en état UI exploitable. Le détail technique reste dans l'observabilité.
-
-## 8. Event Bus
-
-Contrat minimal :
-
-```ts
-interface SystemEventEnvelope<TPayload> {
-  eventId: string;
-  eventType: string;
-  schemaVersion: number;
-  occurredAt: string;
-  moduleId: string;
-  actorId?: string;
-  requestId: string;
-  payload: TPayload;
-}
-```
-
-Le bus découple les réactions ; il ne remplace pas les données canoniques. Exemples : `PLAYER_CREATED`, `POST_CREATED`, `MESSAGE_SENT`, `GROUP_CREATED`, `GAME_STARTED`, `GAME_COMPLETED`, `AI_REQUESTED`, `AI_COMPLETED`, `MEDIA_CREATED`, `REWARD_GRANTED`.
-
-## 9. Idempotence
-
-Toute opération pouvant être répétée doit avoir une stratégie d'idempotence. Conceptuellement :
-
-```text
-requestId + operationId
-→ idempotency key
-→ first execution commits
-→ duplicate execution returns prior result
-```
-
-Cette règle s'applique notamment aux rewards, publications, créations de groupes, créations de jeux, jobs IA et tâches distribuées.
-
-## 10. Capability Registry
-
-Contrat minimal :
-
-```ts
-interface CapabilityDefinition {
-  id: string;
-  version: string;
-  inputSchema: string;
-  outputSchema: string;
-  policyClass: string;
-  executionTargets: string[];
-  resourceClass: string;
-  validatorId: string;
-  enabled: boolean;
-}
-```
-
-M01 publie les contrats ; M15 possède l'orchestration et la sélection des capacités.
-
-## 11. AI Gateway
-
-Aucune UI ne doit appeler directement un provider.
-
-```text
-UI / MODULE
-→ AI Gateway
-→ typed AI request
-→ M15 orchestration
-→ capability
-→ resource/provider selection
+## 1. Architecture en couches
+~~~text
+UI / route / trigger
+→ command/query facade
+→ authentication
+→ authorization/policy
+→ input validator
+→ domain service/state machine
+→ repository or durable task
+→ event publisher
+→ observability
 → result
-→ validation
-→ module
-```
+~~~
 
-Le Gateway est une frontière technique, pas un cerveau parallèle.
+## 2. Canonical command envelope
+~~~ts
+type Command = {
+  commandId: string;
+  actorId: string;          // server derived
+  requestId: string;
+  idempotencyKey?: string;
+  schemaVersion: number;
+  payload: unknown;
+};
+~~~
 
-## 12. Provider Contract
+## 3. Canonical result envelope
+~~~ts
+type Result<T> = {
+  ok: boolean;
+  data?: T;
+  error?: AppError;
+  traceId: string;
+  version?: string;
+};
+~~~
 
-M01 définit le contrat partagé. M15 utilise le registre réel.
+## 4. Domain entities
+AppConfig; RouteDefinition; SessionContext; FeatureFlag; SystemEvent; CapabilityDefinition; ProviderDefinition; RequestTrace; AppError; TenantContext.
 
-Un provider doit exposer au minimum : id, adapterVersion, capabilities, executionMode, authMode, health, quota metadata, provenance policy et schemas supportés.
+Chaque entité persistée possède :
+- primary key ;
+- owner/tenant reference ;
+- current state ;
+- createdAt/updatedAt ;
+- version ;
+- business uniqueness ;
+- indexes ;
+- privacy class ;
+- retention/deletion path.
 
-Une URL seule ne constitue jamais une intégration validée. Il faut vérifier endpoint, auth, capacité, quotas, licence/provenance, sécurité et compatibilité du contrat.
+## 5. Commands
+### 1. Application Shell
+Pipeline :
+receive → authenticate → authorize → validate → load minimal context → guard state → mutate/queue → persist authoritative state → emit event → invalidate safe caches → return result.
 
-## 13. Storage Abstraction
+Idempotency :
+si la commande peut être rejouée, une clé sémantique doit empêcher les effets multiples.
 
-Les composants UI ne doivent pas multiplier les accès directs à la base. Les repositories/services encapsulent les opérations autorisées.
+Failure :
+validation → no mutation;
+forbidden → no mutation;
+conflict → authoritative reload;
+dependency failure → retry/degrade only when safe.
 
-```ts
-interface Repository<T, TQuery> {
-  get(query: TQuery): Promise<T | null>;
-  list(query: TQuery): Promise<T[]>;
-  create(input: unknown): Promise<T>;
-  update(id: string, input: unknown): Promise<T>;
-}
-```
+### 2. Routing Boundary
+Pipeline :
+receive → authenticate → authorize → validate → load minimal context → guard state → mutate/queue → persist authoritative state → emit event → invalidate safe caches → return result.
 
-Cette abstraction ne remplace jamais les RLS et permissions serveur.
+Idempotency :
+si la commande peut être rejouée, une clé sémantique doit empêcher les effets multiples.
 
-## 14. Feature Flags
+Failure :
+validation → no mutation;
+forbidden → no mutation;
+conflict → authoritative reload;
+dependency failure → retry/degrade only when safe.
 
-États : `disabled`, `internal`, `beta`, `enabled`, `deprecated`.
+### 3. Auth/Session Boundary
+Pipeline :
+receive → authenticate → authorize → validate → load minimal context → guard state → mutate/queue → persist authoritative state → emit event → invalidate safe caches → return result.
 
-Chaque flag possède un propriétaire, une raison, une date/condition de retrait lorsque pertinent et un comportement de fallback. Une capability expérimentale doit pouvoir être désactivée sans casser le shell.
+Idempotency :
+si la commande peut être rejouée, une clé sémantique doit empêcher les effets multiples.
 
-## 15. Observabilité
+Failure :
+validation → no mutation;
+forbidden → no mutation;
+conflict → authoritative reload;
+dependency failure → retry/degrade only when safe.
 
-Les traces techniques utilisent au minimum requestId, traceId, moduleId, operation, latency, outcome, error class, capabilityId et executionTarget.
+### 4. Design System
+Pipeline :
+receive → authenticate → authorize → validate → load minimal context → guard state → mutate/queue → persist authoritative state → emit event → invalidate safe caches → return result.
 
-Ne pas journaliser inutilement secrets, tokens, contenu privé intégral ou données sensibles.
+Idempotency :
+si la commande peut être rejouée, une clé sémantique doit empêcher les effets multiples.
 
-## 16. Health
+Failure :
+validation → no mutation;
+forbidden → no mutation;
+conflict → authoritative reload;
+dependency failure → retry/degrade only when safe.
 
-États : `UNKNOWN`, `HEALTHY`, `DEGRADED`, `UNAVAILABLE`.
+### 5. Responsive System
+Pipeline :
+receive → authenticate → authorize → validate → load minimal context → guard state → mutate/queue → persist authoritative state → emit event → invalidate safe caches → return result.
 
-Une dépendance facultative indisponible ne doit pas rendre indisponible l'ensemble de MOIRISE. Les composants dépendants doivent recevoir un état déterministe et un fallback lorsqu'il existe.
+Idempotency :
+si la commande peut être rejouée, une clé sémantique doit empêcher les effets multiples.
 
-## 17. Sécurité
+Failure :
+validation → no mutation;
+forbidden → no mutation;
+conflict → authoritative reload;
+dependency failure → retry/degrade only when safe.
 
-M01 impose :
+### 6. Loading/Error/Empty/Unavailable/Degraded states
+Pipeline :
+receive → authenticate → authorize → validate → load minimal context → guard state → mutate/queue → persist authoritative state → emit event → invalidate safe caches → return result.
 
-- secrets hors client ;
-- validation des entrées ;
-- autorisation critique côté serveur ;
-- absence d'exécution arbitraire depuis une entrée utilisateur ;
-- isolation des capacités sensibles ;
-- aucun service-role dans le bundle ;
-- aucun endpoint provider arbitraire fourni par le client ;
-- aucun worker considéré comme autorité métier ;
-- logs minimisés.
+Idempotency :
+si la commande peut être rejouée, une clé sémantique doit empêcher les effets multiples.
 
-## 18. Performance
+Failure :
+validation → no mutation;
+forbidden → no mutation;
+conflict → authoritative reload;
+dependency failure → retry/degrade only when safe.
 
-Le shell doit utiliser lazy routes et lazy capabilities. Aucun appel IA n'est nécessaire au boot. La mémoire complète, les médias lourds et les engines de jeu ne doivent pas être chargés par défaut.
+### 7. Event Bus
+Pipeline :
+receive → authenticate → authorize → validate → load minimal context → guard state → mutate/queue → persist authoritative state → emit event → invalidate safe caches → return result.
 
-## 19. Responsive
+Idempotency :
+si la commande peut être rejouée, une clé sémantique doit empêcher les effets multiples.
 
-Une logique métier unique doit servir mobile, tablette et desktop. Les tests doivent couvrir au minimum petits écrans mobiles, tablette et desktop large. Les primitives ne doivent pas dépendre d'une résolution particulière.
+Failure :
+validation → no mutation;
+forbidden → no mutation;
+conflict → authoritative reload;
+dependency failure → retry/degrade only when safe.
 
-## 20. Erreurs typées
+### 8. Capability Registry
+Pipeline :
+receive → authenticate → authorize → validate → load minimal context → guard state → mutate/queue → persist authoritative state → emit event → invalidate safe caches → return result.
 
-Exemples :
+Idempotency :
+si la commande peut être rejouée, une clé sémantique doit empêcher les effets multiples.
 
-`CONFIG_INVALID`
-`SESSION_RESTORE_FAILED`
-`ROUTE_NOT_FOUND`
-`CAPABILITY_UNAVAILABLE`
-`PROVIDER_UNAVAILABLE`
-`STORAGE_UNAVAILABLE`
-`UNAUTHORIZED`
-`VALIDATION_FAILED`
-`INTERNAL_ERROR`
+Failure :
+validation → no mutation;
+forbidden → no mutation;
+conflict → authoritative reload;
+dependency failure → retry/degrade only when safe.
 
-L'interface traduit ces états en messages utilisateur compréhensibles ; les détails de diagnostic restent dans les traces.
+### 9. Provider Registry boundary
+Pipeline :
+receive → authenticate → authorize → validate → load minimal context → guard state → mutate/queue → persist authoritative state → emit event → invalidate safe caches → return result.
 
-## 21. Tests unitaires
+Idempotency :
+si la commande peut être rejouée, une clé sémantique doit empêcher les effets multiples.
 
-- configuration valide/invalide ;
-- résolution de route ;
-- route inconnue ;
-- Event Bus et schemaVersion ;
-- idempotence ;
-- Capability Registry ;
-- feature flags ;
-- mapping d'erreurs ;
-- health transitions ;
-- AI Gateway contract ;
-- primitives UI critiques.
+Failure :
+validation → no mutation;
+forbidden → no mutation;
+conflict → authoritative reload;
+dependency failure → retry/degrade only when safe.
 
-## 22. Tests d'intégration
+### 10. AI Gateway
+Pipeline :
+receive → authenticate → authorize → validate → load minimal context → guard state → mutate/queue → persist authoritative state → emit event → invalidate safe caches → return result.
 
-Cas minimal :
+Idempotency :
+si la commande peut être rejouée, une clé sémantique doit empêcher les effets multiples.
 
-```text
-boot → config → session → router → shell
-```
+Failure :
+validation → no mutation;
+forbidden → no mutation;
+conflict → authoritative reload;
+dependency failure → retry/degrade only when safe.
 
-Cas de dégradation :
+### 11. Configuration
+Pipeline :
+receive → authenticate → authorize → validate → load minimal context → guard state → mutate/queue → persist authoritative state → emit event → invalidate safe caches → return result.
 
-```text
+Idempotency :
+si la commande peut être rejouée, une clé sémantique doit empêcher les effets multiples.
+
+Failure :
+validation → no mutation;
+forbidden → no mutation;
+conflict → authoritative reload;
+dependency failure → retry/degrade only when safe.
+
+### 12. Feature Flags
+Pipeline :
+receive → authenticate → authorize → validate → load minimal context → guard state → mutate/queue → persist authoritative state → emit event → invalidate safe caches → return result.
+
+Idempotency :
+si la commande peut être rejouée, une clé sémantique doit empêcher les effets multiples.
+
+Failure :
+validation → no mutation;
+forbidden → no mutation;
+conflict → authoritative reload;
+dependency failure → retry/degrade only when safe.
+
+### 13. Storage abstraction
+Pipeline :
+receive → authenticate → authorize → validate → load minimal context → guard state → mutate/queue → persist authoritative state → emit event → invalidate safe caches → return result.
+
+Idempotency :
+si la commande peut être rejouée, une clé sémantique doit empêcher les effets multiples.
+
+Failure :
+validation → no mutation;
+forbidden → no mutation;
+conflict → authoritative reload;
+dependency failure → retry/degrade only when safe.
+
+### 14. Health/Observability
+Pipeline :
+receive → authenticate → authorize → validate → load minimal context → guard state → mutate/queue → persist authoritative state → emit event → invalidate safe caches → return result.
+
+Idempotency :
+si la commande peut être rejouée, une clé sémantique doit empêcher les effets multiples.
+
+Failure :
+validation → no mutation;
+forbidden → no mutation;
+conflict → authoritative reload;
+dependency failure → retry/degrade only when safe.
+
+### 15. Request/Trace correlation
+Pipeline :
+receive → authenticate → authorize → validate → load minimal context → guard state → mutate/queue → persist authoritative state → emit event → invalidate safe caches → return result.
+
+Idempotency :
+si la commande peut être rejouée, une clé sémantique doit empêcher les effets multiples.
+
+Failure :
+validation → no mutation;
+forbidden → no mutation;
+conflict → authoritative reload;
+dependency failure → retry/degrade only when safe.
+
+### 16. Rate-limit primitives
+Pipeline :
+receive → authenticate → authorize → validate → load minimal context → guard state → mutate/queue → persist authoritative state → emit event → invalidate safe caches → return result.
+
+Idempotency :
+si la commande peut être rejouée, une clé sémantique doit empêcher les effets multiples.
+
+Failure :
+validation → no mutation;
+forbidden → no mutation;
+conflict → authoritative reload;
+dependency failure → retry/degrade only when safe.
+
+### 17. Schema validation
+Pipeline :
+receive → authenticate → authorize → validate → load minimal context → guard state → mutate/queue → persist authoritative state → emit event → invalidate safe caches → return result.
+
+Idempotency :
+si la commande peut être rejouée, une clé sémantique doit empêcher les effets multiples.
+
+Failure :
+validation → no mutation;
+forbidden → no mutation;
+conflict → authoritative reload;
+dependency failure → retry/degrade only when safe.
+
+### 18. Tenant isolation primitives
+Pipeline :
+receive → authenticate → authorize → validate → load minimal context → guard state → mutate/queue → persist authoritative state → emit event → invalidate safe caches → return result.
+
+Idempotency :
+si la commande peut être rejouée, une clé sémantique doit empêcher les effets multiples.
+
+Failure :
+validation → no mutation;
+forbidden → no mutation;
+conflict → authoritative reload;
+dependency failure → retry/degrade only when safe.
+
+## 6. State machine
+COLD → BOOTING → CONFIGURED → SESSION_RESTORING → READY; READY → DEGRADED; fatal shell error → RECOVERABLE_ERROR.
+
+Les transitions sont codées dans des guards dédiées et testables. Le client ne peut pas promouvoir un état critique.
+
+## 7. Queries
+Les queries utilisent :
+privacy filter → bounded projection → cursor pagination → optional cache → response normalization.
+
+Une query ne doit pas révéler l'existence d'une ressource interdite lorsque cela constituerait une fuite.
+
+## 8. UI state machine
+~~~text
+IDLE → LOADING → SUCCESS
+               ↘ EMPTY
+               ↘ ERROR
+               ↘ UNAVAILABLE
+               ↘ DEGRADED
+~~~
+
+Une erreur de composant ne remplace jamais tout le shell par une page blanche.
+
+## 9. Events
+Le module publie ses propres événements avec :
+eventId, eventType, schemaVersion, moduleId, actorId?, requestId?, occurredAt, safe metadata.
+
+Le payload complet privé reste hors du bus général sauf contrat explicite.
+
+## 10. AI integration
+Foundation exposes the gateway but never requires AI for boot. All later AI calls are typed and policy-mediated.
+
+Pattern :
+~~~text
 module
-→ AI Gateway
-→ capability request
-→ provider unavailable
-→ fallback/degraded
-→ UI récupérable
-```
-
-Cas de sécurité :
-
-```text
-client input
+→ M15 capability
+→ policy/context
+→ resource/provider route
+→ execution
 → validation
-→ authorization
-→ permitted action OR rejection
-```
+→ module-specific validation
+→ commit
+~~~
 
-## 23. Tests de non-régression
+## 11. Security
+server-derived actorId; secrets server-only; schema validation; auth boundary; CSP and safe headers; no provider endpoint from browser; no service-role bundle.
+Threat model:
+identity spoofing;
+privilege escalation;
+replay;
+cross-player read;
+injection;
+resource exhaustion;
+cache leakage;
+untrusted AI output;
+untrusted generated code.
 
-Une nouvelle capability ou un nouveau module ne doit pas :
-- casser le boot ;
-- créer une route implicite ;
-- appeler directement un provider depuis l'UI ;
-- exposer un secret ;
-- contourner une permission ;
-- produire un écran blanc ;
-- rendre M01 dépendant d'un module métier.
+## 12. Persistence
+Tables/collections doivent être protégées par ownership/RLS ou policy équivalente. Les contraintes critiques sont imposées par la base lorsque possible.
 
-## 24. Critères d'acceptation
+## 13. Cache
+Key = module + entity + version + privacy scope.
+Invalidate on owner events.
+Never share sensitive cache across players.
 
-M01 est terminé uniquement si le shell démarre sans providers IA, les portes principales sont montables, les états de récupération sont testés, Event Bus et Capability Registry sont testés, AI Gateway est sécurisé, les secrets sont absents du bundle, les feature flags fonctionnent, le responsive critique est vérifié et le build/tests passent.
+## 14. Async/recovery
+Long task:
+created → queued → leased → running → validating → completed.
+Loss:
+lease expiry → recover/requeue if idempotent.
+Cancelled task cannot be revived by late result.
 
-## 25. Non-responsabilités
+## 15. Performance
+Bound query sizes, page lists, lazy-load heavy engines/media, batch events, backpressure AI jobs, avoid blocking normal navigation on long work.
 
-M01 ne décide pas du contenu à recommander, des groupes à créer, des récompenses, du jeu à générer, du provider métier à choisir, de l'apprentissage IA ou de l'évolution du monde. Ces responsabilités appartiennent aux modules canoniques et à M15 selon leurs contrats.
+## 16. Tests
+### Unit
+guards, validators, deterministic logic, entitlement rules.
+### Integration
+auth + database + events + RLS/policy + idempotency.
+### Contract
+AI capability/provider/worker events where applicable.
+### Browser
+every visible action, loading/error/empty, back navigation, reload.
+### Mobile
+390x844 minimum target plus desktop.
+### Resilience
+timeout, duplicate, reconnect, provider outage, worker loss, concurrency.
+### Security
+unauthorized read/write, replay, injection and data leakage.
+
+## 17. Failure matrix
+| Failure | Required behavior |
+|---|---|
+| invalid input | reject, no mutation |
+| session expired | AUTH_REQUIRED |
+| forbidden | FORBIDDEN, no sensitive detail |
+| conflict | CONFLICT + authoritative reload |
+| provider unavailable | fallback/degraded |
+| worker unavailable | retry/requeue when safe |
+| duplicate | return original proof |
+| corrupted artifact | reject/preserve previous stable |
+| quota exceeded | queued/degraded, never silent charge |
+| cache stale | source-of-truth refresh |
+
+## 18. AI-specific tests
+The module must verify that AI cannot:
+- change owner;
+- grant itself permission;
+- bypass M13 safety;
+- write arbitrary production data;
+- choose an unregistered provider;
+- expose private content;
+- bypass reward validation.
+
+## 19. Implementation handoff
+1. Inspect current code/migrations.
+2. Map reusable code.
+3. Compare against Plan.
+4. Freeze types/contracts.
+5. Implement persistence/policy.
+6. Implement state machine.
+7. Implement events/observability.
+8. Implement UI.
+9. Add AI capability calls.
+10. Add tests.
+11. Browser and mobile test.
+12. Record DONE evidence.
+
+## 20. Puzzle sheet
+OWNER = M01
+INPUTS = authenticated Player/context + typed payload
+FEATURES = Application Shell, Routing Boundary, Auth/Session Boundary, Design System, Responsive System, Loading/Error/Empty/Unavailable/Degraded states, Event Bus, Capability Registry, Provider Registry boundary, AI Gateway, Configuration, Feature Flags, Storage abstraction, Health/Observability, Request/Trace correlation, Rate-limit primitives, Schema validation, Tenant isolation primitives
+FLOWS = Boot : process start → config validate → session restore → route resolution → READY/DEGRADED. | Navigation : route request → auth policy → module boundary → loading → data/action. | AI call : module → AI Gateway → capability ID → policy → M15. | Event : owner module → event envelope → subscribers without direct table writes. | Failure : boundary catches error → normalized AppError → recoverable surface.
+STATES = COLD → BOOTING → CONFIGURED → SESSION_RESTORING → READY; READY → DEGRADED; fatal shell error → RECOVERABLE_ERROR.
+ENTITIES = AppConfig; RouteDefinition; SessionContext; FeatureFlag; SystemEvent; CapabilityDefinition; ProviderDefinition; RequestTrace; AppError; TenantContext.
+AI = Foundation exposes the gateway but never requires AI for boot. All later AI calls are typed and policy-mediated.
+SECURITY = server-derived actorId; secrets server-only; schema validation; auth boundary; CSP and safe headers; no provider endpoint from browser; no service-role bundle.
+ACCEPTANCE = Application starts, routes do not white-screen, auth works, event bus and capability registry are tested, security boundaries are server-side, mobile/desktop shell works.
+
+If a critical behavior is not defined in this sheet or an authoritative transversal contract, the implementation agent must not invent it.
+
+## 21. Detailed cross-module handoff
+Any emitted event may be consumed by M05/M06/M07/M10/M12/M13/M14/M15 according to ownership. Consumers react; they do not mutate this module's database.
+
+## 22. Completion proof
+A module is not DONE because the page renders. DONE requires code, state, persistence, authorization, events, error recovery, tests, browser evidence, mobile evidence and security evidence.
