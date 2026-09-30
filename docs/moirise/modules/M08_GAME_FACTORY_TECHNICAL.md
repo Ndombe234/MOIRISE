@@ -1,28 +1,35 @@
-# M08 — GAME FACTORY — TECHNICAL CONTRACT
+# M08 — GAME A→Z FACTORY — TECHNICAL DESIGN
 
 ## Boundary
-M08 converts a user request into a structured game project. It creates; it does not execute. Provider APIs are optional adapters and never become part of the finished game runtime.
+M08 transforms a natural-language game request into a validated, portable game package. It creates; M09 executes. M08 never gives generated code production credentials.
 
 ## Pipeline
-`request → GameIntent → GameSpecification → plan → code/assets/audio generation → static validation → build → simulation → tests → signed GamePackage`.
+`request → intent extraction → GameSpecification → task graph → code/assets/audio generation → static analysis → sandbox build → tests → preview → signed package`.
 
-## Canonical types
+## Types
 ```ts
-interface GameSpecification { id:string; mode:"2d"|"3d"; engine:string; scenes:unknown[]; entities:unknown[]; controls:unknown; rules:unknown; levels:unknown[]; assets:AssetRef[]; audio:AssetRef[]; tests:TestSpec[]; }
-interface AssetRef { id:string; kind:"image"|"model"|"texture"|"audio"|"font"; ref:string; license:"owned"|"generated"|"open"; provenance:string; }
+interface GameSpecification { id:string; mode:"2d"|"3d"; engine:"phaser"|"three"|"babylon"|"playcanvas"|"custom"; scenes:SceneSpec[]; entities:EntitySpec[]; rules:RuleSpec[]; controls:ControlSpec[]; levels:LevelSpec[]; assets:AssetRef[]; audio:AssetRef[]; tests:TestSpec[]; }
+interface AssetRef { id:string; kind:string; ref:string; license:"owned"|"generated"|"open"; provenance:string; hash:string; }
+interface GamePackage { id:string; specHash:string; engineVersion:string; manifestRef:string; artifactRef:string; signature:string; }
 ```
 
-## AI flow
-AI Orchestrator creates the plan and requests capabilities for code, images, audio, video and validation. Provider selection comes only from the canonical provider registry. No provider URL is hard-coded in M08.
+## Task graph
+Separate code, art, audio, level design and validation tasks. Independent tasks may be distributed to trusted/community workers according to worker policy. Results are content-addressed and validated before assembly.
+
+## Provider independence
+AI providers are adapters selected by the canonical provider registry. M08 never hard-codes provider endpoints or keys. If every provider is unavailable, M08 returns a clear degraded state rather than silently producing broken output.
 
 ## Safety
-Generated code is untrusted. It is statically inspected, built in an isolated sandbox and tested before preview/publication. No generated package receives MOIRISE database credentials.
-
-## Provenance
-Every asset records source/provenance and allowed usage. Generation output is not automatically trusted as factual or legally cleared.
+Generated code is untrusted. Static checks, dependency allowlists, sandbox build, runtime smoke test and resource limits are mandatory. Assets retain provenance/license metadata.
 
 ## Runtime independence
-A published package contains the resources and runtime manifest required for gameplay. It must not call the creation provider during normal gameplay.
+Published packages contain all required game resources and runtime manifest. Normal gameplay must not call the creation provider.
 
-## Acceptance
-A player can request a small game, inspect a real preview, retry generation, receive diagnostics on failure, and publish only a validated package.
+## UI
+Create is a primary door. Wizard/chat, templates, preview, diagnostics and publish controls are contextual inside Create.
+
+## Tests
+small 2D game, small 3D game, malformed request, provider failure, build failure, malicious generated code, oversized asset, missing dependency, deterministic package hash and mobile preview.
+
+## Done gate
+A requested game can reach a real playable validated preview and a portable package without coupling gameplay to an AI provider.
