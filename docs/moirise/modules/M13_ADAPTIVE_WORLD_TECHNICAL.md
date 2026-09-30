@@ -1,34 +1,37 @@
-# M13 — ADAPTIVE WORLD — TECHNICAL DESIGN
+# M13 — ADAPTIVE WORLD — COMPLETE TECHNICAL CONTRACT
 
-## Boundary
-M13 converts validated aggregate signals into reversible world/discovery/activity adaptations. It does not directly rewrite production behavior.
+## Responsibility
+M13 converts validated aggregate signals into reversible world/activity adaptations. It never directly writes production behavior from a raw AI suggestion.
 
 ## Inputs
-Only eligible aggregate signals: engagement trends, completion rates, explicit feedback, event outcomes and public/authorized interaction statistics. Exclude secrets and sensitive attributes.
+Only authorized aggregate signals: engagement trends, completion rates, explicit feedback, event outcomes and public interaction statistics. Exclude secrets and sensitive attributes.
 
 ## Pipeline
-`collect → validate → aggregate → detect trend → generate candidate → policy evaluation → sandbox simulation → benchmark → canary → activate/rollback`.
+`collect → validate provenance → aggregate → trend/anomaly detection → candidate generation → policy evaluation → sandbox simulation → benchmark → canary → monitor → activate/rollback`.
 
 ## Types
 ```ts
 interface AdaptationCandidate { id:string; target:string; changes:Record<string,unknown>; reasonRefs:string[]; createdBy:string; version:number; }
-interface AdaptationDecision { candidateId:string; status:"rejected"|"approved"|"canary"|"active"|"rolled_back"; metrics:Record<string,number>; }
+interface AdaptationDecision { candidateId:string; status:'rejected'|'approved'|'canary'|'active'|'rolled_back'; baseline:Record<string,number>; metrics:Record<string,number>; rollbackThreshold:Record<string,number>; }
 ```
 
 ## Anti-poisoning
-No single user, worker or provider can directly change global behavior. Aggregate thresholds, rate limits, anomaly detection and minimum sample sizes are mandatory.
+No single user, worker or provider directly changes global behavior. Require minimum sample size, aggregate thresholds, rate limits, anomaly detection and provenance checks.
 
 ## Evaluation
-Every adaptation has a baseline, expected metrics, activation window, rollback threshold and owner. If metrics regress, rollback is automatic where configured.
+Every candidate has baseline metrics, expected metrics, activation window, rollback conditions and owner. Conflicting provider suggestions remain separate evidence until validated.
 
 ## AI boundary
-MORISE may generate hypotheses/candidates. Deterministic policy and evaluation decide activation. AI never self-approves production changes.
+AI generates hypotheses/candidates. Deterministic policy and evaluation decide activation. AI cannot self-approve production adaptation.
+
+## Versioning
+Each active adaptation has immutable version metadata. Rollback restores the previous known-safe version. Never mutate historical metrics to hide regressions.
 
 ## UI
-The ordinary player sees only resulting contextual changes and concise explanations. Advanced adaptation diagnostics remain in authorized SYSTEM/admin surfaces.
+Ordinary players see contextual effects and concise explanations. Diagnostics are restricted to SYSTEM/admin surfaces.
 
 ## Tests
-poisoning resistance, low-sample rejection, candidate rollback, version conflict, stale data, provider disagreement, metrics regression and recovery.
+Data poisoning; low-sample rejection; provider disagreement; stale signals; version conflict; canary regression; automatic rollback; recovery after rollback; unauthorized activation.
 
 ## Done gate
-Every active adaptation is versioned, explainable, measurable, reversible and attributable to validated signals.
+Every active adaptation is versioned, attributable, measurable, explainable and reversible.
