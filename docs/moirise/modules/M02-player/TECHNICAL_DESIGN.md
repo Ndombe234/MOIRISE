@@ -1,119 +1,86 @@
-# M02 — PLAYER — CONCEPTION TECHNIQUE REPRISE À ZÉRO
+# M02 — PLAYER — CONCEPTION TECHNIQUE DÉTAILLÉE
 
-## 0. Boundary
-**Owner : M02.** Architecture : UI → server boundary → use-case owner → policy → repository/adapter → persistence/provider → event → projection.
+## 1. Boundary
+UI → server boundary → M02 use-case → policy → repository/adapter → persistence → event → projection.
 
-## 1. Command contract
+## 2. Command
 ```
-Command {
-  commandId: string,
-  actorId: server-derived,
-  capabilityId: string,
-  targetRef?: string,
-  expectedVersion?: number,
-  payload: validated object
-}
+{ commandId, actorId(server-derived), capabilityId, targetRef?, expectedVersion?, payload }
 ```
-Le serveur refuse actorId arbitraire, capability inconnue, payload hors schema, target hors scope, expectedVersion périmée ou réutilisation d'un commandId avec un payload différent.
+Reject : actorId arbitraire, capability inconnue, payload hors schema, target hors scope, version périmée, commandId réutilisé avec payload différent.
 
-## 2. Capability contracts
+## 3. Capability contracts
 ### M02.C1 Bootstrap
-Entrée : actor + contexte minimal + payload validé.
-Préconditions : auth user authoritative.
-Exécution : Player.
-Sortie autoritative : race: unique constraint + existing record.
-Erreur principale : undefined.
-Boundary sécurité : undefined.
+Input : actor + contexte minimal + payload validé.
+Guards : auth user id présent.
+Execution : lookup player → create defaults atomically if missing → return existing on retry.
+Output authority : Player.
+Failure policy : race = unique constraint + existing.
+Security boundary : auth id serveur.
 
-### M02.C2 Profile
-Entrée : actor + contexte minimal + payload validé.
-Préconditions : privacy enforced server.
-Exécution : public/private projection.
-Sortie autoritative : invalid field: no partial save.
-Erreur principale : undefined.
-Boundary sécurité : undefined.
+### M02.C2 Public profile
+Input : actor + contexte minimal + payload validé.
+Guards : player active.
+Execution : load public projection → validate fields → versioned update → invalidate cache.
+Output authority : PublicProfileProjection.
+Failure policy : invalid field = no partial write.
+Security boundary : privacy server-enforced.
 
-### M02.C3 Handle
-Entrée : actor + contexte minimal + payload validé.
-Préconditions : no owner leak.
-Exécution : handle record.
-Sortie autoritative : conflict: old handle; same command: same result.
-Erreur principale : undefined.
-Boundary sécurité : undefined.
+### M02.C3 Private settings
+Input : actor + contexte minimal + payload validé.
+Guards : setting key known.
+Execution : check current version → validate value → commit → emit change event.
+Output authority : Preferences/PrivacySettings.
+Failure policy : stale version = conflict/reload.
+Security boundary : private values not public.
 
-### M02.C4 Avatar
-Entrée : actor + contexte minimal + payload validé.
-Préconditions : safe storage, policy validation.
-Exécution : AvatarRef.
-Sortie autoritative : processing failure preserves old avatar.
-Erreur principale : undefined.
-Boundary sécurité : undefined.
+### M02.C4 Handle
+Input : actor + contexte minimal + payload validé.
+Guards : normalized format valid.
+Execution : Unicode normalize → uniqueness check → atomic change.
+Output authority : HandleRef.
+Failure policy : taken = conflict without owner leak.
+Security boundary : canonical uniqueness.
 
-### M02.C5 Preferences
-Entrée : actor + contexte minimal + payload validé.
-Préconditions : settings not authority.
-Exécution : Preferences.
-Sortie autoritative : unknown key reject; stale version conflict.
-Erreur principale : undefined.
-Boundary sécurité : undefined.
+### M02.C5 Avatar
+Input : actor + contexte minimal + payload validé.
+Guards : file/provider result allowed.
+Execution : quarantine → MIME/size/dimensions → safety → publish ref → replace.
+Output authority : AvatarRef.
+Failure policy : failure keeps old avatar.
+Security boundary : safe storage.
 
-### M02.C6 Memory/DNA
-Entrée : actor + contexte minimal + payload validé.
-Préconditions : no sensitive inference/global private chat mining.
-Exécution : Memory/DNA evidence.
-Sortie autoritative : low confidence: no promotion.
-Erreur principale : undefined.
-Boundary sécurité : undefined.
+### M02.C6 Memory/DNA evidence
+Input : actor + contexte minimal + payload validé.
+Guards : source/provenance/privacy class known.
+Execution : store evidence → confidence/version → optional M15 pattern → invalidation path.
+Output authority : MemoryEntry/DNAEvidence.
+Failure policy : low confidence stays evidence.
+Security boundary : no sensitive inference/global private chats.
 
-## 3. Persistence
-Contraintes uniques pour identities/idempotency; index sur owner+status+updatedAt et clés de recherche; foreign keys uniquement lorsque coupling autorisé; version d'optimistic concurrency quand plusieurs writers existent; suppression/retention alignées avec privacyClass.
+## 4. State/persistence
+State transition = trigger + guards + transaction + event + projection. Unique constraints sur les opérations uniques; optimistic version quand plusieurs writers. Projection/cache n'est jamais source d'autorité.
 
-## 4. State and transaction contract
-Chaque transition définit stateBefore → trigger → guards → transaction → stateAfter → event. Les écritures formant une seule unité métier sont atomiques. Les projections sont reconstruites depuis l'autorité si elles deviennent incohérentes.
+## 5. Event envelope
+eventId, eventType, schemaVersion, producerModule, occurredAt, commandId?, requestId?, actorRef?, payloadRef. Event = fait déjà committé. Consumers idempotents.
 
-## 5. Idempotence / concurrence
-Même commandId + même payload = même résultat. Même commandId + payload différent = CONFLICT. Les événements peuvent être délivrés deux fois; les consumers dédupliquent par eventId/sourceRef. Une réponse browser ancienne ne peut pas écraser une version plus récente.
+## 6. Error model
+VALIDATION, AUTH_REQUIRED, FORBIDDEN, NOT_FOUND, CONFLICT, RATE_LIMITED, TIMEOUT, DEPENDENCY_UNAVAILABLE, INCONCLUSIVE, INTERNAL. Aucun stack trace/secret dans UI.
 
-## 6. Event envelope
-```
-eventId, eventType, schemaVersion, producerModule, occurredAt,
-commandId?, requestId?, actorRef?, payloadRef
-```
-Un event exprime un fait déjà commit. Il ne transporte pas inutilement les contenus privés.
-
-## 7. Failure matrix
-- validation → erreur typée, aucune écriture;
-- auth absente → 401/sign-in;
-- permission refusée → 403 sans fuite;
-- cible supprimée → NOT_FOUND/STALE;
-- conflit → 409 + nouvelle version;
-- timeout → retry borné/fallback;
-- provider down → DEGRADED si capability non critique;
-- réseau perdu après commit → récupération par commandId;
-- worker perdu → requeue uniquement si tâche idempotente.
+## 7. Recovery
+Commit puis réseau coupé → GET by commandId. Worker/provider down → fallback si capacité optionnelle. Data deleted before commit → transaction abort. Unknown event version → quarantine. Duplicate event → dedupe.
 
 ## 8. Security
-Protection IDOR, actor server-derived, validation input/output, session/CSRF selon transport, SSRF allowlist, dependency allowlist, resource limits, sandbox, secret isolation, privacy checks before provider routing, prompt injection treated as untrusted data.
+IDOR prevention, server-derived actor, input/output schema, session controls, secret isolation, rate limits, privacy scope before provider routing, no privileged client bundle.
 
-## 9. AI boundary
-Aucune capacité métier ne traite directement une sortie de modèle comme autorité. M15 fournit normalized result + validation report + provenance. Le owner du module décide de la mutation.
+## 9. Observability
+requestId, traceId, commandId, module, capability, stateBefore/After, validation outcome, duration, errorCode. Pas de contenu privé brut.
 
-## 10. Browser proof
-Desktop : deep links, refresh, keyboard, focus, no critical console error.
-Mobile : touch targets, back navigation, keyboard, narrow viewport, media upload where applicable.
-Chaque mutation est testée en double tap et avec réseau coupé juste après commit.
+## 10. Browser/tests
+Deep-link, refresh, mobile, desktop, back, keyboard, double tap, concurrent tabs, provider outage, degraded state, no white screen, production build.
 
-## 11. Observability
-requestId, traceId, commandId, moduleId, capabilityId, state transition, validation outcome, duration, provider/worker ref, errorCode. Jamais de secret, mot de passe ou contenu privé brut dans telemetry générale.
+## 11. Performance
+Pagination/cursor, bounded payloads, async heavy work, lazy assets, cache invalidation, no AI dependency on critical boot.
 
-## 12. Performance
-Limits explicites; pagination; lazy load; async jobs; cache invalidation; no AI blocking critical boot; runtime 3D isolé et chargé à la demande.
-
-## 13. Rollback / recovery
-Versions critiques immuables. Un nouveau comportement devient une nouvelle version de règle/capability. Les résultats historiques ne sont pas réécrits silencieusement. Les migrations destructrices exigent une stratégie forward-fix/rollback documentée.
-
-## 14. Tests
-Unit rules; integration persistence; auth/policy; event contract; idempotency; concurrency; failure injection; provider fallback; worker lease; artifact sandbox lorsqu'applicable; desktop; mobile; accessibility; regression; observability.
-
-## 15. DONE
-Build/tests verts; permissions prouvées; data coherent under retry/concurrency; fallback/recovery proven; mobile+desktop verified; no duplicate authority; documentation handoff complete.
+## 12. DONE
+Build + tests + security + recovery + observability + mobile/desktop + no duplicate authority.
