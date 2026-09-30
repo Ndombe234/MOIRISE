@@ -1,37 +1,45 @@
-# M03 — SOCIAL + PRIVATE MESSAGING — TECHNICAL DESIGN
+# M03 — SOCIAL + PRIVATE MESSAGING — COMPLETE TECHNICAL CONTRACT
 
-## Boundary
-M03 owns feed/posts/comments/reactions/follows and one-to-one private messaging. Group/community membership belongs to M11.
+## Responsibility
+M03 owns feed/posts/comments/reactions/follows and one-to-one private messaging. Communities/group membership are M11.
 
 ## Data
-`posts`, `post_media`, `comments`, `reactions`, `follows`, `conversations`, `conversation_members`, `messages`, `message_reads`, `message_attachments`.
+`posts`, `post_media`, `comments`, `reactions`, `follows`, `conversations`, `conversation_members`, `messages`, `message_reads`, `message_attachments`, plus notification references.
 
 ## Types
 ```ts
-interface Message { id:string; conversationId:string; senderId:string; body:string; createdAt:string; clientNonce:string; status:"pending"|"sent"|"failed"; }
+interface Message { id:string; conversationId:string; senderId:string; body:string; createdAt:string; clientNonce:string; status:'pending'|'sent'|'failed'; }
 interface Conversation { id:string; memberIds:string[]; updatedAt:string; lastMessageId?:string; }
+interface Post { id:string; authorId:string; body:string; visibility:'public'|'followers'|'private'; createdAt:string; }
 ```
 
-## Messaging invariants
-Only conversation members may read/write messages. Sender identity comes from authenticated session, never from client-supplied `senderId`. `clientNonce` prevents duplicate sends after retries.
+## Feed pipeline
+`query → authorization filter → cursor retrieval → moderation/status filter → render`. Use cursor pagination. Never expose private records through search or cached pages.
 
-## Feed
-Use cursor pagination, not offset pagination. Media is referenced by IDs/URLs with bounded metadata. Mutations are server-authorized and idempotent where retried.
+## Private message pipeline
+`compose → local validation → clientNonce → send → server auth → persist → acknowledgement → realtime fan-out → read state`.
+Sender identity comes from the authenticated session. A client-provided sender ID is ignored.
+
+## Retry/idempotency
+`clientNonce` is unique per sender/conversation retry window. Duplicate requests return the existing message rather than creating a second message.
 
 ## Realtime
-Realtime subscriptions are scoped by user/conversation. Disconnects move pending messages to retry state. Never assume delivery from a successful websocket send; persist server acknowledgement.
+Subscribe only to conversations the authenticated user belongs to. Persist before broadcast. Websocket delivery is not proof of persistence. On disconnect, reload the authoritative cursor and reconcile pending messages.
+
+## Attachments
+Validate MIME, size, ownership and access before storing. Private attachments require conversation authorization on every retrieval. Never place storage master credentials in the browser.
+
+## Block/report
+Before every social mutation or message send, evaluate current block/report restrictions server-side. A blocked relationship must override client UI state.
 
 ## AI boundary
-AI may translate, summarize or assist composition only through capabilities. AI never reads private messages unless the user explicitly invokes an action whose authorization permits the exact conversation data. Provider prompts must be minimized and not retain secrets.
+AI can translate, summarize or assist composition only after explicit user action and only with the minimum permitted content. AI cannot silently inspect private conversations, delete messages, change privacy or impersonate a sender.
 
 ## UI
-Feed is part of Home. Private messages are accessible from message icon/contextual profile actions and have a dedicated screen/drawer, but are not a seventh permanent navigation door.
-
-## Security
-RLS/authorization for every table; attachment MIME/size validation; rate limits; block/report checks; message access audit for privileged tooling.
+Feed belongs to Home. Messages are first-class but contextual: message icon, profile action, notification deep-link and dedicated message screen/drawer. Do not add a seventh permanent navigation door.
 
 ## Tests
-message authorization, duplicate send, offline retry, read receipts, pagination, reaction idempotency, block behavior, private-media access, realtime reconnect and notification deep links.
+RLS; unauthorized read/write; duplicate sends; offline retry; realtime reconnect; message ordering; read receipts; attachment privacy; block behavior; cursor pagination; reaction idempotency; notification deep links; mobile keyboard behavior.
 
 ## Done gate
-Users can publish, interact, privately message and recover from network failures without cross-user data leakage.
+Social interaction and private messaging remain recoverable, permission-correct and independent of AI/provider availability.
