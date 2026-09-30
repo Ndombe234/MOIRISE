@@ -1,36 +1,27 @@
-# AUDIT DES DOUBLONS DOCUMENTAIRES
+# DUPLICATE AUDIT — MOIRISE
 
-## État
+## Active architecture
+Exactly 15 module owners.
 
-La documentation legacy active a été retirée de main avant reconstruction. La branche backup/documentation-before-rebuild conserve l'ancien ensemble.
+## Historical aliases
+Old names remain only in HISTORICAL_INVENTORY/FUSION_MATRIX. They are not parallel owners.
 
-L'arborescence active utilise exactement :
-- un PLAN.md par module ;
-- un TECHNICAL_DESIGN.md par module ;
-- un AI_MASTER_PLAN.md ;
-- un AI_TECHNICAL_DESIGN.md ;
-- une source canonique par préoccupation transversale.
+## Forbidden duplication
+Two AI brains.
+Two provider registries.
+Two progression authorities.
+Two community membership authorities.
+Two reward/roulette authorities.
+A second World Memory.
+A second Living Object lifecycle.
+A second event scheduling engine.
 
-## Duplication interdite
+## Resolution strategy
+When a historical mechanism overlaps:
+owner decides;
+shared contract moves to transversal;
+consumer references owner;
+duplicate copy is deleted or replaced by a reference.
 
-Interdit :
-- Mxx_Technical.md en parallèle de TECHNICAL_DESIGN.md ;
-- deux definitions du même Capability ID ;
-- deux provider registries ;
-- deux politiques worker ;
-- deux owners d'une même progression ;
-- deux moteurs AI ;
-- copie intégrale d'une règle de sécurité dans chaque module.
-
-## Détection future
-
-Pour chaque PR documentaire :
-1. rechercher le nom de la règle ;
-2. identifier son propriétaire ;
-3. rechercher une formulation concurrente ;
-4. remplacer les copies par une référence ;
-5. mettre à jour l'index.
-
-## Verdict
-
-Les anciens fichiers concurrents ne sont plus dans l'arborescence docs/main. Toute future copie constitue une erreur de documentation à corriger avant implémentation.
+## Current 15-module rule
+No M16–M20 product modules exist in the canonical active architecture. Observability, workers, monetization and administration are cross-cutting/support responsibilities owned by the appropriate canonical boundary or M15/M01 contracts.
