@@ -52,3 +52,13 @@ Les retours utilisateur sont des signaux versionnés, dédupliqués et bornés. 
 
 ### F. DONE
 La découverte fonctionne avec baseline sans IA et ne réintroduit jamais blocked/private items.
+
+## GAME PLATFORM — INTÉGRATION M07 / DISCOVERY
+
+M07 traite les jeux comme des Experience/GameBuild versionnés, jamais comme du code arbitraire.
+
+Seules les versions PUBLISHED et autorisées par visibility/safety/privacy entrent dans le catalogue.
+
+Les métadonnées de découverte peuvent inclure genre, mode 2D/3D, durée, contrôles, difficulté, tags, version et compatibilité device.
+
+M07 ne crée jamais un faux jeu pour remplir le catalogue. Une version retirée disparaît de la projection discovery.
