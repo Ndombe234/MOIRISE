@@ -161,3 +161,38 @@ Server authority, schema validation, access checks, rate limits, secrets server-
 
 ## 9. DONE
 Persistence, permissions, events, idempotence, recovery, tests, browser desktop/mobile, observability et anti-doublon d'autorité validés.
+
+## AI-INTÉGRATION M01 — CONTRAT DE COMPRÉHENSION POUR L'IA DE FABRICATION
+
+### A. Position dans MORISE AI
+M01 est la porte d'entrée technique entre l'application et MORISE AI. M01 ne raisonne pas à la place de M15 : il authentifie l'acteur, valide la requête, applique les frontières de session/privacy/capability, transmet une demande conforme à M15 et rend le résultat normalisé au consommateur.
+
+### B. Ce que l'IA de fabrication doit comprendre
+M01 possède : boot, route, session, capability registry, AI gateway et event bus. M01 ne possède pas la progression, Player, Social, World, Play, rewards ou communautés. Toute modification de ces domaines doit être remise à leur owner.
+
+### C. Entrée AI
+Acteur → requestId/traceId → sourceModule → capabilityId/version → targetRef éventuel → payload validé → privacyClass → autonomy → resource budget. actorId vient du serveur.
+
+### D. Séquence obligatoire
+1. dériver actorId serveur;
+2. vérifier session et permission;
+3. valider capabilityId/version;
+4. charger le contexte minimal autorisé;
+5. vérifier privacy/policy/autonomy;
+6. créer le contrat d'appel M15;
+7. exécuter via M15;
+8. valider la sortie;
+9. retourner le résultat sans lui attribuer d'autorité métier;
+10. journaliser uniquement les métadonnées autorisées.
+
+### E. Ce que M01 laisse faire à l'IA
+M15 peut choisir une capability existante, planifier, router, utiliser un provider/worker autorisé et produire une proposition/résultat validable.
+
+### F. Ce que M01 interdit
+Provider choisi par UI, capability inconnue, actorId client fiable, secret exposé, write cross-owner, bypass policy, contexte privé ajouté silencieusement.
+
+### G. Fallback
+MORISE AI indisponible : la fonctionnalité qui peut être déterministe continue sans IA. Une dépendance critique ne doit jamais produire un écran blanc.
+
+### H. DONE AI
+Chaque capability possède contrat, version, schema, validator, policy, observability, fallback et test. Le gateway doit empêcher un second AI router dans un autre module.
