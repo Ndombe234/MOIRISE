@@ -35,3 +35,7 @@ Grant REQUESTED→VALIDATED→COMMITTED/FAILED. Roulette READY→RESERVED→RESO
 
 ## 9. Tests / DONE
 Duplicate grant, invalid source, concurrent pulls, allowance limit, RNG interruption, one-million-title deterministic generation, reconciliation mismatch, mobile/desktop. DONE lorsque l'économie est entièrement server-authoritative et replay-safe.
+
+## AI-INTÉGRATION M14 — CONTRAT DE COMPRÉHENSION POUR L'IA DE FABRICATION
+
+M14 est l'unique autorité de collection, rewards, roulette et intégrité économique. AI peut analyser la collection, expliquer une rareté, suggérer une présentation, détecter des anomalies ou recommander une action. AI ne grant jamais, ne mint jamais, ne roll jamais et ne modifie jamais le ledger. Roulette = configuration versionnée + algorithme M14 + ledger idempotent + limites d'usage. Reward = evidence validée → entitlement → ledger → event. Toute proposition AI reste descriptive jusqu'à validation M14. Fallback : ledger et algorithmes déterministes continuent sans AI. DONE exige impossibilité technique de l'écriture directe par AI.
