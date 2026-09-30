@@ -77,3 +77,21 @@ Le choix 2D/3D vient de la GameSpecification. La 3D doit expliciter scene graph,
 Codex peut agir comme agent de modification sur un workspace candidat limité. Il n'est jamais l'autorité de publication et n'obtient pas automatiquement les secrets de production.
 
 Build/test error → diagnostic → correction ciblée → nouvelle revision → tests → validation. La stable build n'est jamais modifiée directement.
+
+## GAME FABRICATION MEMORY — M08
+
+M08 ne possède pas une deuxième mémoire AI. Il produit les preuves et artifacts qui alimentent le Memory Service central.
+
+Après chaque build/test/repair, M08 doit fournir :
+- project/build/task refs ;
+- artifact hashes ;
+- test results ;
+- failure fingerprints ;
+- successful repair refs ;
+- resource/performance observations ;
+- runtime compatibility observations ;
+- reuse decision refs.
+
+Avant une nouvelle fabrication, M08 demande au MemoryService les connaissances GAME_* pertinentes. Il vérifie leur compatibilité et ne réutilise qu'un pattern VALIDATED.
+
+Une connaissance candidate n'est jamais traitée comme recette avant promotion. M08 reste owner des artifacts et de la GameSpecification ; M15 reste owner de l'orchestration et du learning.
