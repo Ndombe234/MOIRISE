@@ -1,119 +1,82 @@
-# M04 — WORLD — CONCEPTION TECHNIQUE REPRISE À ZÉRO
+# M04 — WORLD — CONCEPTION TECHNIQUE DÉTAILLÉE
 
-## 0. Boundary
-**Owner : M04.** Architecture : UI → server boundary → use-case owner → policy → repository/adapter → persistence/provider → event → projection.
+## 1. Execution boundary
+UI/route → server use-case → M04 policy → repository/adapter → DB/runtime → event → projection.
 
-## 1. Command contract
+## 2. Command schema
 ```
-Command {
-  commandId: string,
-  actorId: server-derived,
-  capabilityId: string,
-  targetRef?: string,
-  expectedVersion?: number,
-  payload: validated object
-}
+{commandId, actorId(server-derived), capabilityId, targetRef?, expectedVersion?, payload}
 ```
-Le serveur refuse actorId arbitraire, capability inconnue, payload hors schema, target hors scope, expectedVersion périmée ou réutilisation d'un commandId avec un payload différent.
+Reject unknown capability, forged actorId, invalid payload, unauthorized target, stale version and commandId reuse with different payload.
 
-## 2. Capability contracts
+## 3. Capability contracts
 ### M04.C1 Home
-Entrée : actor + contexte minimal + payload validé.
-Préconditions : no fake counters/people.
-Exécution : WorldSurface.
-Sortie autoritative : optional source down: degraded.
-Erreur principale : undefined.
-Boundary sécurité : undefined.
+Input : shell READY + actor scope.
+Execution : load minimal context → select 5–6 doors → compose only eligible cards.
+Mutation : WorldSurfaceState.
+Failure : optional source down = DEGRADED; never invent people/activity.
+Security : no fake counters or urgency.
 
 ### M04.C2 Context card
-Entrée : actor + contexte minimal + payload validé.
-Préconditions : reason must be explainable.
-Exécution : ContextCard.
-Sortie autoritative : dismiss suppresses repeat.
-Erreur principale : undefined.
-Boundary sécurité : undefined.
+Input : source event exists, cooldown passed + actor scope.
+Execution : check relevance → reason key → action → expiry → show.
+Mutation : ContextCard.
+Failure : dismiss suppresses repeated card.
+Security : reason must be explainable.
 
 ### M04.C3 Detour
-Entrée : actor + contexte minimal + payload validé.
-Préconditions : no fake urgency.
-Exécution : Detour.
-Sortie autoritative : dismissed/ignored: cooldown.
-Erreur principale : undefined.
-Boundary sécurité : undefined.
+Input : not typing/reading/playing/creating unless critical + actor scope.
+Execution : suppress intrusive context → evaluate relevance/cooldown → offer optional detour.
+Mutation : Detour.
+Failure : ignored/dismissed = cooldown; source gone = remove.
+Security : no manipulative urgency.
 
 ### M04.C4 Door handoff
-Entrée : actor + contexte minimal + payload validé.
-Préconditions : World doesn't own destination mutation.
-Exécution : IntentEnvelope.
-Sortie autoritative : destination unavailable: return with actionable state.
-Erreur principale : undefined.
-Boundary sécurité : undefined.
+Input : destination route enabled + actor scope.
+Execution : create IntentEnvelope → destination revalidates auth and executes.
+Mutation : IntentEnvelope.
+Failure : destination unavailable = return to World with useful action.
+Security : World doesn't mutate destination data.
 
 ### M04.C5 Solo orientation
-Entrée : actor + contexte minimal + payload validé.
-Préconditions : no forced social.
-Exécution : OrientationState.
-Sortie autoritative : resume idempotently.
-Erreur principale : undefined.
-Boundary sécurité : undefined.
+Input : no mandatory social dependency + actor scope.
+Execution : select one understandable solo action → mark orientation progress → expose optional social path.
+Mutation : OrientationState.
+Failure : resume must be idempotent.
+Security : no fake rewards.
 
 ### M04.C6 Share discovery
-Entrée : actor + contexte minimal + payload validé.
-Préconditions : no private leakage.
-Exécution : ShareToken.
-Sortie autoritative : source later private: token revoked.
-Erreur principale : undefined.
-Boundary sécurité : undefined.
+Input : source is shareable + actor scope.
+Execution : privacy projection → scoped expiring token → public projection.
+Mutation : ShareToken.
+Failure : later privacy revocation blocks token.
+Security : private source never leaks.
 
-## 3. Persistence
-Contraintes uniques pour identities/idempotency; index sur owner+status+updatedAt et clés de recherche; foreign keys uniquement lorsque coupling autorisé; version d'optimistic concurrency quand plusieurs writers existent; suppression/retention alignées avec privacyClass.
+## 4. State/persistence
+State transitions are atomic around the business mutation. Unique constraints protect one-time operations. ExpectedVersion protects concurrent writes. Projection/cache is reconstructible.
 
-## 4. State and transaction contract
-Chaque transition définit stateBefore → trigger → guards → transaction → stateAfter → event. Les écritures formant une seule unité métier sont atomiques. Les projections sont reconstruites depuis l'autorité si elles deviennent incohérentes.
+## 5. Events
+eventId, type, schemaVersion, producerModule, occurredAt, commandId, requestId, actorRef, payloadRef. Event means committed fact. Consumers dedupe.
 
-## 5. Idempotence / concurrence
-Même commandId + même payload = même résultat. Même commandId + payload différent = CONFLICT. Les événements peuvent être délivrés deux fois; les consumers dédupliquent par eventId/sourceRef. Une réponse browser ancienne ne peut pas écraser une version plus récente.
+## 6. Errors
+VALIDATION, AUTH_REQUIRED, FORBIDDEN, NOT_FOUND, CONFLICT, RATE_LIMITED, TIMEOUT, DEPENDENCY_UNAVAILABLE, INCONCLUSIVE, INTERNAL.
 
-## 6. Event envelope
-```
-eventId, eventType, schemaVersion, producerModule, occurredAt,
-commandId?, requestId?, actorRef?, payloadRef
-```
-Un event exprime un fait déjà commit. Il ne transporte pas inutilement les contenus privés.
-
-## 7. Failure matrix
-- validation → erreur typée, aucune écriture;
-- auth absente → 401/sign-in;
-- permission refusée → 403 sans fuite;
-- cible supprimée → NOT_FOUND/STALE;
-- conflit → 409 + nouvelle version;
-- timeout → retry borné/fallback;
-- provider down → DEGRADED si capability non critique;
-- réseau perdu après commit → récupération par commandId;
-- worker perdu → requeue uniquement si tâche idempotente.
+## 7. Recovery matrix
+Invalid input → no write.
+Unauthorized → 403.
+Deleted target → stale/unavailable.
+Commit + network loss → status lookup by commandId.
+Optional dependency failure → DEGRADED.
+Duplicate event → dedupe.
 
 ## 8. Security
-Protection IDOR, actor server-derived, validation input/output, session/CSRF selon transport, SSRF allowlist, dependency allowlist, resource limits, sandbox, secret isolation, privacy checks before provider routing, prompt injection treated as untrusted data.
+IDOR protection; server-derived actor; policy at read and write; private data filtering; no secrets in client; no arbitrary provider endpoint; rate limit.
 
-## 9. AI boundary
-Aucune capacité métier ne traite directement une sortie de modèle comme autorité. M15 fournit normalized result + validation report + provenance. Le owner du module décide de la mutation.
+## 9. Browser tests
+Deep-link, refresh, back, mobile narrow viewport, touch, keyboard, double tap, network loss after commit, optional dependency outage, no white screen.
 
-## 10. Browser proof
-Desktop : deep links, refresh, keyboard, focus, no critical console error.
-Mobile : touch targets, back navigation, keyboard, narrow viewport, media upload where applicable.
-Chaque mutation est testée en double tap et avec réseau coupé juste après commit.
+## 10. Performance
+Bounded lists, cursor pagination, async heavy work, lazy media/runtime, cache invalidation. Core path cannot depend on AI.
 
-## 11. Observability
-requestId, traceId, commandId, moduleId, capabilityId, state transition, validation outcome, duration, provider/worker ref, errorCode. Jamais de secret, mot de passe ou contenu privé brut dans telemetry générale.
-
-## 12. Performance
-Limits explicites; pagination; lazy load; async jobs; cache invalidation; no AI blocking critical boot; runtime 3D isolé et chargé à la demande.
-
-## 13. Rollback / recovery
-Versions critiques immuables. Un nouveau comportement devient une nouvelle version de règle/capability. Les résultats historiques ne sont pas réécrits silencieusement. Les migrations destructrices exigent une stratégie forward-fix/rollback documentée.
-
-## 14. Tests
-Unit rules; integration persistence; auth/policy; event contract; idempotency; concurrency; failure injection; provider fallback; worker lease; artifact sandbox lorsqu'applicable; desktop; mobile; accessibility; regression; observability.
-
-## 15. DONE
-Build/tests verts; permissions prouvées; data coherent under retry/concurrency; fallback/recovery proven; mobile+desktop verified; no duplicate authority; documentation handoff complete.
+## 11. DONE
+Build/tests/security/recovery/observability proven on desktop and mobile without duplicate owner authority.
