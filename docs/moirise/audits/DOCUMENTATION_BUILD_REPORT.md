@@ -76,3 +76,16 @@ On enrichit la source canonique concernée.
 On ne crée pas une seconde copie d'un mécanisme déjà défini.
 
 Tout doublon identifié doit être supprimé ou remplacé par une référence canonique.
+
+
+## AI ↔ modules — mise à niveau de la fabrication
+
+Le corpus a été enrichi afin que l'IA de fabrication ne comprenne pas seulement « MORISE AI » isolément, mais également le fonctionnement de chacun des 15 modules et la manière exacte dont chaque module utilise MORISE AI.
+
+Les deux sources AI canoniques contiennent maintenant une couche de cognition des modules et un contrat technique de fabrication IA↔modules.
+
+Les 30 documents actifs des modules contiennent chacun un contrat d'intégration AI spécifique : 15 PLAN + 15 TECHNICAL_DESIGN.
+
+La documentation ne dit donc plus seulement « ce module peut utiliser l'IA ». Elle précise la frontière : contexte entrant → capability → orchestration M15 → validation → décision/commit par l'owner → event → projection → fallback.
+
+Cette extension ne transforme pas les modules en cerveaux concurrents et ne crée pas de troisième source de vérité AI.
