@@ -1,35 +1,37 @@
-# M07 — GAME DISCOVERY — TECHNICAL DESIGN
+# M07 — GAME DISCOVERY — COMPLETE TECHNICAL CONTRACT
 
-## Boundary
-M07 owns retrieval, filtering, ranking and recommendation presentation for posts, games, profiles, communities and events. It never owns the source records.
+## Responsibility
+M07 owns retrieval, filtering, deterministic ranking, personalization and presentation of discoverable games/content. It never owns source records or private access rules.
 
-## Pipeline
-`query → normalize → retrieve candidates → permission/safety filter → deterministic ranking → optional AI enrichment → diversify → cursor pagination → presentation`.
-
-## Types
+## Query contract
 ```ts
 interface DiscoveryQuery { text?:string; kinds?:string[]; tags?:string[]; cursor?:string; limit:number; locale:string; }
 interface Candidate { id:string; kind:string; score:number; reasons:string[]; }
-interface DiscoveryResult { items:Candidate[]; nextCursor?:string; modelVersion?:string; }
+interface DiscoveryResult { items:Candidate[]; nextCursor?:string; rankingVersion:string; }
 ```
 
-## Ranking
-Hard filters first: authorization, blocked users, private visibility, safety and availability. Then deterministic relevance/freshness/diversity. AI ranking is optional and cannot bypass hard filters.
+## Pipeline
+`normalize → retrieve candidates → authorization/private filter → block/safety filter → deterministic relevance/freshness/diversity → optional AI enrichment → cursor pagination → presentation`.
+
+Hard filters always run before ranking. AI cannot bypass them.
 
 ## Personalization
-Use explicit player interests and recent eligible behavior. Never infer sensitive attributes. Recommendation explanations are generated from recorded non-sensitive reasons.
+Use explicit interests and eligible recent behavior. Do not infer sensitive attributes. Store recommendation reasons from non-sensitive signals so explanations are auditable.
 
-## Caching
-Public discovery can use short-lived cache keys containing normalized query/locale. User-specific results include user scope. Never share private result caches.
+## Cache
+Public results use short TTL keys containing normalized query, locale and ranking version. User-specific results include user scope. Never cache private results in a public cache.
 
 ## AI boundary
-Only `CapabilityRouter` calls AI. AI failure falls back to deterministic ranking.
+Only the canonical CapabilityRouter may invoke AI. AI ranking is optional. If unavailable, deterministic ranking remains fully functional.
 
 ## UI
-Discover is a primary door. Search, categories, recommendations and filters are internal sections/tabs.
+Discover is a primary door. Search, categories, filters, recommendations and result explanations are contextual sections.
+
+## Performance
+Cursor pagination; bounded candidate count; deduplication before rendering; lazy media; virtualized long lists. Avoid repeated AI calls for identical query/context hashes.
 
 ## Tests
-authorization, blocked content, multilingual normalization, duplicate suppression, stable pagination, ranking determinism, AI fallback, empty state and mobile rendering.
+Authorization; blocked content; multilingual normalization; duplicate suppression; stable cursor; ranking determinism; personalization privacy; AI fallback; empty/error/unavailable states; mobile rendering.
 
 ## Done gate
-Discovery is useful without AI and cannot leak content through ranking or caching.
+Discovery is useful without AI and cannot leak private or blocked content through ranking, caching or explanations.
