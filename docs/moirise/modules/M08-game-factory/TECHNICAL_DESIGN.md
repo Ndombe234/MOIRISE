@@ -34,3 +34,21 @@ Spec schema, graph acyclicity, idempotency, build, sandbox, security, runtime, s
 
 ## 11. DONE
 A reproducible project can be regenerated from spec+artifact lineage, bad candidates cannot overwrite the stable version, and every published game points to a validated immutable build.
+
+## 11. AI MODULE CONTRACT — M08
+
+### 11.1 GameFactoryRequest
+brief, targetPlayers, platform, mode2D3D, durationTarget, shareability, contentConstraints, safetyClass, resourceBudget, requestedAutonomy.
+
+### 11.2 GameSpecification ownership
+M15 produit/compile les propositions; M08 valide la specification métier, crée le TaskGraph et possède l'état de fabrication.
+
+### 11.3 Artifact validation
+Chaque artifact = artifactId, type, sourceTask, contentHash, schemaVersion, provenance, validatorRefs, sandboxRef, status.
+VALIDATION est obligatoire avant publication.
+
+### 11.4 Repair loop
+INVALID → diagnostic → bounded correction proposal → new artifact version → validation. Oscillation/attempt budget exceeded = REJECTED/ESCALATE.
+
+### 11.5 Tests
+broken dependency, malicious code, invalid asset, oversized bundle, mobile performance, 2D/3D capability mismatch, provider output INCONCLUSIVE, retry/idempotency and clean rollback.
