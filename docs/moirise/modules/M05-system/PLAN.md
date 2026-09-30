@@ -77,3 +77,29 @@ M06 fournit les résultats de jeu validés. M12 fournit les résultats d'événe
 
 ## 14. Tests et DONE
 Tester XP doublée, résultat falsifié, replay event, level boundary, title déjà débloqué, mission avec progression hors ordre, surprise supprimée pendant typing, provider AI down, mobile, desktop, réseau perdu après commit.
+
+## AI-INTÉGRATION M05 — CONTRAT DE COMPRÉHENSION POUR L'IA DE FABRICATION
+
+### A. Position
+M05 est l'autorité absolue de progression visible et de ses mutations. MORISE AI peut comprendre le Player et proposer des candidats, mais ne peut pas attribuer de progression.
+
+### B. AI cases
+Mission candidate, title candidate, achievement explanation, next-action proposal, contextual surprise candidate, progression explanation, SYSTEM wording localisé, pattern analysis.
+
+### C. Evidence rule
+Toute proposition M15 doit référencer une evidence réelle : event, Player state, rule version, context snapshot ou autre source autorisée. Une « intuition AI » n'est pas une preuve d'éligibilité.
+
+### D. XP
+M15 peut analyser ou expliquer. Seul le pipeline M05 valide sourceEventId + ruleVersion + entitlement et écrit XPTransaction.
+
+### E. Titles/missions
+M15 peut proposer une définition/candidate. M05 vérifie prerequisites, evidence et ruleVersion puis crée l'instance/unlock.
+
+### F. Surprise
+AI candidate → policy → suppression activité → cooldown → presentation budget → reaction. Aucun faux futur ni fausse rareté.
+
+### G. Fallback
+M15 unavailable ne bloque jamais le cœur XP/level/rank/mission déjà déterministe.
+
+### H. DONE
+Tests prouvent qu'un provider ou M15 ne peut ni écrire le ledger XP, ni forcer un title, ni terminer une mission, ni bypasser une règle.
