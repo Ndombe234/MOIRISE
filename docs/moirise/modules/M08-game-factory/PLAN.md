@@ -43,3 +43,23 @@ Un Living Object peut devenir seed de projet. Fork/merge/conversion conserve own
 
 ## 11. Tests / DONE
 Tester idée ambiguë, spec incohérente, cycle DAG, build failure, malicious dependency, 2D, 3D, resource overrun, rollback et publication non autorisée. DONE seulement avec version reproductible et rollback.
+
+## AI-INTÉGRATION M08 — CONTRAT DE COMPRÉHENSION POUR L'IA DE FABRICATION
+
+### A. Position
+M08 est l'atelier de fabrication A→Z. M15 est le cerveau d'orchestration qui comprend le brief, compile les exigences, planifie les capabilities et gère les ressources, mais M08 reste owner du GameSpecification et de l'acceptation du package.
+
+### B. AI cases
+Game design, code generation, asset generation, audio/music, test generation, 2D/3D scene planning, documentation, repair proposals.
+
+### C. Pipeline
+brief → intent → requirements → GameSpecification → TaskGraph → capabilities → resource plan → sandbox → artifacts → validators → build → M09 runtime validation.
+
+### D. Untrusted rule
+Tout code, script, asset, prompt result, image, audio ou fichier produit par un provider/worker est NON_TRUSTED jusqu'à validation. Un provider ne publie jamais directement.
+
+### E. 2D/3D
+La 3D n'est retenue que si elle apporte une valeur réelle. La génération doit préciser engine, version, scene graph, camera, collisions, lighting, asset budget, loading, device capability, fallback et test budget.
+
+### F. DONE
+Un jeu généré n'est publiable que si tous les nodes du DAG sont VALID, les artifacts sont validés, le manifest runtime est compatible et les tests passent.
