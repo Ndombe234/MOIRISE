@@ -44,3 +44,25 @@ Create/accept challenge; expiry; duplicate; blocked user; privacy; result valida
 
 ## 12. DONE
 Play creates natural shareable/async social loops without making friendship or simultaneous presence mandatory.
+
+## 13. Challenge model
+Challenge {sourceResultRef, rulesVersion, creatorId, targetRef/cohortRef, visibility, expiresAt}.
+A challenge cannot expose source private data.
+
+## 14. Comparison
+Comparison is deterministic from validated results and rulesVersion.
+Tie behavior is versioned.
+No comparison uses client-reported score directly.
+
+## 15. Community goals
+M11 owns community membership.
+M10 owns challenge progress.
+M14/M05 consume validated completion for reward/progression.
+
+## 16. Async fairness
+No simultaneous session requirement.
+Expired challenge cannot be completed.
+Rematch uses new attempt and idempotency.
+
+## 17. Acceptance
+A shared result can become a challenge without exposing a private session, and a recipient can play asynchronously.
