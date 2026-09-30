@@ -84,3 +84,19 @@ Pagination/cursor, bounded payloads, async heavy work, lazy assets, cache invali
 
 ## 12. DONE
 Build + tests + security + recovery + observability + mobile/desktop + no duplicate authority.
+
+## 13. AI MODULE CONTRACT — M02
+
+### 13.1 Context projection
+PlayerAIContext = { playerRef, locale, explicitPreferences, publicProfileProjection?, allowedMemoryRefs[], currentActivity?, privacyVersion, contextHash }.
+Aucun secret d'authentification, token, email privé ou champ non autorisé n'est ajouté par défaut.
+
+### 13.2 Write boundary
+AIProposal → M02 validation → mutation transactionnelle → event → projection.
+AIProposal n'est jamais une mutation.
+
+### 13.3 Memory rules
+Read scope doit être explicitement déclaré. Write scope doit être plus restrictif que read scope. Toute promotion de mémoire vers un scope plus large exige une policy/consentement/owner decision.
+
+### 13.4 Tests
+Cross-player read denied; private preference leakage denied; stale version conflict; duplicate profile suggestion; memory scope escalation; AI outage; deterministic personalization fallback; deletion propagation; cache invalidation.
