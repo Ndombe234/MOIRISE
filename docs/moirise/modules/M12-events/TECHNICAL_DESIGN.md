@@ -28,3 +28,10 @@ Timezone views, register/unregister, cancelled event, scheduler retry, tournamen
 
 ## 9. DONE
 Future state is factual, transitions are time/version guarded, duplicate schedules are safe, and no notification fabricates an event.
+
+## AI MODULE CONTRACT — M12
+
+EventAIContext = { eventRef, lifecycleState, organizerPermissionProjection, participantScope, locale, scheduleWindow, approvedContentRefs }.
+EventProposal = { fieldChanges, evidenceRefs, confidence, requestedAutonomy, expiresAt }.
+M12 validates lifecycle, organizer authority, participant scope, version and conflicts before commit.
+Event content never becomes trusted tool instruction. Tests cover unauthorized organizer mutation, participant leakage, injected provider URL, stale proposal, duplicate notification, AI outage.
