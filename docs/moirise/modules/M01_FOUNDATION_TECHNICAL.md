@@ -1,51 +1,41 @@
-# M01 — FOUNDATION — TECHNICAL CONTRACT
+# M01 — FOUNDATION — TECHNICAL DESIGN
 
-## Purpose
-Build the non-negotiable application foundation. M01 owns runtime boot, configuration, global error handling, routing shell, design tokens, localization bootstrap, accessibility baseline and observability bootstrap. It does not own social, games or AI behavior.
+## Boundary
+M01 owns application boot, routing shell, theme system, localization foundation, error boundaries, loading states, configuration loading and shared UI primitives. It does not own player data, social data, games or AI internals.
 
-## Source of truth
-`docs/moirise/MASTER_REBUILD_V2.md` → module order and boundaries.
+## Runtime
+React + TypeScript + Vite. Tailwind is the styling layer. Supabase/Firebase access is isolated behind typed data services. No provider URL or secret is embedded in UI code.
 
-## File map
-- `app/layout.tsx`: root shell only.
-- `app/globals.css`: tokens/reset only.
-- `lib/config/*`: validated public configuration.
-- `lib/i18n/*`: locale registry and fallback.
-- `components/system/*`: shared SYSTEM shell primitives.
-- `lib/observability/*`: PostHog/event adapter; no business logic.
-- `app/error.tsx`, `app/not-found.tsx`: recovery UI.
+## Primary navigation
+Keep the product to 5–6 permanent doors: Home, Discover, Play, Communities, Create, Profile. Private messages are contextual and first-class, reachable from profile/notifications/message surfaces, not another permanent global button.
 
-## Core types
+## Core modules
+`AppShell`, `Router`, `SystemOverlay`, `BottomNav`, `DesktopSidebar`, `LoadingBoundary`, `ErrorBoundary`, `I18nProvider`, `ThemeProvider`, `ToastHost`.
+
+## Types
 ```ts
-export type Locale = "fr"|"en"|"hi"|"es"|"de"|"it"|"pt"|"ar"|"ja"|"ko"|"ru"|"tr"|"id"|"th"|"vi"|"pl"|"nl"|"ro"|"bn"|"ur";
-export interface AppConfig { locale: Locale; environment: "development"|"preview"|"production"; featureFlags: Record<string,boolean>; }
+interface AppConfig { version:string; environment:"dev"|"staging"|"prod"; defaultLocale:string; supportedLocales:string[]; }
+interface RouteMeta { id:string; path:string; auth:"public"|"user"|"admin"; primary:boolean; }
+interface AsyncState<T> { status:"idle"|"loading"|"success"|"error"; data?:T; error?:string; }
 ```
 
-## Boot sequence
-`config → auth/session hydration → locale → theme tokens → shell → route → feature module`.
-A failed optional provider must degrade only its feature; it must never blank the whole application.
+## State rules
+Global state only for session, locale, theme, notifications and SYSTEM status. Feature state stays local to its module. Never duplicate the same entity in multiple global stores.
 
-## UI contract
-Exactly one global shell. Desktop: sidebar. Mobile: bottom navigation. Main navigation exposes only the canonical 5–6 doors. Secondary features are contextual SYSTEM actions.
+## UI rules
+Mobile-first. One shared shell. Dark glassmorphism. Secondary actions appear contextually in panels/drawers/modals. No page creates a new permanent navigation button without changing the master contract.
 
 ## Performance
-Lazy-load feature modules, games and media. Never import heavy game engines or media libraries from the root layout. Use route-level code splitting. Define loading skeletons for every async surface.
+Lazy-load module routes; dynamic import heavy game/media/AI screens; virtualize long lists; avoid global rerenders; cache static translations and icons.
 
 ## Security
-No secret is read by client code. Public configuration is explicitly allow-listed. Server-only secrets stay server-side. Every API route validates input and authenticated context.
+Route guards are UX only; server authorization remains authoritative. Never expose private credentials in Vite client variables. Sanitize user-generated HTML/markdown.
 
-## Observability
-Emit stable event names: `app_boot`, `route_view`, `error_boundary`, `feature_degraded`. Never send private message bodies, provider secrets or raw personal content to analytics.
+## Failure states
+Every async surface has loading, empty, error, retry and unavailable states. A module failure must not blank the whole application.
 
 ## Tests
-- config validation;
-- locale fallback;
-- route boot;
-- error boundary;
-- mobile shell;
-- no-JS/degraded provider behavior;
-- build/typecheck;
-- no blank screen after navigation.
+boot, route guards, deep links, mobile navigation, desktop navigation, locale switching, persistence, error boundary recovery, lazy-route loading and no-blank-screen regression.
 
 ## Done gate
-M01 is complete only when the application boots on mobile and desktop, every primary route resolves, failures render recovery UI, and heavy features are lazy-loaded.
+Production build succeeds, every primary door resolves, deep links work, mobile/desktop shells are stable, and an isolated feature failure does not destroy the shell.
