@@ -20,3 +20,13 @@
 
 ## Ownership
 A consumer may read an exposed projection/event but may not mutate another module's private persistence directly.
+
+
+## AI Cognition Dependency
+
+La dépendance vers M15 ne signifie pas que M15 possède l'état métier du module. Elle signifie que le module peut consommer les capacités d'orchestration AI via un contrat.
+
+Pour toute feature AI :
+module owner → capability contract → M15 orchestration → provider/worker éventuel → ValidationEngine → module owner commit → event → projection.
+
+La fabrication doit donc charger à la fois la dépendance de module et son contrat AI. Un consumer peut demander une capability, mais ne choisit pas directement le provider et ne modifie pas la persistence d'un autre owner.
