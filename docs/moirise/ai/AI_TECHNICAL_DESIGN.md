@@ -2618,3 +2618,161 @@ What is the deterministic fallback?
 What happens on retry, privacy change or provider outage?
 
 Une réponse inconnue bloque la génération au stade design/analysis.
+
+# 94. TECHNICAL DESIGN — GAME PLATFORM FACTORY / RUNTIME / VALIDATION
+
+## 94.1 Architecture technique canonique
+Le code de la plateforme doit être séparé conceptuellement en :
+- `games/specification`
+- `games/factory`
+- `games/artifacts`
+- `games/validation`
+- `games/runtime`
+- `games/catalog`
+- `games/play-bridge`
+- `games/social-bridge`
+- `ai/capabilities/game`
+
+Les chemins exacts peuvent varier avec l'implémentation finale, mais une seule implémentation active existe par responsabilité.
+
+## 94.2 Contrats fondamentaux
+
+`GameSpecification`
+= identity + genre + mode + platform + coreLoop + rules + entities + controls + winLoss + progressionHooks + socialHooks + resourceBudget + accessibility + shareability + safety + testPlan + runtimeRequirements.
+
+`GameProject`
+= projectId + specificationVersion + templateRef + files[] + artifactRefs[] + taskGraphId + branch/workspaceRef + status + lineage.
+
+`GameArtifact`
+= artifactId + projectId + type + sourceTaskId + contentHash + schemaVersion + provenance + validatorRefs[] + sandboxRef + status + createdAt.
+
+`GameBuild`
+= buildId + projectId + sourceRevision + engineId + engineVersion + buildTarget + artifactHashes[] + testReportRef + securityReportRef + runtimeManifestRef + status.
+
+`GameIntegration`
+= integrationId + buildId + M07VisibilityRef + M06ExperienceRef + M09RuntimeRef + optionalM10Hook + optionalM05Hook + optionalM14Hook + publicationState.
+
+## 94.3 State machine de fabrication
+DRAFT
+→ SPECIFIED
+→ TASK_GRAPH_READY
+→ GENERATING
+→ BUILDING
+→ TESTING
+→ INVALID ou READY_FOR_VALIDATION
+→ REPAIRING
+→ BUILDING
+→ TESTING
+→ VALIDATED
+→ READY_FOR_INTEGRATION
+→ INTEGRATED
+→ PUBLISHED
+
+Terminales : REJECTED, ESCALATED, CANCELLED.
+
+Aucune transition vers READY_FOR_INTEGRATION sans build, test, security, resource et manifest checks.
+
+## 94.4 Task graph type
+Nodes recommandés :
+requirements
+→ game-spec
+→ architecture
+→ gameplay
+→ UI
+→ assets
+→ audio
+→ code
+→ tests
+→ build
+→ security
+→ performance
+→ runtime-manifest
+→ integration
+
+Les nodes peuvent être parallèles lorsque leurs dépendances le permettent. Aucun node ne doit écrire directement dans la persistence d'un autre owner.
+
+## 94.5 Build contract
+Le build doit être reproductible à partir de project revision + specificationVersion + dependency lock + artifact hashes + engineVersion.
+
+Un build non reproductible est INVALID pour publication jusqu'au diagnostic.
+
+## 94.6 Test layers
+1. Static : schema, types, lint, dependency policy.
+2. Unit : game rules and pure functions.
+3. Integration : runtime bridge, save, input, hooks.
+4. Security : malicious artifact, forbidden API, secret scan, dependency policy.
+5. Resource : bundle size, memory, CPU/GPU class, load time.
+6. Browser/device : mobile touch, desktop keyboard, resize, focus, no white screen.
+7. Runtime : launch, pause/resume, save/load, crash recovery.
+8. Product contract : M06 session, M07 discovery, M10 social hooks, M05/M14 validated-result consumption.
+
+## 94.7 Repair controller
+`RepairController` reçoit diagnosticRef, failedNodes[], candidateRevision, attempt, maxAttempts, hypothesis, regressionTests[].
+
+Règles :
+- aucune réparation sans diagnostic ;
+- chaque correction crée une nouvelle revision ;
+- tests précédemment verts sont rejoués quand impactés ;
+- même fingerprint d'échec après plusieurs essais = oscillation candidate ;
+- budget épuisé = ESCALATED/REJECTED ;
+- aucune correction ne remplace silencieusement la stable build.
+
+## 94.8 2D/3D runtime selection
+Input : GameSpecification + DeviceCapabilityProfile + ResourceProfile.
+Decision :
+- choisir un runtime 2D lorsque spatial 3D n'apporte pas de valeur nécessaire ;
+- choisir 3D si la spécification l'exige et si les budgets sont compatibles ;
+- sinon produire une variante/fallback explicitement définie.
+
+Le choix est versionné dans GameSpecification et RuntimeManifest.
+
+## 94.9 Agent/Codex execution boundary
+Un agent de développement reçoit `GameProjectWorkspace` limité :
+- source candidate ;
+- specification ;
+- task graph ;
+- approved asset refs ;
+- test fixtures ;
+- tool allowlist.
+
+Il ne reçoit pas par défaut :
+- production secrets ;
+- service role ;
+- admin endpoints ;
+- arbitrary database write ;
+- unrestricted network.
+
+Le résultat de l'agent est un CandidateRevision. Seul le pipeline de validation peut le promouvoir.
+
+## 94.10 Reuse algorithm
+Avant de créer une nouvelle brique :
+1. rechercher template compatible ;
+2. rechercher runtime component compatible ;
+3. rechercher validated artifact ;
+4. rechercher test fixture ;
+5. rechercher adapter existant ;
+6. vérifier version/compatibility/security ;
+7. réutiliser si compatible ;
+8. sinon créer une nouvelle version explicitement tracée.
+
+## 94.11 Integration API boundary
+M08 remet à M09 un GamePackage validé.
+M09 retourne RuntimeManifest/RuntimeRef validés.
+M06 crée PlaySession et démarre le runtime.
+M07 publie une projection de découverte à partir d'une version publiée.
+M10 consomme uniquement les hooks sociaux autorisés.
+M05 consomme uniquement les résultats validés.
+M14 consomme uniquement les evidences/results autorisés.
+
+## 94.12 Final game fabrication test
+Le test final doit démontrer au minimum :
+1. demande 2D → jeu jouable ;
+2. demande 3D → jeu jouable ;
+3. génération de code → build ;
+4. build cassé → diagnostic → correction → rebuild ;
+5. correction invalide → rejet ;
+6. runtime incompatibilité → fallback ou rejet explicite ;
+7. publication impossible sans validation ;
+8. un jeu suivant réutilise une fondation existante sans recopier toute la plateforme ;
+9. Codex/agent absent n'empêche pas l'existence du contrat de fabrication ;
+10. aucun jeu ne contourne M01/M05/M06/M07/M09/M10/M14.
