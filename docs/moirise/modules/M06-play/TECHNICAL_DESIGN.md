@@ -55,3 +55,38 @@ Session ownership, expiry, tampered score, duplicate result, save schema, share 
 
 ## 14. DONE
 Play remains useful alone, loads quickly, has truthful states and protects result/progression integrity.
+
+## 15. Concrete APIs
+getRecommendedExperience(playerContext)
+startPlaySession(experienceId)
+savePlaySession(sessionId,state)
+resumePlaySession(saveId)
+submitPlayResult(sessionId,attemptPayload)
+createMoment(resultId)
+createShareToken(momentId)
+
+## 16. Result validation
+Validator receives server session seed/config plus client observation.
+It checks:
+attempt belongs to session;
+session active/not expired;
+action log size and schema;
+impossible transitions;
+score bounds;
+completion state;
+idempotency.
+
+## 17. Experience families
+Pulse = short skill.
+Drift = micro exploration.
+Forge = creation mini-experience.
+Duel = asynchronous challenge.
+Quest = progression.
+World = heavier 3D where justified.
+
+## 18. Runtime recovery
+If engine throws, M06 marks runtime failure, stores safe diagnostics, returns to Play shell and preserves any valid previous save.
+If save writes twice, version/checksum resolves last authoritative state.
+
+## 19. Acceptance
+A Player can launch one experience with one clear action; a failed optional provider never makes the whole Play page blank.
