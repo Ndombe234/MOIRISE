@@ -66,3 +66,90 @@ Users can create groups themselves. M15 may detect sustained non-sensitive affin
 
 ## Interface rule
 Internal capability count can be extremely large; visible navigation remains approximately five or six principal doors.
+
+
+# TECHNICAL DECOMPOSITION RULE
+
+For every feature, implementation must define: actor, trigger, context, input schema, validation, permission, state machine, authoritative owner, persistence, idempotency, events, UI state, AI capability if any, provider/resource route if any, failure modes, retry, rollback, observability, privacy, tests and mobile behavior.
+
+# FEATURE MECHANISM MAP
+
+## SOCIAL / PRIVATE MESSAGING
+Actor → conversation membership check → message validation → idempotent write → MESSAGE_SENT → delivery/read projections. AI translation uses only authorized conversation context. Private content is excluded from global learning/analytics by default.
+
+## USER GROUP CREATION
+Player → CREATE_COMMUNITY → validate name/visibility/rules → create community + owner membership atomically → default role bindings → COMMUNITY_CREATED → invite/join flows.
+
+## AI COMMUNITY FORMATION
+Permitted social/activity signals → affinity candidate → existing-community check → privacy/block/mute filter → confidence/diversity threshold → proposal → explicit user action required for persistent creation or membership mutation → normal Community lifecycle → feedback.
+
+## LIVING OBJECT
+Seed → versioned object → contribution → transformation → branch → share/invite → optional conversion to story/game/challenge/event/community. Lineage and attribution survive branching and merging.
+
+## MORISE DNA
+Validated Player action → evidence → capability dimension/version → signal confidence → DNA projection → contextual possibility. It describes demonstrated capability, not sensitive psychology.
+
+## EVOLUTION ENGINE
+Meaningful action → permitted signal → Trace update → possibility evaluation → contextual change/proposal → Player feedback → validated experience. Hidden Possibilities and Unexplored Paths remain optional and do not create false completion metrics.
+
+## FUN & SURPRISE
+Eligible state → rarity/frequency policy → safe content proposal → optional presentation → feedback. Never fake scarcity, fake event, fake counter or coercive urgency.
+
+## CONVERGENCE
+Independent permitted trajectories → similarity/compatibility candidate → privacy filter → evidence threshold → Convergence Space candidate → optional participation → experiment → validated result → possible Living Object/Game/Event/Community/World Memory outcome.
+
+## MISSIONS FROM REALITY
+Repeated validated problem pattern → problem candidate → scope/impact validation → optional mission → solo/collective experiment → measured result → validator → reusable discovery or World Memory candidate.
+
+## WORLD MEMORY
+Validated discovery → provenance + attribution + privacy classification → memory candidate → validation/quality → memory entry → retrieval only when relevant. It is not a dump of all user activity.
+
+## AI SELF-DEVELOPMENT
+Observed failure/limitation → Capability Gap → root cause → hypothesis → design → generated code/algorithm/prompt candidate → isolated sandbox → static/type/security tests → behavioral tests → benchmark vs baseline → policy gate → canary → promote/reject → monitor → rollback → experience memory.
+
+## ZERO-API / LOCAL AI
+Task → capability policy → local/browser/on-device eligibility → execute locally when possible → validate → fallback only when policy permits. External APIs are auxiliary, not the native brain.
+
+## DISTRIBUTED COMPUTE
+Task → hard constraints → eligible resources → health/quota/latency/fairness score → lease → sandbox → heartbeat → result validation → release. Community Workers default to 1 logical CPU and 512 MiB RAM with GPU off unless a separate policy enables it. No RAM-pool fiction.
+
+## CREATIVE MEDIA
+Intent → creative brief → original-first constraints → capability route → generation → content/safety/originality/provenance validation → artifact hash → version → storage → preview/export.
+
+## GAME A→Z
+Idea → intent → GameSpecification → engine selection → task graph → content/assets/code → build → sandbox → simulation → test → preview → version → publication. Adventure/Battle/Puzzle 2D are controlled base engines; 3D uses approved adapters.
+
+## GAME RUNTIME
+Published package → manifest validator → shared engine → session → save/result → result validator → progression/share events. Runtime never depends on the original generation provider.
+
+## ADAPTIVE WORLD
+Observed validated signal → candidate world change → simulation → compatibility/security/performance validation → canary → apply → monitor → rollback.
+
+## REWARD ECONOMY
+Validated event → reward rule/config version → authoritative outcome → provenance/audit → grant → collection projection. AI can analyze but cannot unilaterally grant critical rewards.
+
+# INTERFACE RULE
+
+The internal mechanism catalog can be hundreds of capabilities. The visible navigation remains approximately 5–6 primary doors: SYSTEM, PLAYER, SOCIAL, WORLD, PLAY and CREATE. A new internal mechanism does not create a new permanent tab. M15 decides contextual surfacing; module owners retain authority.
+
+# CANONICAL OWNERSHIP
+
+M01 foundation/security primitives.
+M02 Player identity/preferences/DNA evidence.
+M03 Social/private communication.
+M04 World exploration surface.
+M05 SYSTEM/progression presentation and authoritative progression hooks.
+M06 game/player runtime surface.
+M07 game discovery/research.
+M08 game creation factory.
+M09 shared game engine.
+M10 social gaming.
+M11 communities/groups.
+M12 real temporal events.
+M13 adaptive world state changes.
+M14 collection/reward economy.
+M15 native AI orchestration, AI Lab and cross-module intelligence.
+
+# NON-NEGOTIABLE
+
+Provider outage must not destroy the core social product. AI output is untrusted until validation. M15 cannot become superuser. Generated code never runs directly in production. Private data is not global learning material. More code is not evidence of intelligence; benchmarked improvement is evidence.
