@@ -38,3 +38,11 @@ Public/private create, join/leave, invite accept/reject, role management, closur
 
 ## 11. DONE
 Membership and role authority exists only once, is enforced server-side, and AI-assisted discovery cannot bypass it.
+
+## AI MODULE CONTRACT — M11
+
+CommunityProposal = { proposalId, sourceRefs, creatorRef, nameCandidate, descriptionCandidate, topicTags, audience, policyClass, expiresAt, status }.
+MembershipCommand est la seule porte de création/join/leave/role-change.
+AI result = proposal/evidence; never MembershipState.
+Validation = actor → community policy → block/privacy → membership version → business rule → commit → event.
+Tests : role escalation denied, blocked user denied, private context excluded, stale version conflict, duplicate join idempotency, owner-safety, AI unavailable.
