@@ -2776,3 +2776,169 @@ Le test final doit démontrer au minimum :
 8. un jeu suivant réutilise une fondation existante sans recopier toute la plateforme ;
 9. Codex/agent absent n'empêche pas l'existence du contrat de fabrication ;
 10. aucun jeu ne contourne M01/M05/M06/M07/M09/M10/M14.
+
+# 95. TECHNICAL DESIGN — GAME FABRICATION MEMORY
+
+## 95.1 Une seule mémoire
+Le domaine jeu utilise le MemoryService central. Il n'existe pas de second GameMemoryService concurrent.
+
+Les connaissances de fabrication sont stockées dans la table centrale ai_memory_entries avec des dataClass GAME_* et des références vers artifacts, builds, tests et expériences.
+
+## 95.2 GameKnowledgeRecord
+Projection typée utilisée par M15/M08 :
+
+GameKnowledgeRecord = {
+  memoryId,
+  dataClass,
+  scope,
+  gameMode,
+  engineId,
+  engineVersion,
+  componentRefs[],
+  artifactRefs[],
+  sourceTaskRefs[],
+  evidenceRefs[],
+  failureFingerprint?,
+  repairPatternRef?,
+  preconditions[],
+  constraints[],
+  procedure[],
+  expectedOutcome,
+  confidence,
+  utility,
+  validationStatus,
+  benchmarkRef?,
+  createdAt,
+  expiresAt?
+}
+
+Ce type est une projection de MemoryEntry, pas une seconde persistence.
+
+## 95.3 Promotion algorithm
+1. Fabrication ou réparation se termine.
+2. Collecter build/test/playtest evidence.
+3. Dédupliquer par semantic fingerprint.
+4. Construire candidate knowledge.
+5. Vérifier provenance et scope.
+6. Exécuter offline benchmark si applicable.
+7. Vérifier security/policy.
+8. Créer CANARY si le pattern modifie une future fabrication.
+9. Observer.
+10. PROMOTE ou REJECT.
+11. Si promotion, écrire MemoryEntry VALIDATED et référencer la version précédente.
+12. Si régression, marquer INVALIDATED/EXPIRED et revenir à la version précédente.
+
+## 95.4 Retrieval algorithm
+Input :
+request + GameRequirements + mode2D3D + deviceProfile + engineVersion + resourceBudget + safetyClass.
+
+Étapes :
+1. filtrer par scope/permission ;
+2. filtrer par dataClass ;
+3. filtrer par mode/engine/version ;
+4. filtrer par resource/security constraints ;
+5. scorer relevance ;
+6. scorer utility ;
+7. scorer confidence ;
+8. pénaliser les patterns anciens ou expirants ;
+9. limiter le contexte ;
+10. fournir au ContextEngine uniquement les records retenus.
+
+Le score n'est jamais une autorité. Il sert uniquement au choix de contexte.
+
+## 95.5 Reuse decision
+Pour chaque composant candidat :
+REUSE, ADAPT_VERSION, REJECT, NEW_COMPONENT.
+
+REUSE = compatibilité prouvée.
+ADAPT_VERSION = version proche mais migration explicitement définie.
+REJECT = conflit de policy/security/resource/version.
+NEW_COMPONENT = aucune base compatible.
+
+La décision est enregistrée comme evidence/rationale sans exposer de chaîne de pensée privée.
+
+## 95.6 Failure learning
+failureFingerprint = hash(phase + errorClass + stable diagnostic features + environment profile).
+
+Un fingerprint identique avec même root-cause candidate doit être regroupé plutôt que créer cent mémoires identiques.
+
+Une correction n'est promue que lorsque les tests requis passent. Les corrections échouées restent dans l'historique comme FAILED/INVALID et ne sont pas proposées comme recettes.
+
+## 95.7 Repair pattern contract
+RepairPattern = {
+  repairId,
+  failureFingerprint,
+  preconditions[],
+  diagnosisRef,
+  patchProcedure[],
+  affectedArtifactTypes[],
+  regressionTests[],
+  maxSafeScope,
+  validationEvidenceRefs[],
+  successCount,
+  failureCount,
+  status
+}
+
+Le RepairPattern possède un scope maximal ; il ne peut pas être appliqué à une classe d'erreur hors de son scope.
+
+## 95.8 Agent performance memory
+Les observations provider/agent sont mémorisées par capability/task class :
+success, validation failures, average latency, resource class, repair frequency, lastVerifiedAt, evidence refs.
+
+Le Router peut utiliser ces données seulement après hard eligibility filters.
+
+## 95.9 Build-to-memory events
+Événements minimaux :
+GAME_FABRICATION_COMPLETED
+GAME_BUILD_VALIDATED
+GAME_TEST_COMPLETED
+GAME_PLAYTEST_VALIDATED
+GAME_FAILURE_OBSERVED
+GAME_REPAIR_VALIDATED
+GAME_KNOWLEDGE_CANDIDATE
+GAME_KNOWLEDGE_PROMOTED
+GAME_KNOWLEDGE_REJECTED
+GAME_KNOWLEDGE_INVALIDATED
+
+Chaque event référence projectId/buildId/taskId lorsque disponible et évite les contenus privés inutiles.
+
+## 95.10 SQL/index guidance
+La table centrale ai_memory_entries reste l'autorité. Index recommandés :
+- (scope, data_class, validation_status)
+- (data_class, game_mode, engine_id, engine_version)
+- (source_ref)
+- (expires_at)
+- (utility, confidence)
+
+Les projections/catalogues GameKnowledge sont reconstruisibles et ne deviennent jamais une seconde source de vérité.
+
+## 95.11 Bootstrapping sans Codex
+MORISE peut être initialisée avec :
+- templates 2D/3D validés ;
+- runtime components validés ;
+- test fixtures ;
+- known failure patterns ;
+- known repair patterns ;
+- build recipes validées ;
+- resource profiles ;
+- compatibility records.
+
+Ces connaissances constituent le socle initial. Codex peut ensuite enrichir le corpus, mais ne crée pas la mémoire à partir de zéro.
+
+## 95.12 Test d'indépendance
+Test A : supprimer ou désactiver Codex.
+Test B : conserver les MemoryEntries validées, templates, components et capabilities natives.
+Test C : demander une fabrication déjà couverte par une connaissance validée.
+
+Résultat attendu : MORISE retrouve la connaissance, construit le TaskGraph et tente la fabrication avec les execution targets disponibles. Aucune dépendance documentaire à Codex ne doit apparaître.
+
+Un échec doit distinguer :
+- connaissance absente ;
+- capability d'exécution absente ;
+- runtime/tool absent ;
+- policy block ;
+- resource insuffisant.
+
+Cette distinction empêche de conclure à tort que MORISE a oublié lorsqu'il manque seulement un outil d'exécution.
+
