@@ -26,3 +26,18 @@ Blocked target, duplicate create, concurrent accept, expired challenge, rematch 
 
 ## 9. DONE
 Challenge state is deterministic, attempts are independent, results are authoritative and social gaming cannot bypass privacy or membership authority.
+
+## 11. AI MODULE CONTRACT — M10
+
+### 11.1 PartyAIContext
+partyRef, participantProjection[], roleProjection[], gameRef, sessionStateProjection, explicitPreferences, privacyHash.
+
+### 11.2 Proposal
+TeamProposal = participantRefs + rationaleRefs + optionalGameConstraints + expiry + policyClass.
+Proposal does not mutate party state.
+
+### 11.3 Commit
+M10 validates participant existence, permission, availability, duplicate membership and session rules before commit.
+
+### 11.4 Tests
+private participant data leakage, forbidden invite, duplicate join, stale party version, provider outage, proposal expiry, concurrency and rollback.
