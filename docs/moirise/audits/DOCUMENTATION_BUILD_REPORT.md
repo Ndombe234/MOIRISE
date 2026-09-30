@@ -89,3 +89,9 @@ Les 30 documents actifs des modules contiennent chacun un contrat d'intégration
 La documentation ne dit donc plus seulement « ce module peut utiliser l'IA ». Elle précise la frontière : contexte entrant → capability → orchestration M15 → validation → décision/commit par l'owner → event → projection → fallback.
 
 Cette extension ne transforme pas les modules en cerveaux concurrents et ne crée pas de troisième source de vérité AI.
+
+## Native Game Platform — documentation integration
+
+The documentation now treats 2D and 3D games as a native MOIRISE platform rather than isolated applications. The fabrication chain is specified from request to GameSpecification, reusable foundations, TaskGraph, generation, build, tests, bounded repair, validation, runtime integration, Play and publication.
+
+The AI documentation defines the global platform contracts; M06/M07/M08/M09/M10/M15 define their module-specific boundaries. Codex is documented as an optional constrained fabrication agent, not as the MORISE brain or publication authority.
