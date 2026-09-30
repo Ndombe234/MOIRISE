@@ -1,58 +1,41 @@
 # MOIRISE — RAPPORT DE RECONSTRUCTION DOCUMENTAIRE
 
-## Reconstruction
+## Architecture
+The active architecture is now **15 canonical product modules** plus transversal mechanisms.
 
-Documentation active reconstruite depuis une arborescence vide de docs/main.
+## Active content
+- 1 canonical Master Plan;
+- 15 module Plans;
+- 15 module Technical Designs;
+- 1 AI Master Plan;
+- 1 AI Technical Design;
+- historical inventory;
+- fusion matrix;
+- provider registry;
+- cross-module mechanics;
+- dependency map;
+- security/data/events/errors/testing/observability contracts;
+- definition of done;
+- feature coverage and duplicate audits.
 
-## Sauvegarde
+## Historical traceability
+Recoverable historical documentation and Git commits were used to identify mechanisms such as Living Objects, Evolution Engine, Fun & Surprise, MORISE DNA, Convergence, World Memory, Game A→Z Factory, Game Designer AI, provider routing, zero-API execution, distributed workers and native MORISE AI evolution.
 
-La documentation précédente reste disponible sur la branche :
-backup/documentation-before-rebuild
+## Module count correction
+Previous active documentation used a 20-module decomposition. Those five support-oriented boundaries have been merged back into the canonical 15-module architecture:
+- observability → transversal;
+- workers → M15 + transversal contracts;
+- monetization → M14/optional product concerns;
+- administration/operations → transversal/governance;
+- AI platform → M15.
 
-## Contenu final
+No product functionality is deleted by this merge.
 
-- 20 modules ;
-- 20 Plans de module ;
-- 20 Conceptions techniques ;
-- 1 Plan Maître global ;
-- 1 Plan Maître IA ;
-- 1 Conception technique IA ;
-- contrats transversaux ;
-- dépendances ;
-- modèle de données ;
-- sécurité ;
-- événements ;
-- erreurs ;
-- tests ;
-- observabilité ;
-- gouvernance ;
-- définition de DONE ;
-- index ;
-- handoff ;
-- audit couverture ;
-- audit doublons ;
-- preuve de l'état du dépôt ;
-- réconciliation legacy.
-
-## Règle de volume
-
-L'objectif n'est pas de remplir arbitrairement un quota de caractères. Une conception qui répète la même phrase un million de fois est moins exploitable qu'un contrat précis. La cible est une compréhension au niveau puzzle : chaque pièce possède owner, inputs, outputs, states, permissions, mutation, events, failure and tests.
-
-## Mesure de la reconstruction au moment du rapport
-
-Les vérifications GitHub ont confirmé :
-- 20 modules présents ;
-- PLAN.md et TECHNICAL_DESIGN.md présents pour les 20 ;
-- AI_MASTER_PLAN.md présent ;
-- AI_TECHNICAL_DESIGN.md présent ;
-- aucune ancienne convention de nommage Mxx_*.md active dans docs/main ;
-- aucun ancien fichier *_TECHNICAL.md actif ;
-- comparaison avec backup/documentation-before-rebuild : fichiers non-documentaires modifiés = 0.
+## Duplication policy
+Historical names remain in the inventory/matrix for traceability. They do not create parallel owners.
 
 ## Code
+This documentation rebuild does not claim that all designed features are implemented. It defines the implementation puzzle and proof required for DONE.
 
-La reconstruction documentaire ne prétend pas que les fonctionnalités sont codées. Elle fournit les contrats nécessaires pour les construire et les vérifier sans deviner.
-
-## Dernière vérification
-
-La vérification finale doit toujours être faite par build/typecheck/tests + navigateur, conformément à Definition of Done.
+## Final verification
+Build/typecheck/tests/browser/mobile/security remain required before any module is declared implemented.
