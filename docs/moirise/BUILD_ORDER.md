@@ -1,52 +1,39 @@
-# MOIRISE — ORDRE DE CONSTRUCTION CANONIQUE
+# MOIRISE — ORDRE DE CONSTRUCTION CANONIQUE À 15 MODULES
 
-## Séquence
+1. M01 FOUNDATION
+2. M02 PLAYER
+3. M03 SOCIAL + PRIVATE MESSAGING
+4. M04 WORLD
+5. M05 SYSTEM / PROGRESSION / EVOLUTION
+6. M06 PLAY
+7. M07 GAME DISCOVERY
+8. M08 GAME A→Z FACTORY
+9. M09 SHARED GAME ENGINE
+10. M10 SOCIAL GAMING
+11. M11 COMMUNITIES / GUILDS
+12. M12 EVENTS
+13. M13 ADAPTIVE WORLD
+14. M14 COLLECTION / REWARD ECONOMY
+15. M15 META SYSTEM + MORISE AI LAB
 
-M01 Foundation
-→ M02 Player
-→ M03 SYSTEM
-→ M13 Moderation
-→ M15 Localization
-→ M04 Social
-→ M05 Messaging
-→ M06 Communities
-→ M08 Games
-→ M11 Progression
-→ M12 Events
-→ M14 Notifications
-→ M07 Discovery
-→ M18 Workers
-→ M19 AI
-→ M09 Game Creation
-→ M10 Creative Studio
-→ M16 Observability
-→ M20 Administration
-→ M17 Optional Monetization.
+## Gate
+Chaque module :
+PLAN → TECHNICAL DESIGN → CODE INSPECTION → TYPES → DATA → AUTH → DOMAIN → EVENTS → UI → TESTS → BROWSER → MOBILE → SECURITY → DONE.
 
-## Pour chaque module
+## Critical dependency rules
+- M02 starts after M01 identity/session contracts.
+- M03 requires M01 + M02.
+- M04 uses M03/M05 discovery and context contracts without owning them.
+- M05 requires M01/M02 and owns progression presentation.
+- M06 requires M05 progression hooks and M09 runtime contracts.
+- M07 can run deterministic without external AI.
+- M08 must use M09 runtime contract.
+- M10 consumes M03/M06/M11 and never mutates their tables directly.
+- M11 owns membership/roles.
+- M12 owns temporal event state.
+- M13 owns adaptive-world ranking/filtering.
+- M14 owns economy/collection records.
+- M15 is the meta layer and must not become a replacement for module ownership.
 
-1. Lire le Plan.
-2. Lire la Conception technique.
-3. Lire les contrats transversaux dont dépend le module.
-4. Inspecter le code réel et identifier les divergences.
-5. Définir les types et frontières serveur.
-6. Définir persistence et authorization.
-7. Implémenter les transitions d'état.
-8. Implémenter l'UI et les états de récupération.
-9. Brancher l'IA par Capability ID uniquement.
-10. Ajouter les tests unitaires/intégration.
-11. Tester navigateur desktop/mobile.
-12. Tester chaque action visible.
-13. Tester panne provider/worker et reprise.
-14. Vérifier l'absence d'écran blanc.
-15. Vérifier accessibilité et performance.
-16. Effectuer l'audit de sécurité.
-17. Seulement ensuite marquer le module DONE.
-
-## Interdictions
-
-Ne pas créer un second App Router.
-Ne pas créer un second cerveau IA dans un module.
-Ne pas appeler directement un provider depuis l'UI.
-Ne pas dupliquer un contrat transversal.
-Ne pas stocker une décision critique uniquement dans localStorage.
+## Stop rule
+A module cannot be considered DONE simply because its page renders. Tests, permissions, persistence, recovery and browser verification are required.
