@@ -1,104 +1,104 @@
-# MOIRISE AI — PLAN MAÎTRE CANONIQUE
+# MOIRISE AI — PLAN MAÎTRE EXCLUSIF — RECONSTRUCTION À ZÉRO
 
-## 1. Identity and mission
-MORISE AI is a **MORISE-native coded intelligence system**. It is not a chatbot wrapper, provider, recommendation-only layer or single model. Its purpose is restricted to MORISE: Player, Social, World, Play, communities, creation, events, progression, memory, discovery, moderation, economy, Living Objects, Convergence and internal SYSTEM operations.
+## 0. Rôle du document
+Ce document est l'unique plan comportemental de MORISE AI. Il ne remplace pas les plans des modules M01–M15 : il décrit uniquement le cerveau/orchestrateur IA et renvoie aux modules pour leurs mutations métier. Aucun provider externe n'est le cerveau.
 
-External models/APIs are auxiliary execution components. The product retains its own context, memory, policies, orchestration, validation, experience, learning and controlled evolution.
+## 1. Mission
+MORISE AI doit comprendre une demande, déterminer ce qui est nécessaire, choisir une stratégie, utiliser les capacités disponibles, vérifier le résultat, apprendre de l'expérience autorisée et proposer des améliorations contrôlées. Ajouter du code ou des données n'est jamais considéré comme une preuve d'intelligence.
 
-## 2. Canonical loop
-OBSERVE → AUTHENTICATE → POLICY → CONTEXT → UNDERSTAND → PLAN → RESERVE → EXECUTE → VALIDATE → CORRECT/ASK → COMMIT → EVENT → SAFE EXPERIENCE → EVALUATE → IMPROVE.
+## 2. Règle de précision « France → Paris → rue → bâtiment → appartement → porte »
+Toute affirmation générale doit être décomposée jusqu'à ce qu'une IA développeuse puisse implémenter sans deviner. Pour chaque mécanisme : ACTEUR → DÉCLENCHEUR → PRÉCONDITIONS → ENTRÉES EXACTES → ORDRE DES ÉTAPES → DÉCISION → SORTIE → MUTATION AUTORISÉE → ÉVÉNEMENT → ERREURS → RÉCUPÉRATION → SÉCURITÉ → OBSERVABILITÉ → TESTS → DONE.
+Si un mécanisme possède une sous-décision, la même règle s'applique à la sous-décision.
 
-A simple operation may use fewer steps. A game-creation or self-improvement workflow may use the full loop.
+## 3. Ce que MORISE AI est
+MORISE AI = orchestration + contexte + intention + raisonnement + planification + politiques + capacités + outils + ressources + validation + mémoire + expérience + apprentissage contrôlé + évolution contrôlée.
+Un LLM, une API ou un endpoint n'est qu'un exécuteur possible.
 
-## 3. Architecture
-Modules → Capability Request → Context Engine → Intent/Requirements → Reasoning/Planner → Policy → Capability/Tool Registry → Resource/Provider Router → Task Engine → Execution Target → Validation → Module Commit → Experience/Memory → Evaluation.
+## 4. Boucle canonique
+OBSERVE → AUTHENTICATE → CLASSIFY → MINIMIZE → CONTEXT → UNDERSTAND → REQUIREMENTS → PLAN → POLICY → RESERVE → EXECUTE → VALIDATE → CORRECT/ASK → COMMIT → EVENT → EXPERIENCE → EVALUATE → IMPROVE.
+Une demande simple peut utiliser un sous-ensemble. Une création de jeu, une action longue ou une amélioration du système utilise la chaîne complète.
 
-## 4. Specialist mechanics
-Conversation/reasoning, personalization, Player Context, Social Intelligence, Community Intelligence, Game Discovery Intelligence, Game Designer AI, Creative AI, Translation, Safety/Moderation, Economy/Reward Analysis, Evolution Engine, MORISE DNA, Living Objects, Convergence, Emergent Missions and World Memory are distinct specialist mechanics coordinated by the AI rather than duplicated brains.
+## 5. Identité et frontières
+MORISE ne s'accorde jamais elle-même de nouvelles permissions. M01 garde la frontière identité/sécurité; M02 l'identité Player; M03 les messages et données sociales privées; M05 la progression/SYSTEM; M11 les permissions communautaires; M12 l'état des événements; M14 le ledger économie/récompenses; M15 l'orchestration IA.
 
-## 5. Capability registry
-Initial capability families:
-TEXT_GENERATION; REASONING; VISION; IMAGE_GENERATION; VIDEO_GENERATION; AUDIO_GENERATION; MUSIC_GENERATION; TTS; STT; TRANSLATION; SEARCH; EMBEDDING; MODERATION; CODE_GENERATION; CODE_TESTING; GAME_2D; GAME_3D; SUMMARIZATION; CLASSIFICATION; RECOMMENDATION; COMMUNITY_FORMATION_PROPOSAL; LIVING_OBJECT_TRANSFORM; CONVERGENCE_DETECTION; WORLD_MEMORY_RETRIEVAL; EVOLUTION_CANDIDATE_GENERATION.
+## 6. Les 5–6 portes visibles
+SYSTEM, PLAYER, SOCIAL, WORLD, PLAY, CREATE. Les capacités internes n'ajoutent pas de boutons globaux. MORISE coordonne contextuellement les fonctions. Exemple : traduction, création d'image, formation de groupe, recommandation ou génération de jeu apparaissent dans le contexte où elles sont utiles.
 
-Every capability has version, input/output schema, policy class, allowed targets, validator, resource class, timeout, concurrency and health.
+## 7. Parcours utilisateur et comportement
+À l'arrivée, MORISE doit observer sans harceler. Elle peut créer une première expérience courte, proposer une action claire et conserver une raison réelle de revenir, mais elle ne doit jamais fabriquer de faux compteurs, fausse urgence, fausse rareté ou faux événement. Une promesse « reviens demain » n'est affichée que si un véritable état futur existe. Pendant lecture, saisie, jeu ou création, les interruptions non critiques sont réduites.
 
-## 6. Tool registry
-Every tool has actionId, ownerModule, input schema, permission, confirmation mode, side-effect class, rate limit, validator and audit level. A wildcard execute-anything tool does not exist.
+## 8. Compréhension
+Entrée minimale : texte/action/événement + actorId serveur + module source + refs autorisées. MORISE identifie objectif, entités, contraintes, sortie attendue, effets secondaires, niveau d'autonomie et ambiguïtés. Une ambiguïté qui peut changer une mutation irréversible entraîne clarification ou chemin réversible autorisé.
 
-## 7. Context
-Allowed context is minimum-necessary and scoped by session, Player, module, entity, task, memory and conversation. Secrets, unauthorized private content and unrelated administration data are excluded. Each ContextSnapshot has provenance, privacy class, expiry and hash.
+## 9. Contexte
+MORISE construit le plus petit contexte utile. Sources possibles : session, Player, module courant, entité, conversation, jeu actif, création active, mémoire autorisée, événements et World Memory autorisée. Secrets et données privées non autorisées sont exclus. Chaque snapshot a provenance, classe de confidentialité, expiration et hash.
 
-## 8. Memory
-Separate:
-SESSION, PLAYER, EXPERIENCE, CREATOR, COMMUNITY, WORLD, SYSTEM OBSERVATION, PROVIDER EVIDENCE.
-Every memory item has owner/scope, sensitivity, provenance, confidence/usefulness, retention, consent basis and deletion policy.
+## 10. Raisonnement
+Le raisonnement est indépendant du fournisseur. Il peut combiner règles déterministes, algorithmes locaux, petits modèles locaux et fournisseurs externes. Il produit hypothèses, assumptions, plan et questions ouvertes. Il n'exécute pas directement une mutation privilégiée.
 
-## 9. Learning
-Personal adaptation may use explicit preferences and permitted non-sensitive signals. Aggregate learning uses validated patterns with anti-spam and anti-data-poisoning controls. Experience learning is based on measured outcomes. Raw events never rewrite production behavior directly.
+## 11. Planification
+Les tâches longues deviennent un graphe DAG. Chaque nœud précise capacité/version, entrées, sorties, dépendances, ressources, trust class, timeout, retry, idempotence et validator. Une dépendance circulaire est rejetée avant exécution.
 
-## 10. Evolution Engine
-OBSERVE LIMIT → GAP → ROOT CAUSE → HYPOTHESIS → CANDIDATE → SANDBOX → TEST → BENCHMARK vs BASELINE → SECURITY → CANARY → PROMOTE/REJECT → MONITOR → ROLLBACK.
+## 12. Autonomie
+A0 répondre; A1 proposer; A2 exécuter après confirmation; A3 graphe borné; A4 workflow long borné. Une capability ne peut jamais dépasser la policy du contexte.
 
-The engine may improve algorithms, prompts, ranking, context retrieval, translation, memory, game creation, convergence detection, recommendation and supporting code.
+## 13. Capability Registry
+Familles initiales : texte, raisonnement, vision, image, vidéo, audio, musique, TTS, STT, traduction, recherche, embeddings, modération, code, tests, jeu 2D, jeu 3D, résumé, classification, recommandation, proposition de communautés, Living Objects, Convergence, World Memory, génération de candidats d'évolution.
+Chaque capability possède version, schémas, policy, targets, validator, ressources, timeout, concurrence, payload maximal et health.
 
-## 11. AI Lab
-M15 provides an isolated MORISE AI Lab for branch/build/test/benchmark/candidate workflows. It may generate MORISE-specific code, but production permissions, secrets, RLS, irreversible actions and deployment authority stay outside the experiment boundary.
+## 14. Tool Registry
+Un outil = actionId + ownerModule + inputSchema + permission + confirmationMode + sideEffectClass + rateLimit + validator + auditLevel. Aucun wildcard « execute anything ».
 
-## 12. Self-development
-A new capability is not “created” by adding lines of code. It requires:
-capability contract + implementation/adapter + policy + resources + validator + tests + observability + version + integration + rollback strategy.
+## 15. Ressources
+Ordre par défaut : ON_DEVICE/LOCAL → CACHE → TRUSTED_WORKER → COMMUNITY_WORKER opt-in → provider vérifié gratuit/client-side → provider avec secret → provider payant explicitement activé → degraded.
+Le routeur applique d'abord les filtres durs : capability, confidentialité, confiance, CPU/RAM/GPU, réseau, quota, délai. Le score de santé/coût/latence ne peut pas contourner un filtre dur.
 
-## 13. Resources
-Targets:
-LOCAL/ON-DEVICE;
-TRUSTED_WORKER;
-COMMUNITY_WORKER;
-VERIFIED_PROVIDER.
+## 16. Workers et ordinateurs
+Trusted Worker = ordinateur explicitement autorisé. Community Worker = participation explicite. Un worker fournit du calcul, pas de la RAM partagée : la machine distante ne devient pas une extension directe de la RAM de l'ordinateur de l'utilisateur.
+Profil Community par défaut : 1 CPU logique, 512 MiB RAM, GPU désactivé, stockage persistant désactivé, réseau borné. Aucun secret de production, clé service-role, credential admin ou message privé brut n'est envoyé.
 
-Hard constraints apply before candidate scoring: capability, privacy, trust, CPU/RAM/GPU, network, quota, deadline.
+## 17. Providers : rôle et inventaire
+Les providers de la conception historique sont des adaptateurs : Pollinations, Puter, LLM7, Vireonix, Murakumo, Kilo AI, AI Horde, AI Horde OpenAI API, Cehpoint AI, OVH AI Endpoints, Quillly, Openverse, Internet Archive, ainsi que Gemini, DeepSeek, OpenRouter et d'autres adapters vérifiés.
+Ils sont facultatifs. MORISE reste fonctionnelle sans eux pour les capacités locales/offline réalisables.
 
-Community Worker defaults: opt-in, 1 logical CPU, 512 MiB RAM, GPU/storage disabled, network bounded.
+## 18. URLs et APIs
+Une URL ne doit jamais être inventée. Le registre technique doit conserver pour chaque provider : `providerId`, `baseUrl`, `endpoint(s)`, `authMode`, `secretName`, `apiVersion`, `requestSchema`, `responseSchema`, `capabilities`, `rateLimit`, `licenseRef`, `lastVerifiedAt`, `health`. Une URL seulement mentionnée dans une conversation ou une image est `UNVERIFIED` jusqu'à vérification. Les clés restent dans Supabase Secrets/Edge Functions et jamais dans React/Vite/public env.
 
-## 14. Providers
-Providers are adapters only. Candidate registry includes Pollinations, Puter, LLM7, Vireonix, Murakumo, Kilo AI, AI Horde, AI Horde OpenAI API, Cehpoint AI, OVH AI Endpoints, Quillly, Openverse, Internet Archive, Gemini, DeepSeek, OpenRouter and other verified adapters. An endpoint must be verified before activation.
+## 19. Création IA
+Pour texte/image/vidéo/audio/musique/voix : INTENT → BRIEF → POLICY/ORIGINALITY → CAPABILITY → ROUTE → GENERATE → PROVENANCE → VALIDATE → ARTIFACT → optional PUBLISH. Un provider ne publie jamais directement.
 
-## 15. Zero-API principle
-MORISE AI must have useful local/on-device/browser-side mechanisms where practical. External APIs enhance capability; they do not define the architecture.
+## 20. Jeux 2D/3D
+MORISE AI peut transformer une idée en GameSpecification : genre, 2D/3D, boucle de jeu, contrôles, caméra, difficulté, durée, partage, assets, audio, sauvegarde, performance, accessibilité, sécurité. Puis RESEARCH → IDEA → REQUIREMENTS → DESIGN → SPEC → ENGINE → CONTENT/ASSETS/CODE → BUILD → SIMULATE → TEST → PLAYTEST → BALANCE → PACKAGE → PREVIEW → PUBLISH. M08 possède la création; M09 possède l'exécution runtime.
 
-## 16. Living Object intelligence
-AI can read authorized lineage, propose transforms, compatible branches, contributors or conversions such as idea→story→game→challenge→event→community. It cannot expose private data, change ownership or merge without policy.
+## 21. Social / groupes
+MORISE peut proposer ou, selon policy, créer un groupe communautaire lorsque des signaux autorisés montrent un besoin réel. Elle doit déterminer objectif, thème, langue, visibilité, membres admissibles, règles, owner et expiration éventuelle. M11 reste l'autorité de membership. Les messages privés restent privés et ne deviennent pas automatiquement une mémoire générale.
 
-## 17. Evolution Engine intelligence
-Trace, Living World, Hidden Possibilities, Unexplored Paths, Evolving Identity, MORISE Double and Fun & Surprise adapt the solo journey. The Player can enjoy MORISE without social participation.
+## 22. Mémoire
+SESSION, PLAYER, EXPERIENCE, CREATOR, COMMUNITY, WORLD, SYSTEM_OBSERVATION, PROVIDER_EVIDENCE. Chaque entrée possède owner/scope, sensitivity, provenance, confidence, utility, consent basis, retention et deletion policy. Une sortie provider reste une evidence jusqu'à validation.
 
-## 18. MORISE DNA
-DNA represents demonstrated capabilities such as Exploration, Creation, Resolution, Strategy, Collection, Collaboration, Discovery and Experimentation. It is not a psychological profile and cannot use sensitive inference.
+## 23. Apprentissage
+OBSERVATION → NORMALISATION → PATTERN → HYPOTHESIS → CANDIDATE → OFFLINE EVALUATION → POLICY → CANARY. Les clics ou lignes de code seuls ne prouvent rien. Les modifications de production sont versionnées et réversibles.
 
-## 19. Convergence
-Convergence detects compatible independent trajectories through authorized, non-sensitive signals. It can propose Convergence Spaces and Emergence Events; anti-manipulation and privacy filters are mandatory.
+## 24. Détection des capacités manquantes
+SIGNAL D'ÉCHEC/LIMITE → CLASSIFIER LE MANQUE → distinguer connaissance/donnée/outil/algorithme/modèle/ressource/policy → formuler hypothèse → choisir une amélioration minimale → générer candidate → sandbox → tests → benchmark baseline → sécurité → canary → promotion/rejet → monitoring → rollback.
 
-## 20. Emergent Missions / World Memory
-Validated recurring problems can become Missions From Reality. Validated solutions can become World Memory candidates. World Memory stores provenance, attribution, scope, confidence, retention and correction paths. It is not raw-message training data and not a public feed.
+## 25. Auto-code contrôlé
+Une candidate de code est écrite uniquement dans un workspace isolé. Elle doit passer static scan, dépendance allowlist, typecheck, build, tests unitaires, intégration, comportement, sécurité, ressources et régression. Elle ne s'exécute jamais directement sur la production.
 
-## 21. Creation
-Game creation:
-research → idea → requirements → design → GameSpecification → engine → content/assets/code → build → simulate → test → preview → version → publish.
-Creative Studio coordinates text/image/video/audio/music/voice through the same capability/policy/provenance layer.
+## 26. AI Lab
+AI Lab est la zone de recherche contrôlée de MORISE. Elle peut générer/analyser du code, expérimenter des stratégies, benchmarker, proposer de nouvelles capabilities et préparer une version. Elle n'a pas les secrets production, l'accès admin illimité ou le droit de s'auto-attribuer une permission.
 
-## 22. Social and private data
-AI can assist translation, drafting, discovery and recommendations. Private conversations do not become general memory or training data by default.
+## 27. Self-correction
+FAILURE → CLASSIFY → EVIDENCE → HYPOTHESIS → MINIMAL CORRECTION → SANDBOX → VALIDATE → COMPARE → ACCEPT/REJECT. Limites : profondeur, durée, tentatives, mutation scope, ressources. Une oscillation déclenche l'arrêt.
 
-## 23. UX and SYSTEM
-MORISE exposes approximately 5–6 primary doors. Internal capabilities appear contextually through SYSTEM. Non-critical interruptions are suppressed while the Player is typing, playing, creating or reading.
+## 28. Validation
+Chaque résultat critique est validé par schema, policy, security, static/type, runtime, behavior, content, artifact et integrity validators appropriés. `INCONCLUSIVE` n'est pas `VALID`.
 
-## 24. Autonomy maturity
-A0 answer; A1 propose; A2 execute after approval; A3 bounded task graph; A4 long-running bounded workflow. Capability maturity L0 concept → L1 feature flag → L2 controlled → L3 production eligible → L4 scalable/observed.
+## 29. Living Objects / Convergence / Missions / World Memory
+Ces mécanismes sont des spécialistes coordonnés, pas des cerveaux séparés. AI propose; l'owner module autorise la mutation. Les signaux privés/sensibles sont exclus des mécanismes de convergence. World Memory conserve provenance, attribution, portée, confiance, rétention et correction.
 
-## 25. Measurement
-Every capability has measurable success criteria. Compute scale is not intelligence. Promotion requires repeatable MORISE-specific benchmarks and no critical regression.
+## 30. Mesure de l'intelligence
+Chaque capability doit avoir benchmark, baseline, critères de réussite, coût, latence, taux d'erreur et régression critique. « Plus de code », « plus de RAM » ou « plus de providers » ne signifie pas « plus intelligent ».
 
-## 26. Authority
-M01 identity/security boundary; M02 Player identity; M03 private/social data; M05 progression/SYSTEM; M11 community permissions; M12 event state; M14 economy; M15 AI orchestration. AI cannot grant itself permissions.
-
-## 27. Completion
-MORISE AI is complete only when every capability has owner, schema, policy, resource target, validator, observability, recovery and integration evidence; and when self-evolution is bounded, testable and reversible.
+## 31. DONE global
+MORISE AI n'est déclarée terminée que lorsque chaque capability active possède owner, contrat, code/adapter, policy, ressources, validator, observabilité, récupération, tests, version et rollback; que les providers sont vérifiés; que les secrets sont protégés; et que les mécanismes d'auto-évolution sont bornés, testables et réversibles.
