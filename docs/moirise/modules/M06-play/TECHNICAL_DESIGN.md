@@ -58,3 +58,15 @@ Generated/adaptive content is sandboxed, versioned and bounded. No runtime capab
 
 ### 11.4 Tests
 AI unavailable, malicious adaptive payload, stale gameVersion, duplicate completion, forged sessionRef, save corruption, provider timeout, no reward from unvalidated output.
+
+## GAME PLATFORM — CONCEPTION TECHNIQUE M06
+
+LaunchGameCommand = { commandId, actorId(server), buildId, deviceCapabilityHash, expectedVersion? }.
+
+Préconditions : build éligible, manifest valide, device compatible, policy/session valide.
+
+M06 demande à M09 d'allouer le runtime. M06 ne choisit ni engineVersion ni sandbox policy.
+
+Chaîne résultat : Runtime evidence → M06 validator → AuthoritativeResult. Aucun résultat AI ne peut écrire XP ou reward.
+
+Le contrat session/save/result est commun à tous les jeux. Tests : 2D, 3D, incompatible device, runtime denied, worker loss, result replay, save migration, adaptive AI unavailable.
