@@ -1,7 +1,7 @@
-# M14 — COLLECTION & REWARDS — TECHNICAL DESIGN
+# M14 — COLLECTION & REWARDS — COMPLETE TECHNICAL CONTRACT
 
-## Boundary
-M14 owns collectibles/cards, achievements, cosmetics, titles, inventory, equipment state and reward history. M05 owns XP/progression; M13 owns adaptation.
+## Responsibility
+M14 owns collectibles, cards, cosmetics, achievements, inventory, equipment, titles and reward history. M05 owns XP/progression; M13 owns adaptive activation.
 
 ## Data
 `inventory_items`, `item_definitions`, `reward_grants`, `achievements`, `achievement_progress`, `equipped_items`, `titles`, `reward_history`.
@@ -9,27 +9,30 @@ M14 owns collectibles/cards, achievements, cosmetics, titles, inventory, equipme
 ## Types
 ```ts
 interface Item { id:string; definitionId:string; ownerId:string; quantity:number; acquiredAt:string; }
-interface RewardGrant { id:string; playerId:string; source:string; sourceId:string; itemDefinitionIds:string[]; idempotencyKey:string; }
+interface RewardGrant { id:string; playerId:string; source:string; sourceId:string; ruleVersion:number; itemDefinitionIds:string[]; idempotencyKey:string; }
 interface EquipState { playerId:string; slot:string; itemId:string; updatedAt:string; }
 ```
 
 ## Integrity
-Production reward definitions are versioned. Grants are server-authorized and idempotent. The client cannot mint arbitrary item IDs, quantities or rarity values.
+Definitions are versioned. Production grants are server-authorized, transactional and idempotent. Client cannot mint arbitrary IDs, quantities, rarity or titles.
 
-## Acquisition
-Every grant records source, source ID, rule version and timestamp. Duplicate source events must not produce duplicate grants unless the rule explicitly permits repeatable rewards.
+## Acquisition pipeline
+`validated source event → eligibility → reward rule → transaction → inventory update → reward history → notification`. Duplicate source events do not duplicate rewards unless the rule explicitly permits repetition.
+
+## Equipment
+Validate ownership, definition status, slot compatibility and quantity. Equip/unequip is transactional and produces one authoritative state.
 
 ## AI boundary
-AI may recommend collections, propose cosmetic concepts or explain achievements. It cannot mint production rewards or bypass inventory validation.
-
-## UI
-Collection is contextual under Profile/SYSTEM. Titles/cosmetics can appear in profile, posts and game results. Avoid a permanent Collection navigation door.
+AI can recommend collections, explain achievements and propose cosmetic concepts. It cannot mint production rewards or bypass inventory validation.
 
 ## Economy safety
-No client-controlled currency arithmetic. All transfers/grants are transactional. Negative quantities and integer overflow are rejected.
+Reject negative quantities, overflow, invalid definitions and unauthorized transfers. All arithmetic is server-side. Reward definitions cannot be changed retroactively without a migration/version.
+
+## UI
+Collection and titles appear contextually under Profile/SYSTEM, posts and game results. Do not add a permanent Collection navigation door.
 
 ## Tests
-grant idempotency, duplicate event, equip/unequip, ownership checks, quantity bounds, migration, deleted definition, concurrent grants and recovery after failed writes.
+Grant idempotency; duplicate source; ownership; equip/unequip; quantity bounds; concurrent grants; deleted definition; migration; failed transaction recovery; AI outage.
 
 ## Done gate
-Inventory is authoritative, auditable and recoverable; AI/provider availability cannot corrupt rewards.
+Inventory is authoritative, auditable and recoverable and cannot be corrupted by clients or AI/provider failures.
