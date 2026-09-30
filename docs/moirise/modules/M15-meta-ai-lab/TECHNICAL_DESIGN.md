@@ -222,3 +222,12 @@ M15 technique est DONE lorsqu'il :
 - expose des projections sécurisées ;
 - isole AI Lab ;
 - n'introduit aucune deuxième implémentation des mécanismes centraux.
+
+
+## AI MODULE CONTRACT — M15
+
+Canonical components = RequestGate, ContextEngine, IntentCompiler, RequirementsCompiler, Reasoner, Planner, PolicyEngine, CapabilityRegistry, ToolRegistry, ProviderRouter, ResourcePlanner, ValidationEngine, MemoryService, ExperienceService, EvolutionPipeline.
+Module cognition input = moduleId, owner, capabilities, schemas, event contracts, context scopes, dependencies, authority boundaries.
+Execution = REQUEST → ACTOR → CONTEXT → INTENT → REQUIREMENTS → PLAN → POLICY → RESERVE → EXECUTE → VALIDATE → OWNER COMMIT → EVENT → MEMORY → EVALUATE.
+Evolution candidates are isolated; benchmark baseline is mandatory; security/policy before canary; promotion reversible.
+Tests : single-brain invariant, forbidden cross-owner write, context leakage, provider invalid output, capability mismatch, planner cycle, memory scope violation, failed canary rollback.
