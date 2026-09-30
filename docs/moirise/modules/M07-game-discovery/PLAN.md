@@ -9,3 +9,30 @@ IA : Game Discovery Agent sous M15. Il combine signaux explicites et signaux pro
 Règle : une recommandation n'est jamais une autorisation, ne révèle pas de données privées et ne crée pas artificiellement une tendance.
 
 DONE : recherche bornée, ranking déterministe de base, IA facultative, feedback mesurable, mobile/desktop et fallback sans provider.
+
+
+## Detailed feature behavior
+
+### Search
+Normalize query → retrieve approved candidates → filter visibility/moderation → rank → explain → paginate.
+
+### Personalized discovery
+Context may include explicit interests, validated game history, current progression, novelty budget and time/session preference. Private message content and sensitive inferred traits are excluded.
+
+### Market research
+Research is an evidence layer for creators, not fake “market certainty”. Every source has provenance and retrieval time.
+
+### Novelty
+The engine intentionally reserves part of the result set for relevant unfamiliar experiences. Novelty cannot override safety/visibility.
+
+### Feedback
+Play, completion, dismiss, share and explicit ratings become normalized signals. New/untrusted sources are protected from immediate ranking domination.
+
+### Convergence
+Repeated compatible mechanics from independent public/authorized sources may become a Convergence candidate. M15 performs the deeper reasoning; M07 owns discovery presentation.
+
+### Degraded mode
+Without an AI provider, keyword/deterministic ranking still returns useful results.
+
+### Completion evidence
+Search, recommendation, novelty, diversity, provenance, feedback and provider outage paths tested.
