@@ -1,179 +1,153 @@
-# M02 — PLAYER — PLAN DÉTAILLÉ CANONIQUE
+# M02 — PLAYER — PLAN D'IMPLÉMENTATION REPRIS À ZÉRO
+
+## 0. Règle de granularité
+La documentation doit descendre comme « France → Paris → rue → bâtiment → appartement → porte ». Dire seulement « le module gère les groupes » est insuffisant. Chaque capability ci-dessous fixe acteur, déclencheur, préconditions, entrées, ordre d'exécution, mutation, projection, événements, erreurs, récupération, sécurité et tests.
 
 ## 1. Mission et ownership
-Créer l'identité Player persistante, le profil, les préférences, la confidentialité, l'attribution et le contexte personnel utilisé par le SYSTEM sans transformer le profil en diagnostic psychologique.
-Ce module possède les comportements listés ci-dessous. Une dépendance ne devient pas propriété locale simplement parce que le module l'affiche.
+identity, profile, preferences, privacy, history, memory and DNA evidence
+**Owner unique : M02.** Les autres modules consomment le résultat mais ne recopient pas la règle métier.
 
-## 2. Fonctionnalités couvertes
-### 1. Player bootstrap
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M02.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+## 2. Capacités opérationnelles
+### M02.1 Bootstrap
+**Acteur :** first authenticated entry
+**Déclencheur :** lookup by auth user → create default atomically if absent → return existing on retry
+**Préconditions :** auth user authoritative
+**Ordre exact :**
+1. Authentifier/dériver l'acteur côté serveur.
+2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
+3. Valider schéma, taille, format, état et policy.
+4. Player.
+5. Effectuer la mutation autoritative : **race: unique constraint + existing record**.
+6. Construire la projection depuis la donnée commitée.
+7. Émettre l'événement seulement après le commit.
+**Échec :** undefined
+**Sécurité :** undefined
+**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
+**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
+**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
+**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
+**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
-### 2. Public profile
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M02.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+### M02.2 Profile
+**Acteur :** open/edit profile
+**Déclencheur :** validate fields → privacy projection → versioned update → invalidate public cache
+**Préconditions :** privacy enforced server
+**Ordre exact :**
+1. Authentifier/dériver l'acteur côté serveur.
+2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
+3. Valider schéma, taille, format, état et policy.
+4. public/private projection.
+5. Effectuer la mutation autoritative : **invalid field: no partial save**.
+6. Construire la projection depuis la donnée commitée.
+7. Émettre l'événement seulement après le commit.
+**Échec :** undefined
+**Sécurité :** undefined
+**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
+**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
+**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
+**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
+**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
-### 3. Private profile
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M02.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+### M02.3 Handle
+**Acteur :** confirm username
+**Déclencheur :** normalize Unicode → uniqueness check → atomic reserve/change
+**Préconditions :** no owner leak
+**Ordre exact :**
+1. Authentifier/dériver l'acteur côté serveur.
+2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
+3. Valider schéma, taille, format, état et policy.
+4. handle record.
+5. Effectuer la mutation autoritative : **conflict: old handle; same command: same result**.
+6. Construire la projection depuis la donnée commitée.
+7. Émettre l'événement seulement après le commit.
+**Échec :** undefined
+**Sécurité :** undefined
+**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
+**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
+**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
+**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
+**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
-### 4. Handle uniqueness
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M02.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+### M02.4 Avatar
+**Acteur :** upload or generate avatar
+**Déclencheur :** quarantine/validate/approve → replace only after success
+**Préconditions :** safe storage, policy validation
+**Ordre exact :**
+1. Authentifier/dériver l'acteur côté serveur.
+2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
+3. Valider schéma, taille, format, état et policy.
+4. AvatarRef.
+5. Effectuer la mutation autoritative : **processing failure preserves old avatar**.
+6. Construire la projection depuis la donnée commitée.
+7. Émettre l'événement seulement après le commit.
+**Échec :** undefined
+**Sécurité :** undefined
+**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
+**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
+**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
+**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
+**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
-### 5. Avatar upload
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M02.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+### M02.5 Preferences
+**Acteur :** change setting
+**Déclencheur :** validate key/value → versioned write → emit preference event
+**Préconditions :** settings not authority
+**Ordre exact :**
+1. Authentifier/dériver l'acteur côté serveur.
+2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
+3. Valider schéma, taille, format, état et policy.
+4. Preferences.
+5. Effectuer la mutation autoritative : **unknown key reject; stale version conflict**.
+6. Construire la projection depuis la donnée commitée.
+7. Émettre l'événement seulement après le commit.
+**Échec :** undefined
+**Sécurité :** undefined
+**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
+**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
+**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
+**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
+**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
-### 6. AI avatar generation
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M02.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+### M02.6 Memory/DNA
+**Acteur :** validated action or explicit memory
+**Déclencheur :** provenance → privacy class → bounded inference → invalidation path
+**Préconditions :** no sensitive inference/global private chat mining
+**Ordre exact :**
+1. Authentifier/dériver l'acteur côté serveur.
+2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
+3. Valider schéma, taille, format, état et policy.
+4. Memory/DNA evidence.
+5. Effectuer la mutation autoritative : **low confidence: no promotion**.
+6. Construire la projection depuis la donnée commitée.
+7. Émettre l'événement seulement après le commit.
+**Échec :** undefined
+**Sécurité :** undefined
+**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
+**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
+**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
+**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
+**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
-### 7. Preferences
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M02.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+## 3. Données owned
+Chaque entité possède id stable, owner/actor relation, status, version, createdAt, updatedAt, privacyClass, retentionPolicy, auditRef si nécessaire et contraintes d'unicité. Une projection ne devient jamais la source d'autorité.
 
-### 8. Privacy controls
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M02.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+## 4. États
+Les capacités suivent une machine d'états explicite : REQUESTED/AVAILABLE → VALIDATING → ACTIVE/SUCCESS ou REJECTED/FAILED, avec des transitions propres à la capacité. Toute transition = trigger + guards + mutation + event + projection. Une guard échouée n'écrit rien.
 
-### 9. Activity history
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M02.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+## 5. Contrats inter-modules
+Échanges uniquement par use-case, event ou projection versionnée. Aucun module ne modifie directement les tables privées d'un autre owner. Les noms historiques restent des alias/mécanismes, jamais des owners supplémentaires.
 
-### 10. Creation history
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M02.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 11. Game history
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M02.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 12. Collection view
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M02.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 13. Player Memory
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M02.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 14. MORISE DNA signals
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M02.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 15. Data export/deletion
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M02.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 16. Blocking/mute preferences
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M02.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-## 3. Parcours nominaux
-1. Bootstrap : authenticated auth user → ensure Player → create default privacy/preferences idempotently.
-2. Avatar : request → capability AVATAR_GENERATION/upload → safety validation → preview → confirm → profile update.
-3. Privacy : user chooses visibility → validate → persist → emit preference event → invalidate public projection.
-4. DNA evidence : validated action → evidence record → M05/M15 DNA processor → contextual possibility.
-5. Deletion : verify actor → classify data → delete/anonymize according to retention policy → revoke caches/references.
-
-## 4. Modèle de domaine
-Player; PublicProfileProjection; PlayerPreferences; PrivacySettings; AvatarRef; PlayerMemoryRef; DNAEvidence.
-Pour chaque entité : ownerId/actor relation, lifecycle, timestamps, version, privacy class, retention, deletion policy, indexes, uniqueness et audit lorsque nécessaire.
-
-## 5. États
-ABSENT → BOOTSTRAPPING → ACTIVE; ACTIVE → LIMITED/DISABLED; avatar REQUESTED → VALIDATING → ACTIVE/REJECTED.
-Chaque transition doit posséder une guard testable. Une mutation invalide ne produit pas d'état partiel.
-
-## 6. Interface utilisateur
-Le module fournit :
-- état initial compréhensible ;
-- loading ;
-- success ;
-- empty lorsqu'il n'y a réellement aucun résultat ;
-- error ;
-- unavailable ;
-- degraded si une dépendance optionnelle est indisponible.
-Les écrans mobiles utilisent des actions tactiles sans duplication de l'application.
+## 6. UX / SYSTEM
+États obligatoires : LOADING, READY/SUCCESS, EMPTY si réellement vide, ERROR, UNAVAILABLE, DEGRADED. Les fonctionnalités internes ne créent pas de nouveaux boutons principaux automatiquement. SYSTEM peut révéler une capability contextuellement.
 
 ## 7. IA
-M15 may assist avatar, writing, translation, recommendations and DNA candidate signals, but never changes identity/role/permissions directly.
-L'intégration se fait par Capability ID et M15. Aucun composant ne dépend directement d'un provider.
+Les capacités AI utilisent M15 via Capability ID. La sortie du modèle est une proposition/evidence tant que le module owner ne l'a pas validée. M15 ne peut pas modifier directement identité, membership, progression ou économie.
 
 ## 8. Sécurité
-auth.users.id as authority; owner-only mutations; public projection separated; private memory not provider-readable by default.
+Autorité serveur; validation; auth/RLS/policies; rate limits; secrets server-only; provenance; sandbox pour code/artifacts; minimisation des données privées; logs sans contenu privé brut.
 
-## 9. Données et confidentialité
-Player; PublicProfileProjection; PlayerPreferences; PrivacySettings; AvatarRef; PlayerMemoryRef; DNAEvidence.
-Les données privées ne sont pas ajoutées aux analytics généraux ou aux memories globales par défaut.
+## 9. Résilience et performance
+Retries bornés; fallback déterministe lorsque possible; jobs lourds asynchrones; pagination/cursors; lazy loading des médias/3D; cache jetable et invalidable; aucune dépendance AI optionnelle ne doit provoquer un écran blanc.
 
-## 10. Dépendances et contrats
-Le module communique par use cases, événements et projections. Il ne modifie pas directement les tables d'un autre module.
-
-## 11. Cas limites
-Double-clic, retry réseau, session expirée, conflit concurrent, record supprimé, cache stale, provider indisponible, worker perdu, policy changée pendant l'opération, payload malveillant, résultat tardif, changement de version.
-
-## 12. Observabilité
-Chaque mutation critique associe requestId/traceId et une preuve de résultat. Les contenus privés sont minimisés.
-
-## 13. Performance
-Les listes sont bornées/paginées ; les opérations lourdes sont asynchrones ; les médias et engines lourds sont lazy-loaded ; l'IA optionnelle ne bloque pas le shell.
-
-## 14. Acceptance
-idempotent bootstrap, secure profile ownership, privacy matrix, avatar validation, bounded Player Context, delete/recovery tested.
-
-## 15. Definition of DONE
-Fonctionnalités implémentées + autorisation serveur + persistence + événements + états de récupération + tests + navigateur desktop/mobile + sécurité + observabilité + documentation de handoff.
-
-## 16. Interactions cross-module
-Les effets sortants sont des événements ou des contrats explicites. Si une fonction traverse plusieurs modules, le module source conserve son ownership et les consommateurs ne recopient pas sa règle.
-
-## 17. No-new-button rule
-Une fonctionnalité interne de PLAYER n'ajoute pas une nouvelle porte principale sans décision d'architecture. Le SYSTEM expose la capacité au bon moment.
+## 10. DONE
+Code/migrations + owner serveur + permissions + persistence + events + recovery + tests + desktop/mobile + observability + audit anti-doublon.
