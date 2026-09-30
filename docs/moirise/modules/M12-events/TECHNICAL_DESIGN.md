@@ -32,3 +32,11 @@ Organizer permissions; registration idempotency; no fake participant counts; no 
 
 ## Tests
 Timezone, duplicate registration, late join, cancellation, progress tampering, continuation existence, mobile event view, recovery after dependency outage.
+## Commands
+CREATE_EVENT; PUBLISH_EVENT; REGISTER; WITHDRAW; START_ACTIVITY; RECORD_PROGRESS; COMPLETE_ACTIVITY; CANCEL_EVENT; SCHEDULE_CONTINUATION.
+
+## Idempotency
+Registration = eventId + playerId. Progress = activityId + checkpointId + sourceEventId. Completion = activityId + completionAttemptId.
+
+## Notification handoff
+M12 emits real event/continuation facts. The notification layer applies delivery, quiet-period and deduplication policy. M12 never invents alerts.
