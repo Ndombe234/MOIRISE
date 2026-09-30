@@ -29,3 +29,11 @@ If semantic provider is unavailable, deterministic/local ranking continues with 
 
 ## Tests
 determinism, diversity, novelty, blocks, private-content exclusion, stale metadata, provider outage, preference override, empty world.
+## Ranking policy version
+RankingPolicy has version, protected filters, exploration policy, diversity policy and benchmark references. A new version can be tested before broad rollout.
+
+## Cache
+User-specific sensitive ranking caches are isolated. Cache keys include context version and ranking-policy version.
+
+## Safe explanation
+A result can expose a simple reason key such as “because you explored puzzle games recently” without revealing hidden sensitive features.
