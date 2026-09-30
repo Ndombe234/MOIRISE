@@ -1,3 +1,9 @@
+# REFERENCE ONLY — HISTORICAL PRODUCT NOTE
+
+This file is preserved for product context and ideas. It is **not** an implementation authority. For current scope, implementation order and technical decisions, use docs/moirise/MASTER_REBUILD_V2.md, docs/moirise/BUILD_ORDER.md and the single canonical module files under docs/moirise/modules/.
+
+---
+
 # MORISE Game Universe — Product Design
 
 ## Core idea
