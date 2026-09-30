@@ -1,37 +1,37 @@
-# M10 — SOCIAL GAMING
+# M10 — SOCIAL GAMING — PLAN D'IMPLÉMENTATION DÉTAILLÉ REPRIS À ZÉRO
 
-Connect PLAY and SOCIAL: result sharing, challenges, invitations, rematches, co-op, asynchronous competition, community challenges, social leaderboards and game-linked posts.
+## 0. Granularité
+Un défi n'est pas juste un bouton. La chaîne exacte est : résultat validé → règle de défi immutable → cible/visibilité → invitation → tentative indépendante → validation → comparaison → rematch éventuel.
 
-Living Objects can become shared game seeds; Convergence can create optional game experiments; recurring validated problems can feed Missions From Reality.
+## 1. Owner
+M10 possède l'état des challenges et comparaisons. M06 possède les sessions de jeu; M11 possède membership des communautés; M05/M14 consomment les résultats validés.
 
-AI proposes challenges, variants and connections through M15. Reward/result authority remains server-side.
+## 2. Create Challenge
+Acteur Player. Déclencheur Share/Challenge depuis un résultat validé.
+Préconditions : resultId valide; source partageable; target policy.
+Étapes : vérifier résultat → copier uniquement les paramètres nécessaires de rulesVersion → définir target/visibility/expiry → créer Challenge immutable → créer invite/ref.
+Source privée jamais exposée par la challenge card.
 
+## 3. Async Attempt
+Le destinataire ouvre → vérifier que Challenge est ACTIVE et qu'il n'est ni expiré ni interdit par block/privacy → créer ChallengeAttempt → demander une nouvelle PlaySession à M06 → associer result au challenge après validation.
+L'ancienne tentative n'est jamais modifiée.
 
-## Detailed feature behavior
+## 4. Comparison
+Comparer seulement AuthoritativeResults. Utiliser la même rulesVersion/tie rule pour tous. Le client reçoit une ComparisonProjection, jamais une victoire calculée localement considérée comme officielle.
 
-### Challenge
-A Player converts a validated result into a challenge with a ruleset, visibility, target/cohort and expiry.
+## 5. Rematch
+Rematch crée un nouveau Challenge avec une nouvelle session. L'ancien challenge et son résultat restent immuables. Rate limits évitent une création infinie.
 
-### Async-first
-The recipient can answer later. Both players do not need simultaneous presence.
+## 6. Community Challenge
+M10 reçoit une demande depuis M11 mais revalide membership/permissions au moment de l'action. La communauté ne devient pas source de vérité de membership.
 
-### Rematch
-Rematch creates a new session/attempt while preserving the original ruleset version for comparison.
+## 7. Abuse controls
+Avant création, accept, attempt ou rematch : block/mute check, rate limit, expiry, dedupe, result integrity. Abuse flags peuvent créer un hook vers la modération, pas une punition autonome.
 
-### Community challenge
-M11 owns membership; M10 owns challenge execution; M05/M14 consume validated results for progression/reward.
+## 8. États
+Challenge DRAFT → ACTIVE → COMPLETED/EXPIRED/CANCELLED.
+Attempt PENDING → ACTIVE → VALID/INCONCLUSIVE.
+Comparison READY seulement si les inputs autoritatifs sont valides.
 
-### Result comparison
-Only authoritative validated results can appear in a comparison or leaderboard.
-
-### Living Object branch
-A game branch can evolve from a Living Object. Contributors and lineage remain visible according to permissions.
-
-### Convergence
-M15 may propose a temporary experiment when independent game trajectories converge. Participation is voluntary.
-
-### Anti-abuse
-Rate limits, duplicate challenge protection, block/mute enforcement, expiry and fake-result detection are required.
-
-### Completion evidence
-Create/accept/expire/rematch, privacy, result validation, community integration and mobile sharing are all tested.
+## 9. Tests / DONE
+Duplicate challenge, blocked target, expired challenge, concurrent rematch, invalid score, private result sharing, community membership revoked, mobile/desktop, network loss and idempotent retry.
