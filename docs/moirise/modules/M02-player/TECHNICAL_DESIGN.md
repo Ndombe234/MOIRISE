@@ -1,123 +1,119 @@
-# M02 — PLAYER — CONCEPTION TECHNIQUE APPROFONDIE
+# M02 — PLAYER — CONCEPTION TECHNIQUE REPRISE À ZÉRO
 
-## 1. Boundary
-M02 owns persistent Player identity, public/private profile projections, preferences, attribution, profile history and personal-data lifecycle. M02 exposes a bounded Player Context to M05/M15.
+## 0. Boundary
+**Owner : M02.** Architecture : UI → server boundary → use-case owner → policy → repository/adapter → persistence/provider → event → projection.
 
-## 2. Bootstrap
-Auth session exists → lookup Player by auth user id → if absent, transaction creates Player + default privacy/preferences → unique handle constraints → emit PLAYER_CREATED.
-Operation is idempotent.
+## 1. Command contract
+```
+Command {
+  commandId: string,
+  actorId: server-derived,
+  capabilityId: string,
+  targetRef?: string,
+  expectedVersion?: number,
+  payload: validated object
+}
+```
+Le serveur refuse actorId arbitraire, capability inconnue, payload hors schema, target hors scope, expectedVersion périmée ou réutilisation d'un commandId avec un payload différent.
 
-## 3. Profile model
-PublicProfileProjection never contains private preferences or moderation-only state.
-Fields are classified PUBLIC, PLAYER_PRIVATE, SENSITIVE.
-Handle uniqueness is case-normalized.
-Display names have length and normalization constraints.
+## 2. Capability contracts
+### M02.C1 Bootstrap
+Entrée : actor + contexte minimal + payload validé.
+Préconditions : auth user authoritative.
+Exécution : Player.
+Sortie autoritative : race: unique constraint + existing record.
+Erreur principale : undefined.
+Boundary sécurité : undefined.
 
-## 4. Preferences
-Preferences include locale, explicit interests, notification choices, recommendation controls and privacy choices.
-A preference update is versioned and emits PLAYER_PREFERENCE_UPDATED.
+### M02.C2 Profile
+Entrée : actor + contexte minimal + payload validé.
+Préconditions : privacy enforced server.
+Exécution : public/private projection.
+Sortie autoritative : invalid field: no partial save.
+Erreur principale : undefined.
+Boundary sécurité : undefined.
 
-## 5. Avatar pipeline
-REQUEST → policy → upload/generation capability → MIME/content validation → preview → confirmation if required → storage reference → profile update.
-Generated avatars keep artifact provenance.
-An external provider never receives profile secrets.
+### M02.C3 Handle
+Entrée : actor + contexte minimal + payload validé.
+Préconditions : no owner leak.
+Exécution : handle record.
+Sortie autoritative : conflict: old handle; same command: same result.
+Erreur principale : undefined.
+Boundary sécurité : undefined.
 
-## 6. Activity/history
-References may point to games, creations, social activities and collections.
-History pages are projections with cursor pagination.
-Deletion/visibility policies can hide an activity without corrupting unrelated records.
+### M02.C4 Avatar
+Entrée : actor + contexte minimal + payload validé.
+Préconditions : safe storage, policy validation.
+Exécution : AvatarRef.
+Sortie autoritative : processing failure preserves old avatar.
+Erreur principale : undefined.
+Boundary sécurité : undefined.
 
-## 7. Player Memory
-Memory is separate from profile. It stores only allowed useful context.
-Entry: scope, source, sensitivity, confidence, utility, retention, deletion rule.
-Private messages are not automatically written here.
+### M02.C5 Preferences
+Entrée : actor + contexte minimal + payload validé.
+Préconditions : settings not authority.
+Exécution : Preferences.
+Sortie autoritative : unknown key reject; stale version conflict.
+Erreur principale : undefined.
+Boundary sécurité : undefined.
 
-## 8. MORISE DNA
-DNAEvidence derives from validated outcomes. Example:
-successful exploration → exploration evidence;
-validated creation → creation evidence.
-Evidence has source event, rule version, weight and timestamp.
-DNA never infers medical, political, religious, sexual or other sensitive traits.
+### M02.C6 Memory/DNA
+Entrée : actor + contexte minimal + payload validé.
+Préconditions : no sensitive inference/global private chat mining.
+Exécution : Memory/DNA evidence.
+Sortie autoritative : low confidence: no promotion.
+Erreur principale : undefined.
+Boundary sécurité : undefined.
 
-## 9. Privacy
-Per-field visibility policy.
-Block/mute references are consumed by M03.
-AI requests only receive the minimum permitted projection.
-Export/deletion must update caches and memory refs.
+## 3. Persistence
+Contraintes uniques pour identities/idempotency; index sur owner+status+updatedAt et clés de recherche; foreign keys uniquement lorsque coupling autorisé; version d'optimistic concurrency quand plusieurs writers existent; suppression/retention alignées avec privacyClass.
 
-## 10. Commands
-ENSURE_PLAYER; UPDATE_PROFILE; UPDATE_PREFERENCES; REQUEST_AVATAR; CONFIRM_AVATAR; UPDATE_PRIVACY; REQUEST_DATA_EXPORT; REQUEST_DATA_DELETION.
-Every mutation derives actorId from session.
+## 4. State and transaction contract
+Chaque transition définit stateBefore → trigger → guards → transaction → stateAfter → event. Les écritures formant une seule unité métier sont atomiques. Les projections sont reconstruites depuis l'autorité si elles deviennent incohérentes.
 
-## 11. State
-Player ABSENT → BOOTSTRAPPING → ACTIVE.
-Account restriction can transition ACTIVE → LIMITED.
-Deletion enters DELETION_REQUESTED → DELETING → DELETED/ANONYMIZED according to retention law.
+## 5. Idempotence / concurrence
+Même commandId + même payload = même résultat. Même commandId + payload différent = CONFLICT. Les événements peuvent être délivrés deux fois; les consumers dédupliquent par eventId/sourceRef. Une réponse browser ancienne ne peut pas écraser une version plus récente.
 
-## 12. Concurrency
-Profile updates use optimistic versioning.
-Handle changes use unique database constraints.
-Duplicate avatar requests use idempotency keys.
+## 6. Event envelope
+```
+eventId, eventType, schemaVersion, producerModule, occurredAt,
+commandId?, requestId?, actorRef?, payloadRef
+```
+Un event exprime un fait déjà commit. Il ne transporte pas inutilement les contenus privés.
 
-## 13. Security
-Owner write only.
-Public projection separate.
-No client role field is authoritative.
-Signed upload URLs are scoped.
-Sensitive fields are excluded from logs.
+## 7. Failure matrix
+- validation → erreur typée, aucune écriture;
+- auth absente → 401/sign-in;
+- permission refusée → 403 sans fuite;
+- cible supprimée → NOT_FOUND/STALE;
+- conflit → 409 + nouvelle version;
+- timeout → retry borné/fallback;
+- provider down → DEGRADED si capability non critique;
+- réseau perdu après commit → récupération par commandId;
+- worker perdu → requeue uniquement si tâche idempotente.
 
-## 14. Performance
-Public profiles can be cached by version.
-Private profile remains player-scoped.
-Activity uses cursor pagination.
-Avatar transformations are asynchronous.
+## 8. Security
+Protection IDOR, actor server-derived, validation input/output, session/CSRF selon transport, SSRF allowlist, dependency allowlist, resource limits, sandbox, secret isolation, privacy checks before provider routing, prompt injection treated as untrusted data.
 
-## 15. Events
-PLAYER_CREATED; PROFILE_UPDATED; PREFERENCE_UPDATED; AVATAR_CREATED; PRIVACY_UPDATED; PLAYER_DATA_DELETION_REQUESTED; PLAYER_DNA_SIGNAL_RECORDED.
+## 9. AI boundary
+Aucune capacité métier ne traite directement une sortie de modèle comme autorité. M15 fournit normalized result + validation report + provenance. Le owner du module décide de la mutation.
 
-## 16. AI
-M15 may assist bio drafting, translation, avatar creation, recommendation preferences and contextual personalization. It cannot change owner, role, privacy or identity without an authorized Player command.
+## 10. Browser proof
+Desktop : deep links, refresh, keyboard, focus, no critical console error.
+Mobile : touch targets, back navigation, keyboard, narrow viewport, media upload where applicable.
+Chaque mutation est testée en double tap et avec réseau coupé juste après commit.
 
-## 17. Tests
-Bootstrap idempotency; handle collision; unauthorized profile mutation; privacy projection; avatar validation; delete/export; DNA sensitive-feature rejection; cache invalidation; mobile profile edit.
+## 11. Observability
+requestId, traceId, commandId, moduleId, capabilityId, state transition, validation outcome, duration, provider/worker ref, errorCode. Jamais de secret, mot de passe ou contenu privé brut dans telemetry générale.
 
-## 18. DONE
-Identity, privacy, profile, avatar, memory boundary and DNA evidence are all server-verifiable.
+## 12. Performance
+Limits explicites; pagination; lazy load; async jobs; cache invalidation; no AI blocking critical boot; runtime 3D isolé et chargé à la demande.
 
-## 19. API/use-case contracts
-getMyPlayer()
-getPublicPlayer(handle)
-updateProfile(input)
-updatePreferences(input)
-updatePrivacy(input)
-requestAvatarGeneration(spec)
-confirmAvatar(artifactRef)
-requestDataExport()
-requestDataDeletion()
+## 13. Rollback / recovery
+Versions critiques immuables. Un nouveau comportement devient une nouvelle version de règle/capability. Les résultats historiques ne sont pas réécrits silencieusement. Les migrations destructrices exigent une stratégie forward-fix/rollback documentée.
 
-All mutations use authenticated actorId and optimistic version checks.
+## 14. Tests
+Unit rules; integration persistence; auth/policy; event contract; idempotency; concurrency; failure injection; provider fallback; worker lease; artifact sandbox lorsqu'applicable; desktop; mobile; accessibility; regression; observability.
 
-## 20. Public/private projection
-Public projection may include handle, display name, avatar, bio, public titles and explicitly public activity.
-Private projection may include preferences, consent state, hidden activity and memory refs.
-SENSITIVE fields are never part of public projection.
-
-## 21. Handle rules
-Normalize case and whitespace.
-Validate allowed character set.
-Unique index case-insensitive.
-Changing handle creates a redirect/reference policy rather than breaking historical attribution.
-
-## 22. DNA evidence
-DNAEvidence = sourceEventId + capabilityDimension + ruleVersion + weight + validationState.
-Evidence is append-like. Recalculation creates a new projection version.
-
-## 23. Deletion
-Deletion process:
-request → confirmation → mark restricted → remove public projections → delete/anonymize according to retention → revoke signed media → invalidate cache → remove eligible memory.
-
-## 24. Acceptance scenarios
-Two simultaneous bootstrap requests produce one Player.
-Two handle changes to the same value → one succeeds, one conflict.
-Avatar provider fails → Player profile remains valid.
-Private preference requested by Social → denied.
+## 15. DONE
+Build/tests verts; permissions prouvées; data coherent under retry/concurrency; fallback/recovery proven; mobile+desktop verified; no duplicate authority; documentation handoff complete.
