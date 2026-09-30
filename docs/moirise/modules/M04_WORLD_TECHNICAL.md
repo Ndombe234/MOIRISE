@@ -1,26 +1,34 @@
-# M04 — WORLD — TECHNICAL CONTRACT
+# M04 — WORLD — TECHNICAL DESIGN
 
 ## Boundary
-M04 defines the contextual MOIRISE world: player-facing states, discovery context, system notifications and world surfaces. It does not implement the AI brain or game runtime.
+M04 owns the coherent MOIRISE world model: zones, categories, themes, navigation context and world metadata. It does not own player progression or game execution.
 
-## State
+## Data
+`world_zones`, `world_nodes`, `world_tags`, `world_feature_flags`.
+
+## Types
 ```ts
-interface WorldContext { locale:string; playerId:string; currentRoute:string; activeEntities:string[]; activeEvents:string[]; systemMode:"calm"|"active"|"alert"; }
+interface WorldZone { id:string; key:string; titleKey:string; descriptionKey:string; order:number; enabled:boolean; }
+interface WorldContext { zoneId:string; locale:string; playerId:string; availableActions:string[]; }
 ```
-World context is derived, short-lived state. It must not become a second memory database.
 
-## UI
-The SYSTEM layer is elegant and contextual: status panels, alerts, missions/prompts and contextual actions. Never flood the user with repeated SYSTEM text. Persistent navigation remains 5–6 primary doors.
+## Placement
+The world is presented through existing primary doors. Zones are sections/context, not additional global navigation buttons.
 
-## Data flow
-`route/player state → WorldContextBuilder → SystemPresenter → UI`.
-The builder may request AI suggestions through the AI capability interface but never calls a provider directly.
+## SYSTEM coordination
+The SYSTEM may surface the next useful action based on current context. It must not hide required navigation or trap the player in an animation.
+
+## Data rules
+World metadata is versioned. Feature flags are server-authoritative. Disabled content remains addressable only for migration/admin recovery, never for ordinary users.
+
+## AI boundary
+AI can propose world text, recommendations and adaptive candidates through capabilities. It cannot directly alter production world configuration.
 
 ## Performance
-World context is memoized per route/session and invalidated only when relevant state changes. Avoid polling; use events/subscriptions.
+Static world metadata is cacheable; personalized context is user-scoped. Lazy-load heavy world visualizations.
 
 ## Tests
-Context derivation, route transitions, stale context invalidation, mobile rendering, alert throttling, degraded AI behavior.
+zone visibility, feature flags, localization keys, invalid zone fallback, direct-route recovery, mobile layout and AI-unavailable behavior.
 
 ## Done gate
-World presentation remains coherent while social, games and AI features can fail independently.
+The player always has a clear location/context and can navigate the complete product without exposing dozens of buttons.
