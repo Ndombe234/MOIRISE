@@ -60,3 +60,40 @@ Specification schema; dependency policy; build; sandbox; runtime; result integri
 
 ## 13. DONE
 A player can go from natural language idea to a validated package without the system inventing missing state or bypassing safety.
+
+## 14. GameSpecification schema sections
+identity, genre, mode, engine, scenes, entities, controls, rules, quests, rewards, assets, audio, difficulty, win/loss, save, share, multiplayer, accessibility, performance, security, testPlan, publication.
+
+## 15. Task idempotency
+Each generation node uses projectId + nodeKey + inputHash + capabilityVersion.
+If the same task is retried, it returns the prior artifact rather than duplicating files or charges.
+
+## 16. Build isolation
+Generated source is placed in an isolated workspace.
+Dependency allowlist is resolved before install.
+No package can read project secrets.
+Network access uses an allowlist.
+Build process has CPU/memory/time quotas.
+
+## 17. Test classes
+Schema;
+static;
+type/build;
+runtime;
+behavior;
+security;
+resource;
+mobile;
+save/load;
+publication.
+
+## 18. Publication rollback
+Every published version remains immutable.
+Rollback changes activeVersion pointer and leaves prior versions auditable.
+
+## 19. AI autonomy
+Player can request full generation, assisted steps or checkpoints.
+Autonomy cannot exceed M15 A-level and project policy.
+
+## 20. Acceptance
+A game is never marked PUBLISHED from a model output alone.
