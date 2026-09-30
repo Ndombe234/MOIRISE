@@ -43,3 +43,18 @@ Start, pause/resume, result, share, back, refresh, mobile touch, desktop keyboar
 
 ## 10. DONE
 A result cannot be awarded merely because the client claims it happened; every result is tied to a valid session and version and survives retries safely.
+
+## 11. AI MODULE CONTRACT — M06
+
+### 11.1 Capability boundary
+AdaptiveGameContent est une capability distincte de ResultValidation. M15 peut appeler la première quand le manifest l'autorise; il ne peut jamais remplacer la seconde.
+
+### 11.2 Result validation
+Evidence → session ownership → state → game/rules version → bounds → sequence → idempotency → authoritative commit.
+AI output n'est qu'une evidence candidate.
+
+### 11.3 Runtime security
+Generated/adaptive content is sandboxed, versioned and bounded. No runtime capability can expose service-role, unrestricted filesystem, unrestricted network or arbitrary database access.
+
+### 11.4 Tests
+AI unavailable, malicious adaptive payload, stale gameVersion, duplicate completion, forged sessionRef, save corruption, provider timeout, no reward from unvalidated output.
