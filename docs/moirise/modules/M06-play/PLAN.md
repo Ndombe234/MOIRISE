@@ -92,3 +92,15 @@ Le jeu doit continuer sans IA lorsqu'un contenu adaptatif n'est pas critique. Si
 
 ### F. DONE
 Tests couvrent runtime AI down, résultat falsifié par AI/client, version mismatch, retry et reprise.
+
+## GAME PLATFORM — INTÉGRATION M06 / PLAY
+
+M06 ne fabrique pas le moteur des jeux. Il transforme un GameBuild validé en expérience jouable dans MOIRISE.
+
+Flux obligatoire : GameBuild VALIDATED → vérifier publication/version/device compatibility → créer PlaySession → demander RuntimeRef à M09 → démarrer → collecter evidence → valider résultat → produire AuthoritativeResult → handoff M05/M14/M10 selon contrats → partage via M03.
+
+M06 consomme le RuntimeManifest produit/validé par M09. Il ne choisit pas arbitrairement l'engine ou la sandbox. Une incompatibilité device déclenche uniquement le fallback défini ou UNAVAILABLE.
+
+La grande porte PLAY reste stable pour l'utilisateur. Les détails 2D/3D sont internes à l'expérience.
+
+DONE : un jeu fabriqué par M08 et validé par M09 peut être lancé, repris, terminé et partagé sans recopier la logique de session dans chaque jeu.
