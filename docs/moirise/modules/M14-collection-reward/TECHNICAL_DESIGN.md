@@ -28,3 +28,12 @@ M15 may simulate economy and identify anomaly candidates. It cannot mutate produ
 
 ## Tests
 daily allowance, concurrency, duplicate, config version, negative amount, collection ownership, exploit attempts, rollback.
+## Reward commands
+CLAIM_REWARD; ADD_COLLECTION_ITEM; START_ROULETTE_PULL; EQUIP_TITLE; RECORD_CREATOR_ATTRIBUTION.
+Player identity is always session-derived. Reward eligibility and grant are atomic where possible.
+
+## Roulette concurrency
+Simultaneous pulls use an allowance/version guard. A retry with the same idempotency key returns the previous pull and cannot consume a second allowance.
+
+## Audit
+Each pull keeps player reference, configuration version, outcome reference, timestamp and idempotency proof. The Player sees the result, not internal secure implementation details.
