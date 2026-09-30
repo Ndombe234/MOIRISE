@@ -31,3 +31,10 @@ Convergence false-positive prevention, privacy filtering, manipulation burst, re
 
 ## 10. DONE
 Adaptive behavior is contextual but bounded, explainable by permitted evidence, privacy-safe and reversible.
+
+## AI MODULE CONTRACT — M13
+
+AdaptiveSignal = { signalId, sourceModule, sourceRef, observedAt, evidenceHash, privacyClass, confidence, expiresAt }.
+AdaptationProposal = { targetSurface, changeSet, evidenceRefs, reasonKey, confidence, policyClass, cooldownKey, expiresAt, rollbackRef }.
+M13 validates evidence freshness, privacy, threshold, cooldown and target scope before commit.
+Convergence/Emergence requires versioned threshold logic over real signals. Tests cover signal poisoning, fabricated event, privacy breach, oscillation, cooldown bypass, duplicate adaptation and rollback.
