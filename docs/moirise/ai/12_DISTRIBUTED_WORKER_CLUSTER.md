@@ -1,31 +1,70 @@
 # MORISE AI — DISTRIBUTED WORKER CLUSTER
 
 ## Authority
-This file is the single technical contract for distributed workers. The general resource scheduler is defined in `08_RESOURCE_SCHEDULER_OBSERVABILITY.md`; this file defines worker identity, registration, trust, quotas, job transport, security and lifecycle.
+This file is the single technical contract for distributed workers. The general resource scheduler is defined in `08_RESOURCE_SCHEDULER_OBSERVABILITY.md`; this file defines worker identity, registration, trust, quotas, job transport, security, administration and lifecycle.
 
 ## Goal
 
 Allow MORISE to use multiple computers with different CPU, RAM and GPU capacities without making the development computer a permanent compute bottleneck.
 
+## 1. Two worker domains
+
+MORISE has two fundamentally different worker categories:
+
+### TRUSTED WORKERS
+
+Machines explicitly owned/controlled by the MORISE operator. They may receive higher resource quotas and, when separately authorized, specialized or more sensitive workloads.
+
+Example registry:
+
 ```text
-MOIRISE AI ORCHESTRATOR
-        │
-        ▼
-   TASK SCHEDULER
-        │
-        ▼
-   WORKER REGISTRY
-        │
-   ┌────┼──────────────┐
-   ▼    ▼              ▼
- CODE  MEDIA          GAME
- W01   W02            W03
-   │    │              │
-   ▼    ▼              ▼
- CPU   GPU           2D/3D
+MORISE WORKER REGISTRY
+OWNER: MORISE ADMIN
+
+Worker #001
+Type: TRUSTED
+CPU quota: 1 logical core
+RAM quota: 512 MB
+GPU: allowed
+Priority: HIGH
+Status: ONLINE
+
+Worker #002
+Type: TRUSTED
+CPU quota: 4 logical cores
+RAM quota: 8 GB
+GPU: allowed
+Priority: HIGH
+Status: ONLINE
+
+Worker #003
+Type: TRUSTED
+CPU quota: 2 logical cores
+RAM quota: 4 GB
+GPU: allowed
+Priority: NORMAL
+Status: OFFLINE
 ```
 
-## 1. Separate MOIRISE Worker
+These quotas are examples configured per machine; they are not universal defaults.
+
+### COMMUNITY WORKERS
+
+Machines voluntarily contributed by users. They always remain more restricted than trusted infrastructure.
+
+Default community limits:
+
+```text
+CPU: 1 logical core maximum
+RAM: 512 MB maximum
+GPU: disabled by default
+Storage: 0 by default
+Network: configurable quota
+```
+
+Community workers may only receive sandboxed, explicitly eligible workloads.
+
+## 2. Separate MOIRISE Worker
 
 A participating user's machine does not become a trusted worker merely because the user activates `Participer`.
 
@@ -39,7 +78,7 @@ The worker must have visible controls to pause, resume and stop participation.
 
 It must never operate as a hidden background process.
 
-## 2. Initial machine diagnostic
+## 3. Initial machine diagnostic
 
 During registration the worker measures, without exceeding the user's selected quota:
 
@@ -68,7 +107,47 @@ interface WorkerHardware {
 }
 ```
 
-## 3. User resource quota
+## 4. Trusted machine configuration
+
+Trusted workers have an explicit operator-owned configuration separate from community quotas.
+
+```ts
+interface TrustedWorkerPolicy {
+  workerId: string;
+  ownerScope: "trusted";
+  maxCpuLogicalCores: number;
+  maxRamMb: number;
+  gpuEnabled: boolean;
+  maxGpuVramMb?: number;
+  maxStorageMb: number;
+  maxNetworkMbPerDay?: number;
+  priority: "HIGH" | "NORMAL" | "LOW";
+  allowedTaskClasses: string[];
+  allowedPrivacyClasses: string[];
+}
+```
+
+Example for a 16 GB development PC:
+
+```text
+Machine RAM: 16 GB
+MORISE RAM maximum: 4 GB
+MORISE CPU maximum: 4 logical cores
+GPU: according to explicit configuration
+```
+
+Example for a larger server:
+
+```text
+Machine RAM: 64 GB
+MORISE RAM maximum: 48 GB
+MORISE CPU maximum: 12 logical cores
+GPU: allowed
+```
+
+The numbers are administrator-configurable and must be enforced by the worker runtime/sandbox.
+
+## 5. Community resource quota
 
 The quota is a technical limit enforced by the worker sandbox/runtime, not merely a UI setting.
 
@@ -87,12 +166,13 @@ The quota is not reserved permanently. It is a maximum budget while an assigned 
 
 The worker must throttle, reject or terminate a task that exceeds its configured limits.
 
-## 4. Worker identity
+## 6. Worker identity
 
 ```ts
 interface WorkerDescriptor {
   workerId: string;
   workerVersion: string;
+  domain: "trusted" | "community";
   status: "online" | "busy" | "degraded" | "draining" | "offline" | "quarantined";
   trustLevel: "unverified" | "occasional" | "reliable" | "active" | "specialized";
   capabilities: string[];
@@ -112,7 +192,7 @@ interface WorkerDescriptor {
 
 A worker advertises capabilities but never receives permission to choose arbitrary server operations.
 
-## 5. Trust levels
+## 7. Trust levels
 
 Trust is technical reliability, not a reward or social ranking.
 
@@ -156,7 +236,7 @@ No new tasks.
 
 Quarantine is used for repeated failures, invalid results, security violations or incompatible software until re-verification.
 
-## 6. Technical Worker Score
+## 8. Technical Worker Score
 
 The orchestrator maintains an internal technical reliability profile.
 
@@ -194,7 +274,7 @@ reliability
 
 Do not use a single score as the sole authorization mechanism. Hard security/privacy constraints are evaluated first.
 
-## 7. Registration and authentication
+## 9. Registration and authentication
 
 `INSTALL WORKER → AUTHENTICATE → VERSION CHECK → REGISTER → CAPABILITY CHECK → TRUST EVALUATION`
 
@@ -209,7 +289,7 @@ Every worker requires:
 
 Never place Supabase, Gemini, DeepSeek, Pollinations, OpenRouter or other production secrets inside a user worker.
 
-## 8. Job contract
+## 10. Job contract
 
 ```ts
 interface WorkerJob {
@@ -237,7 +317,7 @@ The job's resource quota must never exceed the worker owner's configured quota.
 
 The worker receives only the minimum payload required by the task.
 
-## 9. Job lifecycle
+## 11. Job lifecycle
 
 ```text
 QUEUED
@@ -257,9 +337,9 @@ COMPLETED / REJECTED
 
 Timeout, heartbeat loss or invalid output moves the job to retry/fallback.
 
-## 10. Recoverable tasks
+## 12. Recoverable tasks
 
-MORISE must not depend on a particular user worker.
+MORISE must not depend on a particular worker.
 
 Example:
 
@@ -291,7 +371,7 @@ Jobs must have:
 
 A disconnected worker is never assumed to have completed the task.
 
-## 11. Worker heartbeat
+## 13. Worker heartbeat
 
 The worker sends periodic health information containing only operational metadata:
 
@@ -312,7 +392,7 @@ healthy → degraded → offline
 
 The exact thresholds are configurable and must not be hard-coded into UI components.
 
-## 12. Worker sandbox
+## 14. Worker sandbox
 
 Generated code and untrusted workloads execute inside an isolated environment.
 
@@ -327,7 +407,7 @@ A worker job must not automatically access:
 
 Resource limits must be enforced by the runtime/sandbox, not merely by JavaScript variables.
 
-## 13. Data isolation
+## 15. Data isolation
 
 Default policy:
 
@@ -342,9 +422,9 @@ SENSITIVE TASK
     → explicitly trusted worker only
 ```
 
-A worker owned by another user must never receive another user's private content unless that exact transfer is explicitly authorized by policy.
+A community worker must never receive another user's private content unless that exact transfer is explicitly authorized by policy.
 
-## 14. Artifact model
+## 16. Artifact model
 
 Prefer references and hashes instead of copying large files through the orchestrator.
 
@@ -358,7 +438,7 @@ ARTIFACT STORE
 
 Large game builds, images, audio and video should be transferred as artifacts, not embedded in job-control messages.
 
-## 15. Worker classes
+## 17. Worker classes
 
 Initial logical classes:
 
@@ -374,7 +454,7 @@ Initial logical classes:
 
 One physical computer may advertise multiple classes.
 
-## 16. Scheduling example
+## 18. Scheduling example
 
 For a 3D game creation request:
 
@@ -383,11 +463,11 @@ USER REQUEST
     ↓
 MORISE PLAN
     ↓
-CODE TASK ─────────→ CODE_WORKER
-3D ASSET TASK ─────→ SPECIALIZED_GPU_WORKER
-AUDIO TASK ────────→ AUDIO_WORKER
-BUILD TASK ────────→ BUILD_WORKER
-TEST TASK ─────────→ TEST_WORKER
+CODE TASK ─────────→ TRUSTED CODE_WORKER
+3D ASSET TASK ─────→ TRUSTED/SPECIALIZED_GPU_WORKER
+AUDIO TASK ────────→ ELIGIBLE AUDIO_WORKER
+BUILD TASK ────────→ TRUSTED BUILD_WORKER
+TEST TASK ─────────→ TRUSTED TEST_WORKER
     ↓
 VALIDATION
     ↓
@@ -396,7 +476,46 @@ GAME PACKAGE
 
 Independent tasks can run concurrently. Dependent tasks wait for their required artifacts.
 
-## 17. Fault tolerance
+## 19. Trusted-worker administration console
+
+MORISE must provide an administration-only worker console for trusted infrastructure.
+
+The console displays, per trusted machine:
+- worker ID;
+- online/offline state;
+- CPU usage;
+- RAM usage;
+- GPU usage where available;
+- network state;
+- active task;
+- queue;
+- availability;
+- task success/failure;
+- worker version;
+- trust state;
+- configured quotas;
+- allowed task classes.
+
+Administrative actions:
+- pause worker;
+- drain worker;
+- revoke worker;
+- quarantine worker;
+- change quota;
+- change priority;
+- update worker policy.
+
+A critical action must require explicit administrative authorization.
+
+## 20. Community-worker visibility
+
+Community workers do not expose private host information to other users.
+
+The owner sees their own worker resource usage and participation controls.
+
+MORISE may retain aggregate operational telemetry needed for scheduling and security.
+
+## 21. Fault tolerance
 
 If a worker disappears:
 
@@ -404,7 +523,7 @@ If a worker disappears:
 
 Repeated failures can move the worker to quarantine.
 
-## 18. User-owned voluntary workers
+## 22. User-owned voluntary workers
 
 This is an opt-in feature, never an implicit requirement.
 
@@ -419,11 +538,11 @@ The owner must be able to:
 
 The worker must not secretly continue after participation is revoked.
 
-## 19. Server/worker trust separation
+## 23. Server/worker trust separation
 
-MOIRISE trusted infrastructure and user workers are separate security domains.
+MOIRISE trusted infrastructure and community workers are separate security domains.
 
-User workers must never receive:
+Community workers must never receive:
 - the complete production database;
 - Supabase service-role keys;
 - provider master keys;
@@ -433,7 +552,7 @@ User workers must never receive:
 
 The central system sends scoped jobs; workers return scoped results.
 
-## 20. Security boundary
+## 24. Security boundary
 
 Four independent questions must always be answered:
 
@@ -447,7 +566,7 @@ Four independent questions must always be answered:
 
 Authentication alone is never sufficient.
 
-## 21. Integration points
+## 25. Integration points
 
 - `00_MASTER_AI.md` — global AI authority
 - `08_RESOURCE_SCHEDULER_OBSERVABILITY.md` — scheduling and metrics
@@ -460,11 +579,13 @@ Authentication alone is never sufficient.
 
 1. Participation requires explicit consent.
 2. User workers are untrusted by default.
-3. Quotas are technically enforced.
-4. GPU is disabled by default.
-5. Private data is not distributed by default.
-6. Production secrets never enter user workers.
-7. A worker disappearing must not lose the job permanently.
-8. A worker cannot become authoritative over MORISE.
-9. Adding workers increases available distributed capacity; it does not create infinite compute.
-10. The orchestrator must measure actual capacity and degrade gracefully when workers disappear.
+3. Trusted workers have separately configurable resource policies.
+4. Community quotas are technically enforced.
+5. GPU is disabled by default for community workers.
+6. Private data is not distributed by default.
+7. Production secrets never enter community workers.
+8. A worker disappearing must not lose the job permanently.
+9. A worker cannot become authoritative over MORISE.
+10. Trusted and community workers are different security domains.
+11. Adding workers increases available distributed capacity; it does not create infinite compute.
+12. The orchestrator must measure actual capacity and degrade gracefully when workers disappear.
