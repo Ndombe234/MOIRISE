@@ -46,3 +46,13 @@ AI rerank result contains ordered candidate refs, bounded score/weight metadata 
 
 ### 11.4 Tests
 blocked candidate never reaches AI, private item never ranked, provider outage baseline ranking, deterministic pagination, duplicate feedback, stale AI scores invalidated after privacy change.
+
+## GAME PLATFORM — CONCEPTION TECHNIQUE M07
+
+GameCatalogItem = gameId + buildId + version + mode + engineClass + visibilityClass + deviceProfile + tags + durationProfile + status + discoverySignals.
+
+Publication = build validation + M09 runtime compatibility + content/safety checks + publication policy.
+
+L'AI rerank ne voit que les candidats déjà autorisés. M07 recalcule visibility, diversity et novelty avant projection.
+
+Un build invalidé ou retiré ne doit plus être lançable même si une ancienne projection est en cache. Tests : build non validé absent, retrait, filtres 2D/3D, compatibilité mobile, pagination et fallback sans AI.
