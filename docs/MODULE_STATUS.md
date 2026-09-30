@@ -4,50 +4,61 @@ Last updated: 2026-09-30
 
 ## Current position
 
-**NEW V4 REBUILD — MODULE 1 FOUNDATION**
+**DESIGN PHASE COMPLETE — MODULE 1–15 TECHNICAL CONTRACTS READY — IMPLEMENTATION NOT STARTED**
+
+The previous MOIRISE implementation that had reached Modules 1–6 is considered deleted for this rebuild. No previous implementation is treated as complete functionality.
 
 ## Official module status
 
-| Module | Status |
-|---|---|
-| 1 Foundation | DESIGN COMPLETE — REBUILD FROM ZERO |
-| 2 PLAYER | DESIGN COMPLETE — NOT IMPLEMENTED |
-| 3 SOCIAL | DESIGN COMPLETE — NOT IMPLEMENTED |
-| 4 WORLD | DESIGN COMPLETE — NOT IMPLEMENTED |
-| 5 SYSTEM / PROGRESSION | DESIGN COMPLETE — NOT IMPLEMENTED |
-| 6 PLAY | DESIGN COMPLETE — NOT IMPLEMENTED |
-| 7 Game Discovery Engine | DESIGN COMPLETE — NOT IMPLEMENTED |
-| 8 Game A→Z Factory | DESIGN COMPLETE — NOT IMPLEMENTED |
-| 9 Shared Game Engine | DESIGN COMPLETE — NOT IMPLEMENTED |
-| 10 Social Gaming | DESIGN COMPLETE — NOT IMPLEMENTED |
-| 11 Communities | DESIGN COMPLETE — NOT IMPLEMENTED |
-| 12 Events | DESIGN COMPLETE — NOT IMPLEMENTED |
-| 13 Adaptive World | DESIGN COMPLETE — NOT IMPLEMENTED |
-| 14 Collection / Reward Economy | DESIGN COMPLETE — NOT IMPLEMENTED |
-| 15 Meta System + AI Lab | DESIGN COMPLETE — NOT IMPLEMENTED |
+| Module | Technical design | Implementation |
+|---|---|---|
+| 1 Foundation | COMPLETE | NOT STARTED |
+| 2 Player | COMPLETE | NOT STARTED |
+| 3 Social + Private Messaging | COMPLETE | NOT STARTED |
+| 4 World | COMPLETE | NOT STARTED |
+| 5 System / Progression | COMPLETE | NOT STARTED |
+| 6 Play | COMPLETE | NOT STARTED |
+| 7 Game Discovery Engine | COMPLETE | NOT STARTED |
+| 8 Game A→Z Factory | COMPLETE | NOT STARTED |
+| 9 Shared Game Engine | COMPLETE | NOT STARTED |
+| 10 Social Gaming | COMPLETE | NOT STARTED |
+| 11 Communities | COMPLETE | NOT STARTED |
+| 12 Events | COMPLETE | NOT STARTED |
+| 13 Adaptive World | COMPLETE | NOT STARTED |
+| 14 Collection / Reward Economy | COMPLETE | NOT STARTED |
+| 15 Meta System + AI Lab | COMPLETE | NOT STARTED |
 
-## Critical rebuild rule
+## Canonical architecture
 
-The previous MOIRISE implementation that had reached Modules 1–6 is considered deleted for purposes of this V4 rebuild.
+- `docs/moirise/MASTER_REBUILD_V2.md` — product scope and authority
+- `docs/moirise/BUILD_ORDER.md` — implementation order
+- `docs/moirise/modules/M01_*_TECHNICAL.md` through `M15_*_TECHNICAL.md` — module implementation contracts
+- `docs/moirise/ai/00_MASTER_AI.md` — AI architecture authority
+- `docs/moirise/ai/10_PROVIDER_REGISTRY.md` — provider/endpoints/secrets registry
+- `docs/moirise/ai/12_DISTRIBUTED_WORKER_CLUSTER.md` — worker security/trust architecture
+- `docs/moirise/ai/13_DISTRIBUTED_SYSTEM_IMPLEMENTATION.md` — worker implementation architecture
 
-The old implementation must not be treated as completed functionality or copied forward as an assumption.
+## Separation rules
 
-## Current architecture documents
+1. Product modules request AI capabilities; they do not implement provider routing.
+2. Provider URLs/secrets live only in the provider registry/configuration layer.
+3. Game creation (M08) is separate from game execution (M09).
+4. Distributed workers execute sandboxed tasks; they are not the AI's source of truth.
+5. Community workers are opt-in, untrusted by default and quota-limited.
+6. Private messages are a first-class feature of M03, not a permanent extra navigation door.
+7. The ordinary UI exposes only about 5–6 primary doors; the SYSTEM coordinates contextual actions.
 
-- docs/moirise/00_MASTER_PLAN.md
-- docs/MORISE_MASTER_REDESIGN_V4.md
-- docs/superpowers/plans/2026-09-30-moirise-modules-1-15-redesign.md
+## Implementation gate
 
-## Next implementation gate
-
-Module 1 implementation begins only from the new Foundation specification, then proceeds sequentially through Module 15.
-
-Completion requires:
+A module is complete only after:
 - automated tests;
 - typecheck/lint/build;
 - real browser validation;
 - mobile/responsive validation;
 - loading/error/empty/unavailable states;
-- regression validation.
+- security/RLS validation;
+- regression validation;
+- no blank-screen path;
+- all declared actions/buttons verified.
 
-No module is considered complete from build success alone.
+Build order is strictly M01 → M02 → M03 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M11 → M12 → M13 → M14 → M15.
