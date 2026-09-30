@@ -35,3 +35,20 @@ Comparison READY seulement si les inputs autoritatifs sont valides.
 
 ## 9. Tests / DONE
 Duplicate challenge, blocked target, expired challenge, concurrent rematch, invalid score, private result sharing, community membership revoked, mobile/desktop, network loss and idempotent retry.
+
+## AI-INTÉGRATION M10 — CONTRAT DE COMPRÉHENSION POUR L'IA DE FABRICATION
+
+### A. Position
+M10 possède les interactions sociales autour du jeu partagé : participants, party, coordination et règles sociales de la session.
+
+### B. AI cases
+Suggestion d'équipe, coordination, matchmaking assistance, suggestion d'activité et synthèse de session.
+
+### C. Context
+Participant IDs nécessaires, rôle/permission, game/session state autorisé, préférences explicitement consenties. Pas de lecture libre des DMs ou communautés.
+
+### D. Authority
+AI proposal → M10 policy → participant checks → commit. M15 ne peut pas ajouter/supprimer un participant ni modifier un rôle sans use-case M10 autorisé.
+
+### E. DONE
+Les suggestions sont réversibles, explicables et n'exposent aucun participant privé non nécessaire.
