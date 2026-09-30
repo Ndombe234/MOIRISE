@@ -104,3 +104,34 @@ All future modules consume M01 without editing App shell for every new capabilit
 
 ## 18. DONE
 M01 is complete only when boot, routing, auth boundary, event bus, capability registry, error/loading states, security, responsive shell and production build are proven.
+
+## 19. Command contracts
+BOOT_APPLICATION(): returns boot state only.
+RESTORE_SESSION(): derives actor from auth cookie/session.
+OPEN_ROUTE(route): checks route definition and feature flag.
+RETRY_RESOURCE(resourceId): only retryable dependencies.
+REGISTER_CAPABILITY(definition): server/internal only.
+EMIT_EVENT(event): validates event schema and module ownership.
+
+## 20. Data contracts
+FeatureFlag {key, enabled, environment, version}
+RouteDefinition {path, ownerModule, requiresAuth, status}
+RequestTrace {requestId, traceId, actorId?, startedAt, endedAt, outcome}
+
+## 21. Concurrency
+Boot can be invoked multiple times safely.
+Capability registration uses unique(id,version).
+Feature flags use version/etag.
+Event consumers must tolerate duplicate delivery.
+
+## 22. Operational scenarios
+No auth provider: public shell remains available.
+Supabase unavailable: authenticated data surfaces degrade.
+AI unavailable: all non-AI core routes remain functional.
+Provider misconfiguration: health marks provider unavailable; no boot failure.
+
+## 23. Acceptance examples
+Deep-link /play while signed out → auth boundary, not blank page.
+Deep-link /system with expired session → session renewal/sign-in.
+Provider key absent → capability unavailable, no client leak.
+Unknown event version → consumer ignores/quarantines, does not crash shell.
