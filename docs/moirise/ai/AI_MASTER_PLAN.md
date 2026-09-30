@@ -833,3 +833,58 @@ Elle est terminée lorsque :
 - les frontières M01–M15 sont respectées ;
 - aucun deuxième cerveau ou router concurrent n'existe ;
 - une IA développeuse peut assembler le système sans inventer les morceaux absents.
+
+# 92. MODULE COGNITION LAYER — OBLIGATOIRE POUR L'IA QUI FABRIQUE MOIRISE
+
+Cette section définit le modèle mental que l'IA de fabrication doit posséder avant d'écrire ou modifier du code.
+
+## 92.1 Principe
+Pour chaque module M01–M15, l'IA de fabrication doit pouvoir résoudre sans deviner : owner, responsabilité, non-responsabilité, état autoritatif, projections, inputs, outputs, capabilities, événements reçus/émis, contexte autorisé, actions IA autorisées/interdites, validators, fallback sans IA et critères DONE.
+
+Une génération est bloquée tant que ces informations ne sont pas résolues par les sources canoniques.
+
+## 92.2 Registre cognitif des 15 modules
+| ID | Module | Autorité métier | Relation avec MORISE AI | Contexte minimal | Interdit critique |
+|---|---|---|---|---|---|
+| M01 | Foundation | runtime, shell, session, routing, configuration, capability/event boundary | expose la passerelle et les frontières de sécurité à M15 | session, route, actor, capability, event | aucun contournement de session/policy |
+| M02 | Player | identité, profil, préférences, confidentialité, avatar, mémoire/DNA | fournit des projections Player autorisées et des capabilities de personnalisation | player projection, privacy, memory scope | écrire l'état Player directement |
+| M03 | Social + Private Messaging | posts, commentaires, réactions, DMs, partage, traduction | expose traduction/modération/suggestions via capabilities | contenu social strictement scoped | rendre un DM public ou mémoriser globalement |
+| M04 | World | surface World, portes, cards, detours, handoffs | M15 propose la contextualisation ; M04 décide la présentation | WorldContext + signaux autorisés | inventer utilisateur, futur, récompense |
+| M05 | System / Progression | XP, niveaux, ranks, missions, titres, achievements, SYSTEM presentation | M15 propose des candidats/contextes ; M05 valide et commit | progression/events/rules | attribuer XP/rank/title/mission |
+| M06 | Play | PlaySession, lancement, reprise, résultat autoritatif | M15 peut fournir adaptation/assistance bornée | session/runtime/result evidence | inventer score ou résultat |
+| M07 | Game Discovery | recherche, visibilité, candidats, ranking, diversité, nouveauté | M15 aide parsing/reranking/reasons après filtres sécurité | query + candidats filtrés | envoyer privés/bloqués/non sûrs au ranking IA |
+| M08 | Game Factory | GameSpecification, DAG, code/assets/tests, 2D/3D fabrication | M15 orchestre capabilities créatives et ressources | brief/spec/DAG/artifacts | publier un artefact généré non validé |
+| M09 | Shared Game Engine | manifest runtime, bridge, sandbox, allowlist | reçoit seulement des artefacts/contracts compatibles | manifest + runtime state | contourner sandbox/allowlist |
+| M10 | Social Gaming | parties partagées, coop, interactions sociales de jeu | M15 propose coordination/composition | party + participant permissions | changer silencieusement participants/règles |
+| M11 | Communities / Guilds | communautés, membership, rôles, invitations, gouvernance | M15 propose formation/découverte/modération | community/membership projection | ajouter un membre ou élever un rôle |
+| M12 | Events | lifecycle, participants, organizer controls, résultats | M15 aide planification, texte, matching, résumé | event + participant scope | modifier l'état Event directement |
+| M13 | Adaptive World | adaptation, ranking contextualisé, réponses du monde vivant | M15 produit signaux/propositions bornés | world/player/social/game signals | fabriquer signaux ou événements inexistants |
+| M14 | Collection / Reward Economy | ledger collection/rewards, roulette, intégrité économique | M15 analyse/explique/propose ; M14 calcule et commit | evidence + reward definitions | grant/mint/roll via AI |
+| M15 | Meta System + MORISE AI Lab | cerveau unique, orchestration, routing, resources, validation, evolution | comprend tous les modules par leurs contrats | tous les scopes explicitement autorisés | devenir propriétaire de l'état métier des autres |
+
+## 92.3 Module Cognitive Manifest
+La connaissance d'un module doit être représentable logiquement par :
+moduleId, version, mission, owner, authoritativeState, publicProjections, acceptedInputs, emittedEvents, consumedEvents, capabilities, aiCapabilities, aiReadScopes, aiWriteScopes, forbiddenAiActions, requiredValidators, fallbackWithoutAi, dependencies, dependedOnBy, privacyClasses, resourceConstraints, observability, tests, doneCriteria.
+
+Ce manifest ne crée pas une troisième autorité. Il synthétise les contrats existants.
+
+## 92.4 Ordre de compréhension pour une IA de fabrication
+AI identity → global policy → module manifest → module PLAN → module TECHNICAL_DESIGN → transversal contracts → dependencies → implementation → tests → generation → validation.
+
+Avant de coder une feature traversant plusieurs modules, l'IA doit construire le graphe : actor → intent → module owners → capabilities → context scopes → DAG → validators → owner commits → events → projections.
+
+## 92.5 Compréhension réciproque
+Un module peut contenir de l'IA sans devenir un second cerveau.
+MORISE AI peut comprendre un module sans devenir propriétaire de son état métier.
+
+Relation obligatoire :
+module owner → capability contract → MORISE AI orchestration → validated proposal/result → owner validation/commit → event → projection.
+
+## 92.6 Complétude d'une feature IA
+Une feature IA n'est DONE que si capabilityId/version, ownerModule, input schema, approved context scope, policy class, autonomy level, resource profile, execution route, validator, output contract, fallback, event contract, observability, tests et rollback/recovery sont définis.
+
+## 92.7 Erreurs interdites à l'IA de fabrication
+Aucun second AI router. Aucun provider directement appelé par l'UI. Aucune mutation cross-owner. Aucune sortie IA utilisée comme preuve métier sans validation. Aucune mémoire privée transformée en mémoire globale. Aucune capability supposée parce qu'un provider la supporte. Aucun événement, schéma, table ou route inventé.
+
+## 92.8 Critère de raccordement cognitif
+L'IA de fabrication est raccordée lorsqu'elle peut partir d'une demande, déterminer les modules touchés, retrouver les owners, choisir les capabilities, résoudre les scopes de contexte, construire le DAG, générer au bon endroit, valider les handoffs et vérifier le résultat sans créer une seconde autorité.
