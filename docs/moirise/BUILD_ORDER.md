@@ -1,27 +1,74 @@
-# MOIRISE — IMPLEMENTATION ORDER
+# MOIRISE — CANONICAL IMPLEMENTATION ORDER
 
-## Read first
+## 1. Read first
 1. `MASTER_REBUILD_V2.md`
 2. `ai/00_MASTER_AI.md`
 3. `ai/08_RESOURCE_SCHEDULER_OBSERVABILITY.md`
 4. `ai/10_PROVIDER_REGISTRY.md`
 5. `ai/11_GAME_CREATION_RUNTIME_CONTRACT.md`
 6. `ai/12_DISTRIBUTED_WORKER_CLUSTER.md`
+7. `ai/13_DISTRIBUTED_SYSTEM_IMPLEMENTATION.md`
 
-## Then implement strictly in order
-M01 → M02 → M03 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M11 → M12 → M13 → M14 → M15.
+## 2. Module order
+`M01 → M02 → M03 → M04 → M05 → M06 → M07 → M08 → M09 → M10 → M11 → M12 → M13 → M14 → M15`.
 
-## For each module
-Read only the module's technical file plus the AI contracts needed by its capabilities. Do not copy provider URLs, worker endpoints, credentials or AI architecture into the module.
+## 3. Authoritative technical file per module
+- M01: `modules/M01_FOUNDATION_TECHNICAL.md`
+- M02: `modules/M02_PLAYER_TECHNICAL.md`
+- M03: `modules/M03_SOCIAL_PRIVATE_TECHNICAL.md`
+- M04: `modules/M04_WORLD_TECHNICAL.md`
+- M05: `modules/M05_SYSTEM_TECHNICAL.md`
+- M06: `modules/M06_PLAY_TECHNICAL.md`
+- M07: `modules/M07_DISCOVERY_TECHNICAL.md`
+- M08: `modules/M08_GAME_FACTORY_TECHNICAL.md`
+- M09: `modules/M09_GAME_RUNTIME_TECHNICAL.md`
+- M10: `modules/M10_SOCIAL_GAMING_TECHNICAL.md`
+- M11: `modules/M11_COMMUNITIES_TECHNICAL.md`
+- M12: `modules/M12_EVENTS_TECHNICAL.md`
+- M13: `modules/M13_ADAPTIVE_WORLD_TECHNICAL.md`
+- M14: `modules/M14_COLLECTION_REWARDS_TECHNICAL.md`
+- M15: `modules/M15_META_SYSTEM_TECHNICAL.md`
 
-## Completion
-Do not mark a module complete until its acceptance criteria and global completion gate pass.
+The matching non-technical `Mxx_*.md` file describes product intent/behavior; the `*_TECHNICAL.md` file is the implementation contract. Do not create another technical variant for the same module.
 
-## If documents conflict
-Priority is:
-1. This file and `MASTER_REBUILD_V2.md` for order/scope.
-2. `ai/00_MASTER_AI.md` for AI architecture.
-3. `ai/10_PROVIDER_REGISTRY.md` for providers/endpoints/secrets configuration.
-4. `ai/12_DISTRIBUTED_WORKER_CLUSTER.md` for worker identity, job transport, security and worker lifecycle.
-5. The numbered module file for that module's product behavior.
-6. Existing source code is evidence to inspect, never an authority over these documents.
+## 4. Per-module implementation sequence
+For each module:
+1. Read the product file and its technical contract.
+2. Read only the AI capability contracts required by the module.
+3. Identify existing source that conflicts with the contract.
+4. Define/update types and data access first.
+5. Implement server authorization/RLS before trusting client UI.
+6. Implement service logic and state transitions.
+7. Implement UI using the shared M01 shell.
+8. Connect capabilities through the canonical AI router; never direct-call a provider.
+9. Implement loading/empty/error/unavailable/degraded states.
+10. Add unit/integration tests.
+11. Build and typecheck.
+12. Test desktop and mobile.
+13. Click every action and verify the resulting state.
+14. Test failure/retry/reconnect paths.
+15. Verify no blank-screen regression.
+16. Only then mark the module complete.
+
+## 5. Global completion gate
+A module is not complete unless:
+- build/typecheck/lint pass;
+- tests pass;
+- authorization/RLS is verified;
+- every visible action has a working result;
+- loading/empty/error/unavailable/degraded states exist;
+- mobile and desktop are checked;
+- performance is acceptable;
+- accessibility basics are checked;
+- AI/provider outage does not destroy core functionality;
+- no duplicate implementation was introduced.
+
+## 6. Single-source rule
+Provider URLs and secrets: `ai/10_PROVIDER_REGISTRY.md` only.
+AI architecture: `ai/00_MASTER_AI.md` plus numbered AI contracts only.
+Worker security/quotas: `ai/12_DISTRIBUTED_WORKER_CLUSTER.md` and `ai/13_DISTRIBUTED_SYSTEM_IMPLEMENTATION.md` only.
+Module product behavior: `Mxx_*.md`.
+Module implementation: `Mxx_*_TECHNICAL.md`.
+
+## 7. Conflict rule
+Priority: this file + `MASTER_REBUILD_V2.md` for order/scope; `ai/00_MASTER_AI.md` for AI architecture; `ai/10_PROVIDER_REGISTRY.md` for providers; worker contracts for distributed execution; then the relevant module technical contract. Existing source code is evidence to inspect, never authority over the contracts.
