@@ -49,3 +49,15 @@ prompt injection, tool abuse, actor spoofing, privilege escalation, provider poi
 
 ## DONE
 Native AI architecture is functional independently of any one provider, with tested orchestration, memory, policy, task execution, validation, controlled evolution and rollback.
+## Core contracts
+AIRequest; ContextSnapshot; Intent; Plan; AITask; CapabilityDefinition; ToolDefinition; ProviderDefinition; WorkerDefinition; MemoryEntry; ImprovementCandidate; BenchmarkRun; ValidationReport; ProvenanceRecord.
+
+## Long-job persistence
+Persist task state before dispatch. On restart, the scheduler reconstructs pending work and checks whether retry is safe before issuing a new lease.
+
+## Provider error normalization
+Provider-specific failures map into the shared AppError categories so product modules never depend on provider SDK error types.
+
+## AI Lab promotion
+candidate → static validation → sandbox → tests → benchmark → policy → canary → promote/reject → monitor → rollback.
+The baseline remains recoverable at all times.
