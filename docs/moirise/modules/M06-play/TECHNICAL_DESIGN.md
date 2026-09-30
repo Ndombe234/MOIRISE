@@ -1,119 +1,45 @@
 # M06 — PLAY — CONCEPTION TECHNIQUE REPRISE À ZÉRO
 
-## 0. Boundary
-**Owner : M06.** Architecture : UI → server boundary → use-case owner → policy → repository/adapter → persistence/provider → event → projection.
-
-## 1. Command contract
+## 1. PlaySession schema
 ```
-Command {
-  commandId: string,
-  actorId: server-derived,
-  capabilityId: string,
-  targetRef?: string,
-  expectedVersion?: number,
-  payload: validated object
+PlaySession {
+ id, experienceId, gameVersion, rulesVersion,
+ actorId(server), startedAt, expiresAt,
+ runtimeRef, state, saveVersion, commandId
 }
 ```
-Le serveur refuse actorId arbitraire, capability inconnue, payload hors schema, target hors scope, expectedVersion périmée ou réutilisation d'un commandId avec un payload différent.
+Unique/lookup indexes : actorId+state, commandId, experienceId+gameVersion.
 
-## 2. Capability contracts
-### M06.C1 Selection
-Entrée : actor + contexte minimal + payload validé.
-Préconditions : render never launches game.
-Exécution : Selection projection.
-Sortie autoritative : M07 down: baseline fallback.
-Erreur principale : undefined.
-Boundary sécurité : undefined.
+## 2. Launch transaction
+Validate version → insert session with STARTING → allocate runtime → transition ACTIVE only after runtime reports READY. If allocation fails, session becomes ABORTED with reason code.
 
-### M06.C2 Launch
-Entrée : actor + contexte minimal + payload validé.
-Préconditions : session is server-owned.
-Exécution : PlaySession.
-Sortie autoritative : retry returns same session.
-Erreur principale : undefined.
-Boundary sécurité : undefined.
+## 3. Runtime bridge
+Allowed methods only: submitInput, saveSnapshot, requestResume, submitCompletionEvidence, requestShare.
+Forbidden: arbitrary DB query, service-role, admin API, filesystem outside sandbox, unrestricted network.
 
-### M06.C3 Runtime
-Entrée : actor + contexte minimal + payload validé.
-Préconditions : resource limits.
-Exécution : RuntimeSnapshot.
-Sortie autoritative : crash resumes last valid save.
-Erreur principale : undefined.
-Boundary sécurité : undefined.
+## 4. Result validation
+Validator checks session owner, session state, version alignment, action sequence if required, score range, completion condition and idempotency key. Output:
+VALID -> AuthoritativeResult;
+INVALID -> reject;
+INCONCLUSIVE -> preserve attempt evidence without reward.
 
-### M06.C4 Result
-Entrée : actor + contexte minimal + payload validé.
-Préconditions : server authoritative.
-Exécution : AuthoritativeResult.
-Sortie autoritative : INCONCLUSIVE = no reward.
-Erreur principale : undefined.
-Boundary sécurité : undefined.
+## 5. Save migration
+Migration table maps known schemaVersion A→B. Unknown schema never executes arbitrary transforms.
 
-### M06.C5 Resume
-Entrée : actor + contexte minimal + payload validé.
-Préconditions : no arbitrary state.
-Exécution : SaveVersion.
-Sortie autoritative : unknown schema safe restart.
-Erreur principale : undefined.
-Boundary sécurité : undefined.
+## 6. Failure matrix
+Runtime crash → recover last valid save.
+Worker lost → resume/requeue only safe session tasks.
+Network loss after result commit → fetch result by idempotency key.
+Provider adaptive content unavailable → core game continues if design permits.
 
-### M06.C6 Share result
-Entrée : actor + contexte minimal + payload validé.
-Préconditions : private by default.
-Exécution : MomentRef.
-Sortie autoritative : revoked privacy blocks share.
-Erreur principale : undefined.
-Boundary sécurité : undefined.
+## 7. Security
+Server-authoritative result, signed runtime manifest, sandbox, resource quotas, attachment allowlists, no secrets.
 
-## 3. Persistence
-Contraintes uniques pour identities/idempotency; index sur owner+status+updatedAt et clés de recherche; foreign keys uniquement lorsque coupling autorisé; version d'optimistic concurrency quand plusieurs writers existent; suppression/retention alignées avec privacyClass.
+## 8. Observability
+sessionId, experienceId, gameVersion, resultId, runtimeRef, duration, outcome, validationCode. No raw private gameplay chat in general logs.
 
-## 4. State and transaction contract
-Chaque transition définit stateBefore → trigger → guards → transaction → stateAfter → event. Les écritures formant une seule unité métier sont atomiques. Les projections sont reconstruites depuis l'autorité si elles deviennent incohérentes.
+## 9. Browser tests
+Start, pause/resume, result, share, back, refresh, mobile touch, desktop keyboard, repeated taps, runtime error boundary, no white screen.
 
-## 5. Idempotence / concurrence
-Même commandId + même payload = même résultat. Même commandId + payload différent = CONFLICT. Les événements peuvent être délivrés deux fois; les consumers dédupliquent par eventId/sourceRef. Une réponse browser ancienne ne peut pas écraser une version plus récente.
-
-## 6. Event envelope
-```
-eventId, eventType, schemaVersion, producerModule, occurredAt,
-commandId?, requestId?, actorRef?, payloadRef
-```
-Un event exprime un fait déjà commit. Il ne transporte pas inutilement les contenus privés.
-
-## 7. Failure matrix
-- validation → erreur typée, aucune écriture;
-- auth absente → 401/sign-in;
-- permission refusée → 403 sans fuite;
-- cible supprimée → NOT_FOUND/STALE;
-- conflit → 409 + nouvelle version;
-- timeout → retry borné/fallback;
-- provider down → DEGRADED si capability non critique;
-- réseau perdu après commit → récupération par commandId;
-- worker perdu → requeue uniquement si tâche idempotente.
-
-## 8. Security
-Protection IDOR, actor server-derived, validation input/output, session/CSRF selon transport, SSRF allowlist, dependency allowlist, resource limits, sandbox, secret isolation, privacy checks before provider routing, prompt injection treated as untrusted data.
-
-## 9. AI boundary
-Aucune capacité métier ne traite directement une sortie de modèle comme autorité. M15 fournit normalized result + validation report + provenance. Le owner du module décide de la mutation.
-
-## 10. Browser proof
-Desktop : deep links, refresh, keyboard, focus, no critical console error.
-Mobile : touch targets, back navigation, keyboard, narrow viewport, media upload where applicable.
-Chaque mutation est testée en double tap et avec réseau coupé juste après commit.
-
-## 11. Observability
-requestId, traceId, commandId, moduleId, capabilityId, state transition, validation outcome, duration, provider/worker ref, errorCode. Jamais de secret, mot de passe ou contenu privé brut dans telemetry générale.
-
-## 12. Performance
-Limits explicites; pagination; lazy load; async jobs; cache invalidation; no AI blocking critical boot; runtime 3D isolé et chargé à la demande.
-
-## 13. Rollback / recovery
-Versions critiques immuables. Un nouveau comportement devient une nouvelle version de règle/capability. Les résultats historiques ne sont pas réécrits silencieusement. Les migrations destructrices exigent une stratégie forward-fix/rollback documentée.
-
-## 14. Tests
-Unit rules; integration persistence; auth/policy; event contract; idempotency; concurrency; failure injection; provider fallback; worker lease; artifact sandbox lorsqu'applicable; desktop; mobile; accessibility; regression; observability.
-
-## 15. DONE
-Build/tests verts; permissions prouvées; data coherent under retry/concurrency; fallback/recovery proven; mobile+desktop verified; no duplicate authority; documentation handoff complete.
+## 10. DONE
+A result cannot be awarded merely because the client claims it happened; every result is tied to a valid session and version and survives retries safely.
