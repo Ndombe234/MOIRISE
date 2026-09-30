@@ -95,3 +95,11 @@ Cette extension ne transforme pas les modules en cerveaux concurrents et ne cré
 The documentation now treats 2D and 3D games as a native MOIRISE platform rather than isolated applications. The fabrication chain is specified from request to GameSpecification, reusable foundations, TaskGraph, generation, build, tests, bounded repair, validation, runtime integration, Play and publication.
 
 The AI documentation defines the global platform contracts; M06/M07/M08/M09/M10/M15 define their module-specific boundaries. Codex is documented as an optional constrained fabrication agent, not as the MORISE brain or publication authority.
+
+## Game fabrication memory — ajout
+
+La documentation couvre maintenant le stockage et l'apprentissage du savoir-faire de fabrication de jeux au sein du MemoryService central : patterns 2D/3D, composants, templates, compatibilités runtime, erreurs, réparations validées, tests, ressources, performances et observations des agents.
+
+Le pipeline distingue explicitement connaissance candidate, connaissance validée, connaissance expirée/invalide et artifact de jeu. Un build ou une sortie d'agent n'est pas automatiquement une nouvelle connaissance.
+
+Un test d'indépendance par rapport à Codex est défini : désactivation de Codex, conservation du corpus validé, récupération d'un pattern connu et tentative de fabrication avec les execution targets restantes.
