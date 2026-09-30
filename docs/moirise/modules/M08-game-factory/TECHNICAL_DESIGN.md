@@ -68,3 +68,22 @@ RepairController exige failedNode + diagnosticRef, crée une nouvelle revision e
 Agent boundary : workspace candidat uniquement, pas de secrets prod, service-role, écriture DB arbitraire, réseau illimité ou publication directe.
 
 Gate finale : static + unit + integration + security + resource + runtime + product contracts = VALID avant handoff M09.
+
+## GAME FABRICATION MEMORY — TECHNICAL INTEGRATION M08
+
+### 12. Memory handoff
+M08 sends validated fabrication evidence to the central MemoryService. It does not create a parallel GameMemoryService or a second memory table.
+
+GameFabricationEvidence = projectId + specificationVersion + buildId + taskRefs[] + artifactRefs[] + testRefs[] + failureRefs[] + runtimeRefs[] + resourceObservations[].
+
+### 12. ReuseResolver
+Before creating a component, query validated GAME_* knowledge. Hard filters are mode, engine/version, device, resource profile, security and policy. Decision is REUSE, ADAPT_VERSION, REJECT or NEW_COMPONENT.
+
+### 13. Failure lineage
+A failed task stores a failureFingerprint and diagnostic reference. Repeated equivalent failures are aggregated by the central MemoryService.
+
+### 14. Repair promotion
+A repair pattern is only reusable after build success, impacted tests, regression tests, security/policy checks and defined scope. M08 supplies evidence; M15 performs the learning/promotion orchestration.
+
+### 15. Independence
+The M08 factory workspace must remain usable with Codex disabled. Missing execution tooling is reported as a capability/tool limitation, not as loss of memory.
