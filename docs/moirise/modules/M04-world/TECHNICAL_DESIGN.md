@@ -1,107 +1,119 @@
-# M04 — WORLD — CONCEPTION TECHNIQUE APPROFONDIE
+# M04 — WORLD — CONCEPTION TECHNIQUE REPRISE À ZÉRO
 
-## 1. Boundary
-M04 owns the World/Home surface and contextual navigation into existing capabilities. It does not own ranking algorithms or game engines.
+## 0. Boundary
+**Owner : M04.** Architecture : UI → server boundary → use-case owner → policy → repository/adapter → persistence/provider → event → projection.
 
-## 2. World contract
-World answers “what can I do now?” with a small number of meaningful choices.
-Doors:
-Discover;
-Play;
-Create;
-Communities;
-Activities;
-Events;
-plus SYSTEM/PLAYER via primary navigation.
+## 1. Command contract
+```
+Command {
+  commandId: string,
+  actorId: server-derived,
+  capabilityId: string,
+  targetRef?: string,
+  expectedVersion?: number,
+  payload: validated object
+}
+```
+Le serveur refuse actorId arbitraire, capability inconnue, payload hors schema, target hors scope, expectedVersion périmée ou réutilisation d'un commandId avec un payload différent.
 
-## 3. Context composition
-Inputs:
-Player state;
-current route;
-recent activity;
-unfinished task;
-real future events;
-availability of Play/Create;
-safe discovery candidates.
-Output is a bounded ContextCard list.
+## 2. Capability contracts
+### M04.C1 Home
+Entrée : actor + contexte minimal + payload validé.
+Préconditions : no fake counters/people.
+Exécution : WorldSurface.
+Sortie autoritative : optional source down: degraded.
+Erreur principale : undefined.
+Boundary sécurité : undefined.
 
-## 4. Detours
-A Detour is an optional unexpected but relevant experience:
-recent signal → novelty candidate → policy → one-line reason → accept/dismiss.
-Dismissal is respected to avoid repetitive recommendation loops.
+### M04.C2 Context card
+Entrée : actor + contexte minimal + payload validé.
+Préconditions : reason must be explainable.
+Exécution : ContextCard.
+Sortie autoritative : dismiss suppresses repeat.
+Erreur principale : undefined.
+Boundary sécurité : undefined.
 
-## 5. No fake activity
-World never fabricates:
-people;
-likes;
-notifications;
-counters;
-events;
-scarcity;
-trends.
-Empty states are real empty states.
+### M04.C3 Detour
+Entrée : actor + contexte minimal + payload validé.
+Préconditions : no fake urgency.
+Exécution : Detour.
+Sortie autoritative : dismissed/ignored: cooldown.
+Erreur principale : undefined.
+Boundary sécurité : undefined.
 
-## 6. Solo-first
-A Player without friends should see useful activities, games, creation and discovery.
-Social opportunities are optional expansions.
+### M04.C4 Door handoff
+Entrée : actor + contexte minimal + payload validé.
+Préconditions : World doesn't own destination mutation.
+Exécution : IntentEnvelope.
+Sortie autoritative : destination unavailable: return with actionable state.
+Erreur principale : undefined.
+Boundary sécurité : undefined.
 
-## 7. Navigation
-Desktop geometry can differ from mobile, but information architecture remains common.
-No new module button for each internal feature.
+### M04.C5 Solo orientation
+Entrée : actor + contexte minimal + payload validé.
+Préconditions : no forced social.
+Exécution : OrientationState.
+Sortie autoritative : resume idempotently.
+Erreur principale : undefined.
+Boundary sécurité : undefined.
 
-## 8. AI
-M15 supplies contextual candidate generation and explanation. M07/M13 own ranking/filtering. M04 decides presentation.
+### M04.C6 Share discovery
+Entrée : actor + contexte minimal + payload validé.
+Préconditions : no private leakage.
+Exécution : ShareToken.
+Sortie autoritative : source later private: token revoked.
+Erreur principale : undefined.
+Boundary sécurité : undefined.
 
-## 9. States
-WORLD_LOADING → READY → CONTEXTUAL_SUGGESTION → READY.
-Optional dependencies can yield DEGRADED.
+## 3. Persistence
+Contraintes uniques pour identities/idempotency; index sur owner+status+updatedAt et clés de recherche; foreign keys uniquement lorsque coupling autorisé; version d'optimistic concurrency quand plusieurs writers existent; suppression/retention alignées avec privacyClass.
 
-## 10. Security
-Only data authorized for the Player. Shareable projections strip private fields.
-Deep links still pass route authorization.
+## 4. State and transaction contract
+Chaque transition définit stateBefore → trigger → guards → transaction → stateAfter → event. Les écritures formant une seule unité métier sont atomiques. Les projections sont reconstruites depuis l'autorité si elles deviennent incohérentes.
 
-## 11. Performance
-Home payload is bounded.
-Heavy media is lazy.
-3D and AI are never loaded only because World opened.
+## 5. Idempotence / concurrence
+Même commandId + même payload = même résultat. Même commandId + payload différent = CONFLICT. Les événements peuvent être délivrés deux fois; les consumers dédupliquent par eventId/sourceRef. Une réponse browser ancienne ne peut pas écraser une version plus récente.
 
-## 12. Tests
-First-session flow; zero social graph; populated graph; dependency outage; dismiss/restore; mobile 390x844; deep links; no blank-screen transition.
+## 6. Event envelope
+```
+eventId, eventType, schemaVersion, producerModule, occurredAt,
+commandId?, requestId?, actorRef?, payloadRef
+```
+Un event exprime un fait déjà commit. Il ne transporte pas inutilement les contenus privés.
 
-## 13. DONE
-World is understandable in seconds and remains a lightweight shell over a deep internal system.
+## 7. Failure matrix
+- validation → erreur typée, aucune écriture;
+- auth absente → 401/sign-in;
+- permission refusée → 403 sans fuite;
+- cible supprimée → NOT_FOUND/STALE;
+- conflit → 409 + nouvelle version;
+- timeout → retry borné/fallback;
+- provider down → DEGRADED si capability non critique;
+- réseau perdu après commit → récupération par commandId;
+- worker perdu → requeue uniquement si tâche idempotente.
 
-## 14. Context contract
-WorldContext contains:
-currentDoor;
-recentValidatedActions;
-unfinishedContinuations;
-safeRecommendations;
-availableCapabilities;
-playerExplicitPreferences;
-timeBudgetHint.
-It does not contain full private history.
+## 8. Security
+Protection IDOR, actor server-derived, validation input/output, session/CSRF selon transport, SSRF allowlist, dependency allowlist, resource limits, sandbox, secret isolation, privacy checks before provider routing, prompt injection treated as untrusted data.
 
-## 15. Door rules
-Discover → M07.
-Play → M06.
-Create → M08/M15.
-Communities → M11.
-Activities/Events → M12.
-SYSTEM → M05.
-PLAYER → M02.
+## 9. AI boundary
+Aucune capacité métier ne traite directement une sortie de modèle comme autorité. M15 fournit normalized result + validation report + provenance. Le owner du module décide de la mutation.
 
-M04 does not execute the underlying mutation; it routes.
+## 10. Browser proof
+Desktop : deep links, refresh, keyboard, focus, no critical console error.
+Mobile : touch targets, back navigation, keyboard, narrow viewport, media upload where applicable.
+Chaque mutation est testée en double tap et avec réseau coupé juste après commit.
 
-## 16. Context card contract
-ContextCard {id, titleKey, reasonKey?, actionId, expiresAt?, sourceRef}
-Reason is explainable and based on real state.
+## 11. Observability
+requestId, traceId, commandId, moduleId, capabilityId, state transition, validation outcome, duration, provider/worker ref, errorCode. Jamais de secret, mot de passe ou contenu privé brut dans telemetry générale.
 
-## 17. Anti-spam
-Same candidate is suppressed after dismissal for a policy-defined cooldown.
-No card chain can recursively generate infinite cards.
+## 12. Performance
+Limits explicites; pagination; lazy load; async jobs; cache invalidation; no AI blocking critical boot; runtime 3D isolé et chargé à la demande.
 
-## 18. Acceptance scenarios
-New Player with no friends sees useful Solo doors.
-A live event starting tomorrow can create a real card.
-No active event → no fake “come back tomorrow”.
+## 13. Rollback / recovery
+Versions critiques immuables. Un nouveau comportement devient une nouvelle version de règle/capability. Les résultats historiques ne sont pas réécrits silencieusement. Les migrations destructrices exigent une stratégie forward-fix/rollback documentée.
+
+## 14. Tests
+Unit rules; integration persistence; auth/policy; event contract; idempotency; concurrency; failure injection; provider fallback; worker lease; artifact sandbox lorsqu'applicable; desktop; mobile; accessibility; regression; observability.
+
+## 15. DONE
+Build/tests verts; permissions prouvées; data coherent under retry/concurrency; fallback/recovery proven; mobile+desktop verified; no duplicate authority; documentation handoff complete.
