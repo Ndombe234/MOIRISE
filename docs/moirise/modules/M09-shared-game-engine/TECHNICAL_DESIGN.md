@@ -1,101 +1,31 @@
-# M09 — SHARED GAME ENGINE — CONCEPTION TECHNIQUE APPROFONDIE
+# M09 — SHARED GAME ENGINE — CONCEPTION TECHNIQUE REPRISE À ZÉRO
 
-## 1. Boundary
-M09 owns validated reusable runtime primitives. M08 produces packages; M06 launches sessions.
+## 1. RuntimeManifest
+RuntimeManifest {gameVersion, engineId, engineVersion, entrypoint, assetRefs[], inputMap, saveSchemaVersion, networkPolicy, resourceProfile, allowedCapabilities[]}.
 
-## 2. Manifest
-RuntimeManifest:
-packageVersion; engineId; entrypoint; requiredCapabilities; asset refs; save schema; input mapping; network policy; memory/CPU budget; integrity hash.
+## 2. SandboxLease
+Lease records worker/runtime identity, start, expiry, CPU/RAM/time limits, filesystem scope and network allowlist. Lease expiry destroys access.
 
-## 3. Engine interface
-~~~ts
-interface GameEngine {
-  mount(manifest, session): Promise<RuntimeHandle>;
-  dispatchInput(input): void;
-  tick(delta): void;
-  snapshot(): GameState;
-  restore(state): RestoreResult;
-  finalize(): RuntimeResult;
-  unmount(): void;
-}
-~~~
+## 3. Bridge contract
+Allowed calls: submitInput, saveSnapshot, requestResume, submitCompletionEvidence, requestShare. No arbitrary SQL, storage, admin endpoint, secret or process execution.
 
-## 4. 2D engines
-Adventure: maps/NPC/dialogue/quests/inventory.
-Battle: combat/stats/skills/enemies/loot.
-Puzzle: rules/logic/interactive objects/timer/score.
+## 4. Save integrity
+SaveRecord contains player/session ref, schemaVersion, checksum, bounded payload and version. Unknown schema or checksum failure never loads arbitrary bytes.
 
-Each engine has deterministic state adapters where critical scoring depends on simulation.
+## 5. Resource enforcement
+CPU time, memory, disk and network are enforced outside the game package. A game that exceeds budget enters RESOURCE_LIMITED and cannot continue unrestricted.
 
-## 5. 3D path
-3D is loaded lazily.
-A 3D engine cannot be required by the core Play shell.
-GPU/resource requirements are explicit in manifest.
+## 6. Failure/recovery
+Manifest invalid → launch denied. Worker lost → lease LOST. Runtime crash → last valid save/restart. Network blocked → game continues when no network capability is required; otherwise explicit unavailable state.
 
-## 6. Persistence
-Save state includes schema version and checksum.
-Migrations are explicit.
-Old incompatible saves are rejected with a user-visible recovery path.
+## 7. Security
+Generated runtime is untrusted. Separate workspace, no production secrets, dependency allowlist, network deny-by-default, output/result treated as untrusted evidence.
 
-## 7. Runtime security
-Sandboxed execution.
-Allowlisted bridge APIs only.
-No arbitrary filesystem.
-No production credentials.
-Network only where manifest/policy allows.
+## 8. Observability
+runtimeRef, gameVersion, engineVersion, resource usage class, state transitions and failure codes. No raw private player content in general telemetry.
 
-## 8. Result bridge
-Runtime emits observations. Server result validator determines authoritative result.
+## 9. Browser/device tests
+Desktop and mobile launch, touch/keyboard input, pause/resume, save/load, 3D memory fallback, worker loss simulation, no white screen.
 
-## 9. Runtime error isolation
-Engine exception → runtime error boundary → telemetry → return to Play shell. It must never crash the entire app.
-
-## 10. Performance
-Budget startup, memory, frame rate where relevant, asset size and network. 3D uses progressive assets and low-end fallbacks where supported.
-
-## 11. Tests
-Manifest; runtime mount; input; state save/restore; corrupt save; network policy; sandbox; 2D engine behavior; 3D adapter; crash recovery; mobile.
-
-## 12. DONE
-Engines are reusable, secure and isolated from provider and product navigation concerns.
-
-## 13. Engine capability manifest
-RuntimeManifest declares:
-engineId;
-2D/3D;
-input map;
-required APIs;
-asset refs;
-save schema;
-network policy;
-memory/CPU budget;
-package hash.
-
-## 14. Bridge API
-Only explicit bridge capabilities:
-getSessionContext;
-recordSafeEvent;
-requestSave;
-requestShare;
-completeAttempt.
-No arbitrary database/API bridge.
-
-## 15. Save migration
-Migrate only from known schema versions.
-Unknown version → incompatible save state, never best-effort parse that can corrupt data.
-
-## 16. 3D loading
-3D engine is code-split and mounted only after M06 launches a compatible experience.
-Initial shell must not pay 3D load cost.
-
-## 17. Runtime threat model
-Malicious package;
-infinite loop;
-memory exhaustion;
-network abuse;
-attempt to read sibling files;
-attempt to call unauthorized API.
-Sandbox/resource limits handle these cases.
-
-## 18. Acceptance
-Runtime crash is isolated; Play shell recovers.
+## 10. DONE
+Every runtime is bounded, revocable, restartable and incapable of reaching privileged MOIRISE data directly.
