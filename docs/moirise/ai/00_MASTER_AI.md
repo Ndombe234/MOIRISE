@@ -1,194 +1,271 @@
-# MORISE AI — MASTER TECHNICAL DESIGN V3
+# MORISE AI — MASTER TECHNICAL DESIGN V4
 
 ## 1. Authority
-This file is the canonical architecture for MORISE AI. The AI is transversal to Modules 1–15. Product modules request typed capabilities; they do not implement their own AI brain.
+This is the **canonical architectural authority** for MORISE AI. It defines boundaries, execution flow, invariants and ownership. Detailed TypeScript contracts live exactly once in the numbered specialist files below.
+
+The AI is transversal to Modules 1–15. Product modules request typed capabilities; they do not implement a second AI brain.
+
+### Contract ownership
+- `01_CORE_ORCHESTRATOR.md` — request, plan and orchestration contracts.
+- `02_CONTEXT_INTENT_REASONING.md` — context, intent and decision contracts.
+- `03_CAPABILITY_PROVIDER_ROUTER.md` — capability IDs, provider adapter contracts and provider routing.
+- `04_MEMORY_EXPERIENCE_LEARNING.md` — memory, experience and learning contracts.
+- `05_CREATIVE_MEDIA_GAME_CREATOR.md` — multimodal and game-creation contracts.
+- `06_EVOLUTION_CODE_SANDBOX.md` — evolution candidate, benchmark and promotion contracts.
+- `07_DATA_SECURITY_PROVENANCE.md` — data classes, provenance and security policy.
+- `08_RESOURCE_SCHEDULER_OBSERVABILITY.md` — resource/task scheduling and observability contracts.
+- `09_AI_ACTIONS_AND_CONTRACTS.md` — allow-listed AI actions and tool contracts.
+- `10_PROVIDER_REGISTRY.md` — provider configuration and verification; no provider contract is duplicated elsewhere.
+- `11_GAME_CREATION_RUNTIME_CONTRACT.md` — GameSpecification/package/runtime boundary.
+- `12_DISTRIBUTED_WORKER_CLUSTER.md` — worker trust/security/product policy.
+- `13_DISTRIBUTED_SYSTEM_IMPLEMENTATION.md` — worker implementation details only.
+
+If two specialist files appear to define the same contract, the ownership list above resolves the conflict. Do not create a third version.
 
 ## 2. Mission
 MORISE AI must understand intent, build minimal context, select capabilities, select local/provider/worker execution, execute authorized actions, validate results, record permitted experiences, learn from measured outcomes, create multimodal artifacts, create/test games, propose improvements, schedule resources and roll back regressions.
 
 ## 3. Physical reality
-Code cannot create RAM/CPU that does not exist. More code does not itself increase model intelligence or physical resources. MORISE scales execution by using additional authorized workers and/or external providers. The 16 GB development PC is only an initial machine.
+Code cannot create RAM/CPU that does not exist. More code does not itself create physical compute or make a model intrinsically intelligent. MORISE scales execution by using additional authorized workers and/or external providers.
 
-## 4. Canonical pipeline
-`REQUEST → AUTH → POLICY → CONTEXT → INTENT → PLAN → CAPABILITY → RESOURCE ROUTER → LOCAL/PROVIDER/WORKER → ACTION → VALIDATE → RESPONSE → EVENT → MEMORY → OBSERVATION → LEARNING`
+The 16 GB development PC is an initial machine, not a permanent architecture limit.
 
-Evolution pipeline:
-`OBSERVE → GAP → HYPOTHESIS → CANDIDATE → STATIC CHECK → SANDBOX → TEST → BENCHMARK → POLICY → CANARY → PROMOTE/REJECT → MONITOR → ROLLBACK`.
+## 4. Canonical execution pipeline
 
-## 5. Core runtime contract
-```ts
-interface AIRequest {
-  requestId:string;
-  actorId:string;
-  sessionId:string;
-  text:string;
-  locale:string;
-  requestedCapability?:string;
-  permissions:string[];
-  createdAt:string;
-}
-
-interface AIPlan {
-  planId:string;
-  requestId:string;
-  intent:string;
-  steps:AIPlanStep[];
-  requiredCapabilities:string[];
-  resourceClass:'local'|'remote'|'distributed';
-  expiresAt:string;
-}
-
-interface AIPlanStep {
-  id:string;
-  capability:string;
-  inputRefs:string[];
-  outputSchema:string;
-  permissions:string[];
-  maxCostClass:string;
-}
-
-interface AIResult {
-  requestId:string;
-  success:boolean;
-  outputRef?:string;
-  outputSchema:string;
-  provenance:string[];
-  validationStatus:'pending'|'valid'|'invalid'|'degraded';
-  errorCode?:string;
-}
+```text
+REQUEST
+  → AUTH
+  → POLICY
+  → CONTEXT
+  → INTENT
+  → PLAN
+  → CAPABILITY
+  → RESOURCE ROUTER
+  → LOCAL / TRUSTED WORKER / COMMUNITY WORKER / PROVIDER
+  → ACTION
+  → VALIDATE
+  → RESPONSE
+  → EVENT
+  → MEMORY
+  → OBSERVATION
+  → LEARNING
 ```
 
-## 6. Orchestrator
-The Orchestrator is the only component that turns a user request into a plan. It must not directly call arbitrary provider URLs.
+Not every request uses every stage. The orchestrator selects only the stages required by the task.
 
-Implementation stages:
-1. validate request;
-2. resolve actor/session;
-3. apply policy;
-4. build minimal context;
-5. classify intent;
-6. generate typed plan;
-7. validate required capabilities;
-8. ask Resource Router for execution options;
-9. execute each step;
-10. validate outputs;
-11. compose response;
-12. emit immutable event;
-13. record permitted experience.
+## 5. Controlled evolution pipeline
 
-A failed step must produce a structured error and a recovery path, not a blank UI.
+```text
+OBSERVE
+  → GAP
+  → HYPOTHESIS
+  → CANDIDATE
+  → STATIC CHECK
+  → SANDBOX
+  → TEST
+  → BENCHMARK
+  → POLICY
+  → CANARY
+  → PROMOTE / REJECT
+  → MONITOR
+  → ROLLBACK
+```
 
-## 7. Context engine
-Context is assembled by explicit scopes:
+Production code is never replaced merely because the AI generated a better-looking candidate.
+
+## 6. Core ownership
+
+### Orchestrator
+Only the Orchestrator converts an authorized user request into an executable AI plan.
+
+### Context Engine
+Builds the minimum authorized context.
+
+### Intent/Reasoning Engine
+Determines what the request means and selects deterministic reasoning, local computation, retrieval, an external model or a distributed worker as appropriate.
+
+### Capability Router
+Maps a request to a stable capability ID.
+
+### Provider Router
+Chooses among configured provider adapters. Providers are tools, not the AI brain.
+
+### Resource Router
+Chooses local execution, trusted workers, community workers or providers according to hard policy constraints and current capacity.
+
+### Action Executor
+Runs only allow-listed actions.
+
+### Validator
+Determines whether the result is valid, degraded, rejected or unavailable.
+
+### Memory/Learning
+Stores only permitted experiences with provenance and measured outcomes.
+
+### Evolution Engine
+Creates and tests improvement candidates without direct production self-modification.
+
+## 7. Canonical capability identifiers
+The authoritative capability identifiers are defined only in `03_CAPABILITY_PROVIDER_ROUTER.md`. Current examples include:
+
+`TEXT_GENERATION`, `REASONING`, `VISION`, `IMAGE_GENERATION`, `VIDEO_GENERATION`, `MUSIC_GENERATION`, `TTS`, `STT`, `TRANSLATION`, `EMBEDDING`, `SEARCH`, `MODERATION`, `GAME_2D`, `GAME_3D`, `CODE_GENERATION`, `CODE_TESTING`.
+
+No module may invent a second identifier for an existing capability.
+
+## 8. Canonical AI action identifiers
+The authoritative action identifiers are defined only in `09_AI_ACTIONS_AND_CONTRACTS.md`.
+
+Examples include:
+
+`READ_PROFILE`, `READ_CONTEXT`, `SEARCH`, `TRANSLATE`, `GENERATE_TEXT`, `GENERATE_IMAGE`, `GENERATE_VIDEO`, `GENERATE_MUSIC`, `GENERATE_AUDIO`, `CREATE_GAME`, `RUN_GAME_TEST`, `CREATE_EVENT`, `SEND_PRIVATE_MESSAGE`, `CREATE_POST`, `PROPOSE_IMPROVEMENT`.
+
+There is no generic `EXECUTE_ANYTHING` action.
+
+## 9. Context policy
+Context scopes are:
+
 `session`, `player`, `currentModule`, `currentEntity`, `conversation`, `task`, `memory`.
 
-Default scope is minimal. Private message content, private media and sensitive data are excluded unless the current action explicitly authorizes them.
+The default is minimum necessary context. Private messages, private media and sensitive data are excluded unless the current action explicitly authorizes them.
 
-## 8. Capability Router
-Capabilities are stable names such as:
-`text.generate`, `text.translate`, `image.generate`, `video.generate`, `audio.generate`, `code.generate`, `game.design`, `game.build`, `game.test`, `game.run`, `memory.store`, `memory.retrieve`, `world.propose`, `evolution.propose`.
+## 10. Memory and learning policy
 
-A capability has:
-- input schema;
-- output schema;
-- permissions;
-- resource class;
-- validation contract;
-- fallback policy.
-
-Modules depend on capability names, never provider names.
-
-## 9. Provider Router
-The Provider Registry is the only source of provider endpoints, credentials and health policy. Providers are adapters. A provider outage must degrade one capability rather than break MORISE.
-
-Provider order is policy-driven, not hard-coded in modules. Anonymous HTTP providers may be used only through a restricted adapter with output validation and no assumption of privacy/security equivalent to trusted providers.
-
-## 10. Resource Router
-Resource routing decides among:
-`LOCAL → TRUSTED_WORKER → COMMUNITY_WORKER → EXTERNAL_PROVIDER` according to policy, privacy, capability, quotas, latency and availability.
-
-The router never treats community workers as trusted merely because they are online.
-
-## 11. Worker integration
-Canonical distributed path:
-`AI Orchestrator → Scheduler → Worker Registry → compatible worker → sandbox → result → validator`.
-
-Worker task contains only the minimum authorized payload, temporary scoped permissions, resource quota, timeout, hash, idempotency key and signature.
-
-No worker receives production master secrets.
-
-## 12. Game creation
-A game request becomes a `GameSpecification`. The Game Factory creates code/assets/audio/levels as separate tasks, validates provenance, builds in a sandbox and emits a signed `GamePackage`. The Runtime executes the package independently of AI providers.
-
-2D may use Canvas/WebGL/Phaser. 3D may use Three.js/Babylon/PlayCanvas/WebGL/WebGPU.
-
-## 13. Multimodal creation
-Image, video, music/audio and other media are capabilities. The AI coordinates them through typed jobs rather than embedding provider-specific code into every feature.
-
-Every generated artifact records:
-`artifactId`, `capability`, `providerOrWorker`, `prompt/inputHash`, `sourceRefs`, `license/provenance`, `createdAt`, `contentHash`, `validationStatus`.
-
-## 14. Memory and learning
 Separate:
-- durable player memory;
+- player memory;
 - system experience memory;
 - provider evidence;
 - telemetry;
 - validated knowledge.
 
-An external output is evidence, not truth. Learning requires provenance, validation and outcome measurement.
+External provider output is evidence, not truth.
 
-Never automatically learn from private messages or sensitive personal data.
+A user can contribute evidence to learning, but one user cannot directly rewrite global rules.
 
-## 15. Self-improvement
-MORISE may generate candidate algorithms, prompts, code or routing policies. It may not directly replace production code.
+Private/sensitive data is never a generic learning input.
 
-Every candidate requires:
-`candidate → static analysis → isolated tests → benchmark against baseline → policy approval → canary → monitoring → promotion/rollback`.
+## 11. Multimodal creation
+Image, video, music/audio, text, translation, vision, BD/comic and game creation are capabilities coordinated by the same MORISE AI orchestration layer.
 
-## 16. Data filtering
-Before data reaches AI/provider/worker:
-1. identify data class;
-2. verify actor permission;
-3. remove unnecessary fields;
-4. redact secrets;
-5. hash/reference large artifacts where possible;
-6. attach provenance;
-7. apply provider/worker policy;
-8. log the policy decision.
+Provider-specific implementation stays inside provider adapters.
 
-## 17. Observability
-Every AI action receives a trace ID and records:
-`requestId`, `capability`, `executionTarget`, `provider/worker`, latency, resource class, validation result, error code and policy decision.
+## 12. Game architecture
+Game creation and game execution are separate.
 
-Do not log raw secrets or private content unnecessarily.
+```text
+PLAYER IDEA
+ → INTENT
+ → GAME SPECIFICATION
+ → CODE / ASSETS / AUDIO
+ → BUILD
+ → SIMULATION
+ → TEST
+ → PREVIEW
+ → PACKAGE
+ → MOIRISE RUNTIME
+```
 
-## 18. Failure and fallback
+The finished package must not require the provider that created it.
+
+2D may use Canvas/WebGL/Phaser. 3D may use Three.js/Babylon/PlayCanvas/WebGL/WebGPU according to the runtime adapter.
+
+## 13. Distributed compute
+
+```text
+MORISE AI
+   ↓
+RESOURCE ROUTER
+   ↓
+SCHEDULER
+   ↓
+WORKER REGISTRY
+   ↓
+COMPATIBLE WORKER
+   ↓
+SANDBOX
+   ↓
+RESULT
+   ↓
+VALIDATOR
+```
+
+Trusted workers and community workers are different security domains.
+
+Community defaults are strict: at most 1 logical CPU, 512 MB RAM, GPU disabled by default, storage 0 by default, plus a separate network quota. Actual limits are enforced by the worker runtime/sandbox, not by UI variables.
+
+Workers are never a single point of failure.
+
+## 14. Data filtering and provenance
+Before data reaches an AI model, provider or worker:
+
+```text
+CLASSIFY
+ → AUTHORIZE
+ → MINIMIZE
+ → REDACT SECRETS
+ → ATTACH PROVENANCE
+ → APPLY DESTINATION POLICY
+ → EXECUTE
+ → VALIDATE
+```
+
+High-risk operations generate auditable events.
+
+External instructions never gain authority over system policy, permissions, secrets, RLS, tools or deployment.
+
+## 15. Observability
+Every AI operation has a trace/request identity and records, where permitted:
+
+`requestId`, capability, execution target, provider/worker, latency, resource class, validation result, error code and policy decision.
+
+Never log secrets or raw private content unnecessarily.
+
+PostHog is an observation/experiment layer, not the AI brain.
+
+## 16. Failure/fallback contract
 Every capability defines:
+
 - primary execution;
 - fallback execution;
 - degraded behavior;
 - retry policy;
 - terminal error.
 
-Retries require idempotency. Deterministic invalid requests are not retried indefinitely.
+Retries require idempotency. Deterministically invalid requests are not retried indefinitely.
 
-## 19. UI rule
-The player sees the SYSTEM as one coherent interface. Keep permanent navigation at approximately 5–6 doors. Internal AI capabilities appear as contextual SYSTEM actions, drawers, panels or labs.
+## 17. Product/UI boundary
+The player experiences MORISE AI through one coherent SYSTEM interface. Permanent navigation stays around 5–6 primary doors. AI capabilities appear contextually through panels, drawers, labs, actions and SYSTEM feedback instead of hundreds of permanent buttons.
 
-## 20. Non-negotiable invariants
+Private messaging remains a first-class social capability without becoming an unnecessary permanent main-navigation door.
+
+## 18. Security invariants
 1. No module owns a second AI brain.
 2. No module hard-codes provider endpoints.
 3. No browser variable is a security boundary.
-4. No worker receives master secrets.
-5. No generated code goes directly to production.
-6. No AI output becomes truth without validation/provenance.
+4. No worker receives production master secrets.
+5. No generated code executes directly in production.
+6. No external output becomes truth without provenance and validation.
 7. No private data is automatically used for learning.
 8. No community worker becomes trusted merely by participation.
 9. No single worker is a single point of failure.
 10. AI/provider outage cannot destroy ordinary social functionality.
-11. Adding workers must not require changing AI capability contracts.
-12. Every improvement must be measurable and reversible.
+11. Adding workers does not require changing capability contracts.
+12. Every production improvement is measurable and reversible.
 
-## 21. Definition of complete
-MORISE AI is considered architecturally complete when every capability has a typed input/output contract, policy, execution router, validation path, provenance record, failure mode, observability event and test plan, and when each Module 1–15 references capabilities without duplicating their internals.
+## 19. Definition of architectural completion
+The AI architecture is complete only when:
+
+- every capability has one authoritative ID and typed input/output contract;
+- every action has one authoritative definition, permission and confirmation policy;
+- every execution target has a routing policy;
+- every provider adapter has a registry record and verification status;
+- every worker path has authentication, authorization, sandboxing and result validation;
+- every memory/learning path has provenance and privacy rules;
+- every evolution path has sandbox, benchmark, canary and rollback;
+- every important operation has an observability contract;
+- every Module 1–15 references these contracts instead of duplicating them;
+- duplicate or conflicting architecture documents are removed or explicitly marked obsolete.
+
+## 20. Implementation rule
+Build the AI subsystem independently of the public UI first. Then integrate each product module through the stable contracts above.
+
+Do not declare a module complete because its screen exists. A module is complete only after its implementation, tests, runtime behavior, security and mobile behavior have been verified.
