@@ -254,3 +254,11 @@ Ni Codex ni un provider de code/image/audio ne devient le moteur de décision de
 
 ### Final orchestration test
 Une demande de jeu 2D et une demande de jeu 3D doivent traverser le même orchestrateur, différer seulement par les exigences/runtime capabilities pertinentes, puis aboutir à des artifacts et manifests validés avant intégration.
+
+## GAME FABRICATION MEMORY — M15
+
+M15 consulte le MemoryService central pour retrouver les connaissances GAME_* validées avant une fabrication et pour enregistrer les nouvelles connaissances après validation. Le cycle est : retrieval → fabrication → validation → observation → candidate → benchmark/policy → promotion ou rejet.
+
+Une connaissance de fabrication doit conserver ses conditions d'application, preuves, compatibilité 2D/3D, version runtime, utilité, confiance, statut et références d'artifacts/tests. Les échecs et réparations sont versionnés ; une réparation échouée n'est jamais proposée comme recette validée.
+
+Les outils de développement sont des cibles d'exécution interchangeables. Leur utilisation enrichit l'expérience, mais la connaissance appartient à MORISE et reste disponible indépendamment de cet outil.
