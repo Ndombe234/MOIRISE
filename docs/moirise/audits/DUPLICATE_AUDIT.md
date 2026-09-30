@@ -201,3 +201,16 @@ Vérifications :
 - Codex est un execution target optionnel ; il ne possède ni mémoire, ni vérité, ni publication authority.
 - Les connaissances validées restent disponibles lorsque Codex est désactivé.
 - Une projection GameKnowledge est reconstruisible et n'est pas une deuxième source de vérité.
+
+## 12. Game fabrication memory verification — 2026-09-30
+
+Le savoir-faire de fabrication des jeux est rattaché au MemoryService central. Aucun GameMemoryService parallèle n'a été créé.
+
+Vérifications :
+- Game Fabrication Knowledge utilise les dataClass GAME_* de la mémoire centrale.
+- M08 produit les evidence bundles et possède artifacts/GameSpecification.
+- M15 orchestre retrieval, learning, benchmark, policy, canary et promotion.
+- Les corrections et échecs sont versionnés et ne deviennent pas automatiquement des recettes.
+- Codex est une cible d'exécution optionnelle ; il ne possède ni mémoire, ni vérité, ni autorité de publication.
+- Les connaissances validées restent disponibles lorsque Codex est désactivé.
+- Les projections GameKnowledge sont reconstruisibles et ne deviennent pas une deuxième source de vérité.
