@@ -1,19 +1,46 @@
-# M10 — SOCIAL GAMING — CONCEPTION TECHNIQUE
+# M10 — SOCIAL GAMING — CONCEPTION TECHNIQUE APPROFONDIE
 
-## Challenge model
-Challenge has owner, target game/version, eligibility, invitation/acceptance, lifecycle, attempt and result refs. Mutations are server-authoritative.
+## 1. Boundary
+M10 owns cross-over mechanics between Play and Social.
 
-## Social bridges
-Validated game result may create a share post, challenge, rematch or community activity through events; M10 never writes Social tables directly.
+## 2. Challenge
+Challenge = source result/rules + creator + recipient/cohort + expiry + validation policy.
+No challenge can fabricate a score or opponent.
 
-## Cooperative/async
-If a game supports co-op or asynchronous competition, the mode is declared in the GameManifest and validated before session creation.
+## 3. Async flow
+Player A result → create challenge → recipient sees allowed projection → recipient starts own session → server validates → compare → event.
 
-## AI
-M15 Social/Game agents can propose challenges, rematches, variants or compatible Players, but cannot bypass block/mute/privacy/permission policies.
+Both players need not be online simultaneously.
 
-## Living Objects
-A Living Object may become a game seed. Branch metadata and contributor attribution are preserved.
+## 4. Rematch
+Rematch copies ruleset/version but creates a new attempt/session and new idempotency key.
 
-## Tests
-Unauthorized invite, duplicate acceptance, blocked player, stale game version, result tampering, rematch replay, mobile sharing and disconnected recovery.
+## 5. Community challenge
+M11 owns community membership and moderation.
+M10 owns challenge execution.
+M05/M14 consume completion for progression/notifications.
+
+## 6. Cohort leaderboards
+Only real validated results.
+Pagination and time windows.
+Tie rules deterministic.
+Private results stay private.
+
+## 7. Living Object branch
+A game branch can be created from an evolving Living Object; contributors are linked to versions. Publishing a branch requires permissions.
+
+## 8. Convergence
+Compatible independent game trajectories can produce an optional experiment. It should not automatically connect private users.
+
+## 9. Abuse protection
+Rate limits, duplicate prevention, block enforcement, false-result detection, challenge expiry and report hooks.
+
+## 10. AI
+AI selects eligible challenges and explains why.
+It cannot invent an opponent or alter a result.
+
+## 11. Tests
+Create/accept challenge; expiry; duplicate; blocked user; privacy; result validation; rematch; community integration; mobile share flow.
+
+## 12. DONE
+Play creates natural shareable/async social loops without making friendship or simultaneous presence mandatory.
