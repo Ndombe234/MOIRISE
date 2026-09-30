@@ -171,3 +171,20 @@ Le détail central de la compréhension de l'IA de fabrication reste dans AI_MAS
 - aucun provider choisi directement par un module/UI.
 - aucune autorité métier M01–M14 transférée à M15.
 - les sorties AI restent proposition/evidence jusqu'au commit de l'owner.
+
+## 11. Native Game Platform verification — 2026-09-30
+
+The 2D/3D game platform is now represented across the canonical AI design and the adapted module boundaries.
+
+Verified scope:
+- AI_MASTER_PLAN: native reusable Game Platform, 2D/3D fabrication pipeline, repair loop, agent/Codex boundary, reuse and ownership.
+- AI_TECHNICAL_DESIGN: GameSpecification, GameProject, GameArtifact, GameBuild, GameIntegration, fabrication state machine, task graph, repair controller, runtime selection, agent boundary and final game tests.
+- M06: PLAY integration.
+- M07: game catalog/discovery integration.
+- M08: permanent Game Factory Platform.
+- M09: reusable 2D/3D runtime and sandbox.
+- M10: social game hooks.
+- M15: AI orchestration of game fabrication and repair.
+
+Invariant:
+game generation does not recreate MOIRISE per game. It reuses the permanent game platform and only creates the game-specific specification, artifacts and build.
