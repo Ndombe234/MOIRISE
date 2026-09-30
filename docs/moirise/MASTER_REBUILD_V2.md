@@ -57,9 +57,9 @@ AI architecture lives only in `docs/moirise/ai/00_MASTER_AI.md` and its numbered
 
 Worker architecture lives only in `docs/moirise/ai/12_DISTRIBUTED_WORKER_CLUSTER.md` and `docs/moirise/ai/13_DISTRIBUTED_SYSTEM_IMPLEMENTATION.md`.
 
-Module behavior lives only in the numbered module technical files.
+Module behavior and implementation live only in the single canonical numbered module files under docs/moirise/modules/. Each module now has exactly one authoritative file; duplicate *_TECHNICAL.md variants are forbidden.
 
-Do not duplicate provider endpoints, worker security policy, or AI internals inside modules.
+Do not duplicate provider endpoints, worker security policy, or AI internals inside modules. Historical product notes remain reference-only and never override canonical module contracts.
 
 ## Build rule
 
@@ -75,5 +75,5 @@ When documents conflict:
 4. `docs/moirise/ai/10_PROVIDER_REGISTRY.md` for provider configuration.
 5. `docs/moirise/ai/12_DISTRIBUTED_WORKER_CLUSTER.md` for worker trust, quotas and security.
 6. `docs/moirise/ai/13_DISTRIBUTED_SYSTEM_IMPLEMENTATION.md` for worker implementation.
-7. The relevant module technical file for product behavior.
+7. The relevant canonical numbered module file for product behavior and implementation.
 8. Existing source code is evidence to inspect, never authority over these documents.
