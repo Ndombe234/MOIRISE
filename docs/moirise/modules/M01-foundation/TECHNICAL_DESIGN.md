@@ -390,3 +390,13 @@ Si une pièce manque, l'implémentation doit s'arrêter avant de deviner.
 ## 22. Definition of DONE
 
 Le module est terminé lorsque les contrats, données, mutations, permissions, UI, états de récupération, événements, observabilité et tests correspondent simultanément au Plan de module et aux contrats transversaux.
+
+## 23. Current repository implementation mapping
+
+The current repository uses Next.js App Router with the route tree under app/. Do not create a second app router under src/app. Shared non-route code belongs in the existing library/components structure. The package scripts require typecheck, tests and Next production build for the build command.
+
+Observed production stack: Next 16.3.6, React 19.3.0, TypeScript 7.0.2, Supabase SSR/JS 0.12.7/2.117.1, Vitest 5.0.2. The exact dependency versions remain repository-owned; this document does not authorize silent upgrades.
+
+Observed critical routes include Home, Discover, Play, Player, Social, System, Communities, Events, Create and authentication routes. Root failures must be isolated with route-level loading/error boundaries.
+
+Supabase service-role/admin clients remain server-only. RLS is a data authorization layer, not a UI convenience.
