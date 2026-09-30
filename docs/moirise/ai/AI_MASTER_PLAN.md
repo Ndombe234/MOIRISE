@@ -981,3 +981,146 @@ Aucun de ces owners ne peut être remplacé par un provider ou par Codex.
 ## 94.11 DONE global
 La plateforme jeux est considérée prête lorsqu'un jeu 2D et un jeu 3D peuvent être fabriqués depuis une GameSpecification, passer build/tests/validation, recevoir un manifest runtime valide, démarrer dans M06, fonctionner dans M09, apparaître via M07 et utiliser les intégrations M05/M10/M14 uniquement par leurs contrats.
 
+
+# 95. MÉMOIRE DE FABRICATION DES JEUX — AUTONOMIE PAR RAPPORT AUX AGENTS
+
+La fabrication de jeux possède désormais un domaine de connaissance durable à l'intérieur du Memory Service central. Il ne s'agit pas d'une deuxième mémoire et pas d'une mémoire appartenant à Codex.
+
+## 95.1 Principe
+Après chaque fabrication, MORISE peut mémoriser les connaissances validées qui expliquent comment obtenir un meilleur résultat la prochaine fois :
+- transformations de demande vers GameSpecification ;
+- choix 2D/3D validés ;
+- templates et composants qui ont réellement fonctionné ;
+- combinaisons de composants compatibles ;
+- stratégies de build ;
+- fixtures/tests efficaces ;
+- diagnostics d'erreurs reproductibles ;
+- corrections qui ont réellement supprimé une classe d'erreur ;
+- contraintes de performance observées ;
+- compatibilités runtime/device ;
+- coûts, latences et resource profiles ;
+- résultats comparatifs entre méthodes ;
+- qualité réelle des artifacts ;
+- réussite ou échec d'un agent/provider selon la tâche ;
+- raisons structurées d'une décision technique ;
+- patterns réutilisables.
+
+Une génération non validée, un échec isolé ou une sortie provider non vérifiée ne devient pas automatiquement une connaissance durable.
+
+## 95.2 Indépendance vis-à-vis de Codex
+Codex est une cible d'exécution facultative. La connaissance de fabrication appartient à MORISE et au Game Factory domain.
+
+Quand Codex produit une correction réussie :
+agent output → validation → expérience → candidate knowledge → benchmark/policy → promotion éventuelle.
+
+Quand Codex est absent :
+MORISE utilise les connaissances déjà promues, les templates/components, les capabilities natives, les outils locaux/workers autorisés et les procédures de réparation déjà apprises.
+
+Quand plusieurs agents/providers existent :
+leurs contributions sont comparées comme sources d'exécution. Aucun agent ne devient la source de vérité.
+
+## 95.3 Catégories de Game Fabrication Knowledge
+Les entrées utilisent le Memory Service central avec des dataClass spécialisés :
+GAME_SPEC_PATTERN
+GAME_TEMPLATE_KNOWLEDGE
+GAME_COMPONENT_KNOWLEDGE
+GAME_ARCHITECTURE_PATTERN
+GAME_2D_PATTERN
+GAME_3D_PATTERN
+GAME_RUNTIME_COMPATIBILITY
+GAME_BUILD_PATTERN
+GAME_TEST_PATTERN
+GAME_FAILURE_PATTERN
+GAME_REPAIR_PATTERN
+GAME_PERFORMANCE_PATTERN
+GAME_RESOURCE_PATTERN
+GAME_PROVIDER_PERFORMANCE
+GAME_AGENT_PERFORMANCE
+GAME_REUSE_DECISION
+GAME_GENERATION_HEURISTIC
+GAME_VALIDATED_EXPERIENCE
+
+Chaque entrée garde provenance, version, confidence, utility, scope, evidenceRefs, validationStatus, createdAt et expiration/purge policy.
+
+## 95.4 Cycle d'apprentissage d'un jeu
+FABRICATION → BUILD → TEST → PLAYTEST/VALIDATION → OBSERVATION → NORMALIZATION → PATTERN CANDIDATE → OFFLINE EVALUATION → POLICY → CANARY → PROMOTION ou REJECTION.
+
+La boucle d'apprentissage ne modifie pas silencieusement les règles de production. Une connaissance promue devient une entrée versionnée et réutilisable ; elle n'écrase pas l'historique.
+
+## 95.5 Mémoire des échecs
+Un échec utile conserve :
+- failureFingerprint ;
+- phase ;
+- affectedNode ;
+- environment/profile ;
+- input constraints ;
+- rootCause candidate ;
+- attemptedFixRefs ;
+- successfulFixRef éventuel ;
+- regressionTests ;
+- occurrence count ;
+- lastSeenAt ;
+- validation status.
+
+Un échec non compris reste OBSERVED_FAILURE. Il ne doit jamais être promu comme une recette.
+
+## 95.6 Mémoire des réparations réussies
+Une réparation devient réutilisable seulement si :
+1. elle corrige le problème ;
+2. le build passe ;
+3. les tests impactés passent ;
+4. les tests de régression passent ;
+5. aucun invariant de sécurité/policy n'est violé ;
+6. le résultat est reproductible ou suffisamment stable ;
+7. sa portée est définie.
+
+Elle devient alors VALIDATED_REPAIR_PATTERN.
+
+## 95.7 Recherche avant fabrication
+Avant de créer du nouveau code :
+GAME REQUEST → REQUIREMENTS → RETRIEVE RELEVANT GAME KNOWLEDGE → COMPATIBILITY CHECK → REUSE DECISION → ONLY THEN GENERATE NEW ARTIFACT.
+
+Le système ne réutilise pas une connaissance seulement parce qu'elle existe. Il vérifie version, runtime, device, sécurité, resource budget et contexte.
+
+## 95.8 Distinction connaissance / artifact
+Un artifact est un objet fabriqué.
+Une mémoire de fabrication est une connaissance sur la manière de fabriquer ou de corriger.
+
+Artifact stable → peut fournir une source de réutilisation.
+Memory entry → explique pourquoi et comment cette réutilisation est autorisée.
+
+Ils ne sont pas interchangeables.
+
+## 95.9 Mémoire des agents
+MORISE peut mémoriser par capability et tâche :
+- success rate ;
+- validation failure rate ;
+- mean latency ;
+- resource usage ;
+- repair frequency ;
+- artifact quality indicators.
+
+Ces mesures servent au routing et à la planification. Elles ne donnent jamais à un agent une autorité supérieure à celle de la policy.
+
+## 95.10 Autonomie progressive
+Niveau 0 : aucune connaissance de réutilisation.
+Niveau 1 : recherche de templates/components.
+Niveau 2 : réutilisation de patterns validés.
+Niveau 3 : diagnostic/réparation à partir de patterns validés.
+Niveau 4 : fabrication et amélioration bornées avec mémoire de fabrication.
+
+Une promotion de maturité exige benchmark + tests + policy + observabilité.
+
+## 95.11 Condition d'autonomie Game Factory
+MORISE est indépendante de Codex pour la connaissance et l'orchestration lorsque :
+- elle retrouve les patterns validés ;
+- elle sélectionne ou rejette une réutilisation ;
+- elle construit un TaskGraph ;
+- elle génère via ses capabilities disponibles ;
+- elle analyse les échecs ;
+- elle applique des réparations validées ;
+- elle apprend des nouveaux résultats validés ;
+- Codex peut être retiré sans supprimer ces connaissances.
+
+L'absence de Codex peut encore réduire les moyens d'exécution disponibles ; elle ne doit pas effacer le savoir-faire de MORISE.
+
