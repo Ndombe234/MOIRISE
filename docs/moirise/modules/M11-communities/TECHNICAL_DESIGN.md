@@ -32,3 +32,14 @@ COMMUNITY_CREATED; MEMBER_INVITED; MEMBER_JOINED; MEMBER_LEFT; ROLE_CHANGED; COM
 
 ## Tests
 Role matrix; invitation replay; private community access; sensitive-data exclusion; owner transfer; archive/delete; concurrent membership; mobile admin.
+
+## 10. Concrete commands
+CREATE_COMMUNITY; UPDATE_COMMUNITY; INVITE_MEMBER; ACCEPT_INVITE; REQUEST_JOIN; APPROVE_JOIN; CHANGE_MEMBER_ROLE; REMOVE_MEMBER; LEAVE_COMMUNITY; ARCHIVE_COMMUNITY.
+Each command has idempotency and role guard.
+
+## 11. Read contracts
+GET_COMMUNITY; LIST_COMMUNITIES; LIST_MEMBERS; GET_MEMBERSHIP; LIST_REQUESTS; GET_ACTIVITY.
+Private membership existence is filtered before projection.
+
+## 12. Community candidate persistence
+Candidate records source event refs and a proposal policy version. A rejected proposal remains suppressed for a defined cooldown to prevent annoyance.
