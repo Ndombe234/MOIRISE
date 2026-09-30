@@ -1,26 +1,32 @@
-# M05 — SYSTEM — TECHNICAL CONTRACT
+# M05 — SYSTEM / PROGRESSION — TECHNICAL DESIGN
 
 ## Boundary
-M05 owns the visible MORISE SYSTEM presentation and command coordination. It is not the AI core; it consumes typed capabilities from the AI subsystem.
+M05 owns player progression state, XP/level/rank calculations, System notifications and progression rules. Reward inventory minting belongs to M14.
 
-## Core interfaces
+## Data
+`player_progression`, `xp_events`, `system_notifications`, `progression_rules`.
+
+## Types
 ```ts
-interface SystemAction { id:string; label:string; icon:string; capability:string; priority:number; visible:boolean; }
-interface SystemNotice { id:string; severity:"info"|"success"|"warning"|"error"; title:string; body?:string; expiresAt?:string; }
-interface SystemCommand { commandId:string; actorId:string; capability:string; input:unknown; idempotencyKey:string; }
+interface Progression { playerId:string; level:number; xp:number; rank:string; version:number; }
+interface XPEvent { id:string; playerId:string; source:string; amount:number; idempotencyKey:string; createdAt:string; }
+interface SystemNotice { id:string; playerId:string; kind:string; priority:"low"|"normal"|"high"; readAt?:string; }
 ```
 
-## Coordinator
-`SystemCoordinator` maps contextual user intent to a capability request. It may open a modal, route, drawer or action sheet. It must never create arbitrary navigation buttons at runtime.
+## Calculation
+XP/level/rank are deterministic versioned functions. Never calculate authoritative progression from UI state. Each XP mutation is idempotent and auditable.
 
-## UI constraints
-5–6 permanent main doors only. Secondary actions appear contextually. SYSTEM visuals use the project's dark/glass/neon language but remain readable and calm. Notifications are deduplicated by `notice.id` and throttled.
+## SYSTEM UX
+Use contextual HUD/toasts/panels with restrained animation. Do not spam SYSTEM messages for every trivial action. Critical notices persist; low-priority notices can be grouped.
+
+## AI boundary
+AI may explain progression, recommend next actions and generate cosmetic text. It cannot directly grant XP or change rank.
 
 ## Security
-Every command is authorized twice: UI visibility is not authorization; server/capability layer enforces permission.
+Server-side authorization and transaction integrity prevent forged XP events. Negative/overflow values are rejected unless explicitly defined by a versioned rule.
 
 ## Tests
-Action registry, authorization, duplicate commands, notice throttling, route transitions, keyboard/mobile behavior, failure fallback.
+XP idempotency, concurrent events, level thresholds, rule-version migration, unauthorized mutation, notification read state and mobile HUD behavior.
 
 ## Done gate
-SYSTEM can coordinate features without duplicating feature logic and without turning the site into a button-heavy dashboard.
+Progression is deterministic, auditable, recoverable and independent of provider/API availability.
