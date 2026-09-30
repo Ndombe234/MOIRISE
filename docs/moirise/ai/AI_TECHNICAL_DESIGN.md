@@ -1,839 +1,376 @@
-# MOIRISE AI — CONCEPTION TECHNIQUE FUSIONNÉE
+# MOIRISE AI — CONCEPTION TECHNIQUE EXHAUSTIVE — RECONSTRUCTION À ZÉRO
 
-## 0. Purpose
+## 0. Règle d'implémentation
+Ce fichier est la spécification technique de MORISE AI. Il doit permettre à une IA développeuse de prendre un mécanisme, d'identifier exactement ses contrats et de l'assembler sans deviner. Format obligatoire : ACTEUR → TRIGGER → PRECONDITIONS → INPUTS → ALGORITHM/ORDER → DECISION TABLE → OUTPUT → STATE MUTATION → EVENTS → ERRORS → RECOVERY → SECURITY → OBSERVABILITY → TESTS → DONE.
 
-This is the implementation-grade design for the native MORISE AI runtime. It merges the historical Core Orchestrator, Context/Intent/Reasoning architecture, capability/provider routing, Memory/Experience/Learning, distributed resource routing, Game Creator AI, Creative AI, Evolution Engine, MORISE DNA, Convergence, Emergent Missions, World Memory and the controlled self-development loop.
-
-The implementation target is not a single model. It is an orchestrated system.
-
-## 1. Physical/logical architecture
-
-~~~text
-MODULE / SYSTEM ACTION
-        ↓
+## 1. Architecture physique/logique
+```text
+MODULE/SYSTEM ACTION
+  ↓
 AI REQUEST GATE
-        ↓
-AUTH + TENANT + QUOTA
-        ↓
+  ↓
+AUTH + ACTOR + QUOTA
+  ↓
+DATA CLASSIFICATION
+  ↓
 CONTEXT ENGINE
-        ↓
+  ↓
 INTENT + REQUIREMENTS
-        ↓
+  ↓
 REASONING / PLANNER
-        ↓
+  ↓
 POLICY ENGINE
-        ↓
+  ↓
 CAPABILITY + TOOL REGISTRY
-        ↓
+  ↓
 RESOURCE / PROVIDER ROUTER
-        ↓
+  ↓
 TASK GRAPH / SCHEDULER
-        ↓
-LOCAL | TRUSTED WORKER | COMMUNITY WORKER | PROVIDER
-        ↓
-VALIDATION ENGINE
-        ↓
-COMMIT / EVENT / ARTIFACT
-        ↓
+  ↓
+LOCAL | TRUSTED WORKER | COMMUNITY WORKER | VERIFIED PROVIDER
+  ↓
+SANDBOX / EXECUTION
+  ↓
+VALIDATION
+  ↓
+MODULE COMMIT / ARTIFACT
+  ↓
+EVENT
+  ↓
 MEMORY / EXPERIENCE
-        ↓
+  ↓
 EVALUATION
-        ↓
+  ↓
 AI LAB / EVOLUTION CANDIDATE
-~~~
+```
 
-## 2. AIRequest
+## 2. Repository implementation map
+Proposed code boundary:
+```text
+src/ai/
+  gateway/
+  context/
+  intent/
+  reasoning/
+  planner/
+  policy/
+  capabilities/
+  tools/
+  providers/
+  resources/
+  workers/
+  scheduler/
+  sandbox/
+  validation/
+  memory/
+  learning/
+  evolution/
+  lab/
+  games/
+  creative/
+  translation/
+  convergence/
+  living-objects/
+  missions/
+  world-memory/
+  observability/
+  types/
+```
+Exact repository path is confirmed against the implementation before coding; this document does not authorize creating a second AI tree if an existing canonical tree already owns the responsibility.
 
-Canonical request:
-
-~~~ts
+## 3. Canonical types
+```ts
 type AIRequest = {
-  requestId: string;
-  actorId: string;              // server-derived
-  tenantId: string;
-  sourceModule: ModuleId;
-  intentText?: string;
-  inputRefs: Ref[];
-  constraints: Constraint[];
-  sensitivity: DataClass;
-  requestedAutonomy: AutonomyLevel;
-  budget: ResourceBudget;
-  deadline?: Timestamp;
-  locale?: string;
-  parentTaskId?: string;
-  createdAt: Timestamp;
+  requestId: string; actorId: string; tenantId: string; sourceModule: string;
+  intentText?: string; inputRefs: Ref[]; constraints: Constraint[];
+  sensitivity: DataClass; requestedAutonomy: AutonomyLevel;
+  budget: ResourceBudget; deadline?: string; locale?: string;
+  parentTaskId?: string; createdAt: string;
 };
-~~~
 
-The browser may supply the intent and refs but never the authoritative actor identity or permission.
-
-## 3. Request gate
-
-Order:
-1. authenticate;
-2. resolve tenant;
-3. check request rate;
-4. resolve actor;
-5. validate request schema;
-6. assign requestId/traceId;
-7. check policy;
-8. create durable request if long-running;
-9. create ContextSnapshot.
-
-No request becomes RUNNING before a persistence point exists.
-
-## 4. Data classification
-
-Classes:
-PUBLIC
-PLAYER_PRIVATE
-SENSITIVE
-AI_CONTEXT
-AI_MEMORY
-SECRET
-AUDIT_ONLY.
-
-Data flow:
-CLASSIFY → AUTHORIZE → MINIMIZE → REDACT → PROVENANCE → DESTINATION POLICY → EXECUTE → VALIDATE.
-
-SECRET cannot enter external model input.
-
-## 5. Context Engine
-
-### 5.1 Input scopes
-session; player; current module; entity; task; conversation; memory; active game; active creation.
-
-### 5.2 Retrieval
-1. identify intent scope;
-2. retrieve minimal facts;
-3. apply visibility;
-4. apply blocks/mutes/moderation;
-5. select relevant memory;
-6. omit disallowed categories;
-7. attach source refs;
-8. hash snapshot;
-9. set expiry.
-
-### 5.3 Contract
-
-~~~ts
-type ContextSnapshot = {
-  snapshotId: string;
-  requestId: string;
-  entries: ContextEntry[];
-  omittedCategories: string[];
-  sourceRefs: Ref[];
-  privacyClass: DataClass;
-  contextHash: string;
-  expiresAt: Timestamp;
-};
-~~~
-
-The snapshot is immutable. A changed context creates a new snapshot.
-
-## 6. Intent engine
-
-~~~ts
 type Intent = {
-  goal: string;
-  entities: Ref[];
-  constraints: Constraint[];
-  expectedOutput: OutputType;
-  sideEffects: SideEffectClass[];
-  requiredCapabilities: CapabilityId[];
-  ambiguityScore: number;
-  assumptions: string[];
-  clarificationRequired: boolean;
+  goal: string; entities: Ref[]; constraints: Constraint[];
+  expectedOutput: OutputType; sideEffects: SideEffectClass[];
+  requiredCapabilities: string[]; ambiguityScore: number;
+  assumptions: string[]; clarificationRequired: boolean;
 };
-~~~
 
-If ambiguity can create an irreversible side effect, clarification is required or the system must choose a reversible path only if policy permits.
+type ContextSnapshot = {
+  snapshotId: string; requestId: string; entries: ContextEntry[];
+  omittedCategories: string[]; sourceRefs: Ref[]; privacyClass: DataClass;
+  contextHash: string; expiresAt: string;
+};
 
-## 7. Requirement compiler
+type AITask = {
+  taskId: string; graphId: string; nodeKey: string; capabilityId: string;
+  capabilityVersion: string; dependencyIds: string[]; inputRefs: Ref[];
+  outputRefs: Ref[]; resourceRequirements: ResourceRequirements;
+  trustRequirement: TrustClass; dataDestinationPolicy: DestinationPolicy;
+  timeoutMs: number; retryPolicy: RetryPolicy; idempotencyKey: string;
+  validatorId: string; attempt: number; state: TaskState; lease?: Lease;
+};
+```
 
-Example:
+## 4. Request Gate — exact order
+1. receive request;
+2. derive server actor identity;
+3. authenticate/session check;
+4. resolve tenant/project;
+5. rate/quota check;
+6. validate schema;
+7. classify input;
+8. create requestId/traceId;
+9. evaluate policy;
+10. persist durable request if long-running;
+11. create context snapshot;
+12. enqueue or execute.
+A failed step stops the pipeline with a typed error. No privileged action is executed from an unpersisted long-running request.
 
-Input:
-“Create a short 3D hunting game I can share.”
+## 5. Data classification and context
+Classes: PUBLIC, PLAYER_PRIVATE, SENSITIVE, AI_CONTEXT, AI_MEMORY, SECRET, AUDIT_ONLY.
+Pipeline: CLASSIFY → AUTHORIZE → MINIMIZE → REDACT → PROVENANCE → DESTINATION POLICY → EXECUTE → VALIDATE.
+`SECRET` never enters model/provider input. Private messages are not general memory by default.
 
-Compiled requirements:
-- browser-runnable;
-- 3D;
-- hunt core loop;
-- short session;
-- shareable result;
-- original visual direction;
-- test launch/movement/core loop/completion;
-- sandbox;
-- M08 target runtime.
+Context retrieval order:
+1. identify current intent;
+2. identify owner/module scope;
+3. retrieve minimum required refs;
+4. enforce visibility/mutes/blocks;
+5. retrieve allowed memories;
+6. exclude forbidden classes;
+7. attach provenance;
+8. hash snapshot;
+9. assign expiry.
 
-No provider is inserted into the requirement.
+## 6. Intent and requirement compiler
+For every request, produce a machine-readable IntentSpec. If the output changes permissions, money, publication, membership, private data or irreversible state, the ambiguity threshold is strict and confirmation is required unless a pre-authorized policy explicitly allows it.
 
-## 8. Reasoning
+Example “crée un jeu 3D de chasse partageable” becomes:
+`platform=browser`, `dimension=3D`, `loop=hunt`, `session=short`, `shareable=true`, `original_assets=true`, `target=M08`, `runtime=M09`, `validators=[build,launch,movement,loop,completion]`.
+No provider is part of the semantic requirement.
 
-Reasoning is model/algorithm agnostic. It can combine deterministic rules, local algorithms and provider-assisted reasoning.
+## 7. Reasoning contract
+Reasoning returns:
+`interpretations[]`, `assumptions[]`, `planProposal`, `confidence`, `unresolvedQuestions[]`.
+It cannot call privileged tools directly. A separate Policy Engine evaluates any proposed side effect.
 
-Outputs:
-candidate interpretation; assumptions; plan proposal; confidence; unresolved questions.
-
-Reasoning cannot issue a privileged mutation.
-
-## 9. Planner / DAG
-
-Every long workflow becomes a DAG.
-
-Example game:
+## 8. Planner
+Long workflows are DAGs. Creation sequence example:
+```text
 T1 requirements
-→ T2 specification
-→ T3 test plan
+ → T2 GameSpecification
+ → T3 test plan
 T2 → T4 gameplay code
 T2 → T5 UI
 T2 → T6 assets
 T2 → T7 audio
-T3-T7 → T8 build
-T8 → T9 static validation
+T3+T4+T5+T6+T7 → T8 build
+T8 → T9 static
 T9 → T10 simulation
-T10 → T11 behavior tests
+T10 → T11 behavior
 T11 → T12 package
 T12 → T13 preview
-T13 → T14 publish gate.
+T13 → T14 publish gate
+```
+Cycle detection runs before scheduling. Parallel tasks require complete dependency refs.
 
-Parallel nodes execute only when input refs are complete.
+## 9. State machine
+`CREATED → QUEUED → LEASED → RUNNING → VALIDATING → COMPLETED`.
+Retryable: `RUNNING → FAILED_RETRYABLE → QUEUED`.
+Terminal: `RUNNING → FAILED_TERMINAL`.
+Cancellation: `QUEUED/RUNNING → CANCELLATION_REQUESTED → CANCELLED`.
+Expired late results are rejected unless reconciliation is explicitly supported.
 
-## 10. Task contract
+## 10. Idempotence
+Semantic keys prevent duplicate effects:
+`generation = projectId + nodeKey + inputHash + capabilityVersion`;
+`play = sessionId + attemptId`;
+`message = conversationId + clientMessageId`.
+The authoritative result is returned for duplicates.
 
-~~~ts
-type AITask = {
-  taskId: string;
-  graphId: string;
-  nodeKey: string;
-  capabilityId: string;
-  capabilityVersion: string;
-  dependencyIds: string[];
-  inputRefs: Ref[];
-  outputRefs: Ref[];
-  resourceRequirements: ResourceRequirements;
-  trustRequirement: TrustClass;
-  dataDestinationPolicy: DestinationPolicy;
-  timeoutMs: number;
-  retryPolicy: RetryPolicy;
-  idempotencyKey: string;
-  validatorId: string;
-  attempt: number;
-  state: TaskState;
-  lease?: Lease;
-};
-~~~
+## 11. Capability Registry
+```ts
+interface CapabilityDefinition {
+  id: string; version: string; inputSchema: unknown; outputSchema: unknown;
+  policyClass: string; allowedTargets: string[]; validatorId: string;
+  resourceClass: string; timeoutMs: number; maxConcurrency: number;
+  maxPayload: number; health: string;
+}
+```
+Activation checklist: schema → implementation → policy → resource profile → validator → tests → telemetry → rollback.
 
-States:
-CREATED → QUEUED → LEASED → RUNNING → VALIDATING → COMPLETED.
-Failure paths:
-RUNNING → FAILED_RETRYABLE → QUEUED.
-RUNNING → FAILED_TERMINAL.
-Queued/running tasks may enter CANCELLATION_REQUESTED → CANCELLED.
+## 12. Tool Registry
+```ts
+interface ToolDefinition {
+  actionId: string; ownerModule: string; inputSchema: unknown;
+  permission: string; confirmationMode: string; sideEffectClass: string;
+  rateLimitPolicy: string; validatorId?: string; auditLevel: string;
+}
+```
+No wildcard tool. Tool input is schema-validated before execution.
 
-## 11. Idempotency
-
-Operation keys use semantic identity.
-
-Examples:
-game generation = projectId + nodeKey + inputHash + capabilityVersion.
-play result = sessionId + attemptId.
-message = conversationId + clientMessageId.
-
-Duplicate requests return the prior authoritative result.
-
-## 12. Capability registry
-
-~~~ts
-type CapabilityDefinition = {
-  id: CapabilityId;
-  version: string;
-  inputSchema: Schema;
-  outputSchema: Schema;
-  policyClass: PolicyClass;
-  allowedTargets: ExecutionTarget[];
-  validatorId: string;
-  resourceClass: ResourceClass;
-  timeoutMs: number;
-  maxConcurrency: number;
-  maxPayload: number;
-  health: HealthState;
-};
-~~~
-
-Capability versions are explicit.
-
-## 13. Tool registry
-
-~~~ts
-type ToolDefinition = {
-  actionId: string;
-  ownerModule: ModuleId;
-  inputSchema: Schema;
-  permission: Permission;
-  confirmationMode: ConfirmationMode;
-  sideEffectClass: SideEffectClass;
-  rateLimitPolicy: RateLimit;
-  validatorId?: string;
-  auditLevel: AuditLevel;
-};
-~~~
-
-There is no wildcard tool.
-
-## 14. Policy engine
-
-Decision inputs:
-actor; module; action; data class; autonomy; destination; resource budget; target; confirmation.
-
-Decision:
-ALLOW, ALLOW_WITH_CONFIRMATION, DENY, DEGRADE.
-
+## 13. Policy Engine
+Decision = ALLOW | ALLOW_WITH_CONFIRMATION | DENY | DEGRADE.
 Order:
-identity → action existence → owner policy → safety → privacy → destination → quota → autonomy → confirmation → execution.
+identity → action exists → owner policy → safety → privacy → destination → quota → autonomy → confirmation → execution.
+Policy is a hard ceiling. AI cannot increase its own autonomy.
 
-## 15. Prompt compiler
+## 14. Prompt compiler
+Build prompt from policy + capability instructions + tool schema + approved context + user intent + output schema. User/external text is data, not policy. Secrets are never interpolated. Tool schemas cannot be overwritten by user content.
 
-Inputs:
-system policy;
-capability instructions;
-tool schema;
-approved context;
-user intent;
-output schema.
-
-User/external text is untrusted data. It cannot overwrite policy or tool schema.
-
-Secrets are never interpolated.
-
-## 16. Structured output
-
-Model result:
-parse → schema validation → semantic validation → policy validation.
-
-Invalid schema may be repaired a bounded number of times. Invalid or unsafe outputs are rejected.
-
-## 17. Provider adapter contract
-
-~~~ts
+## 15. Provider Adapter — exact contract
+```ts
 interface ProviderAdapter {
   execute(input: CanonicalProviderRequest): Promise<CanonicalProviderResponse>;
   health(): Promise<ProviderHealth>;
   cancel(executionId: string): Promise<CancellationResult>;
 }
-~~~
+```
+Adapter responsibilities: endpoint transformation, secret retrieval, timeout, rate limit, response normalization, error normalization, provenance and policy enforcement.
 
-Adapter responsibilities:
-request transformation;
-secret retrieval;
-timeout;
-rate limiting;
-response normalization;
-provider error normalization;
-provenance;
-policy enforcement.
+## 16. Provider/API/URL registry
+The following providers are candidates from the existing MOIRISE plan: Pollinations, Puter, LLM7, Vireonix, Murakumo, Kilo AI, AI Horde, AI Horde OpenAI API, Cehpoint AI, OVH AI Endpoints, Quillly, Openverse, Internet Archive, Gemini, DeepSeek and OpenRouter.
 
-## 18. Provider routing
-
-Hard filters:
-capability support;
-privacy;
-trust;
-resource;
-quota;
-network;
-deadline.
-
-Soft score:
-health;
-latency;
-capacity;
-cost;
-fairness.
-
-No soft score overrides a hard rejection.
-
-## 19. Local/on-device
-
-Prefer local/on-device when:
-- deterministic;
-- low resource;
-- sensitive;
-- available;
-- no quality regression.
-
-Examples:
-translation cache;
-format conversion;
-title derivation;
-hashing;
-small transforms;
-validation;
-simple ranking;
-offline summaries where a local model exists.
-
-## 20. Trusted Worker
-
-Registration requires:
-owner;
-trust class;
-capability manifest;
-software/runtime version;
-quota;
-proof.
-
-Task delivery includes:
-taskId;
-leaseId;
-capability;
-input refs;
-hash/version;
-expiry;
-sandbox profile.
-
-No production secret is delivered.
-
-## 21. Community Worker
-
-Default:
-CPU <=1 logical core;
-RAM <=512 MiB;
-GPU=false;
-persistent storage=false;
-network bounded.
-
-Opt-in is explicit.
-
-Community Workers never receive:
-service-role keys;
-production DB credentials;
-admin credentials;
-raw private messages;
-unrestricted user filesystem.
-
-## 22. Worker lease
-
-Grant lease before dispatch.
-
-Heartbeat extends only under policy.
-On expiry:
-mark lease expired;
-decrement worker health;
-requeue only if idempotency permits;
-require reconciliation for irreversible external effects.
-
-Revoked worker cannot renew.
-
-## 23. Sandbox
-
-Sandbox controls:
-CPU;
-RAM;
-filesystem;
-network;
-runtime;
-time;
-process;
-syscalls where available.
-
-Generated code is untrusted.
-
-## 24. Validation engine
-
-Validators:
-schema;
-policy;
-security;
-static;
-type;
-runtime;
-behavior;
-content;
-artifact;
-result integrity.
-
-Results:
-VALID, INVALID, DEGRADED, INCONCLUSIVE.
-
-INCONCLUSIVE is not automatically VALID.
-
-## 25. Result integrity
-
-Critical output contains:
-taskId;
-inputHash;
-outputHash;
-validatorId/version;
-execution target;
-provenance;
-timestamp.
-
-Late result from cancelled/expired work is rejected unless reconciliation policy exists.
-
-## 26. Self-correction
-
-Algorithm:
-failure → classify → check correction policy → inspect evidence → produce minimal correction → execute → validate → compare → accept/reject.
-
-Limits:
-maxDepth;
-maxDuration;
-maxAttempts;
-maxArtifacts;
-maxMutationScope;
-maxCost.
-
-Oscillation detector compares failure signatures.
-
-## 27. Memory service
-
-Memory entry:
-~~~ts
-type MemoryEntry = {
-  memoryId: string;
-  scope: MemoryScope;
-  ownerId: string;
-  source: SourceRef;
-  contentRef: Ref;
-  dataClass: DataClass;
-  sensitivity: Sensitivity;
-  consentBasis?: string;
-  confidence: number;
-  utility: number;
-  provenance: Provenance;
-  createdAt: Timestamp;
-  expiresAt?: Timestamp;
-  deletePolicy: DeletePolicy;
+For every provider create a record:
+```ts
+type ProviderDefinition = {
+  providerId: string;
+  baseUrl: string;
+  endpoints: { capability: string; method: string; path: string }[];
+  authMode: 'NONE'|'BEARER'|'API_KEY'|'OAUTH'|'SESSION';
+  secretName?: string;
+  apiVersion?: string;
+  capabilities: string[];
+  requestSchemaRef: string;
+  responseSchemaRef: string;
+  rateLimit?: string;
+  licenseRef?: string;
+  verifiedAt?: string;
+  status: 'UNVERIFIED'|'VERIFIED'|'DISABLED';
 };
-~~~
-
-Write policies:
-explicit remember;
-validated project state;
-permitted personal adaptation;
-validated experience;
-approved system experience.
-
-Never store secrets or unrestricted private conversations as general learning.
-
-## 28. Learning candidate pipeline
-
-OBSERVATION → NORMALIZATION → PATTERN → HYPOTHESIS → CANDIDATE → OFFLINE EVALUATION → POLICY → CANARY.
-
-Signals may include:
-accepted/rejected recommendation;
-creation success;
-game result;
-translation correction;
-community proposal acceptance;
-Convergence result;
-Fun & Surprise reaction.
-
-Raw click counts are not enough to prove an AI improvement.
-
-## 29. Evolution candidate
-
-~~~ts
-type ImprovementCandidate = {
-  candidateId: string;
-  targetComponent: string;
-  baselineVersion: string;
-  hypothesis: string;
-  changeSetRef: Ref;
-  evaluationPlan: EvaluationPlan;
-  riskClass: RiskClass;
-  sandboxProfile: SandboxProfile;
-};
-~~~
-
-Candidate lifecycle:
-OBSERVED → HYPOTHESIS → BUILT → TESTED → BENCHMARKED → POLICY → CANARY → PROMOTED/REJECTED → ROLLED_BACK.
-
-## 30. Code evolution
-
-Generated code:
-1. write into isolated candidate workspace;
-2. static scan;
-3. dependency allowlist;
-4. typecheck;
-5. build;
-6. unit tests;
-7. integration tests;
-8. behavior tests;
-9. security tests;
-10. resource benchmark;
-11. regression against baseline;
-12. canary;
-13. promotion;
-14. monitor;
-15. rollback.
-
-No candidate code executes directly on production infrastructure.
-
-## 31. AI Lab
-
-AI Lab is an isolated execution/analysis domain.
-
-Allowed:
-MORISE repository subset;
-test fixtures;
-approved datasets;
-sandbox resources;
-candidate artifacts;
-benchmarks.
-
-Forbidden:
-production secrets;
-unbounded admin access;
-external unrelated systems;
-financial accounts;
-unrestricted user machines.
-
-## 32. MORISE DNA engine
-
-Evidence schema:
-action/result + timestamp + source + confidence + validation.
-
-Score rules must be versioned.
-
-Example:
-validated exploration + completed discovery → Exploration evidence.
-Repeated low-quality spam does not produce equivalent evidence.
-
-DNA signal → capability profile → contextual possibility.
-
-Player can inspect relevant explanation.
-
-## 33. Living Object engine
-
-State:
-SEED → ACTIVE → VERSIONED → BRANCHED → MERGED/FORKED → CONVERTED/ARCHIVED.
-
-Lineage graph is immutable enough for audit.
-
-Each contribution:
-contributorId;
-source version;
-operation;
-diff/ref;
-timestamp;
-policy proof.
-
-AI can propose transform/contributor/merge, but a mutation requires module authorization.
-
-## 34. Convergence engine
-
-Inputs:
-public/authorized trajectories;
-Living Object graph;
-game mechanics;
-creation patterns;
-event outcomes;
-community signals.
-
-Pipeline:
-candidate generation → privacy filter → sensitive-attribute exclusion → diversity → confidence → abuse check → proposal.
+```
+**Important:** an exact endpoint URL must be copied only from the provider's current official documentation or from a user-supplied verified URL. No guessed URL is allowed. The code therefore references `providerId` and resolves the current URL through the registry rather than hardcoding provider URLs across modules.
+
+## 17. Secrets and Supabase
+Secret flow:
+`AI module → Edge Function/secure server boundary → secret store → provider adapter`.
+Never:
+`React/browser → provider secret`.
+Secret names can include `POLLINATIONS_API_KEY`, `LLM7_API_KEY`, `GEMINI_API_KEY`, `OPENROUTER_API_KEY` etc. only when that provider is actually configured. Names are configuration references, not values.
+
+## 18. Local/on-device execution
+Use browser/local execution for deterministic low-risk work where practical: hashing, validation, formatting, cache lookup, small transforms, translation cache, lightweight ranking and offline processing when a suitable local model exists. If local quality is insufficient, route to the next permitted target.
+
+## 19. Trusted Worker
+Registration: workerId → owner → trust class → capability manifest → runtime version → resource quota → health proof. Lease contains taskId, leaseId, capability/version, input refs, hash, expiry and sandbox profile. No production secret is delivered.
+
+## 20. Community Worker
+Explicit opt-in only. Default limits: 1 logical CPU, 512 MiB RAM, no GPU, no persistent storage, bounded network. It is compute participation, not shared RAM. Revoke/expiry immediately stops new leases; running work is reconciled according to task idempotence.
+
+## 21. Scheduler
+Hard filters first. Then score eligible targets by health, latency, capacity, cost and fairness. Deadline violation risk can force degraded mode. Provider outage triggers fallback only if the fallback supports the same capability and policy.
+
+## 22. Sandbox
+Generated code/assets are untrusted. Restrict CPU, RAM, time, filesystem, network, process and runtime. Dependency allowlist. No production database credentials. No direct deployment from sandbox.
+
+## 23. Validation Engine
+Validation stages selected by artifact:
+SCHEMA → POLICY → SECURITY → STATIC/TYPE → RUNTIME → BEHAVIOR → CONTENT → ARTIFACT → INTEGRITY.
+Statuses: VALID, INVALID, DEGRADED, INCONCLUSIVE. Critical operations cannot treat INCONCLUSIVE as VALID.
+
+## 24. Self-correction
+`FAILURE → CLASSIFY → EVIDENCE → HYPOTHESIS → MINIMAL PATCH → SANDBOX → TEST → COMPARE → ACCEPT/REJECT`.
+Stop limits: maxDepth, maxDuration, maxAttempts, maxMutationScope, maxResources. Failure signature repetition detects oscillation and stops automatic correction.
+
+## 25. Memory implementation
+Scopes: SESSION, PLAYER, EXPERIENCE, CREATOR, COMMUNITY, WORLD, SYSTEM_OBSERVATION, PROVIDER_EVIDENCE. Fields: owner, sensitivity, consent, provenance, confidence, utility, retention, deletion policy. Retrieval is always permission-filtered before relevance ranking.
+
+## 26. Learning implementation
+`OBSERVATION → NORMALIZE → PATTERN → HYPOTHESIS → CANDIDATE → OFFLINE EVALUATION → POLICY → CANARY`.
+Raw events do not rewrite production behavior. Sensitive inference is prohibited. Explicit user preference is stronger than inferred preference.
+
+## 27. Evolution Engine
+Candidate record contains candidateId, target component, baseline version, hypothesis, changeSetRef, evaluation plan, risk class and sandbox profile. Lifecycle: OBSERVED → HYPOTHESIS → BUILT → TESTED → BENCHMARKED → POLICY → CANARY → PROMOTED/REJECTED → ROLLED_BACK.
+
+## 28. AI code generation pipeline
+1. identify missing mechanism;
+2. define contract;
+3. select extension point;
+4. generate candidate code;
+5. dependency allowlist;
+6. static scan;
+7. typecheck;
+8. build;
+9. unit tests;
+10. integration tests;
+11. behavior tests;
+12. security tests;
+13. resource benchmark;
+14. regression benchmark;
+15. canary;
+16. promote/reject;
+17. monitor;
+18. rollback.
+No self-generated code receives production authority merely because it compiles.
+
+## 29. Detecting what is missing
+The diagnostic must distinguish:
+A. missing knowledge/data;
+B. missing tool;
+C. missing algorithm;
+D. missing model capability;
+E. insufficient compute;
+F. insufficient context;
+G. policy restriction;
+H. integration defect.
+Each class has a different remediation path. Example: if an image API fails, adding a reasoning algorithm is not the solution.
+
+## 30. Game Creator AI
+Input → IntentSpec → GameSpecification → task graph. Required fields: 2D/3D, platform, core loop, controls, camera, difficulty, duration, sharing, assets, audio, save, performance, accessibility, security. M08 owns creation; M09 owns runtime.
+
+## 31. Creative Studio
+`type + format + quality + originality + policy + destination` → capability → provider/local target → artifact → provenance → validation. Image/video/music generation cannot publish automatically.
+
+## 32. Translation
+Canonical source remains unchanged. Cache key = `sourceHash + targetLocale + policyVersion`. Protect handles, IDs, code, URLs and no-translate terms. Fallback: local cache → local/browser mechanism → permitted provider.
+
+## 33. Social/group intelligence
+AI can propose a group from authorized non-sensitive signals, but M11 owns membership. Exact creation path: detect need → build proposal → check privacy → generate name/description/rules → determine visibility → determine owner → request confirmation if required → call M11 create-group capability → validate membership owner → emit event → expose to Player. User-created groups use the same M11 contract.
+
+## 34. MORISE DNA
+Only validated evidence creates DNA signals. Evidence = action/result/source/time/confidence. Scores are versioned and are not psychological/sensitive profiling.
+
+## 35. Living Objects
+State machine: SEED → ACTIVE → VERSIONED → BRANCHED → MERGED/FORKED → CONVERTED/ARCHIVED. AI proposes transformations; owning module authorizes mutations. Every change carries lineage.
+
+## 36. Convergence
+Authorized trajectories → candidate generation → privacy/sensitive exclusion → diversity → confidence → abuse checks → proposal. Repetitive self-generated signals cannot manufacture convergence.
+
+## 37. Missions From Reality
+Problem evidence → mission candidate → scope → capability → success criteria → solo path → collective path → validator → M12/M05 state. No fake mission state.
+
+## 38. World Memory
+Claim + sources + evidence + confidence + attribution + scope + retention + correction path. Retrieval is permission-filtered and provenance-preserving. It is not a raw public dump of messages.
 
-A single actor cannot manufacture convergence through repetitive activity.
-
-## 35. Convergence Space
+## 39. UX/System orchestration
+Only approximately 5–6 global doors. Internal AI capabilities are surfaced contextually. While the user types, plays, creates or reads, non-critical SYSTEM interruptions are queued or suppressed.
 
-Temporary bounded collaboration:
-members/refs;
-goal;
-source trajectories;
-permissions;
-expiry;
-outputs;
-decision.
+## 40. Observability
+Every request/task records requestId, traceId, taskId, capability/version, target, latency, resource class, policy decision, validation status, retries and failure code. Avoid raw private prompts in broad analytics.
 
-On completion it can produce:
-new Living Object branch;
-game prototype;
-challenge;
-event;
-community proposal;
-World Memory candidate.
+## 41. Error model
+Typed categories: AUTH_DENIED, POLICY_DENIED, CONTEXT_FORBIDDEN, CAPABILITY_UNAVAILABLE, PROVIDER_UNAVAILABLE, RESOURCE_EXHAUSTED, TIMEOUT, VALIDATION_FAILED, SANDBOX_FAILED, DUPLICATE_REQUEST, CONFLICT, INCONCLUSIVE, INTERNAL_ERROR. Each has retryability and user-facing fallback.
 
-## 36. Emergent Mission engine
+## 42. Test matrix
+At minimum: ambiguous request, unauthorized context, secret leakage, prompt injection, provider outage, provider schema drift, worker loss, duplicate request, expired lease, late result, invalid generated code, sandbox escape attempt, correction oscillation, bad benchmark, rollback, private-message isolation, group permission, game build failure, mobile browser and desktop browser.
 
-Mission candidate:
-problem evidence;
-affected scope;
-required capability;
-success criteria;
-risk;
-solo path;
-collective path;
-validator.
+## 43. DONE per mechanism
+A mechanism is DONE only if its trigger, actor, preconditions, exact inputs, algorithm, decision table, outputs, mutations, events, errors, recovery, security, observability, tests and rollback are documented and implemented. “It works once” is not DONE.
 
-A mission only exists after policy validation and should be attached to M05/M12 state.
+## 44. URLs/API policy
+Do not hardcode guessed provider URLs. Official provider documentation is the source of truth. When a URL is supplied/verified, store it in the provider registry and reference it by `providerId`. This prevents one provider endpoint change from forcing edits throughout MORISE.
 
-## 37. World Memory engine
-
-Candidate:
-sourceRefs;
-claim;
-validation evidence;
-confidence;
-attribution;
-scope;
-retention;
-correction path.
-
-Promotion requires independent/strong evidence according to policy.
-
-Retrieval:
-query → semantic/rule retrieval → permission filter → recency/quality → provenance → bounded context.
-
-## 38. Game Creator AI
-
-Game intent:
-genre;
-platform;
-2D/3D;
-core loop;
-controls;
-difficulty;
-session duration;
-share behavior;
-assets;
-audio;
-save;
-performance;
-accessibility;
-security.
-
-Output GameSpecification, not arbitrary production code.
-
-## 39. GameFactory tasks
-
-RESEARCH → DESIGN → SPEC → ENGINE → CONTENT → ASSETS → CODE → BUILD → SIMULATE → TEST → PLAYTEST → BALANCE → PACKAGE → PREVIEW → PUBLISH.
-
-## 40. Creative Studio AI
-
-Artifact request:
-type; quality; size; format; originality; safety; source refs; privacy; destination.
-
-Output:
-artifactRef + provenance + validation.
-
-## 41. Translation
-
-Source remains canonical.
-Translation cache key:
-sourceHash + targetLocale + policyVersion.
-
-NoTranslate markers for handles, IDs, code, URLs and protected terms.
-
-Fallback:
-browser/local → cache → local/server → provider.
-
-## 42. Social intelligence
-
-Allowed:
-public content;
-relationships;
-explicit preferences;
-non-sensitive interaction signals.
-
-Private messages remain isolated unless current operation explicitly authorizes access.
-
-## 43. Community formation intelligence
-
-Pipeline:
-authorized affinity signals → candidate cluster → remove sensitive dimensions → verify existing groups → confidence/diversity → community proposal → consent/policy → creation → onboarding → adoption measurement.
-
-The AI must not infer sensitive attributes such as health/religion/sexual orientation to form communities.
-
-## 44. Recommendation engine
-
-Candidate retrieval → moderation → block/mute → visibility → privacy → ranking → diversity → novelty → explanation.
-
-Avoid closed filters.
-
-## 45. Notification cooperation
-
-AI proposes relevance; event owner proves the future state; notification owner chooses delivery/dedupe/quiet periods.
-
-No AI-generated fake event.
-
-## 46. Observability
-
-Trace fields:
-requestId;
-traceId;
-actorId;
-moduleId;
-capabilityId;
-actionId;
-taskId;
-graphId;
-target;
-provider/worker;
-latency;
-resourceClass;
-policyDecision;
-validation;
-attempt.
-
-No hidden chain-of-thought storage.
-
-## 47. Cost and backpressure
-
-Every long-running task has priority, resource class, budget, deadline and attempt limit.
-
-Saturation:
-defer low priority;
-reduce concurrency;
-choose compatible lower-cost path;
-queue;
-return degraded.
-
-No unexpected user billing.
-
-## 48. Cancellation
-
-ACTIVE → CANCELLATION_REQUESTED → CANCELLED.
-
-Late results cannot revive cancelled tasks.
-
-## 49. Security tests
-Prompt injection;
-tool abuse;
-actor spoofing;
-privilege escalation;
-provider output poisoning;
-sandbox escape;
-worker filesystem access;
-cross-tenant memory;
-reward replay;
-late task result.
-
-## 50. Golden tests
-Same normalized intent → equivalent plan shape.
-Same policy inputs → same decision.
-Same idempotency key → one mutation.
-Same deterministic title input/version → same title identity.
-Same provider malformed response → same normalized error class.
-
-## 51. Completion checklist
-
-Capability contracts;
-tool permissions;
-context scopes;
-memory policies;
-provider adapters;
-resource routing;
-workers;
-sandbox;
-validators;
-self-correction limits;
-evolution gates;
-rollback;
-observability;
-tests;
-module integration.
-
-If a critical operation still requires an implementation agent to invent ownership, permission or state, the design is incomplete.
+## 45. Final assembly rule
+Every AI feature is assembled as:
+`CONTRACT → POLICY → CAPABILITY → RESOURCE TARGET → EXECUTOR → VALIDATOR → OBSERVABILITY → RECOVERY → VERSION → TEST → INTEGRATION`.
+If one piece is missing, the feature is not considered assembled.
