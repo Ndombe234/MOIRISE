@@ -4,7 +4,7 @@ Last updated: 2026-09-30
 
 ## Current position
 
-**DESIGN PHASE COMPLETE — MODULE 1–15 TECHNICAL CONTRACTS READY — IMPLEMENTATION NOT STARTED**
+**DESIGN PHASE COMPLETE — MODULE 1–15 CANONICAL TECHNICAL CONTRACTS CONSOLIDATED — IMPLEMENTATION NOT STARTED**
 
 The previous MOIRISE implementation that had reached Modules 1–6 is considered deleted for this rebuild. No previous implementation is treated as complete functionality.
 
@@ -32,11 +32,15 @@ The previous MOIRISE implementation that had reached Modules 1–6 is considered
 
 - `docs/moirise/MASTER_REBUILD_V2.md` — product scope and authority
 - `docs/moirise/BUILD_ORDER.md` — implementation order
-- `docs/moirise/modules/M01_*_TECHNICAL.md` through `M15_*_TECHNICAL.md` — module implementation contracts
+- `docs/moirise/modules/M01_FOUNDATION.md` through `M15_META_AI_LAB.md` — single canonical module implementation contracts; duplicate *_TECHNICAL.md files removed
 - `docs/moirise/ai/00_MASTER_AI.md` — AI architecture authority
 - `docs/moirise/ai/10_PROVIDER_REGISTRY.md` — provider/endpoints/secrets registry
 - `docs/moirise/ai/12_DISTRIBUTED_WORKER_CLUSTER.md` — worker security/trust architecture
 - `docs/moirise/ai/13_DISTRIBUTED_SYSTEM_IMPLEMENTATION.md` — worker implementation architecture
+
+## Documentation cleanup
+
+The 15 module technical/product specifications are consolidated into exactly one authoritative file per module. No separate technical twin is allowed. Product/history notes under docs/product/ are reference-only and do not override the canonical rebuild documents.
 
 ## Separation rules
 
