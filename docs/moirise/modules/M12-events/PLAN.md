@@ -33,3 +33,7 @@ Event DRAFT→SCHEDULED→LIVE→ENDED/CANCELLED. Registration OPEN/CLOSED. Tour
 
 ## 9. Tests / DONE
 Timezone, daylight change, scheduler retry, event cancellation, full capacity, duplicate registration, tournament invalid result, continuation absent, quiet hours, mobile/desktop.
+
+## AI-INTÉGRATION M12 — CONTRAT DE COMPRÉHENSION POUR L'IA DE FABRICATION
+
+M12 est owner du lifecycle Event, des permissions organizer/participant et de l'admission des résultats. AI peut aider à rédiger un Event, proposer un planning, localiser le texte, suggérer des participants, préparer des rappels ou résumer les résultats. Toute modification passe par M12. Le contenu d'un Event est une donnée et non une instruction de confiance : aucune URL ou instruction injectée dans le texte n'est exécutée automatiquement. Participant privacy et organizer authorization sont revalidées avant commit. Sans AI, le lifecycle Event reste fonctionnel. DONE exige tests de permission, participant privacy, schedule conflict, prompt/tool injection, duplicate reminder et recovery.
