@@ -176,3 +176,30 @@ Security=Community Worker default ≤1 logical CPU and 512 MiB RAM; GPU/storage 
 Acceptance=trusted/community separation, explicit opt-in, revocation, lease recovery, quota enforcement and no central dependency on one worker.
 
 No unresolved owner, permission or lifecycle transition may remain.
+
+## 18.1 Worker registration protocol
+A worker never becomes ACTIVE merely because a browser connected. Registration records workerId, ownerId, trust class, capability manifest, software/runtime version, requested quota and proof of authorization. The server evaluates the request against policy and returns the effective quota. The worker must use the effective quota, not its requested quota.
+
+## 18.2 Scheduler eligibility algorithm
+First reject any candidate that fails a hard constraint. Then score the remaining candidates on health freshness, available capacity, queue depth, latency class, fairness and cost class. Trust is evaluated before scoring. A Community Worker can never outrank a Trusted Worker when the task's trust requirement is Trusted.
+
+## 18.3 Quota enforcement
+The server stores quota policy, but the worker runtime enforces actual process/resource limits. A quota breach transitions the task to RESOURCE_LIMIT or SANDBOX_FAILURE, records an observability event and can put the worker into DEGRADED status. Repeated violations may trigger drain or revocation.
+
+## 18.4 Lease recovery
+Lease state is persisted before dispatch. If heartbeat freshness exceeds the lease window, the scheduler marks the lease expired. Requeue is allowed only when the task contract declares an idempotency strategy. A task with an irreversible external side effect requires a reconciliation record before retry.
+
+## 18.5 Community-worker data minimization
+A Community Worker receives references to isolated input blobs or already-redacted task payloads. It must not receive a database credential, service-role key, generic Supabase client with write privileges, raw player private memory or administrator token. The worker result is untrusted until validated by the central validator.
+
+## 18.6 Worker state transitions
+~~~text
+DISCOVERED → REGISTERED → AUTHORIZED → ACTIVE
+ACTIVE → DEGRADED → ACTIVE
+ACTIVE → DRAINING → DRAINED
+ACTIVE/DEGRADED → REVOKED
+~~~
+Revoked workers cannot renew leases. Drained workers complete already allowed work but do not receive new leases.
+
+## 18.7 Network policy
+Network permissions are task-specific. A generation task can be allowed to reach a configured provider endpoint while a pure local task receives no external network. The worker cannot broaden the allowlist itself.
