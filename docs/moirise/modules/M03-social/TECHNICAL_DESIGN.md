@@ -83,3 +83,42 @@ Visibility matrix; blocked user; private message access; duplicate send; reconne
 
 ## 15. DONE
 Social and private messaging behave as one coherent product surface and remain useful without AI availability.
+
+## 16. Data constraints
+Post owner is immutable.
+Comment owner is immutable.
+Reaction uniqueness = actor + target + reaction type.
+Conversation membership uniqueness = conversation + player.
+Message clientMessageId is unique within conversation.
+Attachment belongs to a message and owner policy.
+
+## 17. Query contracts
+getFeed(cursor, limit)
+getPost(postId)
+getComments(postId,cursor,limit)
+getConversations(cursor)
+getMessages(conversationId,cursor)
+getUnreadCount()
+getPresence(conversationId)
+All queries apply privacy before projection.
+
+## 18. Message retry
+Client stores clientMessageId.
+Server either commits once or returns prior commit proof.
+Retry after reconnect never creates duplicate message.
+Late delivery acknowledgement cannot mutate message text.
+
+## 19. Abuse
+Rate limit posts/comments/messages.
+Spam signals can be sent to M15/M13 policy.
+Block immediately prevents new private message delivery.
+Mute suppresses presentation without deleting source content.
+
+## 20. Sharing
+ShareToken is opaque, scoped, expiring where needed, and never grants mutation.
+Private post share requires explicit source visibility policy.
+
+## 21. Acceptance scenarios
+Blocked user cannot send a new private message.
+Private attachment URL cannot be reused outside owner/member authorization.
+Provider translation outage leaves original message readable.
