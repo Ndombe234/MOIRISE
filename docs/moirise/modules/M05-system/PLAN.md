@@ -1,145 +1,79 @@
 # M05 — SYSTEM / PROGRESSION / EVOLUTION — PLAN D'IMPLÉMENTATION DÉTAILLÉ REPRIS À ZÉRO
 
 ## 0. Granularité
-La documentation doit descendre de « France » à « Paris → rue → bâtiment → appartement → porte ». Pour chaque capacité, un agent doit savoir exactement qui agit, quand, avec quelles données, dans quel ordre, ce qui est écrit, affiché, émis et comment chaque panne est récupérée.
+Le SYSTEM est le langage d'interaction de MOIRISE. Une description du type « le système donne de l'XP » est insuffisante. Il faut préciser : quelle action produit le signal, qui valide le signal, quelle règle est chargée, quelle transaction écrit l'XP, quel événement prouve le commit, ce que le Player voit et comment un retry est traité.
 
 ## 1. Owner
-SYSTEM HUD, progression déterministe, missions, titres, achievements, Trace, Fun & Surprise et évolution bornée
-**Owner unique : M05.**
+M05 possède la progression visible et les mutations de progression : XP, niveaux, ranks, missions, achievements, présentation des titres et orchestration visuelle SYSTEM. M14 possède le ledger de récompenses/collection; M15 propose de l'intelligence mais ne possède aucune de ces mutations.
 
-## 2. Capacités
-### M05.1 HUD
-**Acteur :** player
-**Déclencheur :** open SYSTEM/context refresh
-**Préconditions :** minimal context available
-**Entrées :** actor server-side, targetRef éventuel, payload validé, commandId, expectedVersion si nécessaire.
-**Ordre exact :**
-1. vérifier identité et permissions ;
-2. charger le contexte minimal ;
-3. vérifier l'état de la cible ;
-4. appliquer assemble current status → objectives → contextual candidates → suppression by activity → render ;
-5. commit de la mutation SystemContext ;
-6. construire la projection depuis la donnée autoritative ;
-7. émettre l'événement après commit.
-**Erreur/récupération :** AI down leaves core progression visible
-**Sécurité :** no spam
-**Double clic/concurrence :** même commandId = même résultat; payload différent sous le même commandId = conflict; expectedVersion protège les mises à jour concurrentes.
-**Réseau :** réponse perdue après commit = lecture du résultat par commandId.
-**Tests :** nominal, permission refusée, target disparu, retry, concurrence, mobile, desktop, état DEGRADED.
+## 2. SYSTEM HUD
+**Acteur :** Player.
+**Déclencheur :** ouverture /system ou possibilité contextuelle autorisée.
+**Préconditions :** session valide ou état visiteur explicitement prévu.
+**Séquence :** charger progression confirmée → charger objectifs actifs → charger cards contextuelles autorisées → appliquer suppression si Player est en train d'écrire/lire/jouer/créer → composer HUD → afficher.
+**Mutation :** aucune lors d'un simple affichage.
+**Projection :** statut, progression, objectif, découverte ou prochaine action; pas de mur de messages SYSTEM.
+**Échec :** M15 indisponible → statut de base reste disponible; source progression indisponible → ERROR/RETRY.
 
-### M05.2 XP
-**Acteur :** system
-**Déclencheur :** validated result event
-**Préconditions :** source signature/rule version valid
-**Entrées :** actor server-side, targetRef éventuel, payload validé, commandId, expectedVersion si nécessaire.
-**Ordre exact :**
-1. vérifier identité et permissions ;
-2. charger le contexte minimal ;
-3. vérifier l'état de la cible ;
-4. appliquer eligibility → compute XP → idempotent ledger → update projection ;
-5. commit de la mutation XPTransaction ;
-6. construire la projection depuis la donnée autoritative ;
-7. émettre l'événement après commit.
-**Erreur/récupération :** invalid source = zero grant; retry same result
-**Sécurité :** client cannot self-award
-**Double clic/concurrence :** même commandId = même résultat; payload différent sous le même commandId = conflict; expectedVersion protège les mises à jour concurrentes.
-**Réseau :** réponse perdue après commit = lecture du résultat par commandId.
-**Tests :** nominal, permission refusée, target disparu, retry, concurrence, mobile, desktop, état DEGRADED.
+## 3. XP
+**Déclencheur :** événement de résultat validé provenant de M06, M12 ou une autre source autorisée.
+**Préconditions :** source event signé, owner connu, ruleVersion connue, événement non déjà consommé.
+**Séquence exacte :** vérifier event → charger règle → calculer entitlement → créer XPTransaction avec sourceEventId+ruleVersion → commit atomique → recalculer projection → publier XP_GRANTED.
+**Interdit :** le navigateur ou M15 ne peut pas appeler « grant XP » avec une valeur arbitraire.
+**Retry :** même sourceEventId + règle = même transaction.
 
-### M05.3 Level/rank
-**Acteur :** system
-**Déclencheur :** XP commit
-**Préconditions :** rule version active
-**Entrées :** actor server-side, targetRef éventuel, payload validé, commandId, expectedVersion si nécessaire.
-**Ordre exact :**
-1. vérifier identité et permissions ;
-2. charger le contexte minimal ;
-3. vérifier l'état de la cible ;
-4. appliquer calculate threshold → update level/rank → emit milestone ;
-5. commit de la mutation ProgressionProjection ;
-6. construire la projection depuis la donnée autoritative ;
-7. émettre l'événement après commit.
-**Erreur/récupération :** rule migration explicit; no silent rewrite
-**Sécurité :** rules versioned
-**Double clic/concurrence :** même commandId = même résultat; payload différent sous le même commandId = conflict; expectedVersion protège les mises à jour concurrentes.
-**Réseau :** réponse perdue après commit = lecture du résultat par commandId.
-**Tests :** nominal, permission refusée, target disparu, retry, concurrence, mobile, desktop, état DEGRADED.
+## 4. Level et Rank
+Une fois XP commitée :
+1. lire les seuils de la règle versionnée ;
+2. calculer le niveau résultant ;
+3. comparer au niveau précédent ;
+4. écrire uniquement si différent ;
+5. publier LEVEL_CHANGED/RANK_CHANGED ;
+6. déclencher la présentation d'un milestone.
+Une migration de règle ne modifie pas silencieusement l'histoire; elle produit une nouvelle version ou un correctif explicite.
 
-### M05.4 Title/achievement
-**Acteur :** system
-**Déclencheur :** validated evidence
-**Préconditions :** eligibility rule + evidence
-**Entrées :** actor server-side, targetRef éventuel, payload validé, commandId, expectedVersion si nécessaire.
-**Ordre exact :**
-1. vérifier identité et permissions ;
-2. charger le contexte minimal ;
-3. vérifier l'état de la cible ;
-4. appliquer evaluate → unlock once → handoff ownership if needed ;
-5. commit de la mutation UnlockRef ;
-6. construire la projection depuis la donnée autoritative ;
-7. émettre l'événement après commit.
-**Erreur/récupération :** missing evidence remains locked
-**Sécurité :** AI cannot direct grant
-**Double clic/concurrence :** même commandId = même résultat; payload différent sous le même commandId = conflict; expectedVersion protège les mises à jour concurrentes.
-**Réseau :** réponse perdue après commit = lecture du résultat par commandId.
-**Tests :** nominal, permission refusée, target disparu, retry, concurrence, mobile, desktop, état DEGRADED.
+## 5. Titles / Achievements
+**Données nécessaires :** definitionId, ruleVersion, evidenceRefs, unlock condition.
+**Séquence :** recevoir evidence → vérifier que la preuve appartient au Player → calculer éligibilité → créer unlock idempotent → transmettre ownership à M14 si nécessaire.
+Une sortie IA qui « pense que le joueur mérite » n'est pas une preuve d'éligibilité.
 
-### M05.5 Mission
-**Acteur :** player/system
-**Déclencheur :** accept mission
-**Préconditions :** candidate validated, prerequisites pass
-**Entrées :** actor server-side, targetRef éventuel, payload validé, commandId, expectedVersion si nécessaire.
-**Ordre exact :**
-1. vérifier identité et permissions ;
-2. charger le contexte minimal ;
-3. vérifier l'état de la cible ;
-4. appliquer create instance → update progress from authoritative events → completion guard → reward handoff ;
-5. commit de la mutation Mission/MissionProgress ;
-6. construire la projection depuis la donnée autoritative ;
-7. émettre l'événement après commit.
-**Erreur/récupération :** retry/reconnect idempotent
-**Sécurité :** expiry only real
-**Double clic/concurrence :** même commandId = même résultat; payload différent sous le même commandId = conflict; expectedVersion protège les mises à jour concurrentes.
-**Réseau :** réponse perdue après commit = lecture du résultat par commandId.
-**Tests :** nominal, permission refusée, target disparu, retry, concurrence, mobile, desktop, état DEGRADED.
+## 6. Missions
+Mission = définition + instance Player + progression.
+**Création :** candidate validée → prerequisites → instance ACTIVE.
+**Progression :** seuls les événements définis dans le contrat peuvent avancer une mission.
+**Completion :** vérifier chaque condition à partir d'états autoritatifs → marquer COMPLETED → déclencher handoff reward.
+**Échec :** FAILED seulement lorsqu'une règle d'échec réelle existe. Pas d'échec inventé.
+**Reconnexion :** progression recalculable/idempotente à partir des events acceptés.
 
-### M05.6 Fun & Surprise
-**Acteur :** system
-**Déclencheur :** real signal + cooldown
-**Préconditions :** player not busy with typing/reading/playing/creating
-**Entrées :** actor server-side, targetRef éventuel, payload validé, commandId, expectedVersion si nécessaire.
-**Ordre exact :**
-1. vérifier identité et permissions ;
-2. charger le contexte minimal ;
-3. vérifier l'état de la cible ;
-4. appliquer eligibility → surprise candidate → presentation → response/cooldown ;
-5. commit de la mutation SurpriseCandidate ;
-6. construire la projection depuis la donnée autoritative ;
-7. émettre l'événement après commit.
-**Erreur/récupération :** no eligible signal = no surprise
-**Sécurité :** no fake scarcity/urgency
-**Double clic/concurrence :** même commandId = même résultat; payload différent sous le même commandId = conflict; expectedVersion protège les mises à jour concurrentes.
-**Réseau :** réponse perdue après commit = lecture du résultat par commandId.
-**Tests :** nominal, permission refusée, target disparu, retry, concurrence, mobile, desktop, état DEGRADED.
+## 7. Trace
+Trace n'est pas un journal de données privées. Elle conserve les jalons utiles au Player : création, découverte, progression, accomplissement, erreurs utiles et transformations Living Object approuvées.
+Chaque entrée possède sourceRef, type, timestamp, privacyClass et deletion behavior.
 
+## 8. Fun & Surprise
+**Éligibilité :** signal réel + contexte approprié + cooldown + budget de fréquence.
+**Suppression absolue :** typing, reading, gameplay actif, creation flow sauf intervention réellement critique.
+**Séquence :** candidate → policy → presentation → reaction → cooldown.
+Aucune surprise ne doit créer une fausse rareté, une fausse urgence ou un futur inexistant.
 
-## 3. États
-Chaque transition est trigger → guard auth → guard métier → mutation → event → projection. Guard échouée = aucune écriture.
+## 9. Hidden Possibilities / Unexplored Paths
+Ce sont des possibilités générées à partir d'états existants, jamais des récompenses cachées attribuées automatiquement.
+Une possibilité doit avoir sourceRef, reasonKey, expiration/cooldown et action possible.
+Dismissal = suppression temporaire; absence d'un signal réel = aucune possibilité.
 
-## 4. Données
-Chaque entité a id, owner relation, status, version, timestamps, privacy class et retention. Une projection n'est jamais source d'autorité.
+## 10. États
+SYSTEM IDLE → CONTEXTUALIZING → READY.
+Mission AVAILABLE → ACTIVE → COMPLETED ou FAILED.
+Title LOCKED → UNLOCKED → EQUIPPED/UNSELECTED.
+Toute mutation est idempotente.
 
-## 5. Cross-module
-M04 présente et oriente; les owners de destination exécutent. M05 possède progression; M06 possède session de jeu.
+## 11. Données
+SystemContext, SystemCommand, XPTransaction, ProgressionProjection, LevelRule, RankRule, TitleDefinition, UnlockedTitle, Achievement, Mission, MissionProgress, TraceEntry, SurpriseCandidate, DNAProjection.
 
-## 6. IA
-Toute AI passe par M15. L'IA peut proposer une action/contextualisation mais ne contourne jamais l'autorité du owner.
+## 12. Sécurité
+Server authority. Le client ne peut créer XPTransaction, MissionCompletion, UnlockTitle ou RankChange. M15 n'a pas accès direct aux tables M05.
 
-## 7. UX
-LOADING/READY/EMPTY/ERROR/UNAVAILABLE/DEGRADED explicites. Aucun écran blanc.
+## 13. Cross-module
+M06 fournit les résultats de jeu validés. M12 fournit les résultats d'événements. M14 applique collection/reward grants. M15 fournit contexte/propositions. M05 reste la décision finale sur progression.
 
-## 8. Sécurité/performance
-Server authorization, rate limits, privacy filtering, lazy loading, pagination et async jobs. Aucune donnée privée injectée dans une recommandation sans contrat.
-
-## 9. DONE
-Behavior proven, persistence, events, recovery, tests, mobile/desktop, observability and anti-duplication.
+## 14. Tests et DONE
+Tester XP doublée, résultat falsifié, replay event, level boundary, title déjà débloqué, mission avec progression hors ordre, surprise supprimée pendant typing, provider AI down, mobile, desktop, réseau perdu après commit.
