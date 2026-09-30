@@ -1,193 +1,153 @@
-# M01 — FOUNDATION — PLAN DÉTAILLÉ CANONIQUE
+# M01 — FOUNDATION — PLAN D'IMPLÉMENTATION REPRIS À ZÉRO
+
+## 0. Règle de granularité
+La documentation doit descendre comme « France → Paris → rue → bâtiment → appartement → porte ». Dire seulement « le module gère les groupes » est insuffisant. Chaque capability ci-dessous fixe acteur, déclencheur, préconditions, entrées, ordre d'exécution, mutation, projection, événements, erreurs, récupération, sécurité et tests.
 
 ## 1. Mission et ownership
-Créer le socle invisible qui permet aux 14 autres modules d'exister sans se connaître directement : runtime, shell, identité de session, routing, sécurité primitive, contrats, événements, configuration, feature flags, observabilité et abstraction des capacités.
-Ce module possède les comportements listés ci-dessous. Une dépendance ne devient pas propriété locale simplement parce que le module l'affiche.
+runtime, shell, routing, session, configuration, capabilities and events
+**Owner unique : M01.** Les autres modules consomment le résultat mais ne recopient pas la règle métier.
 
-## 2. Fonctionnalités couvertes
-### 1. Application Shell
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M01.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+## 2. Capacités opérationnelles
+### M01.1 Boot
+**Acteur :** open app
+**Déclencheur :** validate config → mount shell → restore session → resolve route
+**Préconditions :** no secrets client
+**Ordre exact :**
+1. Authentifier/dériver l'acteur côté serveur.
+2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
+3. Valider schéma, taille, format, état et policy.
+4. boot state.
+5. Effectuer la mutation autoritative : **optional dependency fails: DEGRADED, critical failure: RECOVERABLE_ERROR**.
+6. Construire la projection depuis la donnée commitée.
+7. Émettre l'événement seulement après le commit.
+**Échec :** undefined
+**Sécurité :** undefined
+**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
+**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
+**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
+**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
+**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
-### 2. Routing Boundary
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M01.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+### M01.2 Routing
+**Acteur :** open internal link or deep link
+**Déclencheur :** normalize → route definition → auth → feature flag → owner boundary
+**Préconditions :** URL never grants authority
+**Ordre exact :**
+1. Authentifier/dériver l'acteur côté serveur.
+2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
+3. Valider schéma, taille, format, état et policy.
+4. navigation projection.
+5. Effectuer la mutation autoritative : **unknown route: recoverable 404; unauthorized: auth/forbidden**.
+6. Construire la projection depuis la donnée commitée.
+7. Émettre l'événement seulement après le commit.
+**Échec :** undefined
+**Sécurité :** undefined
+**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
+**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
+**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
+**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
+**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
-### 3. Auth/Session Boundary
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M01.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+### M01.3 Session
+**Acteur :** auth callback / refresh
+**Déclencheur :** derive actorId server-side → create SessionContext → expire/renew
+**Préconditions :** client actorId ignored
+**Ordre exact :**
+1. Authentifier/dériver l'acteur côté serveur.
+2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
+3. Valider schéma, taille, format, état et policy.
+4. session context.
+5. Effectuer la mutation autoritative : **expired session: reauth, never partial write**.
+6. Construire la projection depuis la donnée commitée.
+7. Émettre l'événement seulement après le commit.
+**Échec :** undefined
+**Sécurité :** undefined
+**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
+**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
+**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
+**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
+**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
-### 4. Design System
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M01.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+### M01.4 Capability registry
+**Acteur :** register/resolve capability
+**Déclencheur :** schema+owner+version validation → unique id/version → health state
+**Préconditions :** consumer cannot pick arbitrary provider
+**Ordre exact :**
+1. Authentifier/dériver l'acteur côté serveur.
+2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
+3. Valider schéma, taille, format, état et policy.
+4. CapabilityDefinition.
+5. Effectuer la mutation autoritative : **invalid schema or duplicate: reject**.
+6. Construire la projection depuis la donnée commitée.
+7. Émettre l'événement seulement après le commit.
+**Échec :** undefined
+**Sécurité :** undefined
+**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
+**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
+**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
+**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
+**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
-### 5. Responsive System
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M01.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+### M01.5 AI gateway
+**Acteur :** module requests AI capability
+**Déclencheur :** validate → minimize context → policy/autonomy → M15 → validate result
+**Préconditions :** keys/endpoints server-side
+**Ordre exact :**
+1. Authentifier/dériver l'acteur côté serveur.
+2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
+3. Valider schéma, taille, format, état et policy.
+4. AI execution ref.
+5. Effectuer la mutation autoritative : **provider down: fallback/degraded; invalid result: INCONCLUSIVE**.
+6. Construire la projection depuis la donnée commitée.
+7. Émettre l'événement seulement après le commit.
+**Échec :** undefined
+**Sécurité :** undefined
+**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
+**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
+**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
+**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
+**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
-### 6. Loading/Error/Empty/Unavailable/Degraded states
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M01.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+### M01.6 Events
+**Acteur :** owner commits mutation
+**Déclencheur :** validate envelope → commit → publish → dedupe consumers
+**Préconditions :** private payload minimized
+**Ordre exact :**
+1. Authentifier/dériver l'acteur côté serveur.
+2. Charger le minimum de contexte nécessaire et vérifier la visibilité.
+3. Valider schéma, taille, format, état et policy.
+4. immutable event.
+5. Effectuer la mutation autoritative : **duplicate delivery: dedupe; unknown schema: quarantine**.
+6. Construire la projection depuis la donnée commitée.
+7. Émettre l'événement seulement après le commit.
+**Échec :** undefined
+**Sécurité :** undefined
+**Idempotence :** une nouvelle requête identique avec le même commandId retourne le résultat déjà commité; un même commandId avec payload différent est rejeté.
+**Concurrence :** utiliser contrainte unique ou expectedVersion; aucun état partiel n'est accepté.
+**Réseau :** si la réponse est perdue après commit, le client récupère l'état via commandId au lieu de créer une seconde mutation.
+**Suppression :** si la cible disparaît entre lecture et écriture, la transaction est annulée et l'UI affiche NOT_FOUND/UNAVAILABLE.
+**Tests :** nominal, chaque précondition invalide, double clic, deux clients concurrents, session expirée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
-### 7. Event Bus
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M01.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+## 3. Données owned
+Chaque entité possède id stable, owner/actor relation, status, version, createdAt, updatedAt, privacyClass, retentionPolicy, auditRef si nécessaire et contraintes d'unicité. Une projection ne devient jamais la source d'autorité.
 
-### 8. Capability Registry
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M01.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+## 4. États
+Les capacités suivent une machine d'états explicite : REQUESTED/AVAILABLE → VALIDATING → ACTIVE/SUCCESS ou REJECTED/FAILED, avec des transitions propres à la capacité. Toute transition = trigger + guards + mutation + event + projection. Une guard échouée n'écrit rien.
 
-### 9. Provider Registry boundary
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M01.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
+## 5. Contrats inter-modules
+Échanges uniquement par use-case, event ou projection versionnée. Aucun module ne modifie directement les tables privées d'un autre owner. Les noms historiques restent des alias/mécanismes, jamais des owners supplémentaires.
 
-### 10. AI Gateway
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M01.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 11. Configuration
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M01.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 12. Feature Flags
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M01.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 13. Storage abstraction
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M01.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 14. Health/Observability
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M01.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 15. Request/Trace correlation
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M01.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 16. Rate-limit primitives
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M01.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 17. Schema validation
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M01.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-### 18. Tenant isolation primitives
-Définition : cette capacité est une responsabilité explicitement testable du module.
-Entrée : une intention utilisateur ou un événement autorisé.
-Sortie : une projection, une mutation ou un résultat validé.
-Propriétaire : M01.
-Règle : aucune action ne peut contourner l'autorisation canonique du propriétaire.
-
-## 3. Parcours nominaux
-1. Boot : process start → config validate → session restore → route resolution → READY/DEGRADED.
-2. Navigation : route request → auth policy → module boundary → loading → data/action.
-3. AI call : module → AI Gateway → capability ID → policy → M15.
-4. Event : owner module → event envelope → subscribers without direct table writes.
-5. Failure : boundary catches error → normalized AppError → recoverable surface.
-
-## 4. Modèle de domaine
-AppConfig; RouteDefinition; SessionContext; FeatureFlag; SystemEvent; CapabilityDefinition; ProviderDefinition; RequestTrace; AppError; TenantContext.
-Pour chaque entité : ownerId/actor relation, lifecycle, timestamps, version, privacy class, retention, deletion policy, indexes, uniqueness et audit lorsque nécessaire.
-
-## 5. États
-COLD → BOOTING → CONFIGURED → SESSION_RESTORING → READY; READY → DEGRADED; fatal shell error → RECOVERABLE_ERROR.
-Chaque transition doit posséder une guard testable. Une mutation invalide ne produit pas d'état partiel.
-
-## 6. Interface utilisateur
-Le module fournit :
-- état initial compréhensible ;
-- loading ;
-- success ;
-- empty lorsqu'il n'y a réellement aucun résultat ;
-- error ;
-- unavailable ;
-- degraded si une dépendance optionnelle est indisponible.
-Les écrans mobiles utilisent des actions tactiles sans duplication de l'application.
+## 6. UX / SYSTEM
+États obligatoires : LOADING, READY/SUCCESS, EMPTY si réellement vide, ERROR, UNAVAILABLE, DEGRADED. Les fonctionnalités internes ne créent pas de nouveaux boutons principaux automatiquement. SYSTEM peut révéler une capability contextuellement.
 
 ## 7. IA
-Foundation exposes the gateway but never requires AI for boot. All later AI calls are typed and policy-mediated.
-L'intégration se fait par Capability ID et M15. Aucun composant ne dépend directement d'un provider.
+Les capacités AI utilisent M15 via Capability ID. La sortie du modèle est une proposition/evidence tant que le module owner ne l'a pas validée. M15 ne peut pas modifier directement identité, membership, progression ou économie.
 
 ## 8. Sécurité
-server-derived actorId; secrets server-only; schema validation; auth boundary; CSP and safe headers; no provider endpoint from browser; no service-role bundle.
+Autorité serveur; validation; auth/RLS/policies; rate limits; secrets server-only; provenance; sandbox pour code/artifacts; minimisation des données privées; logs sans contenu privé brut.
 
-## 9. Données et confidentialité
-AppConfig; RouteDefinition; SessionContext; FeatureFlag; SystemEvent; CapabilityDefinition; ProviderDefinition; RequestTrace; AppError; TenantContext.
-Les données privées ne sont pas ajoutées aux analytics généraux ou aux memories globales par défaut.
+## 9. Résilience et performance
+Retries bornés; fallback déterministe lorsque possible; jobs lourds asynchrones; pagination/cursors; lazy loading des médias/3D; cache jetable et invalidable; aucune dépendance AI optionnelle ne doit provoquer un écran blanc.
 
-## 10. Dépendances et contrats
-Le module communique par use cases, événements et projections. Il ne modifie pas directement les tables d'un autre module.
-
-## 11. Cas limites
-Double-clic, retry réseau, session expirée, conflit concurrent, record supprimé, cache stale, provider indisponible, worker perdu, policy changée pendant l'opération, payload malveillant, résultat tardif, changement de version.
-
-## 12. Observabilité
-Chaque mutation critique associe requestId/traceId et une preuve de résultat. Les contenus privés sont minimisés.
-
-## 13. Performance
-Les listes sont bornées/paginées ; les opérations lourdes sont asynchrones ; les médias et engines lourds sont lazy-loaded ; l'IA optionnelle ne bloque pas le shell.
-
-## 14. Acceptance
-Application starts, routes do not white-screen, auth works, event bus and capability registry are tested, security boundaries are server-side, mobile/desktop shell works.
-
-## 15. Definition of DONE
-Fonctionnalités implémentées + autorisation serveur + persistence + événements + états de récupération + tests + navigateur desktop/mobile + sécurité + observabilité + documentation de handoff.
-
-## 16. Interactions cross-module
-Les effets sortants sont des événements ou des contrats explicites. Si une fonction traverse plusieurs modules, le module source conserve son ownership et les consommateurs ne recopient pas sa règle.
-
-## 17. No-new-button rule
-Une fonctionnalité interne de FOUNDATION n'ajoute pas une nouvelle porte principale sans décision d'architecture. Le SYSTEM expose la capacité au bon moment.
+## 10. DONE
+Code/migrations + owner serveur + permissions + persistence + events + recovery + tests + desktop/mobile + observability + audit anti-doublon.
