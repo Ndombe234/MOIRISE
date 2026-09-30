@@ -1,145 +1,71 @@
 # M04 — WORLD — PLAN D'IMPLÉMENTATION DÉTAILLÉ REPRIS À ZÉRO
 
 ## 0. Granularité
-La documentation doit descendre de « France » à « Paris → rue → bâtiment → appartement → porte ». Pour chaque capacité, un agent doit savoir exactement qui agit, quand, avec quelles données, dans quel ordre, ce qui est écrit, affiché, émis et comment chaque panne est récupérée.
+Décrire une fonction comme « elle existe en France » n'est pas suffisant : la documentation doit pouvoir descendre jusqu'à Paris, la rue, le bâtiment, l'appartement et la porte. Dans MOIRISE cela signifie acteur → déclencheur → préconditions → entrées → étapes → mutation → projection → événement → erreur → reprise → sécurité → tests.
 
 ## 1. Owner
-surface d'accueil simple, contextualisation, détours et handoffs vers les profondeurs du produit
-**Owner unique : M04.**
+M04 possède la surface WORLD, sa contextualisation et ses handoffs. M04 ne devient pas propriétaire des données métier de PLAY, SOCIAL, COMMUNITIES ou EVENTS.
 
-## 2. Capacités
-### M04.1 Home
-**Acteur :** player/visiteur
-**Déclencheur :** open Home
-**Préconditions :** shell READY
-**Entrées :** actor server-side, targetRef éventuel, payload validé, commandId, expectedVersion si nécessaire.
-**Ordre exact :**
-1. vérifier identité et permissions ;
-2. charger le contexte minimal ;
-3. vérifier l'état de la cible ;
-4. appliquer load minimal context → select 5–6 doors → compose only eligible cards ;
-5. commit de la mutation WorldSurfaceState ;
-6. construire la projection depuis la donnée autoritative ;
-7. émettre l'événement après commit.
-**Erreur/récupération :** optional source down = DEGRADED; never invent people/activity
-**Sécurité :** no fake counters or urgency
-**Double clic/concurrence :** même commandId = même résultat; payload différent sous le même commandId = conflict; expectedVersion protège les mises à jour concurrentes.
-**Réseau :** réponse perdue après commit = lecture du résultat par commandId.
-**Tests :** nominal, permission refusée, target disparu, retry, concurrence, mobile, desktop, état DEGRADED.
+## 2. Home World
+**Acteur :** visiteur ou Player.  
+**Déclencheur :** ouverture de Home ou retour d'un autre écran.
+**Préconditions :** shell READY; contexte minimal disponible.
+**Entrées :** session context, locale, viewport, états réels récents autorisés.
+**Séquence :** charger contexte minimal → vérifier privacy → sélectionner les 5–6 portes principales → sélectionner seulement les cartes éligibles → rendre LOADING puis READY.
+**Mutation :** uniquement impression/dismissal lorsque cela est nécessaire; aucune mutation métier d'une autre feature.
+**Projection :** SYSTEM, PLAYER, SOCIAL, WORLD, PLAY, CREATE, plus des cartes contextuelles.
+**Échec :** une dépendance optionnelle absente donne DEGRADED; aucune donnée fictive n'est créée.
+**Sécurité :** aucun faux compteur, faux utilisateur, fausse récompense ou contenu inventé.
+**Tests :** premier passage, session absente, session expirée, aucune carte, source optionnelle indisponible, mobile, desktop.
 
-### M04.2 Context card
-**Acteur :** player
-**Déclencheur :** real contextual signal
-**Préconditions :** source event exists, cooldown passed
-**Entrées :** actor server-side, targetRef éventuel, payload validé, commandId, expectedVersion si nécessaire.
-**Ordre exact :**
-1. vérifier identité et permissions ;
-2. charger le contexte minimal ;
-3. vérifier l'état de la cible ;
-4. appliquer check relevance → reason key → action → expiry → show ;
-5. commit de la mutation ContextCard ;
-6. construire la projection depuis la donnée autoritative ;
-7. émettre l'événement après commit.
-**Erreur/récupération :** dismiss suppresses repeated card
-**Sécurité :** reason must be explainable
-**Double clic/concurrence :** même commandId = même résultat; payload différent sous le même commandId = conflict; expectedVersion protège les mises à jour concurrentes.
-**Réseau :** réponse perdue après commit = lecture du résultat par commandId.
-**Tests :** nominal, permission refusée, target disparu, retry, concurrence, mobile, desktop, état DEGRADED.
+## 3. Context Cards
+**Acteur :** Player.
+**Déclencheur :** un événement réel rend une action potentiellement pertinente.
+**Préconditions :** source réelle; cooldown absent; player non occupé par une tâche qui doit rester prioritaire.
+**Séquence :** récupérer source → vérifier visibilité → calculer pertinence → générer reasonKey → définir expiration/cooldown → afficher → enregistrer dismissal ou action.
+**Mutation :** ContextCard + état d'exposition.
+**Projection :** une action compréhensible avec raison courte.
+**Échec :** source supprimée → carte retirée; player dismiss → suppression temporaire.
+**Sécurité :** reasonKey ne doit pas révéler une donnée privée.
 
-### M04.3 Detour
-**Acteur :** player
-**Déclencheur :** eligible novelty signal
-**Préconditions :** not typing/reading/playing/creating unless critical
-**Entrées :** actor server-side, targetRef éventuel, payload validé, commandId, expectedVersion si nécessaire.
-**Ordre exact :**
-1. vérifier identité et permissions ;
-2. charger le contexte minimal ;
-3. vérifier l'état de la cible ;
-4. appliquer suppress intrusive context → evaluate relevance/cooldown → offer optional detour ;
-5. commit de la mutation Detour ;
-6. construire la projection depuis la donnée autoritative ;
-7. émettre l'événement après commit.
-**Erreur/récupération :** ignored/dismissed = cooldown; source gone = remove
-**Sécurité :** no manipulative urgency
-**Double clic/concurrence :** même commandId = même résultat; payload différent sous le même commandId = conflict; expectedVersion protège les mises à jour concurrentes.
-**Réseau :** réponse perdue après commit = lecture du résultat par commandId.
-**Tests :** nominal, permission refusée, target disparu, retry, concurrence, mobile, desktop, état DEGRADED.
+## 4. Detours
+Un Detour est une possibilité facultative, pas une obligation.
+**Suppression obligatoire pendant :** saisie de texte, lecture, partie, création, paiement ou autre tâche où une intervention interrompt l'intention; seuls les cas réellement critiques peuvent contourner cette règle.
+**Étapes :** détecter contexte → vérifier signal réel → cooldown → choisir une action → présenter → retour à l'activité.
+**Interdit :** faux compte à rebours, fausse rareté, « reviens demain » sans futur Event réel.
 
-### M04.4 Door handoff
-**Acteur :** player
-**Déclencheur :** tap SYSTEM/PLAYER/SOCIAL/PLAY/CREATE
-**Préconditions :** destination route enabled
-**Entrées :** actor server-side, targetRef éventuel, payload validé, commandId, expectedVersion si nécessaire.
-**Ordre exact :**
-1. vérifier identité et permissions ;
-2. charger le contexte minimal ;
-3. vérifier l'état de la cible ;
-4. appliquer create IntentEnvelope → destination revalidates auth and executes ;
-5. commit de la mutation IntentEnvelope ;
-6. construire la projection depuis la donnée autoritative ;
-7. émettre l'événement après commit.
-**Erreur/récupération :** destination unavailable = return to World with useful action
-**Sécurité :** World doesn't mutate destination data
-**Double clic/concurrence :** même commandId = même résultat; payload différent sous le même commandId = conflict; expectedVersion protège les mises à jour concurrentes.
-**Réseau :** réponse perdue après commit = lecture du résultat par commandId.
-**Tests :** nominal, permission refusée, target disparu, retry, concurrence, mobile, desktop, état DEGRADED.
+## 5. Handoffs
+Lorsqu'un Player touche PLAY, CREATE, SOCIAL, PLAYER ou SYSTEM :
+1. M04 crée un IntentEnvelope ;
+2. il contient originModule, actorRef, intentType, targetRef éventuel, sourceEventRef et UI context minimal ;
+3. la destination revalide l'autorisation ;
+4. la destination possède la mutation.
+M04 ne peut pas écrire directement les tables privées de la destination.
 
-### M04.5 Solo orientation
-**Acteur :** new player
-**Déclencheur :** first useful visit
-**Préconditions :** no mandatory social dependency
-**Entrées :** actor server-side, targetRef éventuel, payload validé, commandId, expectedVersion si nécessaire.
-**Ordre exact :**
-1. vérifier identité et permissions ;
-2. charger le contexte minimal ;
-3. vérifier l'état de la cible ;
-4. appliquer select one understandable solo action → mark orientation progress → expose optional social path ;
-5. commit de la mutation OrientationState ;
-6. construire la projection depuis la donnée autoritative ;
-7. émettre l'événement après commit.
-**Erreur/récupération :** resume must be idempotent
-**Sécurité :** no fake rewards
-**Double clic/concurrence :** même commandId = même résultat; payload différent sous le même commandId = conflict; expectedVersion protège les mises à jour concurrentes.
-**Réseau :** réponse perdue après commit = lecture du résultat par commandId.
-**Tests :** nominal, permission refusée, target disparu, retry, concurrence, mobile, desktop, état DEGRADED.
+## 6. Solo-first orientation
+Première visite :
+1. afficher une explication minimale ;
+2. donner une action réalisable seul ;
+3. présenter ensuite des possibilités sociales sans les rendre obligatoires ;
+4. enregistrer l'étape d'orientation ;
+5. reprendre au même point en cas de retour.
+Aucune progression artificielle n'est accordée pour simplement regarder une carte.
 
-### M04.6 Share discovery
-**Acteur :** player
-**Déclencheur :** tap share
-**Préconditions :** source is shareable
-**Entrées :** actor server-side, targetRef éventuel, payload validé, commandId, expectedVersion si nécessaire.
-**Ordre exact :**
-1. vérifier identité et permissions ;
-2. charger le contexte minimal ;
-3. vérifier l'état de la cible ;
-4. appliquer privacy projection → scoped expiring token → public projection ;
-5. commit de la mutation ShareToken ;
-6. construire la projection depuis la donnée autoritative ;
-7. émettre l'événement après commit.
-**Erreur/récupération :** later privacy revocation blocks token
-**Sécurité :** private source never leaks
-**Double clic/concurrence :** même commandId = même résultat; payload différent sous le même commandId = conflict; expectedVersion protège les mises à jour concurrentes.
-**Réseau :** réponse perdue après commit = lecture du résultat par commandId.
-**Tests :** nominal, permission refusée, target disparu, retry, concurrence, mobile, desktop, état DEGRADED.
+## 7. Shareable Discovery
+Le partage suit : source → privacy projection → share token scoped → expiration → projection publique.
+Si la source devient privée, le token est révoqué. Une carte publique ne doit jamais contenir une donnée qui n'était visible qu'en privé.
 
+## 8. États
+BOOTING → READY.  
+READY → CONTEXTUALIZING → READY.  
+READY → DEGRADED si dépendance optionnelle indisponible.
+Une erreur de rendu ne doit pas supprimer la navigation de secours.
 
-## 3. États
-Chaque transition est trigger → guard auth → guard métier → mutation → event → projection. Guard échouée = aucune écriture.
+## 9. Données
+WorldContext, DoorDefinition, ContextCard, Detour, WorldSurfaceState, IntentEnvelope, ShareToken.
 
-## 4. Données
-Chaque entité a id, owner relation, status, version, timestamps, privacy class et retention. Une projection n'est jamais source d'autorité.
+## 10. IA
+M15 peut proposer la présentation contextuelle. M04 contrôle l'expérience et applique les suppressions. M15 ne peut pas inventer de futur, d'utilisateur ou de récompense.
 
-## 5. Cross-module
-M04 présente et oriente; les owners de destination exécutent. M05 possède progression; M06 possède session de jeu.
-
-## 6. IA
-Toute AI passe par M15. L'IA peut proposer une action/contextualisation mais ne contourne jamais l'autorité du owner.
-
-## 7. UX
-LOADING/READY/EMPTY/ERROR/UNAVAILABLE/DEGRADED explicites. Aucun écran blanc.
-
-## 8. Sécurité/performance
-Server authorization, rate limits, privacy filtering, lazy loading, pagination et async jobs. Aucune donnée privée injectée dans une recommandation sans contrat.
-
-## 9. DONE
-Behavior proven, persistence, events, recovery, tests, mobile/desktop, observability and anti-duplication.
+## 11. Tests et DONE
+Vérifier deep links, refresh, mobile/desktop, suppression pendant typing/reading/playing/creating, absence de faux contenu, handoff refusé, token révoqué, dépendance optionnelle indisponible.
