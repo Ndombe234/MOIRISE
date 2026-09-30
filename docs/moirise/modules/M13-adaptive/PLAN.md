@@ -1,14 +1,38 @@
-# M13 — ADAPTIVE WORLD
+# M13 — ADAPTIVE WORLD — PLAN D'IMPLÉMENTATION DÉTAILLÉ REPRIS À ZÉRO
 
-Owner: controlled changes to World state.
+## 0. Granularité
+M13 transforme les signaux autorisés en exploration contextualisée. Un signal n'est jamais directement une décision : signal → contexte → filtre privacy → candidate → policy → projection → feedback.
 
-Loop: OBSERVE → DETECT → PROPOSE → SIMULATE → VALIDATE → CANARY → APPLY → OBSERVE.
+## 1. Adaptive surface
+Acteur Player/system. Déclencheur ouverture World/Play ou action autorisée.
+Préconditions : context scope connu; privacy pass.
+Séquence : récupérer signaux autorisés → filtrer blocked/private/unsafe → diversité → nouveauté → choisir candidate → produire reasonKey → rendre projection.
+Manque de signal = défaut neutre, pas d'inférence.
 
-Routes, object states, event availability, challenge variants, music layers, encounters and generated experiences can change only through versioned candidates with rollback. M15 supplies analysis; M13 owns state changes.
+## 2. Living Object discovery
+Un objet possède owner, lineage, version et permissions. M13 peut le faire découvrir; transformation/fork est exécuté par le owner approprié.
+La découverte conserve attribution. Si l'objet devient privé ou révoqué, la projection disparaît immédiatement.
 
-## Detailed ranking contract
-The engine must expose reason metadata for recommendations without exposing hidden sensitive features. Ranking weights are versioned. A new version can be benchmarked before rollout.
+## 3. Convergence
+**Source :** trajectoires validées et non sensibles.
+**Étapes :** batch borné → détecter motifs compatibles → confidence → diversity/anti-manipulation → privacy filter → candidate → proposition.
+Un seul actor ne peut pas fabriquer artificiellement une convergence en répétant une action. Une convergence faible est rejetée.
 
-## Exploration/novelty controls
-Exploration must not become random noise. A candidate needs minimal relevance or quality before novelty can surface it.
-Diversity can apply across creator, genre, format, community and topic where appropriate.
+## 4. Convergence Space
+Si acceptée : créer un espace scoped → consentement/permissions → expérience ou prototype → collecter outcome → fermer/convertir.
+Solo-first : le Player peut voir une convergence pertinente sans obligation de rejoindre un groupe.
+
+## 5. World Memory retrieval
+Une question/task peut demander des connaissances collectives. M13 récupère uniquement des MemoryCandidates déjà validées : claim, sources, attribution, confidence, scope, retention, correction path.
+Le système ne transforme pas automatiquement tous les messages privés en mémoire.
+
+## 6. Adaptive feedback
+Accept/dismiss/play/share fournit un signal borné. Rate limit et privacy filter avant stockage. Les feedbacks deviennent evidence, jamais ordre.
+
+## 7. États
+Adaptive candidate CREATED→FILTERED→PRESENTED→ACTED/DISMISSED.
+Convergence DETECTED→PROPOSED→ACCEPTED→RUNNING→RESOLVED/REJECTED.
+Living Object DISCOVERED→VIEWED→BRANCHED/TRANSFORMED via owner contract.
+
+## 8. Tests / DONE
+Sensitive inference attempt, blocked actor, low-confidence convergence, repeated manipulation, revoked object, private memory leak, solo path, mobile/desktop, AI unavailable.
