@@ -188,3 +188,16 @@ Verified scope:
 
 Invariant:
 game generation does not recreate MOIRISE per game. It reuses the permanent game platform and only creates the game-specific specification, artifacts and build.
+
+## 12. Game fabrication memory verification — 2026-09-30
+
+Le savoir-faire de fabrication des jeux est rattaché au MemoryService central. Aucun GameMemoryService parallèle n'a été créé.
+
+Vérifications :
+- Game Fabrication Knowledge = dataClass GAME_* dans la mémoire centrale.
+- M08 produit les evidence bundles et possède artifacts/GameSpecification.
+- M15 orchestre retrieval, learning, benchmark, policy, canary et promotion.
+- Les corrections/échecs sont versionnés et ne deviennent pas automatiquement des recettes.
+- Codex est un execution target optionnel ; il ne possède ni mémoire, ni vérité, ni publication authority.
+- Les connaissances validées restent disponibles lorsque Codex est désactivé.
+- Une projection GameKnowledge est reconstruisible et n'est pas une deuxième source de vérité.
