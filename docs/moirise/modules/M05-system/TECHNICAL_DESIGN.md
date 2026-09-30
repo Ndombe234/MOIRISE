@@ -79,3 +79,35 @@ XP idempotency; title identity; achievement proof; mission eligibility; surprise
 
 ## 15. DONE
 SYSTEM feels alive while remaining truthful, bounded, recoverable and deterministic where progression is critical.
+
+## 17. Progression contracts
+grantXP(sourceEvent, amount, ruleVersion, idempotencyKey)
+unlockAchievement(sourceEvidence)
+unlockTitle(sourceEvidence)
+startMission(missionId)
+recordMissionProgress(missionId, progress)
+completeMission(missionId, evidence)
+
+M05 rejects client-supplied XP totals.
+
+## 18. Title identity
+titleId = hash(grammarVersion + normalizedUnlockParameters).
+This allows an extremely large title design space without pre-seeding every possible title.
+Unlocked title materializes only after authoritative evidence.
+
+## 19. Mission integrity
+Mission progress must be derived from validated source events or explicit Player actions.
+Repeated event replay does not increment twice.
+
+## 20. SYSTEM command rendering
+Command visibility = permission + context + capability health + user preference + suppression policy.
+The visual SYSTEM can be original holographic/HUD style, but no copyrighted UI assets are copied.
+
+## 21. Evolution integration
+M15 returns a Proposal with sourceRefs and explanation.
+M05 applies cooldown/quiet/focus rules and routes accepted actions to the owner module.
+
+## 22. Acceptance scenarios
+Player wins a game twice through network retry → one XP grant.
+Player unlocks a title → deterministic identity.
+Player is focused in a game → non-critical SYSTEM surprise delayed.
