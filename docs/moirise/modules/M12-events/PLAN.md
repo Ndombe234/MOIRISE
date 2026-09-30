@@ -1,17 +1,35 @@
-# M12 — EVENTS
+# M12 — EVENTS — PLAN D'IMPLÉMENTATION DÉTAILLÉ REPRIS À ZÉRO
 
-Owner: real temporal states, activities, challenges, competitions and Emergence Events.
+## 0. Granularité
+M12 est la seule autorité des états futurs réels : événement, inscription, calendrier, tournoi et continuation. « Reviens demain » n'est permis que si une vraie continuation est enregistrée.
 
-Lifecycle: DRAFT → VALIDATED → SCHEDULED → ACTIVE → COMPLETED/ARCHIVED or CANCELLED.
+## 1. Owner
+M12 possède Event, EventVersion, registration, brackets/matches et ContinuationRef. Notification delivery est transversal; M12 fournit la vérité de l'état.
 
-Features: solo/collective activities, registration, eligibility, timezone-aware scheduling, progress, completion, cancellation, community events, Living Object→Event transformation and Convergence-driven Emergence Events.
+## 2. Create event
+Owner autorisé → validate title, description, timezone, start/end, rules, visibility → créer EventVersion → état DRAFT/SCHEDULED → schedule transition.
+Un événement ne devient futur qu'après commit d'un état SCHEDULED valide.
 
-M15 can propose and personalize; M12 is authoritative for the existence and timing of future states. No fake countdown, event or participation count.
+## 3. Registration
+Player → open event → vérification state OPEN, eligibility, block/privacy, capacity → unique EventRegistration → event REGISTERED.
+Retry avec même commandId = même registration. Event complet/fermé = état explicite, jamais faux succès.
 
-## Detailed temporal rules
-All timestamps are canonical server timestamps. Presentation converts to Player timezone.
-Event cancellation invalidates future registrations but retains historical completion records.
-A future continuation cannot be created by an AI proposal alone; M12 persists it.
+## 4. Start/end scheduler
+Trusted server time → charger EventVersion → vérifier state attendu + fenêtre temporelle → transition SCHEDULED→LIVE ou LIVE→ENDED → event.
+Une relance du scheduler doit être idempotente grâce à la guard state+version.
 
-## Activity integrity
-Progress is append-like or checkpointed; duplicate progress signals are idempotent. Completion requires all required checkpoints or a deterministic completion validator.
+## 5. Tournament
+Freeze entrants avant bracket. Générer bracket avec rulesVersion déterministe. Chaque match reçoit participants, round, seed, state et result source.
+Aucun résultat final ne vient d'un bouton client; il vient d'une source validée M06/M10 selon contrat.
+
+## 6. Continuation
+Créer ContinuationRef seulement lorsque le prochain état réel existe : targetEvent, nextStartAt, sourceRef, eligibility et dedupeKey. Sans état futur confirmé, ne rien afficher.
+
+## 7. Notification hook
+M12 signale « event started/ending/reminder eligible ». Le service de notification déduplique par event+recipient+type et respecte quiet hours/preferences. Une notification ne crée pas l'événement.
+
+## 8. États
+Event DRAFT→SCHEDULED→LIVE→ENDED/CANCELLED. Registration OPEN/CLOSED. Tournament DRAFT→LOCKED→RUNNING→COMPLETED.
+
+## 9. Tests / DONE
+Timezone, daylight change, scheduler retry, event cancellation, full capacity, duplicate registration, tournament invalid result, continuation absent, quiet hours, mobile/desktop.
