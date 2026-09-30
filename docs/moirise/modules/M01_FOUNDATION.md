@@ -189,12 +189,13 @@ Avant toute modification : lire ce fichier, les contrats Core, puis les fichiers
 M01 is the application shell. It owns boot, routing, shared providers, localization, theme, global notifications, loading/error boundaries and shared UI primitives. It does not own player, social, game, provider or AI business logic.
 
 ## 2. Stack contract
-React + TypeScript + Vite + Tailwind. Keep backend access behind typed services. Do not import provider SDKs into UI modules. No secret is exposed through `VITE_*` variables.
+Next.js 16 App Router + React 19 + TypeScript 7 + Supabase SSR/JS. Keep backend access behind typed services and server actions/route handlers. Do not import provider SDKs into UI modules. Do not create a second application root. No secret is exposed through browser/public environment variables.
 
 ## 3. Directory contract
-`src/app/AppShell.tsx` — shell composition.
-`src/app/router.tsx` — route table.
-`src/app/providers/*` — session/locale/theme/SYSTEM providers.
+`app/layout.tsx` — root shell composition.
+`app/*/page.tsx` — App Router route surfaces.
+`app/*/loading.tsx`, `app/*/error.tsx` — route recovery.
+`src/core/*` — non-route shared runtime contracts and services.
 `src/app/states/*` — loading/error/empty state primitives.
 `src/components/system/*` — reusable SYSTEM UI.
 `src/lib/config.ts` — validated public configuration.
