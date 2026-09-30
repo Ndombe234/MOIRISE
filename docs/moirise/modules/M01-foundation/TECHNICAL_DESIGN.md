@@ -84,3 +84,26 @@ Pagination/cursor, bounded payloads, async heavy work, lazy assets, cache invali
 
 ## 12. DONE
 Build + tests + security + recovery + observability + mobile/desktop + no duplicate authority.
+
+## 13. AI MODULE CONTRACT — M01
+
+### 13.1 Types
+AIRequest = { requestId, traceId, actorId(server), sourceModule, capabilityId, capabilityVersion, targetRef?, payload, privacyClass, requestedAutonomy, resourceBudget }.
+AIResult = { requestId, capabilityId, status, outputRef?, evidenceRefs[], validatorStatus, errorCode?, providerRef?, executionRef? }.
+
+### 13.2 Route interne
+M01 expose une frontière logique unique vers MORISE AI. Un endpoint UI ne doit jamais appeler un provider. La route d'entrée valide actor/session/capability/payload puis délègue.
+
+### 13.3 Invariants
+- actorId client ignoré;
+- capability inconnue rejetée;
+- version incompatible rejetée;
+- privacy non autorisée rejetée;
+- résultat INCONCLUSIVE non présenté comme VALID;
+- aucune mutation métier externe effectuée par le gateway.
+
+### 13.4 Idempotence
+La clé de déduplication est commandId ou idempotencyKey selon use-case. Même requête = même résultat récupérable; payload différent avec même clé = conflict.
+
+### 13.5 Tests de contrat IA
+boot sans AI, route protégée, provider down, invalid output, duplicate request, session expired, privacy escalation, forged actorId, no-secret client bundle, concurrent calls, degraded response.
