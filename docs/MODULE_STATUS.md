@@ -1,61 +1,53 @@
 # MOIRISE — MODULE STATUS
 
-Last updated: 2026-09-28
-Canonical plan: `docs/MORISE_MASTER_PLAN_V3.md`
+Last updated: 2026-09-30
 
 ## Current position
 
-**MODULE 6 — PLAY — FINAL QA**
+**NEW V4 REBUILD — MODULE 1 FOUNDATION**
 
-## Status
+## Official module status
 
 | Module | Status |
 |---|---|
-| 1 Foundation | BASE EXISTANTE |
-| 2 PLAYER | BASE EXISTANTE |
-| 3 SOCIAL + PRIVATE MESSAGING | BASE EXISTANTE / messaging incomplete |
-| 4 WORLD | BASE EXISTANTE |
-| 5 SYSTEM / PROGRESSION | BASE EXISTANTE |
-| 6 PLAY | **FINAL QA — CURRENT** |
-| 7 Game Discovery Engine | PLANNED |
-| 8 Game A→Z Factory | PLANNED |
-| 9 Shared Game Engine | PLANNED |
-| 10 Social Gaming | PLANNED |
-| 11 Communities | PLANNED |
-| 12 Events | PLANNED |
-| 13 Adaptive World | PLANNED |
-| 14 Collection / Reward Economy | PLANNED |
-| 15 Meta SYSTEM | PLANNED |
+| 1 Foundation | DESIGN COMPLETE — REBUILD FROM ZERO |
+| 2 PLAYER | DESIGN COMPLETE — NOT IMPLEMENTED |
+| 3 SOCIAL | DESIGN COMPLETE — NOT IMPLEMENTED |
+| 4 WORLD | DESIGN COMPLETE — NOT IMPLEMENTED |
+| 5 SYSTEM / PROGRESSION | DESIGN COMPLETE — NOT IMPLEMENTED |
+| 6 PLAY | DESIGN COMPLETE — NOT IMPLEMENTED |
+| 7 Game Discovery Engine | DESIGN COMPLETE — NOT IMPLEMENTED |
+| 8 Game A→Z Factory | DESIGN COMPLETE — NOT IMPLEMENTED |
+| 9 Shared Game Engine | DESIGN COMPLETE — NOT IMPLEMENTED |
+| 10 Social Gaming | DESIGN COMPLETE — NOT IMPLEMENTED |
+| 11 Communities | DESIGN COMPLETE — NOT IMPLEMENTED |
+| 12 Events | DESIGN COMPLETE — NOT IMPLEMENTED |
+| 13 Adaptive World | DESIGN COMPLETE — NOT IMPLEMENTED |
+| 14 Collection / Reward Economy | DESIGN COMPLETE — NOT IMPLEMENTED |
+| 15 Meta System + AI Lab | DESIGN COMPLETE — NOT IMPLEMENTED |
 
-## Critical facts
+## Critical rebuild rule
 
-- The existing game interface is not a completed programmed game.
-- Every future game is built A→Z using market research, concept, design, prototype, SOLO/COLLECTIVE when justified, content, infrastructure, security, testing, balancing, production and iteration.
-- Every relevant feature supports SOLO and COLLECTIVE use cases when appropriate.
-- Private one-to-one messaging is a required SOCIAL capability.
-- MORISE is general-purpose, not niche-locked.
-- The SYSTEM is a multi-mechanic AI architecture with a future conversational experience, controlled learning and browser/on-device-first translation.
+The previous MOIRISE implementation that had reached Modules 1–6 is considered deleted for purposes of this V4 rebuild.
 
-## Module 6 final QA
+The old implementation must not be treated as completed functionality or copied forward as an assumption.
 
-- [ ] Production render on intended commit
-- [ ] SYSTEM visible
-- [ ] PLAYER visible
-- [ ] WORLD visible
-- [ ] SOCIAL visible
-- [ ] PLAY visible
-- [ ] WORLD: Discover / Play / Create / Communities / Activities / Events
-- [ ] SOCIAL: World / Following
-- [ ] Authenticated PLAY flow
-- [ ] Unauthenticated protection
-- [ ] Play session lifecycle
-- [ ] Valid completion
-- [ ] Invalid/tampered result rejected
-- [ ] Duplicate completion protection
-- [ ] Progression integration
-- [ ] Mobile layout
-- [ ] Loading/error/empty states
-- [ ] No blank-screen navigation failures
-- [ ] Production smoke test
+## Current architecture documents
 
-**Module 7 starts only after every Module 6 gate is closed.**
+- docs/moirise/00_MASTER_PLAN.md
+- docs/MORISE_MASTER_REDESIGN_V4.md
+- docs/superpowers/plans/2026-09-30-moirise-modules-1-15-redesign.md
+
+## Next implementation gate
+
+Module 1 implementation begins only from the new Foundation specification, then proceeds sequentially through Module 15.
+
+Completion requires:
+- automated tests;
+- typecheck/lint/build;
+- real browser validation;
+- mobile/responsive validation;
+- loading/error/empty/unavailable states;
+- regression validation.
+
+No module is considered complete from build success alone.
