@@ -25,6 +25,14 @@ workspace:
   shared_worktree_writes: forbidden
   generated_output_collision: forbidden
 
+ai_orchestration:
+  comprehension_bridge: .codex/AI_FABRICATION_BRIDGE.md
+  required_for_ai_tasks: true
+  canonical_ai_authority:
+    - docs/moirise/ai/AI_MASTER_PLAN.md
+    - docs/moirise/ai/AI_TECHNICAL_DESIGN.md
+  third_ai_authority_forbidden: true
+
 canonical_documents:
   coverage_registry: .codex/CANONICAL_DOCUMENT_COVERAGE.yaml
   module_task_requires_plan_and_technical_design: true
