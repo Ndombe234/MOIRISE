@@ -217,3 +217,46 @@ Profile has shareable safe entry points: profile card, selected Reel/Photo/Story
 Store only validated memories with scope/provenance/retention/consent. Promotion to broader scope requires owner/policy.
 ## DONE D10
 Cold-start profile, profile editing, avatar generation, media highlight, privacy changes, account deletion propagation, AI outage and cross-player isolation are validated.
+
+# D100K — M02 Player — FORMAL BEHAVIOR / PROOF LAYER
+
+## 1. Machine-complete behavior contract
+Owner: M02. Scope: identity/profile/preferences/privacy. Dependencies: M01.
+Primary invariant: identity is authoritative here.
+
+For every capability of M02, the canonical state transition is:
+ACTOR → TRIGGER → PRECONDITIONS → INPUTS → AUTHORITY → GUARDS → STATE TRANSITION → POSTCONDITIONS → EVENTS → PROJECTIONS → FAILURE → RECOVERY → EVIDENCE.
+
+No capability is complete if an implementation decision remains inferable from prose alone.
+
+## 2. Forbidden states
+A transition must have zero mutation when:
+- authorization fails;
+- input/schema validation fails;
+- required version is incompatible;
+- target is outside owner scope;
+- idempotency conflict occurs;
+- a required authoritative dependency is unavailable.
+
+## 3. AI boundary
+AI/M15 may propose, classify, summarize or generate candidates only within the capability contract. M02 remains the owner of its authoritative state. AI output without validated evidence is non-authoritative.
+
+## 4. Proof obligations
+Each user-visible capability must prove:
+SUCCESS + EMPTY/NO-DATA + ERROR + UNAVAILABLE/DEGRADED where applicable + REFRESH/REOPEN + MOBILE + DESKTOP + PERMISSION DENIAL + RETRY/REPLAY behavior.
+
+## 5. Change-impact obligation
+A change to a M02 contract requires traversal:
+M02 → direct consumers → events → projections → routes/UI → AI capabilities → tests → security/resilience scenarios.
+Unknown impact is UNRESOLVED, never assumed safe.
+
+## 6. Formal acceptance properties
+- owner authority cannot be bypassed;
+- duplicate commands do not duplicate authoritative mutation;
+- stale versions do not silently overwrite newer state;
+- projections can be rebuilt from authoritative state;
+- privacy/visibility constraints survive every handoff;
+- VERIFIED cannot be emitted without applicable evidence.
+
+## 7. Completion
+D100K means the feature definition is machine-checkable. It does not mean the code is already fabricated.
