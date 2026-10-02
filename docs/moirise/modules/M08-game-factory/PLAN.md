@@ -111,3 +111,15 @@ Every publishable game should define one social hook: challenge, score card, rem
 Store successful architecture, component compatibility, failures and repair patterns only after validation.
 ## DONE
 Reproducible build, sandboxing, tests, resource budget, security and publication handoff validated.
+
+# D100 — SPÉCIFICATION COMPORTEMENTALE
+## Request compilation
+User intent becomes GameRequirements with modality, loop, controls, duration, win/loss, target devices, performance target, social hook, asset policy and safety.
+## Reuse before generation
+M15/M08 retrieve compatible validated patterns. Compatibility checks include runtime version, mode 2D/3D, device profile, resource budget and policy.
+## Build pipeline
+Generate → build → static checks → dependency checks → security scan → tests → simulation → runtime validation → preview. A partial build is never publishable.
+## Repair
+Every repair references failureFingerprint, hypothesis, candidate revision, affected tests and max attempts. Repeated failure escalates instead of oscillating.
+## Memory
+Only validated fabrication experience becomes reusable knowledge. Artifact lineage remains separate from knowledge.
