@@ -83,3 +83,24 @@ PROPOSED → VALIDATED → UNLOCKED → REVOKED? with immutable audit record. On
 Deduplicate equivalent cards by semantic key + context window; do not generate repeated alerts merely to create engagement.
 ## Tests
 duplicate event, out-of-order event, reward owner boundary, title share privacy, SYSTEM overload, AI unavailable, mobile overlay and accessibility.
+
+# D100 — TECHNICAL CONTRACT DETAIL
+## ProgressionRecord
+```
+ProgressionRecord { playerRef, level, xp, rank, version, ruleVersion, updatedAt }
+```
+## Mutation sequence
+load version → derive eligible deltas from authoritative event → validate caps/rules → transaction update → write domain event → projection.
+## Idempotency
+sourceEventId + ruleVersion form the dedupe boundary where appropriate. A second processing of the same event must return prior result.
+## Title generation
+Title templates are versioned deterministic grammar definitions; only earned titles are materialized in Player state. Unused theoretical titles are not fake inventory.
+## SystemCard
+```
+SystemCard { id,type,priority,contextKey,copyKey,actionRef?,expiresAt,
+ dedupeKey,dismissPolicy,sourceEventRef }
+```
+## AI contract
+AIProposal is stored separately from ProgressionRecord. Promotion requires M05 validation; provider/model cannot call reward writes.
+## Tests
+duplicate event, out-of-order event, XP cap, negative delta, title replay, mission race, card flood, privacy share, AI outage.
