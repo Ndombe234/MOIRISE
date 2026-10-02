@@ -67,3 +67,7 @@ Re-read authoritative Event before dispatch. If version/status/time changed, rec
 AI content proposal separates factual fields from creative copy. Factual fields require owner verification when externally sourced.
 ## Tests
 timezone/DST edge, event edit race, cancel race, duplicate registration, stale reminder, unauthorized registration, recap with deleted media.
+
+# D110 — EVENT BRIDGE CONTRACT
+Toute projection EVENT → SOCIAL/PLAY/COMMUNITY porte eventId, eventVersion et sourceRef. Le consumer revalide l'état Event avant toute action durable.
+Cancellation ou modification temporelle invalide ou recalcule les projections cross-loop dérivées.
