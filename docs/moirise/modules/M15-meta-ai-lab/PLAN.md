@@ -171,7 +171,6 @@ M15 est fonctionnel lorsque :
 - les frontières M01–M14 sont respectées ;
 - aucune logique AI concurrente n'est recréée dans M15.
 
-
 ## AI-INTÉGRATION M15 — CONTRAT DE COMPRÉHENSION POUR L'IA DE FABRICATION
 
 M15 est le seul cerveau MORISE AI et l'owner de l'AI Lab. Il connaît les modules via leurs contrats, manifests cognitifs, capabilities, scopes, dependencies, validators et authority boundaries. Cette connaissance permet à M15 de comprendre où intervenir et où s'arrêter. Elle ne transforme jamais M15 en owner des tables M01–M14. M15 possède Request Gate, Context Engine, Intent Compiler, Requirements Compiler, Reasoning, Planner, Policy, Capability/Tool Registry, Provider Router, Resource Planner, Validation, Memory, Experience, Evaluation et Evolution. AI Lab reste isolé de production secrets/admin/service-role. Evolution = limitation → gap → root cause → candidate → sandbox → tests → benchmark → security/policy → canary → promotion/rejection → monitor → rollback. DONE exige un seul cerveau et aucun router concurrent.
@@ -215,3 +214,50 @@ M15 doit distinguer :
 Codex peut enrichir l'expérience, mais sa présence ou absence ne doit pas supprimer le savoir accumulé.
 
 M15 ne transforme jamais une sortie de provider/agent en connaissance vraie sans evidence et validation.
+
+## CREATIVE MEDIA INTELLIGENCE — M15
+
+M15 is the sole AI orchestrator for user-authorized creative media analysis and generation. It does not own social publication.
+
+For user media:
+`permission → provenance → modality analysis → semantic profile → originality transformation → creative brief → capability routing → generation → validation → artifact candidate → owner commit`.
+
+### Semantic analysis
+For images, video and audio, M15 may derive broad non-expressive features such as subjects, scene structure, colors, lighting, motion, pacing, mood, genre hints and audio characteristics. It must keep protected expressive elements and source ownership classification separate from generic concepts.
+
+### Creative transformation
+M15 must never use “replace a word/character/pitch slightly” as a copyright-avoidance strategy. For third-party material it must produce a materially new brief or use an authorized remix/catalog path. For user-owned/authorized material it may perform transformations allowed by the permission class.
+
+### Originality state
+`VALID`, `INCONCLUSIVE`, `REJECTED`. INCONCLUSIVE cannot become public publication automatically.
+
+### Artifact provenance
+Every generated artifact carries sourceRefs, permission state, generation capability/version, transformation class, validation state and owner commit reference.
+
+### Media types
+The same orchestration handles IMAGE_GENERATION, VIDEO_GENERATION, MUSIC_GENERATION and AUDIO_GENERATION. A provider is selected only after privacy/capability/resource/health hard filters.
+
+## SOCIAL VIRALITY INTELLIGENCE — M15
+
+M15 may propose:
+- personalized discovery;
+- creative transformations;
+- Story sequences;
+- Reel concepts;
+- share opportunities;
+- challenge concepts;
+- community proposals;
+- creator insights;
+- content recaps.
+
+M15 may not fabricate popularity, social proof, users, engagement or scarcity.
+
+A share opportunity must have a source event, audience policy, cooldown and privacy class. M15 proposes; M03 publishes; M07 ranks; M11 owns community state.
+
+## COLD START / FIRST SESSION
+
+M15 should optimize the first session as a sequence of meaningful experiences instead of a wall of buttons: discover → interact → create → play → connect → optionally share. The sequence adapts to actual user actions and remains functional without AI using deterministic fallback paths.
+
+## VIRALITY SAFETY
+
+The goal is sustainable sharing, not compulsive manipulation. M15 must respect mute, not-interested, block, privacy and notification controls. No hidden sensitive inference may be exposed as a recommendation reason.
