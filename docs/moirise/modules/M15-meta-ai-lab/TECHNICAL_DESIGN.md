@@ -356,3 +356,15 @@ Candidate changes are isolated, compared to baseline, tested for regression/secu
 Dependency failure selects degraded/fallback route. Oscillation uses failure fingerprints and maxAttempts. No unbounded auto-repair.
 ## Tests
 single-brain invariant, cross-owner write denied, privacy-scope violation, provider invalid output, task graph cycle, memory promotion abuse, agent prompt injection, rollback.
+
+# D100K — M15 Meta System / MORISE AI Lab — FABRICATION / EVIDENCE
+
+Every task resolves to TASK_ID → FEATURE_ID → FILE/SYMBOL → dependency order → exact contract → authoritative state → validation → tests → browser scenarios → evidence → status.
+
+File contracts specify exact path, owner M15, symbols, allowed authorities, forbidden writes, persistence/event side effects and direct tests. Function contracts specify types, preconditions, state access, idempotency, concurrency, errors and observability.
+
+Adversarial proof must include replay, duplicate command, stale state, unauthorized access, malformed upstream/AI output, dependency failure and privacy leakage where applicable.
+
+Evidence is fresh only when tied to the exact commit and exact scenario/check. Unit tests cannot alone certify a user-facing or production-sensitive feature.
+
+Ownership firewall: M15 may consume other modules through contracts, events or projections, but may not assume their private authority.
