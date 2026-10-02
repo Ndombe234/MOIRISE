@@ -56,3 +56,15 @@ Changes are bounded by policy, rate and novelty budgets. A failed provider does 
 Adaptive surfaces can expose timely communities, games, stories or creative prompts that connect existing real states without manufacturing popularity.
 ## DONE
 Privacy boundaries, convergence evidence, mission proposal, rollback, stale signals and provider failure validated.
+
+# D100 — SPÉCIFICATION COMPORTEMENTALE
+## Signal intake
+Only real, policy-allowed signals enter M13. Normalize, dedupe and expire before correlation.
+## Convergence
+M13 may identify co-occurring interests or activities, but does not infer sensitive traits. Evidence and confidence are stored with every proposal.
+## Missions
+Emergent mission proposal references a real trigger and target owner. M05/M06/M11/M12 commit respective states.
+## World Memory
+Promotion from local/session/player scope to World scope requires explicit policy and provenance. Private DM data is excluded by default.
+## Anti-oscillation
+Adaptive proposals have cooldown, version and expiry. Repeated contradictory proposals are suppressed/escalated rather than alternating UI state rapidly.
