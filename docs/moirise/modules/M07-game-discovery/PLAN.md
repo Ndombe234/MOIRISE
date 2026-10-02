@@ -108,3 +108,14 @@ No-content/new-player path uses explicit interests and real available content. E
 Friend/group context is factual. It may increase relevance but never bypass privacy/block filters.
 ## Feedback
 Dismiss/save/play/share signals are deduplicated and rate-limited before they influence ranking. Single bursts cannot dominate.
+
+# D110 — CROSS-LOOP INTEGRATION GOVERNANCE
+M07 est l'owner du ranking/discovery et conserve cette autorité pour les surfaces de jeux et toute projection explicitement déléguée.
+
+M07 doit versionner les stratégies de ranking, les expériences/cohortes et les raisons de recommandation. Toute proposition issue de M15 ou M13 reste candidate jusqu'au contrat de validation de M07.
+
+Le cold-start doit fonctionner uniquement avec des candidats réellement disponibles. Aucun fake popularity, fake social proof ou faux catalogue n'est autorisé.
+
+M07 doit mesurer la value-after-click et les transformations post-exposition lorsque le domaine le permet : play, create, join, share, event ou progression.
+
+Référence : `docs/moirise/transversal/PRODUCT_LOOP_GOVERNANCE.md`.
