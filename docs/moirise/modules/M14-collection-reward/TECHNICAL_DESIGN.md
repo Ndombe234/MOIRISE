@@ -52,3 +52,17 @@ Analysis proposal → M14 rules → optional config change through governed admi
 Every grant/draw/config version is traceable. No silent probability changes.
 ## Tests
 double grant, replayed draw, quota edge, config version migration, forged reward claim, private collection share, provider outage.
+
+# D100 — TECHNICAL CONTRACT DETAIL
+## RewardGrant
+RewardGrant = grantId + playerId + rewardRef + sourceEventRef + reasonKey + ledgerVersion + commandId + createdAt.
+## RouletteDraw
+RouletteDraw = drawId + playerId + configVersion + dayKey + drawIndex + outcomeTier + outcomeRef + commandId + createdAt.
+## Integrity
+Uniqueness and transaction boundaries prevent double grants/draws. Server selects the outcome; client only requests a draw.
+## Baseline configuration
+Default 3 draws/day; Common 50%, Rare 30%, Epic 13%, Legendary 5%, Mythic 2%. Any configured version is stored with the draw.
+## AI boundary
+AI proposal → governed review/config commit. AI never calls ledger/grant/draw mutation directly.
+## Tests
+replay, double grant, quota reset, config migration, forged event, private share, concurrent draw, AI outage.
