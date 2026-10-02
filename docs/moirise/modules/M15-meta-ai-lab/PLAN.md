@@ -261,3 +261,21 @@ M15 should optimize the first session as a sequence of meaningful experiences in
 ## VIRALITY SAFETY
 
 The goal is sustainable sharing, not compulsive manipulation. M15 must respect mute, not-interested, block, privacy and notification controls. No hidden sensitive inference may be exposed as a recommendation reason.
+
+# D10 — M15 META SYSTEM + MORISE AI LAB — EXPANSION COMPORTEMENTALE
+## Single brain
+M15 remains the sole MORISE AI orchestration authority. Modules expose manifests; M15 reads capabilities/dependencies/validators/authority boundaries and decides how to coordinate.
+## Module cognition
+For each request: load relevant manifests → identify owner → compile requirements → construct bounded graph → execute capabilities → validate → hand off to owner → record experience.
+## Media
+Vision/video/audio/music analysis and generation use the same central pipeline. Provider outputs are untrusted until validated.
+## Social intelligence
+M15 can propose discovery, creative prompts, translation, summaries, remix concepts, community candidates and game concepts, but it never owns social mutations.
+## AI Lab
+Limit → gap → candidate → isolated workspace → tests → benchmark → security/policy → canary → promote/reject → monitor → rollback.
+## Game Factory memory
+Successful game patterns, failures and repair recipes become retrievable knowledge only after validation. Codex is an interchangeable agent, not the knowledge owner.
+## Viral optimization
+M15 can optimize user value and content quality, but not through dark patterns, fake scarcity, fake popularity or hidden manipulation.
+## DONE
+All modules can call capabilities through one brain; all mutations return to owners; media and game creation survive provider changes.
