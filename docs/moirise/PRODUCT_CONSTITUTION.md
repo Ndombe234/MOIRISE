@@ -126,3 +126,18 @@ Ils ne recopient pas les règles métier détaillées des owners.
 
 Une capacité n'est complète que lorsqu'elle est :
 spécifiée → implémentée → sécurisée → testée → intégrée → vérifiée desktop/mobile → résiliente → observable → prête pour production.
+
+
+# D100 — CONSTITUTION OPÉRATIONNELLE
+## Invariant precedence
+CONSTITUTION > ARCHITECTURE > OWNER PLAN > TECHNICAL DESIGN > IMPLEMENTATION. A lower layer cannot weaken a higher invariant. If a feature requires an exception, the higher owner must be explicitly updated before implementation.
+## Product object truth
+Every user-visible social/game/world/reward fact needs a source-of-truth reference. Projections may cache, summarize or reorder but cannot fabricate.
+## Human agency
+AI recommendations and generated content remain proposals or user-owned creations according to the relevant policy. The interface must not disguise AI-generated content as a human action.
+## Privacy precedence
+Private scope dominates ranking, memory, generation and sharing until an explicit permission changes the scope. Revocation propagates to dependent projections.
+## Originality
+Creative derivation must use provenance and transformation policy. Simple renaming, character substitution or metadata changes are not sufficient originality checks.
+## Evolution safety
+Any self-improvement candidate must be isolated, benchmarked and reversible. A failed experiment cannot silently mutate production behavior.
