@@ -172,3 +172,7 @@ M03 asks M01 to issue tokens; M03 never signs authority itself. Token audience a
 M03 owns social events; M07 consumes bounded engagement signals. M03 never directly changes ranking weights.
 ## Tests
 private-to-public denial, source deletion, story expiration cache, resumable upload, duplicate publish, replayed share, DM leakage, provider outage, moderation inconclusive.
+
+# D110 — CROSS-LOOP TECHNICAL CONTRACT
+M03 expose des faits/projections bornés : sourceRef, visibility, provenance, lifecycleState et allowedNextCapabilities. Les consumers ne reconstituent pas la privacy policy.
+Tout handoff cross-loop conserve policyVersion, privacyClass et idempotencyKey. M03 ne modifie jamais directement les ranking weights de M07.
