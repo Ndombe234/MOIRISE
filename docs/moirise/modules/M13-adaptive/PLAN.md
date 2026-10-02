@@ -56,3 +56,15 @@ Changes are bounded by policy, rate and novelty budgets. A failed provider does 
 Adaptive surfaces can expose timely communities, games, stories or creative prompts that connect existing real states without manufacturing popularity.
 ## DONE
 Privacy boundaries, convergence evidence, mission proposal, rollback, stale signals and provider failure validated.
+
+# D100K — M13 Adaptive World — FORMAL VERIFICATION
+
+Owner: M13. Scope: adaptation, ranking, convergence, memory retrieval. Dependencies: M01,M02,M03,M04,M07,M15. Invariant: adaptive output is a projection/proposal unless an owner commits it.
+
+Canonical transition: ACTOR → INTENT → PRECONDITIONS → CONTEXT/POLICY → INPUTS → AUTHORITY → GUARDS → STATE → OUTPUT → VALIDATION → COMMIT → EVENTS → PROJECTIONS → FAILURE → RECOVERY → EVIDENCE.
+
+Forbidden: hidden owner transfer, unauthorized mutation, silent privacy expansion, stale overwrite, duplicate authoritative mutation, or treating an unverified proposal as fact.
+
+Proof must cover nominal, empty/no-data, failure, degraded/unavailable, replay, concurrency where relevant, refresh/reopen, permissions, mobile and desktop, and the module-specific invariant.
+
+Impact path: M13 → consumers → contracts/events → projections → routes/UI → AI capabilities → tests → security/resilience. Unknown impact remains UNRESOLVED.
