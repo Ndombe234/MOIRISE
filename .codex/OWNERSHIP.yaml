@@ -20,9 +20,19 @@ target_namespaces:
   M01:
     owner: R1
     paths:
-      - app/**
+      - app/layout.tsx
+      - app/page.tsx
+      - app/loading.tsx
+      - app/error.tsx
+      - app/api/health/**
+      - app/api/session/**
+      - app/auth/**
       - lib/m01/**
-    note: "Exact files are assigned from M01 technical design; do not claim all app/** concurrently."
+      - lib/supabase/server.ts
+      - lib/supabase/client.ts
+      - proxy.ts
+      - tests/m01-contracts.test.ts
+    note: "This list is the current M01 fabrication surface observed in the canonical technical design. It is intentionally narrower than app/**."
 
   M02:
     owner: R2
