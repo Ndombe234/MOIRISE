@@ -34,11 +34,11 @@ La même précision doit être appliquée aux sous-étapes : par exemple, pour u
 ## 6. Règles de ownership
 - M01 : runtime/shell/auth/routing/capability boundary/events.
 - M02 : identité Player/profil/préférences/privacy.
-- M03 : social + privé.
+- M03 : social + privé + média social publié.
 - M04 : surface World/handoffs.
-- M05 : progression/SYSTEM visible.
+- M05 : progression/SYSTEM visible et orchestration de la présentation contextuelle.
 - M06 : sessions Play/résultats autoritatifs.
-- M07 : discovery/ranking/recommandations.
+- M07 : discovery/ranking/recommandations pour jeux et contenus découvrables.
 - M08 : factory A→Z.
 - M09 : runtime game/sandbox.
 - M10 : challenges sociaux.
@@ -46,7 +46,7 @@ La même précision doit être appliquée aux sous-étapes : par exemple, pour u
 - M12 : états futurs réels/events.
 - M13 : adaptive/convergence/memory retrieval.
 - M14 : collection/reward ledger/roulette.
-- M15 : AI brain/router/workers/memory AI/AI Lab.
+- M15 : AI brain/router/workers/memory AI/AI Lab/creative orchestration.
 
 ## 7. Mécanismes transversaux
 Living Objects, Evolution Engine, Fun & Surprise, MORISE DNA, Convergence, Missions From Reality, World Memory, Social/Community/Game Discovery Intelligence, Creative AI, Translation Intelligence, Safety/Moderation, Provider Router, Resource Scheduler et Distributed Workers restent des mécanismes avec un owner explicite. Aucun mécanisme ne crée un 16e module.
@@ -72,5 +72,23 @@ Pas de faux utilisateurs, faux compteurs, faux scores, fausse rareté ou fausse 
 ## 13. Documentation « reprise à zéro »
 Les anciens docs ne sont plus des sources concurrentes. Une règle historique conservée est classée via l'inventaire/matrice puis pointée vers son owner actuel. Si deux documents tentent de définir la même règle, l'owner canonique gagne et le doublon est supprimé ou remplacé par une référence.
 
-## 14. Gate universel
+## 14. Creative Media + Virality contract
+The canonical cross-module product plan is `docs/moirise/CREATIVE_MEDIA_VIRALITY_PLAN.md` and the canonical technical contract is `docs/moirise/CREATIVE_MEDIA_VIRALITY_TECHNICAL_DESIGN.md`.
+
+These contracts add no module and no global navigation button. They define the shared behavior for photo/video/audio/music, Stories, Reels, profile media, repost/remix, user-media analysis, originality/provenance, intelligent sharing, friend/interest projections and viral-loop instrumentation.
+
+Ownership remains distributed: M02 owns identity/profile/avatar; M03 owns social publishing/private media; M05 owns SYSTEM presentation/progression; M07 owns discovery/ranking; M10 owns social challenges; M11 owns communities/membership; M12 owns event state; M13 owns adaptive memory/convergence; M14 owns rewards; M15 owns AI orchestration and creative generation.
+
+## 15. Media originality rule
+Changing a few words, characters, pitch values or file properties is never treated as a copyright-avoidance mechanism. For third-party media, MORISE extracts permitted high-level semantics, creates a materially new creative brief, generates a new artifact, performs provenance/originality/safety validation and keeps attribution/permission state. User-owned or explicitly licensed media can be transformed according to its permissions.
+
+## 16. Social primitives without navigation explosion
+Photos, Reels, Stories, music, groups, private messages, profile media, reposts, remix, collections and challenges are capabilities inside the six main doors. The SYSTEM reveals only the next relevant action. A capability never creates a new global button by itself.
+
+## 17. Viral product principle
+MOIRISE optimizes for a truthful loop:
+DISCOVERY → PARTICIPATION → CREATION/PLAY → MEANINGFUL SHARE → NEW DISCOVERY.
+No fake users, fake counters, fake scarcity, fake urgency or artificial social proof.
+
+## 18. Universal Gate
 PLAN → TECHNICAL DESIGN → code/migrations → auth/security → tests → desktop/mobile browser → resilience → production evidence → DONE.
