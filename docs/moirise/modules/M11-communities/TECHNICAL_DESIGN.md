@@ -83,3 +83,7 @@ CommunityInvite { inviteId, communityId, inviterRef, targetRef, scope,
 AffinityProposal cannot write membership. M11 resolves policy and commits.
 ## Tests
 concurrent create, duplicate membership, unauthorized role escalation, private community leak, invite replay, blocked target, AI outage, owner deletion and leave/rejoin.
+
+# D110 — COMMUNITY LOOP CONTRACT
+Une transition vers communauté crée au maximum une proposal/projection ; seule la mutation M11 crée ou modifie membership.
+Les invitations restent scoped, expiring, deduplicated et soumises aux permissions. Les propositions AI restent candidates jusqu'au commit owner.
