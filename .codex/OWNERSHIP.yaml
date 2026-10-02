@@ -1,0 +1,140 @@
+version: 1
+
+# This is a coordination map, not a replacement for canonical module ownership.
+# Exact file selection still comes from the target module TECHNICAL_DESIGN.md.
+
+control_plane:
+  owner: R0
+  paths:
+    - AGENTS.md
+    - .codex/**
+  rule: "Serialize writes to the control plane."
+
+canonical_docs:
+  owner: canonical-module-owner
+  paths:
+    - docs/moirise/**
+  rule: "Read by default. Modify only under an explicit canonical documentation task governed by the existing fabrication protocol."
+
+target_namespaces:
+  M01:
+    owner: R1
+    paths:
+      - app/**
+      - lib/m01/**
+    note: "Exact files are assigned from M01 technical design; do not claim all app/** concurrently."
+
+  M02:
+    owner: R2
+    paths:
+      - app/player/**
+      - lib/player/**
+
+  M03:
+    owner: R2
+    paths:
+      - app/social/**
+      - app/messages/**
+      - lib/social/**
+      - lib/messaging/**
+
+  M04:
+    owner: R2
+    paths:
+      - app/world/**
+      - lib/world/**
+
+  M05:
+    owner: R3
+    paths:
+      - app/system/**
+      - lib/system/**
+
+  M06:
+    owner: R3
+    paths:
+      - app/play/**
+      - lib/play/**
+
+  M07:
+    owner: R4
+    paths:
+      - lib/discovery/**
+      - app/discovery/**
+
+  M08:
+    owner: R4
+    paths:
+      - lib/game-factory/**
+      - app/create/games/**
+
+  M09:
+    owner: R4
+    paths:
+      - lib/game-engine/**
+      - components/game-runtime/**
+
+  M10:
+    owner: R5
+    paths:
+      - lib/social-gaming/**
+      - app/social-gaming/**
+
+  M11:
+    owner: R5
+    paths:
+      - lib/communities/**
+      - app/communities/**
+
+  M12:
+    owner: R5
+    paths:
+      - lib/events/**
+      - app/events/**
+
+  M13:
+    owner: R5
+    paths:
+      - lib/adaptive/**
+      - app/adaptive/**
+
+  M14:
+    owner: R5
+    paths:
+      - lib/economy/**
+      - app/collection/**
+
+  M15:
+    owner: R6
+    paths:
+      - lib/ai/**
+      - app/ai/**
+      - workers/ai/**
+
+verification:
+  owner: R7
+  paths:
+    - tests/browser/**
+    - tests/e2e/**
+    - tests/qa/**
+
+security_resilience:
+  owner: R8
+  paths:
+    - tests/security/**
+    - tests/resilience/**
+
+shared_surfaces:
+  ownership:
+    - package.json
+    - package-lock.json
+    - npm-shrinkwrap.json
+    - pnpm-lock.yaml
+    - yarn.lock
+    - tsconfig.json
+    - next.config.*
+    - vite.config.*
+    - vitest.config.*
+    - Dockerfile
+    - .github/**
+  rule: "Never edit concurrently. Coordinator assigns one owner, then runs dependency impact."
