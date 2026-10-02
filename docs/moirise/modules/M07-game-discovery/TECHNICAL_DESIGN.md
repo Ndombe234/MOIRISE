@@ -80,3 +80,17 @@ New users receive a deterministic diverse baseline using declared interests, lan
 
 ### 12.7 Tests
 Expired Story exclusion, private like exclusion, hidden creator exclusion, not-interested suppression, repeated-share burst suppression, diversity floor, creator cold-start, originality inconclusive and provider outage fallback.
+
+# D10 — M07 GAME DISCOVERY — CONCEPTION TECHNIQUE
+## Candidate
+`DiscoveryCandidate={itemRef,visibility,safety,deviceCompat,relationshipSignals,freshness,novelty,contentQuality,optionalAIScore}`.
+## Ranking formula
+Hard filters first; then deterministic weighted scoring with versioned weights. AI score is one bounded feature. RankingVersion is stored with projection.
+## Feedback
+play/share/dismiss/save/follow are event types with dedupeKey, rate limits and decay. Spam bursts are capped.
+## Explanation
+reasonKey enumerates factual causes; no hidden sensitive reason leaks.
+## Research
+External evidence is isolated from social ranking and marked verified/inconclusive/stale.
+## Tests
+blocked candidate, private candidate, device incompatibility, new-user cold start, stale score, duplicate feedback, pagination cursor stability.
