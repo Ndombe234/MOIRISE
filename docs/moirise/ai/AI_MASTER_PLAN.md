@@ -1209,3 +1209,8 @@ MORISE peut produire reasonKey, candidates, summaries, creative suggestions and 
 Codex/agents are execution targets. Chaque invocation possède workspace scope, tool allowlist, resource budget, deadline, output contract, validator and cancellation. Agent output is never a publish command.
 ## 100.10 Evolution
 Toute évolution d'architecture ou de code crée candidateRef + baselineRef + benchmark suite + security/policy evidence + rollbackRef. La promotion est versionnée et réversible.
+
+# D110 — PRODUCT LOOP INTELLIGENCE GOVERNANCE
+MORISE AI comprend les loops comme des graphes de transitions entre owners. Il peut générer hypotheses, reasonKeys, proposals et expériences, mais ne modifie jamais directement les décisions métier d'un autre owner.
+Deux états de validation sont distingués : TECH_VALIDATED et PRODUCT_VALIDATED. M07 reste l'autorité du ranking ; une évolution à effet utilisateur demande une evidence produit lorsque cela est applicable.
+Référence : docs/moirise/transversal/PRODUCT_LOOP_GOVERNANCE.md
