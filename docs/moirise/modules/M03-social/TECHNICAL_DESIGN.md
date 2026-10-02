@@ -131,3 +131,21 @@ Provider down → source media and normal social publishing remain available. Tr
 
 ### 14.8 Test matrix
 Upload, duplicate upload, invalid MIME, large file, corrupt media, Story expiry, Reel playback, share, DM share, group share, repost attribution, remix authorization, private-media leakage, provider outage, originality inconclusive, mobile and desktop.
+
+# D10 — M03 SOCIAL — CONCEPTION TECHNIQUE
+## Core schemas
+Post/Photo/Reel/Story/Share/Remix all carry ownerId, visibilityClass, privacyClass, lifecycleState, moderationState, version, timestamps and provenanceRef.
+## Story state machine
+DRAFT → VALIDATED → PUBLISHED → ACTIVE → EXPIRED → ARCHIVED/DELETED. Cache must check lifecycle state before projection.
+## Reel state machine
+DRAFT → UPLOADING → SCANNING → READY → PUBLISHED → RANKING_ELIGIBLE → REMOVED/EXPIRED.
+## Remix contract
+`Remix = sourceRef[],transformRef,creatorContribution,provenanceRef,originalityStatus`. OriginalityStatus controls discovery eligibility.
+## Social ranking input
+M03 emits bounded events; M07 owns ranking. M03 never mutates ranking scores directly.
+## AI media call
+M03 sends MediaRef/inputRefs/privacyClass/capability to M15. M15 returns artifactRef/analysisRef/validationStatus. M03 commits publication only after owner validation.
+## DM privacy
+DM bodies are never general analytics memory; only bounded operational metadata may be logged.
+## Tests
+story expiration, reel removal cache invalidation, repost provenance, remix originality failure, private share denial, DM context leakage, upload resume, provider outage.
