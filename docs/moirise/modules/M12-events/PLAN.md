@@ -65,3 +65,12 @@ Derived only from Event state/timezone. Cancellation or time changes must update
 Completed event can emit validated recap projections using actual participation/results/media references. No fabricated attendees or outcomes.
 ## AI
 M15 may draft descriptions, schedule suggestions and personalized copy. Factual event state is M12 authority.
+
+# D110 — CROSS-LOOP INTEGRATION GOVERNANCE
+M12 est l'owner des états temporels et des transitions EVENT → SOCIAL / PLAY / COMMUNITY.
+
+Une proposition cross-loop peut suggérer un rappel, une Story, un challenge ou un jeu associé, mais M12 reste l'unique autorité sur schedule, registration, eligibility, capacity et status.
+
+Les recap/events utilisent uniquement des participations et résultats réels. Aucune audience ou participation fictive ne peut servir au ranking ou à la viralité.
+
+Référence : `docs/moirise/transversal/PRODUCT_LOOP_GOVERNANCE.md`.
