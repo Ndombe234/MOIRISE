@@ -52,6 +52,8 @@ When multi-agent orchestration is available:
 - do not delegate tasks that overlap a shared mutable surface;
 - keep shared contracts and ordered migrations serialized.
 
+AI gate: an AI task cannot be delegated until the AI comprehension bridge has been read and both canonical AI documents have been loaded.
+
 Canonical document gate: a worker cannot receive a module task with only PLAN.md or only TECHNICAL_DESIGN.md. The coordinator must pass the complete pair and record the pair in the task dossier.
 
 Recommended worker packet:
