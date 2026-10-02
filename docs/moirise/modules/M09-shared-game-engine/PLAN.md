@@ -81,3 +81,15 @@ Game code/assets run inside bounded runtime. No arbitrary filesystem, unrestrict
 Engine may emit allowed gameplay events (started, milestone, finished) consumed by M06/M10; it never decides rewards or ranking.
 ## DONE
 2D/3D sandbox, performance budget, clean shutdown, malformed build rejection, offline/degraded behavior and mobile/desktop verification.
+
+# D100 — SPÉCIFICATION COMPORTEMENTALE
+## Build admission
+Only GameBuild status READY_FOR_INTEGRATION/PUBLISHED and compatible manifest may enter runtime. Hash and version are checked before load.
+## Runtime
+Allocate resource profile → load manifest → mount assets → initialize deterministic services → start. Any hard resource violation aborts safely.
+## Network
+Default deny except explicit runtime capabilities. No arbitrary URL fetch, production secrets or service-role access.
+## Shutdown
+Normal finish, user exit, timeout, watchdog or resource failure must release runtime resources and leases exactly once.
+## Telemetry
+Only allowlisted gameplay signals leave runtime. Result authority remains M06.
