@@ -53,3 +53,27 @@ Upcoming event → reminder/Story/share → registration → participation → v
 Reminder preferences, event dedupe, time-zone correctness and cancellation propagation.
 ## DONE
 Timezones, registration, capacity where applicable, cancellation, expired event, reminders and cross-module deep-links validated.
+
+# D100K — M12 Events — FORMAL BEHAVIOR / PROOF LAYER
+
+## 1. Machine-complete behavior contract
+Owner: M12. Scope: future event definitions, scheduling, lifecycle. Dependencies: M05,M11,M14. Primary invariant: future state exists only when backed by authoritative event state.
+Capability transition: ACTOR → TRIGGER → PRECONDITIONS → INPUTS → AUTHORITY → GUARDS → STATE → POSTCONDITIONS → EVENTS → PROJECTIONS → FAILURE → RECOVERY → EVIDENCE.
+
+## 2. Forbidden states
+No authoritative mutation on failed auth/policy/schema/version/ownership/idempotency guards or unavailable critical dependency.
+
+## 3. AI and cross-module boundary
+M15 may propose/analyze but cannot mutate M12 private authority. Consumers use defined contracts/events/projections only.
+
+## 4. Proof obligations
+Nominal, empty/no-data, error, unavailable/degraded, retry/replay, refresh/reopen, permission denial, concurrency where relevant, desktop and mobile, plus adversarial cases specific to M12.
+
+## 5. Impact obligation
+M12 → consumers → events → projections → routes/UI → AI capabilities → tests → security/resilience. Unknown impact remains UNRESOLVED.
+
+## 6. Formal properties
+Authority is unique; duplicate commands are idempotent; stale versions do not overwrite; projections remain rebuildable; privacy follows the object; VERIFIED requires fresh applicable evidence.
+
+## 7. Completion
+This section defines proof requirements, not implementation completion.
