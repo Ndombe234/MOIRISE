@@ -325,3 +325,55 @@ The cross-module social/creative layer is DONE only when:
 - share loops are meaningful rather than spammy;
 - no new top-level navigation button was introduced;
 - desktop/mobile and degraded states are tested.
+
+
+# D10 — EXPANSION — BOUCLE DE VALEUR ET DE DÉCOUVERTE
+
+## 12. Core loop
+Le produit optimise une boucle de valeur, pas un compteur d'engagement :
+SEE → UNDERSTAND → FEEL → ACT → CREATE/PLAY → SHARE/INVITE → DISCOVER_NEW_VALUE → RETURN.
+
+## 13. User value classes
+V1 spectacle ; V2 expression ; V3 découverte ; V4 relation ; V5 jeu ; V6 progression ; V7 création assistée ; V8 appartenance. Chaque surface sociale doit fournir au moins une valeur primaire et une action secondaire cohérente.
+
+## 14. Reels
+Reel = clip public ou autorisé + metadata + caption + audio provenance + safety + derivativeGraph + ranking eligibility. Les remixes doivent documenter la source et apporter une transformation significative ou une contribution nouvelle.
+
+## 15. Stories
+Story = segment éphémère versionné. Les éléments peuvent être image, vidéo, texte, audio, interaction et réponse. Audience et expiration sont décidées au niveau de la Story, pas au niveau du moteur de recommendation.
+
+## 16. Photo/profile
+Le profil doit devenir une vitrine dynamique de l'identité et des créations sélectionnées, sans remplacer le feed. Une photo de profil peut être générée ou transformée par MORISE uniquement après validation/usage autorisé.
+
+## 17. Music
+Musique utilisateur = objet analysable si autorisé. Une nouvelle musique générée à partir d'une source doit partir d'un concept/structure/features abstraits et non d'une reproduction servile.
+
+## 18. Viral loops
+L1 private-to-friend : share → DM → return.
+L2 public-to-friend : share → profile → follow.
+L3 media-to-create : view → create from concept → publish.
+L4 media-to-game : view → play → share result.
+L5 group-to-world : group action → event/world projection.
+L6 creator-to-community : repeated creation → community formation proposal.
+L7 cross-language : publish → translation/dubbing → new audience.
+
+## 19. Cold-start activation
+Dans les premières minutes, le système propose un mix réellement disponible :
+- un spectacle immédiat ;
+- une action créative en moins de quelques étapes ;
+- une découverte personnalisée ;
+- un jeu court ;
+- une possibilité de suivre/rejoindre/interagir.
+Aucun faux signal social n'est utilisé.
+
+## 20. Viral quality gates
+Before publish-to-discovery:
+originality/status, safety, visibility, media integrity, provenance, spam risk, feedback eligibility, device compatibility.
+Before share:
+recipient eligibility, privacy, revoked-source check, share-token generation.
+
+## 21. Anti-virality failures
+La boucle doit casser proprement si le contenu est privé, supprimé, bloqué, signalé, expiré ou non validé. Elle ne doit pas conserver une URL publique orpheline.
+
+## 22. Measurement
+Mesures principales : activation, successful creation, meaningful share, invitation acceptance, repeat creation, return within defined cohort window, content diversity, creator retention, safety incidents. Ne pas optimiser sur un seul chiffre.
