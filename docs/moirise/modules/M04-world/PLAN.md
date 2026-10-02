@@ -95,3 +95,17 @@ AI down = sélection World déterministe et suppression par règles. Le shell re
 
 ### H. DONE
 Les cards AI sont explicables, suppressibles, bornées par cooldown et privacy et leurs handoffs passent par destination owner.
+
+# D10 — M04 WORLD — EXPANSION COMPORTEMENTALE
+## World as projection
+WORLD presents safe projections from events, communities, creations, discoveries and adaptive signals. It does not own source mutations.
+## Exploration
+ENTER → CONTEXT → DISCOVER → INTERACT → HANDOFF. Every handoff references an owner capability.
+## Social world
+Public media, games, events and community activity may appear as World objects when visibility/safety allow it. Private content never becomes a world object accidentally.
+## Adaptive surfaces
+M13 may propose changes; M04 applies only validated projections. World novelty must be bounded.
+## Viral discovery
+World can expose “why this is here” explanation keys, related creations, playable actions or community context without fabricating popularity.
+## DONE
+World deep-link, empty real state, safe projections, deletion propagation, blocked item filtering, adaptive update fallback and mobile/desktop verified.
