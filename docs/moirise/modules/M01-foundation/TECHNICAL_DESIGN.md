@@ -126,3 +126,180 @@ POST /api/ai accepts capabilityId/inputRefs/constraints/requestedAutonomy. M01 a
 requestId/traceId/capability/route/status/latency only; no raw DM/private media content.
 ## Tests
 auth expiry, refresh race, deep-link, back/forward, share revocation, invalid route, provider outage, no-white-screen, CSP and mobile viewport.
+
+# D1K — M01 MACHINE-FABRICATION MAP
+
+This section is the executable assembly map for the current M01 implementation state. It does not create a third M01 authority; PLAN.md remains the behavior authority and this document remains the HOW/fabrication authority.
+
+## A. Feature IDs
+
+- M01-F01 Foundation contracts and types
+- M01-F02 Application errors
+- M01-F03 Capability registry
+- M01-F04 Public Supabase configuration
+- M01-F05 Server/browser Supabase adapters
+- M01-F06 Server-derived session context
+- M01-F07 Application shell and recoverable UI states
+- M01-F08 Health/session HTTP surfaces
+- M01-F09 Authentication flows
+- M01-F10 Fabrication/contract tests
+
+## B. Task graph
+
+~~~text
+M01-T01 contracts
+M01-T02 errors
+M01-T03 capabilities
+M01-T04 public-config
+        ↓
+M01-T05 Supabase server/browser adapters
+        ↓
+M01-T06 session context
+        ↓
+M01-T07 shell
+        ↓
+M01-T08 health/session routes
+        ↓
+M01-T09 auth + callback + proxy
+        ↓
+M01-T10 focused contract tests
+        ↓
+M01-T11 desktop browser
+        ↓
+M01-T12 mobile browser
+        ↓
+M01-T13 security/resilience
+        ↓
+M01-T14 production build/evidence
+~~~
+
+Parallelism is allowed only among T01–T04 because they have stable type-only/config boundaries. T05 onward is serialized by dependency.
+
+## C. File/symbol contracts
+
+| Task | Exact file(s) | Exact symbol(s) | Current code state | Proof state |
+|---|---|---|---|---|
+| M01-T01 | lib/m01/contracts.ts | AuthClass, RequestContext, SessionContext, CapabilityStatus, CapabilityDefinition | IMPLEMENTED | PARTIAL |
+| M01-T02 | lib/m01/errors.ts | createAppError | IMPLEMENTED | PARTIAL |
+| M01-T03 | lib/m01/capabilities.ts | listCapabilities, resolveCapability, DEFINITIONS | IMPLEMENTED | PARTIAL |
+| M01-T04 | lib/m01/public-config.ts | getPublicSupabaseConfig | IMPLEMENTED | PARTIAL |
+| M01-T05 | lib/supabase/server.ts, lib/supabase/client.ts | createSupabaseServerClient, createSupabaseBrowserClient | IMPLEMENTED | PARTIAL |
+| M01-T06 | lib/m01/session.ts | resolveSessionContext | IMPLEMENTED | PARTIAL |
+| M01-T07 | app/layout.tsx, app/page.tsx, app/loading.tsx, app/error.tsx | RootLayout, HomePage, Loading, GlobalError | IMPLEMENTED | PARTIAL |
+| M01-T08 | app/api/health/route.ts, app/api/session/route.ts | GET | IMPLEMENTED | PARTIAL |
+| M01-T09 | app/auth/sign-in/page.tsx, app/auth/sign-up/page.tsx, app/auth/callback/route.ts, proxy.ts | SignInPage, SignUpPage, GET, proxy | IMPLEMENTED | NOT EVIDENCED IN BROWSER |
+| M01-T10 | tests/m01-contracts.test.ts | capability/error contract suites | IMPLEMENTED | PARTIAL |
+| M01-T11 | deployed/dev runtime | user flow below | NOT YET VERIFIED | NOT EVIDENCED |
+| M01-T12 | mobile viewport | user flow below | NOT YET VERIFIED | NOT EVIDENCED |
+| M01-T13 | runtime/security controls | failure matrix below | NOT YET CLOSED | NOT EVIDENCED |
+| M01-T14 | CI/build environment | typecheck/test/build + evidence package | NOT YET CLOSED | NOT EVIDENCED |
+
+## D. Function-level contracts
+
+### resolveSessionContext
+- INPUT: no client actor input.
+- AUTHORITY: server Supabase session/user.
+- OUTPUT: SessionContext.
+- SIDE EFFECT: none in current implementation.
+- ERROR BEHAVIOR: auth lookup failure resolves to unauthenticated context.
+- TESTS: valid session, anonymous session, malformed/expired session behavior.
+- CURRENT NOTE: sessionId is currently null; the canonical contract requires session semantics to be closed before M01 DONE.
+
+### listCapabilities
+- INPUT: none.
+- AUTHORITY: current in-memory M01 definitions.
+- OUTPUT: readonly capability definitions.
+- SIDE EFFECT: none.
+- INVARIANT: every returned definition has ownerModule = M01.
+- TEST: contract ownership assertion.
+
+### resolveCapability
+- INPUT: capabilityId, optional version.
+- AUTHORITY: M01 definitions.
+- OUTPUT: matching capability or null.
+- SIDE EFFECT: none.
+- INVARIANT: unknown version returns null.
+- TEST: current contract suite.
+
+### createAppError
+- INPUT: code, requestId, userMessageKey, optional retryability/technical ref.
+- AUTHORITY: error contract.
+- OUTPUT: sanitized AppError.
+- FORBIDDEN: stack traces, secrets or raw provider payloads.
+- TEST: default retryability and optional fields.
+
+### createSupabaseServerClient / createSupabaseBrowserClient
+- INPUT: public Supabase URL + publishable key.
+- AUTHORITY: environment configuration.
+- FORBIDDEN: service-role secrets in browser.
+- TEST: configuration failure path and bundle inspection.
+
+## E. Exact browser verification recipe
+
+### Desktop
+1. Open /.
+2. Confirm shell renders and no blank screen occurs.
+3. Click Se connecter.
+4. Confirm /auth/sign-in renders.
+5. With an authorized test account, submit valid credentials.
+6. Expect redirect to /.
+7. Refresh /.
+8. Confirm session remains valid when configuration/session policy permits.
+9. Open /api/session.
+10. Confirm response reflects the authenticated session without exposing secrets.
+11. Sign out using the currently available session mechanism or test session expiry/revocation when logout is introduced.
+12. Reopen /auth/sign-in.
+13. Submit invalid credentials.
+14. Confirm a recoverable error is shown and no duplicate submit occurs while busy.
+15. Use the back/forward navigation path.
+16. Open an invalid route and confirm a recoverable 404 rather than a blank screen.
+
+### Mobile
+Repeat the same flow with a mobile viewport and additionally verify:
+- touch target usability;
+- no horizontal overflow;
+- form fields remain visible with keyboard;
+- loading/error states remain readable;
+- refresh does not create a blank surface.
+
+### Security/failure
+Attempt:
+- forged client actor identity;
+- missing public configuration;
+- expired session;
+- duplicate submission;
+- callback without code;
+- callback with unsafe next;
+- unavailable Supabase;
+- refresh during auth transition.
+
+Expected behavior must match the relevant M01 contract and never expose secrets.
+
+## F. Evidence requirements
+
+M01-T01 through M01-T10 cannot become VERIFIED solely from file existence. Focused tests must pass.
+
+M01-T11/T12 require fresh browser evidence.
+
+M01-T13 requires security/resilience checks relevant to the implemented boundary.
+
+M01-T14 requires fresh typecheck + test + production build evidence from the current commit.
+
+Current repository state therefore remains:
+M01 = IN PROGRESS / D1K FABRICATION MAP COMPLETE / DONE NOT CLAIMED.
+
+## G. Open fabrication gaps
+
+The following are explicitly NOT implemented/closed and must become their own future tasks before M01 DONE:
+- durable event bus/outbox;
+- persisted capability registry;
+- production rate limiting;
+- complete observability;
+- signed/revocable share implementation;
+- complete M15 AI gateway;
+- complete session ID/refresh semantics;
+- browser desktop verification;
+- browser mobile verification;
+- dependency-failure/resilience verification;
+- concurrency/replay verification;
+- production evidence package.
