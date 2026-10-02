@@ -138,3 +138,28 @@ Chaque demande « détaille » augmente d'un facteur 10 la précision d'ingénie
 
 ## 25. Project-time governance
 Chaque expansion de détail déclenche une révision de l'estimation de délai conformément à docs/moirise/PROJECT_TIME_MODEL.md. Le temps n'est jamais multiplié mécaniquement par 10 : il est recalculé selon les nouvelles tâches, dépendances, tests, intégration et automatisation disponibles.
+
+
+## 19. Hiérarchie documentaire canonique
+La documentation de fabrication est organisée par niveaux :
+0. PRODUCT_CONSTITUTION.md — invariants produit et règles supérieures ;
+1. ARCHITECTURE_MASTER.md — carte structurelle, frontières et relations ;
+2. MASTER_PLAN.md — périmètre fonctionnel et ordre global ;
+3. module/PLAN.md — comportement détaillé de l'owner ;
+4. module/TECHNICAL_DESIGN.md — conception technique ;
+5. SPECIFICATION_STANDARD.md — niveau de précision comportementale exigé ;
+6. IMPLEMENTATION_CONTRACT_STANDARD.md — niveau directement exploitable par un agent de développement ;
+7. code/migrations ;
+8. tests, navigateur et preuves de production.
+
+Ces niveaux ne créent pas plusieurs sources concurrentes : les niveaux 0–1 imposent des invariants et frontières ; le niveau 2 organise le produit ; les owners M01–M15 restent les autorités de leurs règles métier ; les standards 5–6 imposent une forme minimale de spécification sans devenir propriétaires des features.
+
+## 20. MORISE AI hierarchy
+Pour l'IA : PRODUCT_CONSTITUTION → ARCHITECTURE_MASTER → ai/AI_CONSTITUTION.md → ai/AI_MASTER_PLAN.md → ai/AI_TECHNICAL_DESIGN.md → specifications/contracts → implementation.
+AI_CONSTITUTION définit l'identité, les limites d'autorité, la mémoire, l'autonomie, la privacy, les agents et l'indépendance provider. AI_MASTER_PLAN reste la source opérationnelle du WHAT ; AI_TECHNICAL_DESIGN reste la source opérationnelle du HOW.
+
+## 21. Agent reading order
+Avant toute fabrication, un agent doit lire les niveaux nécessaires dans cet ordre : produit → architecture → module/AI constitution → plan owner → conception technique → standards → transversal contracts/dependencies → code/migrations → tests. Une feature cross-module doit construire son graphe d'owners avant toute écriture.
+
+## 22. No-gaps gate
+Une feature ne passe en implémentation que si les décisions essentielles sont présentes à au moins l'un des niveaux appropriés. Une information manquante qui forcerait l'agent à inventer une autorité, un schéma, une permission, un endpoint ou une règle métier doit être traitée comme un SPECIFICATION_GAP avant le code.
