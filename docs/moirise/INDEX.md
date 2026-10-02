@@ -59,3 +59,9 @@ Les registres provider séparés ont été supprimés pour éviter une troisièm
 - `PROJECT_TIME_MODEL.md` — current elapsed-time bands and recalculation rule after each detail expansion.
 - `CREATIVE_MEDIA_VIRALITY_PLAN.md` — social media, Reels, Stories, creative transformation and virality behavior.
 - `CREATIVE_MEDIA_VIRALITY_TECHNICAL_DESIGN.md` — media graph, viral graph, derivation, provenance, share-token and validation contracts.
+
+
+## Agent fabrication
+- transversal/AGENT_FABRICATION_PROTOCOL.md — operational contract for ChatGPT/Codex: canonical reading order, machine-usable task context, detail ladder, cross-module decomposition, game fabrication, user simulation, adversarial verification, evidence and time recalculation.
+- DETAIL_LEVEL_GOVERNANCE.md — permanent « détail » rule and depth progression.
+- PROJECT_TIME_MODEL.md — elapsed-time bands and recalculation rules.
