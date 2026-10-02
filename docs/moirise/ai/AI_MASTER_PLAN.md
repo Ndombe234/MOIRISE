@@ -1182,3 +1182,7 @@ A0 répond ; A1 propose ; A2 exécute après confirmation ; A3 exécute un graph
 
 ## 32. Viral optimization guardrail
 L'IA peut optimiser la clarté, la découvrabilité et la possibilité de partage ; elle ne doit pas utiliser dark patterns, faux compteurs, faux succès, spam de notifications ou manipulation cachée pour augmenter l'engagement.
+
+
+# AI-CONSTITUTION BOUNDARY
+Before this operational WHAT is implemented, the fabricator must read docs/moirise/ai/AI_CONSTITUTION.md. That document is the higher-order identity and invariant layer for MORISE AI. This file remains the source of operational behavior; AI_TECHNICAL_DESIGN remains the source of operational HOW. No feature may redefine AI identity, authority, provider independence, privacy, autonomy or evolution rules locally.
