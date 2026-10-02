@@ -78,3 +78,18 @@ visibility, audience, block behavior, privacy, relationship context, share targe
 
 Un jeu doit définir :
 mode 2D/3D, core loop, controls, duration, win/loss, target devices, resource budget, security sandbox, runtime manifest, test plan, social hook et publication criteria.
+
+
+# D100 — SPECIFICATION STANDARD — PROFONDEUR OBLIGATOIRE
+## Feature matrix
+Every important feature should be representable as a matrix of actors × states × inputs × permissions × outputs × errors × recovery × platforms.
+## State completeness
+For every state list entry condition, allowed actions, forbidden actions, outgoing transitions, timeout/expiry, recovery and projection. Unknown states are invalid.
+## Data completeness
+For every field identify source, type/shape, required/optional, normalization, retention, privacy, mutability, index/cache behavior and deletion propagation.
+## Decision completeness
+Every automatic decision states inputs, deterministic rules, AI contribution, confidence/evidence, owner authority and fallback without AI.
+## Browser completeness
+Every interactive capability declares desktop path, mobile path, touch/keyboard behavior, loading/empty/error/unavailable/degraded UI and recovery actions.
+## Proof completeness
+Each acceptance criterion maps to a test or production evidence artifact. A sentence such as “works” is not evidence.
