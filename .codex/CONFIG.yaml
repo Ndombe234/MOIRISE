@@ -5,9 +5,17 @@ control_plane:
   coordinator: root
   purpose: "Coordinate independent Codex workers without creating a second product authority."
 
+multi_agent:
+  required_when_available: true
+  proactive_delegation: true
+  preferred_max_concurrent_subagents: 3
+  coordinator_counts_excluded_from_limit: true
+  session_harness_activation: "required"
+  note: "This repository declares the desired orchestration behavior; the Codex execution harness must expose multi-agent/subagent tools for actual spawning."
+
 concurrency:
   default_active_workers: 3
-  target_active_workers: 4
+  target_active_workers: 3
   hard_rule: "Never increase concurrency when it causes shared-file, schema, lockfile, migration, or environment contention."
   sequential_fallback: true
 
