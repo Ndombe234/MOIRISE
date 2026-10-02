@@ -96,3 +96,15 @@ Friend activity, group interest, recently played and creator affinity are bounde
 First-session ranking mixes explicit interests, diverse real popular content, novelty and short games; no fake personalization.
 ## DONE
 Ranking works without AI and remains safe when AI scores disappear or stale data exists.
+
+# D100 — SPÉCIFICATION COMPORTEMENTALE
+## Search
+Normalize query → derive safe filters → candidate retrieval → visibility/privacy → moderation/safety → device compatibility → dedupe → diversity → novelty → ranking → reason projection.
+## Recommendation
+Signals are explicit preferences, validated history, relationship context where allowed, freshness, novelty and bounded feedback. Sensitive traits are not inferred.
+## Cold-start
+No-content/new-player path uses explicit interests and real available content. Empty pool stays honestly empty; system offers create/play/search paths instead of fake catalogue items.
+## Social discovery
+Friend/group context is factual. It may increase relevance but never bypass privacy/block filters.
+## Feedback
+Dismiss/save/play/share signals are deduplicated and rate-limited before they influence ranking. Single bursts cannot dominate.
