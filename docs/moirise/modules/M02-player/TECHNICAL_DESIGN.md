@@ -100,3 +100,22 @@ Read scope doit être explicitement déclaré. Write scope doit être plus restr
 
 ### 13.4 Tests
 Cross-player read denied; private preference leakage denied; stale version conflict; duplicate profile suggestion; memory scope escalation; AI outage; deterministic personalization fallback; deletion propagation; cache invalidation.
+
+## 14. CREATIVE MEDIA TECHNICAL INTEGRATION
+The shared technical contract is `docs/moirise/CREATIVE_MEDIA_VIRALITY_TECHNICAL_DESIGN.md`.
+
+### 14.1 Profile media
+M02 stores only the authoritative profile reference and policy fields. Published social content remains owned by M03. A profile projection may reference M03 content without copying M03's publication rules.
+
+### 14.2 Avatar/profile generation
+`M02 → M15 → CREATIVE_MEDIA validator → M02 commit`.
+The client never receives provider credentials and never selects a provider directly.
+
+### 14.3 User-owned media analysis
+A permitted Player media reference can be sent through the M15 media-analysis capability. The request must carry `privacyClass`, `permissionState`, `sourceOwnershipClass`, `purpose`, `retention` and `provenanceRef`.
+
+### 14.4 Deletion
+When a profile media source is deleted or its permission is revoked, dependent AI analysis caches, creative candidates and projections must be invalidated according to retention policy. Published derivatives remain only when their publication rights independently permit them.
+
+### 14.5 Tests
+Profile media privacy, unauthorized media-analysis request, revoked permission, provider outage, stale cache, deletion propagation, duplicate generation request, mobile upload, desktop upload and degraded no-AI operation.
