@@ -117,3 +117,27 @@ Achievements and creations can produce shareable projections: title reveal, chal
 Fun & Surprise can schedule bounded surprises from real state. No fake scarcity or fake urgency. Surprise must be reversible/observable.
 ## DONE
 Progression remains correct when AI is unavailable; SYSTEM overlays never block reading/playing/creating; duplicate events cannot award twice.
+
+# D100K — M05 System / Progression — FORMAL BEHAVIOR / PROOF LAYER
+
+## 1. Machine-complete behavior contract
+Owner: M05. Scope: XP/levels/rank/titles/missions/SYSTEM presentation. Dependencies: M01,M02. Primary invariant: M05 alone validates progression authority.
+For every capability: ACTOR → TRIGGER → PRECONDITIONS → INPUTS → AUTHORITY → GUARDS → STATE TRANSITION → POSTCONDITIONS → EVENTS → PROJECTIONS → FAILURE → RECOVERY → EVIDENCE.
+
+## 2. Forbidden states
+Authorization failure, invalid schema, incompatible version, ownership violation, idempotency conflict or critical dependency failure must produce zero unauthorized authoritative mutation.
+
+## 3. AI boundary
+M15 may propose or analyze only through capability contracts. M05 remains authoritative for XP/levels/rank/titles/missions/SYSTEM presentation.
+
+## 4. Proof obligations
+SUCCESS + NO-DATA + ERROR + DEGRADED/UNAVAILABLE + REFRESH/REOPEN + DESKTOP + MOBILE + PERMISSION DENIAL + RETRY/REPLAY where applicable.
+
+## 5. Impact obligation
+M05 → consumers → events → projections → routes/UI → AI capabilities → tests → security/resilience. UNKNOWN impact is UNRESOLVED, never assumed safe.
+
+## 6. Formal acceptance properties
+Owner authority cannot be bypassed; duplicate commands cannot duplicate authoritative mutation; stale versions cannot silently overwrite current state; projections remain rebuildable; privacy survives handoffs; VERIFIED requires applicable evidence.
+
+## 7. Completion
+This D100K section defines what must be provable. It does not claim implementation completion.
