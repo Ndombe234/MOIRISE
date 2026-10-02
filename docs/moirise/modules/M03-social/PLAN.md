@@ -230,3 +230,21 @@ Share recipient may be friend, group, conversation or public share-token scope. 
 Every public social object may expose at most one primary next-action cluster in the current context: react/share/create/follow/play depending on object type.
 ## DONE
 Posts, photos, Reels, Stories, DMs, repost/remix/share all obey privacy, idempotence, deletion, moderation, mobile/desktop and AI fallback.
+
+# D100 — SPÉCIFICATION COMPORTEMENTALE
+## Media object lifecycle
+Photo/Reel/Story creation always begins with a validated MediaRef. Source visibility and owner identity are checked before any M15 analysis.
+## Story
+Draft assets are private to the creator until publish. Publish commits audience + expiration atomically with the Story record. Expiration is server-derived; clients must not extend lifetime.
+## Reel
+Upload can resume. Scan must complete before PUBLISHED. Removal sets a non-rankable lifecycle state and emits invalidation for recommendation/share projections.
+## Repost
+Repost creates a pointer to an existing public object; it does not duplicate the source body. Removing the source invalidates the repost projection.
+## Remix
+Remix has sourceRefs and creatorContribution. A lexical/technical alteration without meaningful creative contribution cannot silently become an original discovery item.
+## Create-from-media
+M03 checks owner/usePolicy → creates analysis request through M15 → receives candidate artifact → validates privacy/provenance/originality → persists new MediaRef → publishes. The source is never mutated.
+## DM
+Private context is member-scoped. AI may translate/moderate only the minimum necessary content. DM raw bodies stay out of broad analytics and global memory.
+## Social loops
+Each object chooses a bounded next-action set; rank/share systems may not fabricate popularity or social proof.
