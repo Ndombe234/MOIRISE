@@ -95,3 +95,19 @@ Après chaque build/test/repair, M08 doit fournir :
 Avant une nouvelle fabrication, M08 demande au MemoryService les connaissances GAME_* pertinentes. Il vérifie leur compatibilité et ne réutilise qu'un pattern VALIDATED.
 
 Une connaissance candidate n'est jamais traitée comme recette avant promotion. M08 reste owner des artifacts et de la GameSpecification ; M15 reste owner de l'orchestration et du learning.
+
+# D10 — M08 GAME FACTORY — EXPANSION COMPORTEMENTALE
+## Permanent fabrication platform
+M08 is not a one-off generator. Every new game request should first search existing templates, components, runtime patterns and validated fabrication memory.
+## Pipeline
+DEMAND → INTENT → REQUIREMENTS → SPEC → REUSE SEARCH → TASK GRAPH → GENERATE → BUILD → TEST → DIAGNOSE → BOUNDED REPAIR → REBUILD → VALIDATE → READY_FOR_INTEGRATION.
+## 2D/3D choice
+2D if interaction/performance goals dominate and 3D adds no meaningful value; 3D when spatial interaction/visualization materially improves the game. The choice is evidence-driven and versioned.
+## Media-to-game
+An authorized image/video/music concept may become theme/mechanic inspiration. The factory stores the original source reference and derivative policy, but does not package protected source media without permission.
+## Viral hooks
+Every publishable game should define one social hook: challenge, score card, rematch, co-op invite, creator attribution or shareable outcome.
+## Fabrication memory
+Store successful architecture, component compatibility, failures and repair patterns only after validation.
+## DONE
+Reproducible build, sandboxing, tests, resource budget, security and publication handoff validated.
