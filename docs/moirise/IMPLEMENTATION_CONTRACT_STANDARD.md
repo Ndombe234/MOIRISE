@@ -160,3 +160,18 @@ L'agent ne doit pas :
 - créer de faux contenus pour masquer un état vide ;
 - supprimer une validation pour faire passer les tests ;
 - déclarer DONE sans preuve.
+
+
+# D100 — IMPLEMENTATION CONTRACT — PROFONDEUR MACHINE
+## File contract
+Every code change lists expected file paths and why each file belongs to the owner. The agent must preserve existing conventions unless the contract explicitly changes them.
+## Function contract
+Critical functions define caller, authority, validation, side effects, transaction boundary, idempotency, concurrency, result shape, error mapping and telemetry.
+## Persistence contract
+Every mutation states transaction boundary, uniqueness/locking/version strategy, rollback, event-after-commit, projection invalidation and deletion/retention.
+## API contract
+Every endpoint states auth class, request schema, normalized output, error codes, rate limits, pagination, cache behavior, idempotency and audit policy.
+## AI contract
+Every AI call states capability, context class, privacy, autonomy ceiling, provider-independent fallback, validator, memory policy and owner commit.
+## Evidence contract
+DONE requires actual command/test/browser evidence tied to the feature version and source revision; copied evidence from an older implementation is invalid.
