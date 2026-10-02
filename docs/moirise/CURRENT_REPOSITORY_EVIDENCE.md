@@ -1,6 +1,9 @@
-# MOIRISE — PREUVE DE L'ÉTAT ACTUEL DU DÉPÔT
+# MOIRISE — PREUVE HISTORIQUE DU DÉPÔT AVANT RESET
 
-Ce document décrit les faits observés dans le dépôt au moment de la reconstruction documentaire. Il n'est pas une spécification métier.
+> **ÉTAT : SUPERSEDED POUR L'IMPLÉMENTATION.**  
+> Cette preuve décrit le dépôt avant le reset canonique du 2026-10-02. Elle reste utile pour la traçabilité historique, mais aucune route, migration, RPC, service ou test mentionné ici ne doit être compté comme une implémentation du nouveau plan.
+>
+> La frontière active est documentée dans `docs/moirise/RESET_STATE.md`.
 
 ## Runtime
 
@@ -72,7 +75,7 @@ Le dépôt/package utilise encore le libellé MORISE à plusieurs endroits, alor
 
 Le README actuel décrit Render comme environnement de build/QA et Cloudflare comme cible de production future. Cette documentation ne transforme pas cette intention en fait déployé ; les déploiements doivent être vérifiés séparément.
 
-## Conséquence pour l'agent
+## Conséquence historique pour l'agent
 
 Avant chaque module :
 1. lire ce document ;

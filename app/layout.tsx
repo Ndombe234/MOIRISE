@@ -1,17 +1,16 @@
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
 import "./globals.css";
-import "./morise-calm.css";
-import "./morise-v4.css";
 
 export const metadata: Metadata = {
-  title: "MORISE",
-  description: "A calm SYSTEM-first world shaped by every real Player action.",
+  title: "MOIRISE",
+  description: "Le réseau social Otaku piloté par un SYSTEM évolutif.",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <body>{children}</body>
     </html>
   );

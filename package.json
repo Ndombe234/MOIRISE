@@ -1,5 +1,5 @@
 {
-  "name": "morise",
+  "name": "moirise",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -28,5 +28,6 @@
     "eslint-config-next": "16.3.6",
     "typescript": "7.0.2",
     "vitest": "5.0.2"
-  }
+  },
+  "description": "MOIRISE canonical 15-module rebuild"
 }

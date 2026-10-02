@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
 
-export function GET() {
-  return NextResponse.json({ status: "ok", service: "morise-web" });
+export async function GET() {
+  return NextResponse.json({
+    status: "ok",
+    module: "M01",
+    state: "in_progress",
+  });
 }

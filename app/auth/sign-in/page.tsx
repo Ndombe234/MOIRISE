@@ -1,46 +1,74 @@
 "use client";
 
-import Link from "next/link";
+import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
-import { createClient } from "@/lib/supabase/client";
+import Link from "next/link";
+import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 export default function SignInPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setError("");
-    setLoading(true);
-    const supabase = createClient();
-    const { error: signInError } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+    setBusy(true);
+    setError(null);
+
+    const supabase = createSupabaseBrowserClient();
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
     if (signInError) {
       setError(signInError.message);
-      setLoading(false);
+      setBusy(false);
       return;
     }
-    router.replace("/home");
+
+    router.replace("/");
     router.refresh();
   }
 
   return (
-    <main>
-      <section className="hero" aria-labelledby="title">
-        <p className="eyebrow">MORISE / SYSTEM ENTRY</p>
-        <h1 id="title">Welcome back.</h1>
-        <p className="lead">Your Player world is waiting. The SYSTEM will keep the experience simple and adapt to what you actually do.</p>
-        <form className="form" onSubmit={handleSubmit}>
-          <label className="field"><span>Email</span><input className="input" autoComplete="email" inputMode="email" required type="email" value={email} onChange={(event) => setEmail(event.target.value)} /></label>
-          <label className="field"><span>Password</span><input className="input" autoComplete="current-password" minLength={8} required type="password" value={password} onChange={(event) => setPassword(event.target.value)} /></label>
-          {error ? <p className="notice error">{error}</p> : null}
-          <button className="button" type="submit" disabled={loading}>{loading ? "Entering…" : "Enter MORISE"}</button>
+    <main className="moirise-shell">
+      <section className="moirise-card">
+        <p className="moirise-muted">M01 · SESSION</p>
+        <h1>Connexion</h1>
+        <form onSubmit={submit}>
+          <label className="moirise-field">
+            Email
+            <input
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              required
+            />
+          </label>
+          <label className="moirise-field">
+            Mot de passe
+            <input
+              type="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              required
+            />
+          </label>
+          {error ? <p className="moirise-error">{error}</p> : null}
+          <div className="moirise-actions">
+            <button className="moirise-button primary" disabled={busy} type="submit">
+              {busy ? "Connexion…" : "Se connecter"}
+            </button>
+            <Link className="moirise-button" href="/auth/sign-up">
+              Inscription
+            </Link>
+          </div>
         </form>
-        <div className="actions"><Link className="button secondary" href="/auth/sign-up">Create a Player</Link><Link className="button secondary" href="/">Back</Link></div>
-        <p className="help" style={{ marginTop: 18 }}>English is the default display language when a requested language is not supported.</p>
       </section>
     </main>
   );

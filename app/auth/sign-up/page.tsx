@@ -1,80 +1,84 @@
 "use client";
 
-import Link from "next/link";
+import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
-import { createClient } from "@/lib/supabase/client";
+import Link from "next/link";
+import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 
 export default function SignUpPage() {
   const router = useRouter();
-  const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [notice, setNotice] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setError("");
-    setNotice("");
-    setLoading(true);
+    setBusy(true);
+    setError(null);
+    setMessage(null);
 
-    const supabase = createClient();
+    const supabase = createSupabaseBrowserClient();
     const { data, error: signUpError } = await supabase.auth.signUp({
-      email: email.trim(),
+      email,
       password,
-      options: {
-        data: { display_name: displayName.trim() },
-        emailRedirectTo: window.location.origin + "/auth/callback",
-      },
     });
 
     if (signUpError) {
       setError(signUpError.message);
-      setLoading(false);
+      setBusy(false);
       return;
     }
 
     if (data.session) {
-      router.replace("/system");
+      router.replace("/");
       router.refresh();
       return;
     }
 
-    setNotice("Account created. Check your email to confirm your account, then return to MORISE.");
-    setLoading(false);
+    setMessage("Inscription créée. Consultez votre email si une confirmation est requise.");
+    setBusy(false);
   }
 
   return (
-    <main>
-      <section className="hero" aria-labelledby="title">
-        <p className="eyebrow">MORISE / CREATE</p>
-        <h1 id="title">Create your Player.</h1>
-        <p className="lead">One account. One evolving Player. The rest grows from there.</p>
-        <form className="form" onSubmit={handleSubmit}>
-          <label className="field">
-            <span>Display name</span>
-            <input className="input" autoComplete="name" maxLength={50} required value={displayName} onChange={(event) => setDisplayName(event.target.value)} />
+    <main className="moirise-shell">
+      <section className="moirise-card">
+        <p className="moirise-muted">M01 · SESSION</p>
+        <h1>Créer un Player</h1>
+        <form onSubmit={submit}>
+          <label className="moirise-field">
+            Email
+            <input
+              type="email"
+              autoComplete="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              required
+            />
           </label>
-          <label className="field">
-            <span>Email</span>
-            <input className="input" autoComplete="email" inputMode="email" required type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
+          <label className="moirise-field">
+            Mot de passe
+            <input
+              type="password"
+              autoComplete="new-password"
+              minLength={8}
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              required
+            />
           </label>
-          <label className="field">
-            <span>Password</span>
-            <input className="input" autoComplete="new-password" minLength={8} required type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
-          </label>
-          {error ? <p className="notice error">{error}</p> : null}
-          {notice ? <p className="notice success">{notice}</p> : null}
-          <button className="button" type="submit" disabled={loading}>
-            {loading ? "Creating…" : "Create Player"}
-          </button>
+          {message ? <p className="moirise-muted">{message}</p> : null}
+          {error ? <p className="moirise-error">{error}</p> : null}
+          <div className="moirise-actions">
+            <button className="moirise-button primary" disabled={busy} type="submit">
+              {busy ? "Création…" : "Créer le Player"}
+            </button>
+            <Link className="moirise-button" href="/auth/sign-in">
+              Connexion
+            </Link>
+          </div>
         </form>
-        <div className="actions">
-          <Link className="button secondary" href="/auth/sign-in">I already have an account</Link>
-          <Link className="button secondary" href="/">Back home</Link>
-        </div>
       </section>
     </main>
   );
