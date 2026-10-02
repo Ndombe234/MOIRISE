@@ -1,5 +1,8 @@
 # MOIRISE — INDEX CANONIQUE
 
+## État d'implémentation
+Avant toute inspection de code, lire `RESET_STATE.md`. Ce fichier définit la frontière entre l'ancienne implémentation et le nouveau rebuild. `CURRENT_REPOSITORY_EVIDENCE.md` est historique et décrit uniquement l'état pré-reset.
+
 ## Règle de lecture
 Chaque module possède exactement deux fichiers actifs :
 - PLAN.md = comportement détaillé, du déclencheur jusqu'au DONE.
