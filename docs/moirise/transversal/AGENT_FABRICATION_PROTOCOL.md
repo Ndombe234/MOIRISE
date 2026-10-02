@@ -550,3 +550,57 @@ VERIFIED_AT
 ~~~
 
 A repository assertion such as "the function exists" is implementation evidence, not behavioral verification.
+
+
+## 19. D10K adversarial fabrication protocol
+
+At D10K, the agent must maintain two graphs:
+
+### Fabrication graph
+task → dependencies → file → symbol → implementation → test
+
+### Evidence graph
+task → commit → command/scenario → expected → actual → environment → status
+
+The evidence graph is separate from implementation state because passing tests does not prove browser, mobile, security or production behavior.
+
+### D10K rule
+
+For every user-facing or security-sensitive task, execute:
+
+IMPLEMENT
+→ FOCUSED TEST
+→ INTEGRATION
+→ SECURITY
+→ DESKTOP USER
+→ MOBILE USER
+→ FAILURE
+→ RECOVERY
+→ BUILD/CI
+→ IMPACT REVIEW
+→ LOCK
+
+A missing applicable stage leaves the task unverified.
+
+### Correction loop
+
+FAIL
+→ PRESERVE EVIDENCE
+→ CLASSIFY
+→ ROOT CAUSE
+→ MINIMAL PATCH
+→ RE-RUN FAILED STAGE
+→ RE-RUN DIRECT DEPENDENTS
+→ RECHECK IMPACT
+
+Never convert a failed stage directly to PASS because a later stage succeeded.
+
+### Machine guard
+
+The agent must reject a task definition when:
+- owner is missing;
+- dependency is unresolved;
+- authority is ambiguous;
+- persistence authority is ambiguous;
+- expected result is missing;
+- required evidence class is missing.
