@@ -65,3 +65,21 @@ Les registres provider séparés ont été supprimés pour éviter une troisièm
 - transversal/AGENT_FABRICATION_PROTOCOL.md — operational contract for ChatGPT/Codex: canonical reading order, machine-usable task context, detail ladder, cross-module decomposition, game fabrication, user simulation, adversarial verification, evidence and time recalculation.
 - DETAIL_LEVEL_GOVERNANCE.md — permanent « détail » rule and depth progression.
 - PROJECT_TIME_MODEL.md — elapsed-time bands and recalculation rules.
+
+
+## Documentation hierarchy — canonical read order
+0. PRODUCT_CONSTITUTION.md — product invariants and non-negotiable rules.
+1. ARCHITECTURE_MASTER.md — system map, ownership boundaries and cross-module structure.
+2. MASTER_PLAN.md — product scope and build order.
+3. modules/*/PLAN.md — owner behavior.
+4. modules/*/TECHNICAL_DESIGN.md — owner technical design.
+5. SPECIFICATION_STANDARD.md — required behavioral specification depth.
+6. IMPLEMENTATION_CONTRACT_STANDARD.md — machine/execution-ready contract requirements.
+7. code/migrations → tests → browser → production evidence.
+
+## MORISE AI hierarchy
+- ai/AI_CONSTITUTION.md — AI-specific constitution above operational AI documents.
+- ai/AI_MASTER_PLAN.md — canonical operational WHAT.
+- ai/AI_TECHNICAL_DESIGN.md — canonical operational HOW.
+
+The AI constitution does not create a second AI brain or a competing implementation. It defines higher-order invariants; the two AI operational documents remain the implementation sources of truth.
