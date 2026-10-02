@@ -62,3 +62,23 @@ Seules les versions PUBLISHED et autorisées par visibility/safety/privacy entre
 Les métadonnées de découverte peuvent inclure genre, mode 2D/3D, durée, contrôles, difficulté, tags, version et compatibilité device.
 
 M07 ne crée jamais un faux jeu pour remplir le catalogue. Une version retirée disparaît de la projection discovery.
+
+## 11. CREATIVE SOCIAL DISCOVERY
+M07 also owns discovery ranking for public social media projections consumed by SOCIAL/WORLD/PLAY. It must not create a second feed owner.
+
+Candidate flow for public media:
+`candidate → visibility → block/mute → recommendation eligibility → safety → dedupe → quality floor → diversity → novelty → relevance/personalization → ranking → reasonKey → projection`.
+
+Signals may include watch choice, completion, dwell quality, explicit likes/dislikes/not-interested, shares, follows, saves, freshness, novelty and creator diversity. Signals are versioned and rate-limited.
+
+## 12. Friends/interest projection
+M07 may expose compact projections such as `FRIENDS_ACTIVITY`, `NEW_FOR_YOU`, `YOUR_GROUP_LIKES`, `CREATIVE_TO_TRY` when the underlying public/permissioned activity is eligible. It never exposes hidden private activity.
+
+## 13. Creation-loop discovery
+A public creation may expose `CREATE_FROM_CONCEPT` as a capability. The user receives a new creative brief rather than a copy instruction. Source attribution and permission state travel with the candidate.
+
+## 14. Viral share signal
+A share is a discovery signal only after dedupe/burst controls. Recipient opens and meaningful downstream actions may increase relevance; repeated self-sharing or automated bursts must not manufacture ranking.
+
+## 15. Tests
+Public Reel discovery, Story discovery within lifetime, expired Story exclusion, friend activity privacy, not-interested suppression, originality-inconclusive candidate handling, share burst suppression, creator diversity, cold-start discovery and fallback without AI.
