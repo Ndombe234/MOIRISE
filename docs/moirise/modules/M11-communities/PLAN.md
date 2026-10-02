@@ -69,3 +69,14 @@ Invite is scoped, expiring and deduplicated. Block/mute/privacy checks occur at 
 M15 may propose affinity clusters or community concepts from allowed signals. M11 decides creation, membership and visibility.
 ## Viral/community loop
 Real shared action → invite → join → participate → create/play → event/content → discovery. Auto-added members are forbidden.
+
+# D110 — CROSS-LOOP INTEGRATION GOVERNANCE
+M11 transforme les actions partagées réelles en appartenance durable : join → participate → contribute → event/play/create → return.
+
+M11 est owner de membership, roles et visibilité communautaire. M15 peut proposer une community concept ou affinity cluster, mais M11 décide la création, l'appartenance et les permissions.
+
+Le cold-start communautaire n'ajoute jamais automatiquement des membres. Toute croissance provient d'une action réelle, d'une invitation autorisée ou d'une participation réelle.
+
+M11 peut recevoir des transitions depuis M03/M10/M12 et émettre des projections vers M07, tout en conservant la règle de confidentialité comme gate préalable.
+
+Référence : `docs/moirise/transversal/PRODUCT_LOOP_GOVERNANCE.md`.
