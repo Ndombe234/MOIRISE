@@ -1186,3 +1186,26 @@ L'IA peut optimiser la clarté, la découvrabilité et la possibilité de partag
 
 # AI-CONSTITUTION BOUNDARY
 Before this operational WHAT is implemented, the fabricator must read docs/moirise/ai/AI_CONSTITUTION.md. That document is the higher-order identity and invariant layer for MORISE AI. This file remains the source of operational behavior; AI_TECHNICAL_DESIGN remains the source of operational HOW. No feature may redefine AI identity, authority, provider independence, privacy, autonomy or evolution rules locally.
+
+
+# D100 — MORISE AI — SPÉCIFICATION OPÉRATIONNELLE PROFONDE
+## 100.1 Request compilation
+Une AIRequest ne devient exécutable qu'après résolution de actor server-side, owner module, privacyClass, requiredCapabilities, requestedOutput, sideEffects, autonomy et resourceBudget. Toute ambiguïté non couverte par une policy réversible produit CLARIFY.
+## 100.2 Context assembly
+ContextResolver sélectionne par scope puis permission, visibility, minimum-necessary, relevance, provenance, expiry et hash. Les données non nécessaires ne sont pas chargées. Les scopes privés ne peuvent pas être promus à une portée supérieure par simple résumé.
+## 100.3 Requirements compiler
+L'intention est transformée en exigences testables. Chaque exigence identifie source, owner, acceptance rule et validator. Une capability provider-specific ne doit pas être introduite avant cette étape.
+## 100.4 Planning
+TaskGraphBuilder produit un DAG ; chaque node possède capabilityId/version, inputRefs, outputRefs, validator, timeout, retry, resourceProfile et idempotencyKey. Cycle, référence inconnue ou budget impossible = refus avant exécution.
+## 100.5 Decision hierarchy
+Policy > owner authority > validator > model/provider output. Un provider peut proposer un résultat ; seul l'owner committe l'état métier.
+## 100.6 Memory
+Candidate memory → evidence → validation → scoped promotion. Les expériences d'échec restent distinguées des patterns validés. Une mémoire contradictoire crée une nouvelle version/evidence plutôt qu'un écrasement silencieux.
+## 100.7 Media intelligence
+Image/video/audio/music suivent analyse modale → faits sémantiques → concepts réutilisables → éléments protégés/restrictifs → brief créatif → génération → validators → artifact lineage. La source privée reste dans son scope.
+## 100.8 Social intelligence
+MORISE peut produire reasonKey, candidates, summaries, creative suggestions and matching proposals. M07/M03/M11/etc. restent les owners des décisions/mutations sociales.
+## 100.9 Agent orchestration
+Codex/agents are execution targets. Chaque invocation possède workspace scope, tool allowlist, resource budget, deadline, output contract, validator and cancellation. Agent output is never a publish command.
+## 100.10 Evolution
+Toute évolution d'architecture ou de code crée candidateRef + baselineRef + benchmark suite + security/policy evidence + rollbackRef. La promotion est versionnée et réversible.
