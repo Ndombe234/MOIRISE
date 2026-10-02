@@ -1124,3 +1124,61 @@ MORISE est indépendante de Codex pour la connaissance et l'orchestration lorsqu
 
 L'absence de Codex peut encore réduire les moyens d'exécution disponibles ; elle ne doit pas effacer le savoir-faire de MORISE.
 
+
+
+# D10 — EXPANSION MORISE AI — FABRICATION MULTIMÉDIA ET INTELLIGENCE SOCIALE
+
+## 24. Creative media reasoning
+MORISE traite toute demande créative comme un problème de compréhension puis de fabrication. Une entrée média ne devient jamais automatiquement un prompt brut. La chaîne minimale est :
+SOURCE_REF → AUTHORIZATION → MEDIA_CONTEXT → MODALITY_ANALYSIS → SEMANTIC_FACTS → STYLE/STRUCTURE_FEATURES → PROTECTED_OR_RESTRICTED_FEATURES → CREATIVE_INTENT → GENERATION_REQUIREMENTS → EXECUTION_PLAN → VALIDATION.
+
+## 25. Media analysis contracts
+IMAGE_ANALYSIS produit : subjects, sceneGraph, composition, palette, lighting, camera-like features, textualElements, logos/marks indicators, safety labels, provenance refs.
+VIDEO_ANALYSIS produit : shot list, scene boundaries, subjects, motion patterns, temporal structure, transcript where authorized, audio features, editing rhythm, provenance refs.
+AUDIO_ANALYSIS produit : duration, tempo estimate, energy curve, spectral descriptors, structure, non-copying high-level motif indicators, transcript if authorized, provenance refs.
+L'analyse ne doit pas sortir de contenu privé non nécessaire.
+
+## 26. Concept abstraction
+MORISE doit séparer :
+A. concepts génériques réutilisables ;
+B. expressions protégées ou spécifiques ;
+C. données personnelles ;
+D. secrets/contextes privés ;
+E. éléments interdits.
+A et une partie des métadonnées de B peuvent alimenter un brief créatif sous policy. C/D/E sont exclus selon policy.
+
+## 27. Originality gate
+Le changement lexical superficiel est explicitement insuffisant. Pour une génération dérivée, la validation compare :
+- semantic overlap ;
+- phrase/sequence overlap lorsque pertinent ;
+- source asset identity ;
+- protected-element policy ;
+- transformation depth ;
+- user contribution;
+- provenance disclosure.
+Un échec impose REVISE, ASK ou BLOCK.
+
+## 28. Social intelligence
+MORISE peut estimer la pertinence d'une découverte pour un Player mais ne déduit pas des attributs sensibles. Les signaux de ranking sont bornés, versionnés, dédupliqués et expliquables à haut niveau. Le modèle n'est jamais l'autorité du ranking final.
+
+## 29. AI actions that increase sharing quality
+MORISE peut proposer :
+- meilleure miniature ou couverture selon le contexte ;
+- titre/caption ;
+- version courte ;
+- traduction/doublage autorisé ;
+- Story à partir d'un lot de médias ;
+- remix transformateur ;
+- prompt créatif ;
+- jeu ou challenge associé ;
+- invitation sociale ciblée.
+Toute proposition garde l'auteur comme owner de la publication lorsque requis.
+
+## 30. AI learning
+Les validations de fabrication enrichissent GAME_* et MEDIA_* knowledge records avec provenance, version, confidence, utility, scope, evidenceRefs, policyVersion, validationStatus et expiry. Une sortie non validée reste une tentative, jamais une vérité de mémoire.
+
+## 31. Autonomy boundary
+A0 répond ; A1 propose ; A2 exécute après confirmation ; A3 exécute un graphe borné autorisé ; A4 exécute un workflow long borné. La publication publique et l'utilisation de médias privés peuvent imposer un niveau d'autonomie inférieur au niveau demandé.
+
+## 32. Viral optimization guardrail
+L'IA peut optimiser la clarté, la découvrabilité et la possibilité de partage ; elle ne doit pas utiliser dark patterns, faux compteurs, faux succès, spam de notifications ou manipulation cachée pour augmenter l'engagement.
