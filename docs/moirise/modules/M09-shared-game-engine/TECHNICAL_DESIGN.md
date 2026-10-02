@@ -55,3 +55,17 @@ Allocation : validate build → validate manifest → verify device/resource pro
 Resource policy : CPU/GPU/RAM/network/time budgets vérifiés avant launch et observés pendant runtime. Dépassement selon policy : DEGRADED, PAUSED, TERMINATED ou RESTART.
 
 Tests : sandbox escape, undeclared API, filesystem traversal, secret scan, unrestricted network, capability mismatch, malicious artifact, crash, worker loss.
+
+# D10 — M09 SHARED GAME ENGINE — CONCEPTION TECHNIQUE
+## GameRuntimeManifest
+`runtimeId,version,engineClass,buildId,requiredFeatures,deviceProfiles,resourceBudget,networkPolicy,assetManifestHash`.
+## Sandbox
+CPU/RAM/time quotas, worker isolation, allowlisted APIs, no service-role access, no arbitrary URL fetch and no persistent unapproved storage.
+## Loader
+fetch manifest → verify build status → hash → compatibility → allocate resources → mount assets → start runtime.
+## Telemetry
+Only whitelisted gameplay telemetry fields; raw user secrets/content excluded. Result authority remains M06.
+## Performance
+Frame budget, memory budget, asset size budget and watchdog. Overrun → DEGRADED/ABORTED, not silent runaway.
+## Tests
+hash mismatch, revoked build, incompatible device, infinite loop, oversized asset, forbidden network, memory overrun, clean shutdown.
