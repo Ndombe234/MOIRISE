@@ -378,3 +378,20 @@ When « détail » is requested again:
 8. record new evidence.
 
 Never create duplicate business rules to make a feature appear more detailed.
+
+
+# D100 — AGENT FABRICATION — MACHINE-EXECUTABLE DEPTH
+## Mandatory task packet
+Before editing, the agent must resolve: taskId, owner, source documents, current code location, authoritative state, dependencies, expected files, exact inputs/outputs, validators, tests and browser scenarios. Missing authority is a SPECIFICATION_GAP, not permission to invent.
+## File placement
+The agent must search for an existing implementation before creating a new service/component/table/route. New files require a stated owner and contract reference.
+## Change discipline
+One task = bounded scope + bounded files + bounded mutations. Cross-module changes are listed explicitly before implementation. Unrelated cleanup is deferred unless required for correctness.
+## Verification loop
+inspect → implement → typecheck → targeted tests → integration tests → build → browser desktop → browser mobile → adversarial tests → regression → evidence.
+## Browser behavior
+Interact like a normal user: click/tap every relevant control, reload, back/forward, open deep links, simulate errors/retries, verify loading/empty/error/degraded states and ensure no blank screen.
+## Agent output
+The agent reports files, migrations, tests, browser evidence, remaining blockers, rollback point and DONE/BLOCKED status. Agent self-assertion never counts as production evidence.
+## Parallelism
+Independent tasks may run in isolated worktrees. Tasks touching shared contracts or same files must be serialized/integrated through a designated owner/integrator.
