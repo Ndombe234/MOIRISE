@@ -81,3 +81,56 @@ A detail expansion must update the estimate only from newly exposed engineering 
 ## 12. Agent stopping rule
 
 An agent must not stop at « page renders » or « tests pass ». It stops only after the applicable DONE evidence exists, or after explicitly reporting BLOCKED/PARTIAL/INCONCLUSIVE with the missing evidence identified.
+
+
+## 13. D1K machine-fabrication interpretation
+
+D1K does not mean "write ten times more". It means transforming the canonical design into units directly executable by a fabrication agent.
+
+For every active feature, the module TECHNICAL_DESIGN must be able to provide, without creating a third business document:
+- a stable FEATURE_ID;
+- a stable TASK_ID for every fabrication unit;
+- owner and non-owners;
+- exact preconditions and inputs;
+- files to create/modify;
+- affected symbols/functions/classes;
+- dependencies and fabrication order;
+- mutations, events and idempotency rules;
+- exact tests;
+- desktop/mobile browser scenarios;
+- expected results;
+- required evidence;
+- current status.
+
+A D1K specification is incomplete if the agent still has to guess which file or symbol must be modified to perform the task.
+
+## 14. D1K traceability rule
+
+Canonical traceability becomes:
+
+REQ
+→ FEATURE_ID
+→ TASK_ID
+→ owner
+→ file
+→ symbol
+→ data/event contract
+→ implementation
+→ test
+→ browser action
+→ evidence
+→ status
+
+A behavior change updates the canonical owner source before fabrication.
+
+## 15. No-document-proliferation rule
+
+The machine-fabrication layer does not automatically authorize a new documentation file.
+
+Preference order:
+1. enrich PLAN.md when behavior changes;
+2. enrich TECHNICAL_DESIGN.md when HOW, fabrication graph or contracts change;
+3. enrich an existing transversal contract when the rule is genuinely transversal;
+4. create a new artifact only when the data is generated/executable and cannot be expressed cleanly in the existing canonical sources.
+
+Fabrication inventories therefore must not become a third source of truth.
