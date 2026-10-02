@@ -52,3 +52,10 @@ Les registres provider séparés ont été supprimés pour éviter une troisièm
 - audits/FEATURE_COVERAGE.md
 - audits/DUPLICATE_AUDIT.md
 - audits/DOCUMENTATION_BUILD_REPORT.md
+
+
+## D10 governance and planning
+- `DETAIL_LEVEL_GOVERNANCE.md` — permanent rule for multiplying specification precision by ten at each « détaille » request.
+- `PROJECT_TIME_MODEL.md` — current elapsed-time bands and recalculation rule after each detail expansion.
+- `CREATIVE_MEDIA_VIRALITY_PLAN.md` — social media, Reels, Stories, creative transformation and virality behavior.
+- `CREATIVE_MEDIA_VIRALITY_TECHNICAL_DESIGN.md` — media graph, viral graph, derivation, provenance, share-token and validation contracts.
