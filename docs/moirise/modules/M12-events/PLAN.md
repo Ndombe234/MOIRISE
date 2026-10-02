@@ -53,3 +53,15 @@ Upcoming event → reminder/Story/share → registration → participation → v
 Reminder preferences, event dedupe, time-zone correctness and cancellation propagation.
 ## DONE
 Timezones, registration, capacity where applicable, cancellation, expired event, reminders and cross-module deep-links validated.
+
+# D100 — SPÉCIFICATION COMPORTEMENTALE
+## Lifecycle
+DRAFT → SCHEDULED → ACTIVE → COMPLETED or CANCELLED. Only M12 changes lifecycle state.
+## Registration
+Registration checks visibility, eligibility and capacity if configured. Duplicate requests return existing state.
+## Reminders
+Derived only from Event state/timezone. Cancellation or time changes must update pending reminders.
+## Recap
+Completed event can emit validated recap projections using actual participation/results/media references. No fabricated attendees or outcomes.
+## AI
+M15 may draft descriptions, schedule suggestions and personalized copy. Factual event state is M12 authority.
