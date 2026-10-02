@@ -214,3 +214,11 @@ Vérifications :
 - Codex est une cible d'exécution optionnelle ; il ne possède ni mémoire, ni vérité, ni autorité de publication.
 - Les connaissances validées restent disponibles lorsque Codex est désactivé.
 - Les projections GameKnowledge sont reconstruisibles et ne deviennent pas une deuxième source de vérité.
+
+
+## D100K AI layer — 2026-10-02
+La formalisation AI est maintenant complète dans les deux seules sources canoniques :
+- AI_MASTER_PLAN.md : propriétés formelles de cognition, autonomie, capacités, mémoire, évolution, authority et proof.
+- AI_TECHNICAL_DESIGN.md : fabrication fichier/symbole, pipeline RequestGate→Validation→OwnerCommit, adversarial tests, property checks, evidence graph et Dependency Impact Layer.
+
+Objectif vérifiable : aucun troisième « AI brain », router, provider registry, memory authority ou evolution authority documentaire ne doit apparaître.
