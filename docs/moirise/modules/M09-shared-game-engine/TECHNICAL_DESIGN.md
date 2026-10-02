@@ -69,3 +69,18 @@ Only whitelisted gameplay telemetry fields; raw user secrets/content excluded. R
 Frame budget, memory budget, asset size budget and watchdog. Overrun → DEGRADED/ABORTED, not silent runaway.
 ## Tests
 hash mismatch, revoked build, incompatible device, infinite loop, oversized asset, forbidden network, memory overrun, clean shutdown.
+
+# D100 — TECHNICAL CONTRACT DETAIL
+## RuntimeManifest
+```
+RuntimeManifest { runtimeId,version,buildId,engineClass,entrypoint,assetManifestHash,
+ requiredFeatures,deviceProfiles,resourceBudget,networkPolicy,savePolicy }
+```
+## Loader
+validate build state → hash → manifest schema → runtime compatibility → resource admission → sandbox mount → start.
+## Resource watchdog
+Track CPU, RAM, frame budget, wall-clock and network quotas. Threshold exceedance transitions DEGRADED→ABORTED according to severity.
+## Sandbox API
+Only allowlisted runtime services are exposed. Shell, filesystem, arbitrary network, secrets and admin functions are unavailable.
+## Tests
+hash mismatch, revoked build, runtime crash, memory leak, infinite loop/watchdog, network denial, oversized package, clean shutdown and lease release.
