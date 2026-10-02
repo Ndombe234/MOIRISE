@@ -109,3 +109,17 @@ M13 may propose changes; M04 applies only validated projections. World novelty m
 World can expose “why this is here” explanation keys, related creations, playable actions or community context without fabricating popularity.
 ## DONE
 World deep-link, empty real state, safe projections, deletion propagation, blocked item filtering, adaptive update fallback and mobile/desktop verified.
+
+# D100 — SPÉCIFICATION COMPORTEMENTALE
+## World entry
+ENTER_WORLD resolves a WorldContext snapshot: locale, deviceProfile, current activity, safe available projections and navigation source. It must not scan all private social data.
+## Projection ingestion
+Owner event → visibility/privacy filter → safety filter → type-specific projection → expiration/version check → World presentation.
+## Handoff
+Every action card identifies ownerModule/capabilityId/targetRef. M04 does not mutate external owner state directly.
+## Adaptive content
+M13 may propose an adaptive object. M04 accepts only a validated proposal with evidence and expiry. Unknown/inconclusive proposals are excluded.
+## Deletion
+Owner delete/privacy change must propagate to World cache and deep links. A stale World card may show UNAVAILABLE rather than resurrect content.
+## Viral/world loop
+World may expose real relations such as related creation, game, community or event. It must not claim popularity unless backed by actual data.
