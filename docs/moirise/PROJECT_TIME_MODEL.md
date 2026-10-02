@@ -86,3 +86,18 @@ This is an execution-control improvement, not a new product scope. Therefore the
 For M01, the previous remaining envelope of approximately 16–28 hours remains the working estimate for closing the full DONE gate. The D1K layer makes the work more traceable; it does not justify multiplying the estimate by ten.
 
 The estimate must be revised if the next fabrication pass discovers additional persistence, browser, security, concurrency or production work beyond the currently documented gaps.
+
+
+## D100K scope clarification — 2026-10-02
+
+D100K is a specification/verifiability expansion, not an automatic increase in implementation scope.
+
+It can expose additional engineering work when formal properties reveal:
+- previously undocumented edge cases;
+- missing validators;
+- missing concurrency controls;
+- missing evidence paths;
+- compatibility obligations;
+- rollback/recovery gaps.
+
+Time is recalculated only from those newly exposed engineering obligations. Documentation depth itself does not multiply the project duration.
