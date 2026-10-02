@@ -134,3 +134,20 @@ Preference order:
 4. create a new artifact only when the data is generated/executable and cannot be expressed cleanly in the existing canonical sources.
 
 Fabrication inventories therefore must not become a third source of truth.
+
+
+## 16. D10K endpoint
+
+D10K is reached when the specification can define not only fabrication but adversarial proof and production evidence.
+
+The D10K endpoint must expose, where applicable:
+- attack/failure matrix;
+- evidence prerequisites;
+- evidence identity;
+- regression scope;
+- cross-module mutation firewall;
+- correction/retest loop;
+- production lock;
+- unresolved blockers.
+
+No further level is created merely to produce more prose. A new level is justified only when it introduces a genuinely new engineering control, verification dimension or execution boundary.
