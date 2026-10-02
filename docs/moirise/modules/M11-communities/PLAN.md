@@ -43,3 +43,17 @@ Create rollback, duplicate join, expired invite, block, role escalation, last-ow
 ## AI-INTÉGRATION M11 — CONTRAT DE COMPRÉHENSION POUR L'IA DE FABRICATION
 
 M11 reste l'unique autorité pour Communities/Guilds, membership, rôles, invitations et gouvernance. MORISE AI peut découvrir des communautés, proposer une formation, résumer ou assister la modération, mais toute mutation passe par le command path M11. Une CommunityProposal est une proposition non autoritative : proposal → policy → M11 validation → commit → event. Les données privées ne traversent la frontière AI que par scope explicite. Aucune sortie AI ne peut ajouter un membre, élever un rôle, contourner un block ou supprimer la protection du dernier owner. Sans AI, discovery et gouvernance restent déterministes. DONE exige des tests de role escalation, private-data leakage, duplicate join, stale membership, proposal rejection et provider outage.
+
+# D10 — M11 COMMUNITIES — EXPANSION COMPORTEMENTALE
+## Community role
+Communities/guilds create durable belonging around Otaku interests, games, creations and events.
+## Creation
+PROPOSAL/CREATE → POLICY → OWNER MEMBERSHIP → DEFAULT SETTINGS → EVENT → DISCOVERY PROJECTION.
+## AI role
+M15 can propose affinity/convergence/community creation but M11 decides actual creation, membership, roles and visibility.
+## Media/game integration
+Communities can host feeds, Stories/Reels projects, challenges, game sessions and events without owning their internal source records.
+## Viral growth
+A community grows from a real shared action (play, creation, event, discussion), not from fake recommendations or auto-added users. Invitations are scoped and rate-limited.
+## DONE
+Public/private membership, moderation, roles, invite controls, cross-module projections and leave/delete recovery validated.
