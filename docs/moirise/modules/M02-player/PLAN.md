@@ -201,3 +201,19 @@ M02 may expose explicitly permitted Player-owned media references to M15. It mus
 
 ### DONE
 Profile photo/avatar generation, profile media, deletion, privacy changes and AI creative suggestions remain functional when AI providers are unavailable.
+
+# D10 — M02 PLAYER — EXPANSION COMPORTEMENTALE
+## Identity surface
+Profile = identity + preferences + privacy + avatar + public creations projection + selected highlights. No direct AI write.
+## Profile evolution
+VIEW_PUBLIC → FOLLOW/INTERACT → VIEW_CREATIONS → OPEN_HIGHLIGHT → CREATE_FROM_PROFILE_MEDIA when policy permits. Private settings never enter public ranking without explicit allowed signals.
+## Avatar/media
+Upload/generate path uses quarantine, MIME/size/dimension checks, moderation, provenance and replace transaction. Generated avatar retains source/derivation metadata.
+## Personalization
+PlayerAIContext may include explicit interests, locale, current activity and validated memory; sensitive inference is forbidden.
+## Viral hooks
+Profile has shareable safe entry points: profile card, selected Reel/Photo/Story highlight, creator collection. Every shared surface resolves through M01 token policy.
+## Player memory
+Store only validated memories with scope/provenance/retention/consent. Promotion to broader scope requires owner/policy.
+## DONE D10
+Cold-start profile, profile editing, avatar generation, media highlight, privacy changes, account deletion propagation, AI outage and cross-player isolation are validated.
