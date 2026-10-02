@@ -111,3 +111,27 @@ Every publishable game should define one social hook: challenge, score card, rem
 Store successful architecture, component compatibility, failures and repair patterns only after validation.
 ## DONE
 Reproducible build, sandboxing, tests, resource budget, security and publication handoff validated.
+
+# D100K — M08 Game Factory — FORMAL BEHAVIOR / PROOF LAYER
+
+## 1. Machine-complete behavior contract
+Owner: M08. Scope: research→spec→task graph→build→validation→publish. Dependencies: M01,M05,M07,M09,M15. Primary invariant: M08 produces packages; M09 owns execution.
+For every capability: ACTOR → TRIGGER → PRECONDITIONS → INPUTS → AUTHORITY → GUARDS → STATE TRANSITION → POSTCONDITIONS → EVENTS → PROJECTIONS → FAILURE → RECOVERY → EVIDENCE.
+
+## 2. Forbidden states
+Authorization failure, invalid schema, incompatible version, ownership violation, idempotency conflict or critical dependency failure must produce zero unauthorized authoritative mutation.
+
+## 3. AI boundary
+M15 may propose or analyze only through capability contracts. M08 remains authoritative for research→spec→task graph→build→validation→publish.
+
+## 4. Proof obligations
+SUCCESS + NO-DATA + ERROR + DEGRADED/UNAVAILABLE + REFRESH/REOPEN + DESKTOP + MOBILE + PERMISSION DENIAL + RETRY/REPLAY where applicable.
+
+## 5. Impact obligation
+M08 → consumers → events → projections → routes/UI → AI capabilities → tests → security/resilience. UNKNOWN impact is UNRESOLVED, never assumed safe.
+
+## 6. Formal acceptance properties
+Owner authority cannot be bypassed; duplicate commands cannot duplicate authoritative mutation; stale versions cannot silently overwrite current state; projections remain rebuildable; privacy survives handoffs; VERIFIED requires applicable evidence.
+
+## 7. Completion
+This D100K section defines what must be provable. It does not claim implementation completion.
