@@ -3037,3 +3037,26 @@ Provider timeout → retry only according to policy; provider failure → fallba
 Unit: schema, privacy scopes, provenance, protected-range handling, originalness policy.
 Integration: source→analysis→brief→generation→validation.
 Browser: create from photo, create from Reel, Story creation, share, revoke, mobile, desktop, offline/degraded.
+
+
+# D100 — MORISE AI — CONCEPTION TECHNIQUE DÉTAILLÉE
+## 100.11 AIRequest
+AIRequest = requestId + traceId + actorId(server-derived) + sourceModule + intent + inputRefs[] + constraints[] + privacyClass + expectedOutput + sideEffects[] + requiredCapabilities[] + requestedAutonomy + resourceBudget + deadline + policyVersion + createdAt.
+## 100.12 ContextSnapshot
+ContextSnapshot = snapshotId + scope + refs[] + permissionVersion + privacyClass + provenanceRefs[] + contextHash + expiresAt. Evidence-bearing reasoning uses a logical immutable snapshot.
+## 100.13 TaskNode
+TaskNode = taskId + graphId + nodeKey + capabilityId + capabilityVersion + dependencies[] + inputRefs[] + outputRefs[] + resourceProfile + validatorId + timeout + retryPolicy + idempotencyKey + state + lease?.
+## 100.14 Capability contract
+CapabilityRegistry stores inputSchema, outputSchema, executionTargets, privacyClass, resourceClass, timeout, concurrency, validators, health and maturity. Provider support never grants permission automatically.
+## 100.15 Provider router
+Hard filters = capability, privacy, trust, CPU/RAM/GPU, network, quota, deadline, health and verification. A soft score runs only after hard filters. No model output can bypass a hard rejection.
+## 100.16 Validation
+Pipeline may include schema → policy → security → static → type → runtime → behavior → content → artifact → result integrity. VALID/INVALID/DEGRADED/INCONCLUSIVE are explicit. INCONCLUSIVE cannot auto-publish or promote memory.
+## 100.17 Memory record
+MemoryRecord = memoryId + scope + type + sourceRef + provenanceRef + evidenceRefs[] + confidence + utility + validationStatus + policyVersion + createdAt + expiresAt. Write scope defaults narrower than read scope.
+## 100.18 Agent adapter
+AgentExecution = workspaceRef + taskNode + toolAllowlist + resourceProfile + deadline + cancellation + outputRefs. Production secrets, arbitrary shell, arbitrary URL and arbitrary filesystem remain denied unless a bounded capability explicitly grants access.
+## 100.19 Repair controller
+RepairAttempt = diagnosisRef + hypothesis + candidateRevision + impactedTests[] + attemptNumber + maxAttempts. Same failureFingerprint with no progress evidence triggers escalation.
+## 100.20 Evolution controller
+candidate → static/tests → benchmark → security/policy → canary → monitor → promote/reject → rollback. Every transition is versioned and auditable.
