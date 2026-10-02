@@ -78,3 +78,22 @@ World projections are safe-to-cache only with source version and revocation time
 M13 outputs proposal/signal; M04 validates and projects. No direct world mutation from model output.
 ## Tests
 source deletion, privacy change, blocked creator, stale projection, adaptive provider outage, deep-link, mobile navigation.
+
+# D100 — TECHNICAL CONTRACT DETAIL
+## WorldObject
+```
+WorldObject { objectRef, objectType, sourceOwner, visibilityClass, safetyState,
+ projectionVersion, sourceVersion, actions[], expiresAt, generatedAt }
+```
+## Projection key
+cache key includes sourceRef + sourceVersion + privacyVersion + projectionPolicyVersion. Any change to those versions invalidates the safe projection.
+## Handoff contract
+```
+Handoff { ownerModule, capabilityId, targetRef, expectedVersion?, contextRef,
+ safeActionKey }
+```
+The client cannot substitute another ownerModule/capabilityId after issuance.
+## World memory
+M13 memory references remain scoped; M04 receives projections, not unrestricted memory tables.
+## Test matrix
+source deletion, privacy flip, block, stale version, invalid handoff, unknown proposal, provider failure, deep-link refresh, mobile world scroll, no-data real empty state.
