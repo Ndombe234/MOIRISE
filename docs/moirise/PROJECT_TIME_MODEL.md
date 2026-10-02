@@ -72,3 +72,26 @@ For the currently documented scope, including the 15 canonical modules, MORISE A
 The central estimate assumes the agent also performs browser verification and iterative correction rather than stopping after code generation.
 
 The estimate is not multiplied by the detail factor. A deeper document can reduce ambiguity and agent rework while revealing hidden implementation, integration, security, recovery, browser and mobile work. The estimate therefore follows newly discovered engineering work, not document length.
+
+
+# D100 — PROJECT TIME MODEL — RÉVISION 2026-10-02
+## Why the estimate changed
+D100 added implementation-ready decisions for state machines, schemas, idempotency, privacy, ownership, browser acceptance, media provenance, 2D/3D runtime constraints, AI task graphs and recovery. This does not multiply coding time by 100; it makes hidden work visible and should reduce agent guesswork.
+## Current remaining work bands
+Aggressive elapsed project target: approximately 5–6 months.
+Central working target: approximately 6–8 months.
+Integration-safe target: approximately 7–9 months.
+These are elapsed-time planning bands under the assumption that ChatGPT/Codex/agents execute the technical work and the owner provides roughly 3 hours/day of supervision/decisions.
+## Main remaining cost centers
+1. Stabilize repository/CI and current implementation blockers.
+2. Implement missing foundation and domain flows.
+3. Build M15 central AI execution infrastructure.
+4. Build M08/M09 reusable 2D/3D game platform.
+5. Implement image/video/audio/music creation pipelines with provenance and validation.
+6. Implement Reels/Stories/social discovery loops.
+7. Integrate all modules and run desktop/mobile/browser resilience tests.
+8. Production evidence, monitoring and rollback validation.
+## What reduces time
+Reuse existing contracts, common primitives, Game Factory, fabrication memory, parallel isolated agents, fast CI, targeted tests, browser automation and strict owner boundaries.
+## What can increase time
+Major schema changes, provider instability, 3D runtime issues, media processing limits, security/privacy remediation, cross-module regressions and production incidents.
