@@ -112,3 +112,8 @@ DiscoveryFeedback { id, actorRef, itemRef, action, dedupeKey, policyVersion, cre
 Unique/dedupe + rate limit before ranking consumption.
 ## Tests
 privacy-before-AI, blocked-before-score, stale ranking invalidation, cold-start, device mismatch, provider outage, pagination cursor stability.
+
+# D110 — RECOMMENDATION EXPERIMENTATION CONTRACT
+Une recommandation persistée porte rankingVersion et, pour une expérience, experimentId, cohortId, assignmentVersion et exposureId.
+Pipeline : candidate → offline evaluation → cohort exposure → metric window → comparison → governed decision. M15 ne peut pas écrire directement un ranking de production.
+Les metrics relient exposition, value-after-click et transformations réelles sans utiliser d'attributs sensibles cachés.
