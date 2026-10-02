@@ -57,3 +57,15 @@ Communities can host feeds, Stories/Reels projects, challenges, game sessions an
 A community grows from a real shared action (play, creation, event, discussion), not from fake recommendations or auto-added users. Invitations are scoped and rate-limited.
 ## DONE
 Public/private membership, moderation, roles, invite controls, cross-module projections and leave/delete recovery validated.
+
+# D100 — SPÉCIFICATION COMPORTEMENTALE
+## Community creation
+validate actor → validate name/settings → policy → create community → create OWNER membership → commit → emit CommunityCreated → project discovery. Failure rolls back every partial record.
+## Membership
+JOIN requires visibility/eligibility policy; private communities require approval when configured. LEAVE updates membership state; role changes are owner/admin-policy operations and never AI direct writes.
+## Invitations
+Invite is scoped, expiring and deduplicated. Block/mute/privacy checks occur at dispatch and acceptance, not only creation.
+## AI/community formation
+M15 may propose affinity clusters or community concepts from allowed signals. M11 decides creation, membership and visibility.
+## Viral/community loop
+Real shared action → invite → join → participate → create/play → event/content → discovery. Auto-added members are forbidden.
