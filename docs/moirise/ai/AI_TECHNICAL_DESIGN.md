@@ -2942,3 +2942,98 @@ Un échec doit distinguer :
 
 Cette distinction empêche de conclure à tort que MORISE a oublié lorsqu'il manque seulement un outil d'exécution.
 
+
+
+# D10 — EXPANSION TECHNIQUE — MEDIA UNDERSTANDING / GENERATION / SOCIAL INTELLIGENCE
+
+## 24. Canonical MediaRef
+```
+MediaRef {
+  mediaId,
+  ownerId,
+  mediaType,
+  sourceType,
+  sourceRef?,
+  visibilityClass,
+  privacyClass,
+  provenanceRef,
+  moderationStatus,
+  lifecycleState,
+  contentHash?,
+  derivativeOf?,
+  usagePolicyRef,
+  createdAt,
+  updatedAt
+}
+```
+
+## 25. MediaAnalysisResult
+```
+MediaAnalysisResult {
+  analysisId,
+  mediaRef,
+  analyzerCapability,
+  analyzerVersion,
+  facts[],
+  sceneGraph?,
+  transcriptRef?,
+  audioFeatures?,
+  visualFeatures?,
+  safetyFindings[],
+  protectedElementFindings[],
+  confidence,
+  evidenceRefs[],
+  policyVersion,
+  expiresAt
+}
+```
+A result is evidence, not authority. Downstream owners decide what may be persisted or projected.
+
+## 26. CreativeBrief
+```
+CreativeBrief {
+  briefId,
+  sourceRefs[],
+  conceptSet[],
+  excludedProtectedElements[],
+  targetModality,
+  targetAudienceContext?,
+  creativeConstraints[],
+  requestedTransformationDepth,
+  outputPolicy,
+  provenanceDisclosureMode,
+  validatorRefs[]
+}
+```
+
+## 27. GenerationTask
+Every image/video/music generation is a TaskGraph node with capabilityVersion, inputRefs, outputRefs, resource requirements, privacyClass, deadline, validatorId, retryPolicy and idempotencyKey.
+
+## 28. OriginalityValidation
+Validators operate in order:
+schema → policy → provenance → safety → protected-element policy → transformation-depth → content-quality → artifact integrity.
+Statuses: VALID, INVALID, DEGRADED, INCONCLUSIVE.
+INCONCLUSIVE never auto-publishes.
+
+## 29. Derivative graph
+Every generated artifact stores derivativeOf[] and sourcePolicyRefs[]. Deleting/revoking a source can trigger projection invalidation and, where policy requires, visibility or regeneration review of derived artifacts.
+
+## 30. Provider neutrality
+UI calls POST /api/ai with capabilityId and MediaRef/inputRefs. The browser never chooses a provider URL. Provider adapters can be swapped without changing M03/M15 contracts.
+
+## 31. Media resource policy
+Heavy generation must be asynchronous. Mobile requests use device/resource profiles. The router selects local → cache → trusted worker → opt-in community worker → verified client-side/free provider → API provider → explicitly enabled paid provider → degraded.
+
+## 32. Viral event telemetry
+Events such as media_viewed, opened_story, replayed, shared, remixed, created_from_source, invited, joined_group and played_from_share are aggregated with bounded retention and privacy classification. Raw private message content is excluded.
+
+## 33. Idempotency
+Upload and generation commands require commandId/idempotencyKey. A repeated command with identical payload returns the prior result; reused key with different payload yields CONFLICT.
+
+## 34. Recovery
+Provider timeout → retry only according to policy; provider failure → fallback or degraded state; committed artifact + lost response → GET by commandId; revoked source policy → invalidate affected projection; invalid generated artifact → reject and keep prior valid state.
+
+## 35. Tests
+Unit: schema, privacy scopes, provenance, protected-range handling, originalness policy.
+Integration: source→analysis→brief→generation→validation.
+Browser: create from photo, create from Reel, Story creation, share, revoke, mobile, desktop, offline/degraded.
