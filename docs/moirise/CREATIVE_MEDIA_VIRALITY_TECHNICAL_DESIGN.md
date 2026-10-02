@@ -416,3 +416,67 @@ Every media capability requires:
 
 ## 27. DONE
 The technical contract is complete when the same architecture can handle photo, video, audio and music input; generate new artifacts; preserve provenance; enforce privacy; support Stories/Reels/reposts/remixes; feed discovery; create share opportunities; and degrade safely when AI/providers are unavailable.
+
+
+# D10 — EXPANSION TECHNIQUE — MEDIA GRAPH / VIRAL GRAPH / CREATION GRAPH
+
+## 12. MediaGraph
+```
+MediaNode = mediaId + mediaType + ownerId + visibility + provenance + lifecycle + derivativeOf[]
+MediaEdge = SOURCE_OF | DERIVED_FROM | SHARED_TO | REMIX_OF | INSPIRED_BY | PLAYED_FROM | GROUP_CONTEXT
+```
+Les arêtes sont versionnées et soumises à la privacy du nœud source.
+
+## 13. ViralOpportunity
+```
+ViralOpportunity {
+  opportunityId,
+  actorRef,
+  sourceRef,
+  valueClass,
+  allowedActions[],
+  audienceClass,
+  privacyState,
+  safetyState,
+  freshness,
+  novelty,
+  explanationKey,
+  expiryAt
+}
+```
+Cette structure représente une opportunité de valeur, pas une promesse de reach.
+
+## 14. Ranking
+candidate generation → privacy/block/safety → dedupe → freshness/novelty → relationship/context signals → content quality → bounded social feedback → rankingVersion → projection.
+A single viral signal cannot bypass safety or privacy.
+
+## 15. ShareToken
+ShareToken includes tokenId, sourceRef, issuerRef, recipientScope, permissionClass, expiryAt, revocationVersion and audience constraints. Token revocation must invalidate future access.
+
+## 16. Story pipeline
+CREATE_DRAFT → VALIDATE_ASSETS → SET_AUDIENCE → PUBLISH → ACTIVE → EXPIRE → ARCHIVE_OR_DELETE.
+Expired stories must never be reintroduced by stale cache.
+
+## 17. Reel pipeline
+DRAFT → UPLOADING → SCANNING → READY → PUBLISHED → RANKING_ELIGIBLE → REMOVED/EXPIRED.
+A removed Reel remains non-rankable even if an old recommendation projection exists.
+
+## 18. Creative derivation pipeline
+SOURCE_SELECT → CONSENT/POLICY → ANALYZE → ABSTRACT → BRIEF → GENERATE → VALIDATE → REVIEW_IF_REQUIRED → PUBLISH.
+The derivation record preserves provenance without exposing private source data to public viewers.
+
+## 19. Instrumentation
+Event schema:
+eventId, eventType, actorRef?, objectRef, relatedSourceRef?, sessionRef?, privacyClass, occurredAt, schemaVersion, policyVersion.
+Raw DM text, secret tokens and private payloads never enter general analytics.
+
+## 20. Performance
+Use cursor pagination; precompute safe projections; asynchronous generation; media CDN references rather than database blobs; bounded fanout for share notifications; cache invalidation on privacy and deletion changes.
+
+## 21. Tests
+Privacy: private source cannot create public artifact automatically.
+Deletion: source revocation updates derived eligibility.
+Originality: low-transformation result blocks/asks.
+Cold-start: no-content case returns real empty state with creation/discovery fallback.
+Ranking: blocked and private excluded before score.
+Mobile: media upload resume and degraded playback.
