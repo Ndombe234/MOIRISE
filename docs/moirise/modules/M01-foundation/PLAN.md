@@ -212,3 +212,46 @@ Les share links, invite links et media derivative links doivent utiliser des tok
 Toute AIRequest passe par l'auth/policy boundary M01 avant M15. Aucun provider direct dans les composants frontend.
 ## DONE D10
 Startup, auth loss, refresh, deep-link, revoked session, invalid capability, expired share token, provider outage, slow network, mobile keyboard and desktop navigation all produce recoverable states.
+
+# D100K — M01 Foundation — FORMAL BEHAVIOR / PROOF LAYER
+
+## 1. Machine-complete behavior contract
+Owner: M01. Scope: runtime/shell/session/routing/capabilities/events. Dependencies: M02+.
+Primary invariant: server-derived identity; no cross-owner writes.
+
+For every capability of M01, the canonical state transition is:
+ACTOR → TRIGGER → PRECONDITIONS → INPUTS → AUTHORITY → GUARDS → STATE TRANSITION → POSTCONDITIONS → EVENTS → PROJECTIONS → FAILURE → RECOVERY → EVIDENCE.
+
+No capability is complete if an implementation decision remains inferable from prose alone.
+
+## 2. Forbidden states
+A transition must have zero mutation when:
+- authorization fails;
+- input/schema validation fails;
+- required version is incompatible;
+- target is outside owner scope;
+- idempotency conflict occurs;
+- a required authoritative dependency is unavailable.
+
+## 3. AI boundary
+AI/M15 may propose, classify, summarize or generate candidates only within the capability contract. M01 remains the owner of its authoritative state. AI output without validated evidence is non-authoritative.
+
+## 4. Proof obligations
+Each user-visible capability must prove:
+SUCCESS + EMPTY/NO-DATA + ERROR + UNAVAILABLE/DEGRADED where applicable + REFRESH/REOPEN + MOBILE + DESKTOP + PERMISSION DENIAL + RETRY/REPLAY behavior.
+
+## 5. Change-impact obligation
+A change to a M01 contract requires traversal:
+M01 → direct consumers → events → projections → routes/UI → AI capabilities → tests → security/resilience scenarios.
+Unknown impact is UNRESOLVED, never assumed safe.
+
+## 6. Formal acceptance properties
+- owner authority cannot be bypassed;
+- duplicate commands do not duplicate authoritative mutation;
+- stale versions do not silently overwrite newer state;
+- projections can be rebuilt from authoritative state;
+- privacy/visibility constraints survive every handoff;
+- VERIFIED cannot be emitted without applicable evidence.
+
+## 7. Completion
+D100K means the feature definition is machine-checkable. It does not mean the code is already fabricated.
