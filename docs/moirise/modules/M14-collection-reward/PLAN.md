@@ -53,3 +53,15 @@ Discover → earn → inspect → customize/display → share → discover next 
 M15 can analyze collection balance and propose content ideas. It cannot grant rewards or choose lottery outcomes.
 ## DONE
 Ledger idempotence, outcome audit, daily limit, duplicate prevention, share privacy, rollback and AI outage validated.
+
+# D100K — M14 Collection / Reward — FORMAL VERIFICATION
+
+Owner: M14. Scope: collection, reward ledger, roulette, economy. Dependencies: M05,M06,M10,M11,M12. Invariant: M14 alone owns authoritative reward/economy mutation.
+
+Canonical transition: ACTOR → INTENT → PRECONDITIONS → CONTEXT/POLICY → INPUTS → AUTHORITY → GUARDS → STATE → OUTPUT → VALIDATION → COMMIT → EVENTS → PROJECTIONS → FAILURE → RECOVERY → EVIDENCE.
+
+Forbidden: hidden owner transfer, unauthorized mutation, silent privacy expansion, stale overwrite, duplicate authoritative mutation, or treating an unverified proposal as fact.
+
+Proof must cover nominal, empty/no-data, failure, degraded/unavailable, replay, concurrency where relevant, refresh/reopen, permissions, mobile and desktop, and the module-specific invariant.
+
+Impact path: M14 → consumers → contracts/events → projections → routes/UI → AI capabilities → tests → security/resilience. Unknown impact remains UNRESOLVED.
