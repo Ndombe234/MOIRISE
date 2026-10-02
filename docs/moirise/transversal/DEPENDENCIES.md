@@ -30,3 +30,61 @@ Pour toute feature AI :
 module owner → capability contract → M15 orchestration → provider/worker éventuel → ValidationEngine → module owner commit → event → projection.
 
 La fabrication doit donc charger à la fois la dépendance de module et son contrat AI. Un consumer peut demander une capability, mais ne choisit pas directement le provider et ne modifie pas la persistence d'un autre owner.
+
+
+## 3. Dependency Impact Layer
+
+The module matrix above describes module dependencies. Fabrication additionally resolves impact at multiple levels.
+
+### Edge types
+- MODULE_DEPENDS: module dependency;
+- CONTRACT_READS: reading a contract/projection;
+- SYMBOL_IMPORTS: direct symbol import;
+- SYMBOL_CALLS: direct call;
+- DATA_READS / DATA_WRITES: data access;
+- EVENT_EMITS / EVENT_CONSUMES: event relation;
+- ROUTE_ENTERS: route to capability;
+- AI_CAPABILITY: dependency on M15 capability;
+- PROJECTION_FEEDS: projection to a surface;
+- TEST_ASSERTS: test covering behavior;
+- BROWSER_VERIFIES: browser scenario covering behavior.
+
+### Change-impact algorithm
+
+~~~text
+change
+→ changed file/symbol/contract
+→ direct consumers
+→ transitive consumers
+→ event consumers
+→ projections/routes
+→ AI capability callers
+→ affected tests
+→ affected security/resilience scenarios
+~~~
+
+Every impact result is classified:
+DIRECT, TRANSITIVE, POTENTIAL, UNRESOLVED.
+
+A POTENTIAL or UNRESOLVED dependency is never silently treated as safe.
+
+### Example
+
+For a change to M08 GameSpecification, the agent must resolve at minimum the contract path toward:
+M08 internal TaskGraph → M09 runtime manifest → M06 Play validation → M05 progression hooks → M14 rewards where the changed contract reaches them, plus any M07 discovery, M10 social gaming and M15 AI capability surfaces actually connected by the code/contracts.
+
+The list is an impact hypothesis until source-code/contracts traversal confirms each edge.
+
+## 4. Ownership guard for impact analysis
+
+Impact analysis discovers consumers; it does not transfer ownership.
+
+A consumer may:
+- read an exposed projection;
+- consume an event;
+- call an allowed use-case/capability.
+
+A consumer may not:
+- mutate another owner's private tables/state directly;
+- create a competing event authority;
+- create a competing AI capability/provider router.
