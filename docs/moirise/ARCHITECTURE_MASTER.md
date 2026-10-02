@@ -115,3 +115,16 @@ Il n'existe qu'un :
 - play result authority.
 
 Un nouveau mécanisme doit d'abord rechercher l'owner existant avant de créer une nouvelle abstraction.
+
+
+# D100 — ARCHITECTURE MASTER — CONTRATS DE STRUCTURE
+## Boundary rule
+Each cross-module edge has producer owner, consumer owner, contract version, allowed inputs, allowed outputs and failure semantics. Direct database writes across owners are forbidden unless the owner contract explicitly exposes them.
+## Dependency graph
+M01 is foundational. M02 depends on M01. M03 uses M01/M02. M04 consumes validated projections. M05 consumes authoritative events. M06 consumes M09 runtime and M07 publication state. M08/M09/M10 form the game platform. M11/M12/M13/M14 expose domain states consumed by World/System. M15 orchestrates but does not own their state.
+## Event rule
+Events represent committed facts and carry producerModule/schemaVersion/occurredAt plus references required for idempotent consumption. Consumers tolerate duplicate delivery.
+## Projection rule
+A projection records source owner and source version. When source state is revoked or deleted, dependent projections become invalid/unavailable and are not recreated from stale cache.
+## Cross-cutting rule
+Shared services such as validation, memory, provider routing and scheduling are invoked by capability contracts; modules do not fork their own implementation merely to change presentation.
