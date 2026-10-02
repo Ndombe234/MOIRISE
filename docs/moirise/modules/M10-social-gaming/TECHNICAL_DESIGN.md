@@ -83,3 +83,7 @@ game.result.validated → M10 hook → privacy/block/rate-limit → notification
 Actor-target and actor-global caps; duplicate invites collapse; mute/block checked immediately before dispatch.
 ## Tests
 forged source result, duplicate invite, expired challenge, blocked recipient, group membership changed after invite, removed build, notification storm.
+
+# D110 — CROSS-LOOP HANDOFF CONTRACT
+Les transitions game.result.validated → M10 → M03/M11/M14 portent sourceResultRef, owner, policyVersion, dedupeKey, targetCapability et expiry.
+Aucune transition ne contourne M06 pour créer un résultat. Les projections sont idempotentes et invalidables si la source est supprimée ou retirée.
