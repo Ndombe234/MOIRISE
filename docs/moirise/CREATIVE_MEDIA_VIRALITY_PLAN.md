@@ -377,3 +377,20 @@ La boucle doit casser proprement si le contenu est privé, supprimé, bloqué, s
 
 ## 22. Measurement
 Mesures principales : activation, successful creation, meaningful share, invitation acceptance, repeat creation, return within defined cohort window, content diversity, creator retention, safety incidents. Ne pas optimiser sur un seul chiffre.
+
+
+# D100 — CRÉATIVE MEDIA + VIRALITÉ — SPÉCIFICATION PROFONDE
+## Media-to-create contract
+Source media must expose a user-authorized action such as CREATE_FROM_SOURCE. Authorization is checked before analysis. The generated artifact receives a new identity and derivative graph reference.
+## Reel decision points
+At upload: asset integrity, moderation, provenance. At publish: audience/privacy. At discovery: safety/visibility/quality/ranking eligibility. At removal: invalidate rank/share projections.
+## Story decision points
+Draft remains private; publication freezes audience/expiry policy for that version. Replies/reactions are scoped to the Story audience. Expiration is server-controlled.
+## Music decision points
+Audio may be analyzed into high-level features when authorized. Generation brief must not ask for reproduction of a source recording/melody/lyrics when policy forbids it. Output stores provenance and validation.
+## AI-assisted creation
+AI can suggest caption, cover, trim, translation/dubbing, visual transformation, soundtrack concept, game concept or challenge. The user/owner remains responsible for final publication when required.
+## Viral mechanics
+For every shareable object define: source value, recipient value, next action, return path, audience scope, anti-spam rule, and revocation path. A share button without these contracts is incomplete.
+## Cold-start
+No fake social graph. First-session experience uses actually available content and creation affordances. The system should always have an honest next action even when the content pool is small.
