@@ -60,3 +60,26 @@ AffinityProposal → policy → M11 decision → commit. No provider can insert 
 Invite record has inviter, target, scope, expiry, status and dedupeKey. Block/mute/privacy enforced before sending.
 ## Tests
 concurrent create, duplicate membership, unauthorized role change, invite abuse, private community leakage, deleted creator, AI outage.
+
+# D100 — TECHNICAL CONTRACT DETAIL
+## Community
+```
+Community { communityId, ownerId, visibility, state, settingsVersion, version,
+ createdAt, updatedAt }
+```
+## Membership
+```
+Membership { communityId, playerId, role, status, version, joinedAt, leftAt? }
+```
+Unique communityId/playerId. Role changes use expectedVersion and policy.
+## Creation transaction
+all validation → community insert → OWNER membership insert → default settings → event. On any failure, rollback transaction.
+## Invite
+```
+CommunityInvite { inviteId, communityId, inviterRef, targetRef, scope,
+ expiresAt, status, dedupeKey }
+```
+## AI boundary
+AffinityProposal cannot write membership. M11 resolves policy and commits.
+## Tests
+concurrent create, duplicate membership, unauthorized role escalation, private community leak, invite replay, blocked target, AI outage, owner deletion and leave/rejoin.
