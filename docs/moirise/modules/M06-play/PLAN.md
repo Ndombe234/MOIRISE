@@ -118,3 +118,15 @@ M15 may transform an authorized media concept into a game requirement; M08 build
 Sharing a game must not bypass content/safety/publication checks. Failed builds are never exposed as playable links.
 ## DONE
 2D/3D build, result integrity, resume/retry, social entry, network loss, mobile controls and desktop controls all work with real states.
+
+# D100 — SPÉCIFICATION COMPORTEMENTALE
+## Launch
+Any launch source resolves to a validated GameBuild reference plus visibility snapshot. M06 verifies build eligibility before creating PlaySession.
+## Session
+OPEN → CHECK_DEVICE → RESOLVE_BUILD → STARTING → ACTIVE → PAUSED/RESUMING → FINISHING → RESULT_PENDING → VALIDATED/ABORTED. The client cannot transition directly to VALIDATED.
+## Result
+Client submits candidate result evidence; M06 validates format, build/version, session ownership, timing/nonce where used, and runtime evidence before committing result.
+## Social result
+Only validated result data may become a share card, challenge or progression event. A failed/removed build cannot create a new playable/shareable result.
+## Recovery
+Lost network after finish → GET by commandId/session. Session restore uses authoritative state; stale client state is not merged silently.
