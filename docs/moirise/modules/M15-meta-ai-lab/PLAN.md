@@ -295,3 +295,14 @@ M15 emits proposals/results; the owner commits durable state. M15 receives the c
 Candidate patch → isolated workspace → baseline tests → candidate tests → benchmark → security/policy → canary → monitor → promote/reject → rollback.
 ## Media/game/social
 Image/video/music generation, game fabrication and social intelligence use the same request/policy/validation/memory backbone.
+
+# D110 — CROSS-LOOP INTEGRATION GOVERNANCE
+M15 est l'orchestrateur des transitions et l'owner de l'intelligence, mais jamais l'owner des états métier distants.
+
+Pour tout cross-loop request, M15 doit produire : owners source/destination, context scopes minimaux, capability versions, DAG, validators, policy, fallback et output contract avant exécution.
+
+M15 peut proposer une ranking hypothesis, creator intervention, community formation, event bridge ou game transition. La décision durable retourne toujours au module owner.
+
+Toute amélioration autonome du comportement cross-loop suit : observation → hypothèse → candidate → sandbox → tests → benchmark → security/policy → canary → product validation → promote/reject → monitor/rollback.
+
+Référence : `docs/moirise/transversal/PRODUCT_LOOP_GOVERNANCE.md`.
