@@ -69,3 +69,23 @@ Only whitelisted gameplay telemetry fields; raw user secrets/content excluded. R
 Frame budget, memory budget, asset size budget and watchdog. Overrun → DEGRADED/ABORTED, not silent runaway.
 ## Tests
 hash mismatch, revoked build, incompatible device, infinite loop, oversized asset, forbidden network, memory overrun, clean shutdown.
+
+# D100K — M09 Shared Game Engine — FABRICATION / CONTRACT / EVIDENCE LAYER
+
+## 1. Task record
+TASK_ID → FEATURE_ID → FILES → SYMBOLS → INPUT/OUTPUT → AUTHORITY → MUTATIONS → EVENTS → DEPENDENCIES → TESTS → BROWSER → EXPECTED → ACTUAL → EVIDENCE → STATUS.
+
+## 2. File/function contract
+Each implementation file and non-trivial symbol must specify path, owner M09, inputs/outputs, authoritative state, side effects, idempotency, concurrency/version policy, errors, telemetry and direct tests.
+
+## 3. M09 adversarial focus
+Test the module-specific invariant above, plus replay, forged references, authorization bypass, stale state, duplicate commands, race conditions, malformed upstream data, partial network failure and privacy leakage.
+
+## 4. Evidence contract
+Evidence must reference exact commit + exact command/scenario + expected + actual + environment. Old evidence never certifies a new commit.
+
+## 5. Ownership firewall
+No task owned by M09 may silently take authority from another module. Cross-module effects are use-case/event/projection handoffs.
+
+## 6. Production lock
+Tests passing without applicable browser/mobile/security/resilience/production proof leave the task non-VERIFIED.
