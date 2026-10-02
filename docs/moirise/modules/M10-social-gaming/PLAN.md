@@ -80,3 +80,27 @@ Invite dedupe, recipient controls, mute, frequency caps and block enforcement.
 Challenge links should make the next action obvious and reversible: play, join group, rematch or share result.
 ## DONE
 Friend/group challenge, privacy, block, duplicate invite, build removal and mobile/desktop behavior tested.
+
+# D100K — M10 Social Gaming — FORMAL BEHAVIOR / PROOF LAYER
+
+## 1. Machine-complete behavior contract
+Owner: M10. Scope: challenges, rematch, social game events. Dependencies: M03,M06,M11,M12. Primary invariant: social state cannot falsify game results.
+Capability transition: ACTOR → TRIGGER → PRECONDITIONS → INPUTS → AUTHORITY → GUARDS → STATE → POSTCONDITIONS → EVENTS → PROJECTIONS → FAILURE → RECOVERY → EVIDENCE.
+
+## 2. Forbidden states
+No authoritative mutation on failed auth/policy/schema/version/ownership/idempotency guards or unavailable critical dependency.
+
+## 3. AI and cross-module boundary
+M15 may propose/analyze but cannot mutate M10 private authority. Consumers use defined contracts/events/projections only.
+
+## 4. Proof obligations
+Nominal, empty/no-data, error, unavailable/degraded, retry/replay, refresh/reopen, permission denial, concurrency where relevant, desktop and mobile, plus adversarial cases specific to M10.
+
+## 5. Impact obligation
+M10 → consumers → events → projections → routes/UI → AI capabilities → tests → security/resilience. Unknown impact remains UNRESOLVED.
+
+## 6. Formal properties
+Authority is unique; duplicate commands are idempotent; stale versions do not overwrite; projections remain rebuildable; privacy follows the object; VERIFIED requires fresh applicable evidence.
+
+## 7. Completion
+This section defines proof requirements, not implementation completion.
