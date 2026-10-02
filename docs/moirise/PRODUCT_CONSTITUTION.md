@@ -5,7 +5,7 @@
 
 ## 1. Identité du produit
 
-MOIRISE est un réseau social Otaku, ludique et créatif dont le SYSTEM constitue le langage d'interaction central.
+MOIRISE est un réseau social international, ludique et créatif dont le SYSTEM constitue le langage d'interaction central. Les univers Otaku/anime peuvent constituer des centres d'intérêt et des contenus, mais ne définissent pas l'identité globale du produit.
 
 Le produit réunit :
 - social humain ;
