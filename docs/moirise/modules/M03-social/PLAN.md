@@ -210,3 +210,23 @@ M03 emits meaningful `ShareOpportunity` events only after completed creations, g
 
 ### M03.14 Viral loop tests
 Test upload → Reel → watch → share → recipient open → follow → create-from-concept → publish; Story expiry; repost attribution; remix permission; private-media leakage; duplicate share; provider outage; mobile/desktop; no-button-explosion UX.
+
+# D10 — M03 SOCIAL — EXPANSION COMPORTEMENTALE
+## Social object families
+Post, Comment, Reaction, Follow, Conversation, Message, Photo, Reel, Story, Share, Repost, Remix, Save, Highlight.
+## Feed/reels/stories
+Feed may mix posts/media; Reels is immersive short video; Stories are ephemeral; Friends projection surfaces social context. All are projections of authoritative M03 objects.
+## Story flow
+CREATE_DRAFT → ASSET_CHECK → AUDIENCE → PREVIEW → PUBLISH → ACTIVE → EXPIRE → ARCHIVE/DELETE.
+## Reel flow
+DRAFT → UPLOAD → SCAN → READY → PUBLISH → DISCOVERY_ELIGIBLE → REMOVE/EXPIRE.
+## Creation from media
+A user can choose CREATE_FROM_SOURCE on permitted media. M03 authorizes source; M15 analyzes/generates; M03 owns resulting social publication.
+## Repost/remix
+Repost is pointer-based and keeps source provenance. Remix requires meaningful transformation metadata. Minor-copy content is not treated as original.
+## Share
+Share recipient may be friend, group, conversation or public share-token scope. Privacy/block checks precede token issuance.
+## Viral loops
+Every public social object may expose at most one primary next-action cluster in the current context: react/share/create/follow/play depending on object type.
+## DONE
+Posts, photos, Reels, Stories, DMs, repost/remix/share all obey privacy, idempotence, deletion, moderation, mobile/desktop and AI fallback.
