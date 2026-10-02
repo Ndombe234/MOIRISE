@@ -82,3 +82,17 @@ A share is a discovery signal only after dedupe/burst controls. Recipient opens 
 
 ## 15. Tests
 Public Reel discovery, Story discovery within lifetime, expired Story exclusion, friend activity privacy, not-interested suppression, originality-inconclusive candidate handling, share burst suppression, creator diversity, cold-start discovery and fallback without AI.
+
+# D10 — M07 GAME DISCOVERY — EXPANSION COMPORTEMENTALE
+## Discovery universe
+M07 ranks games and also provides transferable discovery primitives to public media only when the owner contract delegates that projection. It never invents catalogue entries.
+## Candidate pipeline
+REQUEST → NORMALIZE → VISIBILITY → SAFETY → COMPATIBILITY → DEDUPE → DIVERSITY → NOVELTY → RANKING → REASON → PROJECTION.
+## Social context
+Friend activity, group interest, recently played and creator affinity are bounded signals. No sensitive inference.
+## Viral hooks
+“Play because…”, “friend played”, “created for your group”, “new for you” and “remix this concept” are reason keys tied to factual evidence.
+## Cold-start
+First-session ranking mixes explicit interests, diverse real popular content, novelty and short games; no fake personalization.
+## DONE
+Ranking works without AI and remains safe when AI scores disappear or stale data exists.
