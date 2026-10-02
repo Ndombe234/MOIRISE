@@ -96,3 +96,27 @@ Friend activity, group interest, recently played and creator affinity are bounde
 First-session ranking mixes explicit interests, diverse real popular content, novelty and short games; no fake personalization.
 ## DONE
 Ranking works without AI and remains safe when AI scores disappear or stale data exists.
+
+# D100K — M07 Game Discovery — FORMAL BEHAVIOR / PROOF LAYER
+
+## 1. Machine-complete behavior contract
+Owner: M07. Scope: candidate discovery, ranking, recommendations. Dependencies: M01,M02,M03,M06,M13. Primary invariant: ranking is explainable and no fake engagement signals.
+For every capability: ACTOR → TRIGGER → PRECONDITIONS → INPUTS → AUTHORITY → GUARDS → STATE TRANSITION → POSTCONDITIONS → EVENTS → PROJECTIONS → FAILURE → RECOVERY → EVIDENCE.
+
+## 2. Forbidden states
+Authorization failure, invalid schema, incompatible version, ownership violation, idempotency conflict or critical dependency failure must produce zero unauthorized authoritative mutation.
+
+## 3. AI boundary
+M15 may propose or analyze only through capability contracts. M07 remains authoritative for candidate discovery, ranking, recommendations.
+
+## 4. Proof obligations
+SUCCESS + NO-DATA + ERROR + DEGRADED/UNAVAILABLE + REFRESH/REOPEN + DESKTOP + MOBILE + PERMISSION DENIAL + RETRY/REPLAY where applicable.
+
+## 5. Impact obligation
+M07 → consumers → events → projections → routes/UI → AI capabilities → tests → security/resilience. UNKNOWN impact is UNRESOLVED, never assumed safe.
+
+## 6. Formal acceptance properties
+Owner authority cannot be bypassed; duplicate commands cannot duplicate authoritative mutation; stale versions cannot silently overwrite current state; projections remain rebuildable; privacy survives handoffs; VERIFIED requires applicable evidence.
+
+## 7. Completion
+This D100K section defines what must be provable. It does not claim implementation completion.
