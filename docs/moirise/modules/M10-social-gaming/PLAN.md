@@ -64,3 +64,19 @@ Le jeu produit des événements de gameplay validables. M10 possède l'état soc
 M15 peut proposer composition d'équipe, matchmaking assistance, résumé ou événement social. La proposition devient active seulement après validation M10.
 
 Un jeu sans hook social reste un jeu solo. Aucun social layer n'est ajouté artificiellement.
+
+# D10 — M10 SOCIAL GAMING — EXPANSION COMPORTEMENTALE
+## Social game objects
+Challenge, rematch, party, co-op invite, spectator projection, team, result card and game-linked conversation.
+## Loop
+PLAY → RESULT → SOCIAL_ACTION → INVITE/SHARE/REMATCH → NEW_SESSION.
+## Boundaries
+M10 owns social hooks; M06 owns play session; M11 owns membership; M14 owns rewards.
+## Media integration
+A validated Reel/Story/photo can include a game launch action. A game result can produce a media card only from authoritative result data.
+## Anti-spam
+Invite dedupe, recipient controls, mute, frequency caps and block enforcement.
+## Viral loops
+Challenge links should make the next action obvious and reversible: play, join group, rematch or share result.
+## DONE
+Friend/group challenge, privacy, block, duplicate invite, build removal and mobile/desktop behavior tested.
