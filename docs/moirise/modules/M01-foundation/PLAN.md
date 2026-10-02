@@ -212,3 +212,32 @@ Les share links, invite links et media derivative links doivent utiliser des tok
 Toute AIRequest passe par l'auth/policy boundary M01 avant M15. Aucun provider direct dans les composants frontend.
 ## DONE D10
 Startup, auth loss, refresh, deep-link, revoked session, invalid capability, expired share token, provider outage, slow network, mobile keyboard and desktop navigation all produce recoverable states.
+
+# D100 — SPÉCIFICATION COMPORTEMENTALE ET CONTRATS D'IMPLÉMENTATION
+
+## 100.1 Bootstrap déterministe
+Acteur=browser/session. Déclencheur=initial document load. Préconditions=runtime JS disponible, configuration publique valide. Ordre exact:
+1) lire configuration publique;
+2) créer requestId/traceId;
+3) résoudre session serveur;
+4) déterminer route et authClass;
+5) charger uniquement les projections nécessaires;
+6) afficher SHELL;
+7) charger les capacités non critiques après rendu;
+8) signaler READY ou DEGRADED.
+Une dépendance non critique indisponible ne doit jamais produire un écran blanc.
+
+## 100.2 Route contract
+Chaque route doit fournir: routeId, pathPattern, authClass, ownerModule, loader, loadingView, emptyPolicy, errorBoundary, degradedPolicy, prefetchPolicy, deepLinkPolicy, mobilePolicy, desktopPolicy. Aucune route métier ne doit directement appeler un provider.
+
+## 100.3 Session transitions
+UNKNOWN → RESOLVING → AUTHENTICATED/ANONYMOUS → EXPIRED/REVOKED. Toute transition de session invalide les actions dont la permission dépendait de l'ancien état. Une réponse tardive d'une session précédente doit être rejetée par session/version token.
+
+## 100.4 Share/invite security
+Un lien partageable ne transporte pas une autorité durable. Le token référence une source, une audience, une expiration et une version de révocation. Résolution: signature → expiration → révocation → audience → visibility → target state. Une suppression/révocation doit invalider toute projection accessible par l'ancien token.
+
+## 100.5 AI boundary
+POST /api/ai accepte uniquement capabilityId, inputRefs, constraints, requestedOutput, requestedAutonomy. actorId et permissions sont dérivés serveur. Provider et URL provider sont exclus de l'entrée client.
+
+## 100.6 Required evidence
+Tests: cold boot, anonymous route, authenticated route, session expiry, deep-link, refresh, duplicate click, late response, revoked share token, offline/degraded, mobile viewport, desktop keyboard, no-white-screen.
