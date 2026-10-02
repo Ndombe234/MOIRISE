@@ -35,3 +35,17 @@ EventAIContext = { eventRef, lifecycleState, organizerPermissionProjection, part
 EventProposal = { fieldChanges, evidenceRefs, confidence, requestedAutonomy, expiresAt }.
 M12 validates lifecycle, organizer authority, participant scope, version and conflicts before commit.
 Event content never becomes trusted tool instruction. Tests cover unauthorized organizer mutation, participant leakage, injected provider URL, stale proposal, duplicate notification, AI outage.
+
+# D10 — M12 EVENTS — CONCEPTION TECHNIQUE
+## EventState
+`Event={eventId,ownerRef,startAt,endAt,status,timezone,eligibilityVersion,visibility,version}`.
+## Registration
+`EventRegistration={eventId,playerId,status,registeredAt,sourceRef?}`. Unique event/player.
+## Reminder
+Reminder job derives from real EventState, recalculates after update/cancel, and never schedules a reminder for already completed/cancelled state.
+## AI proposal
+EventContentProposal contains factual fields + creative fields separately; only safe factual fields are trusted automatically.
+## Results
+Results are immutable facts after owner commit; recap projections may include validated media links.
+## Tests
+timezone boundary, duplicate registration, cancellation, reminder race, stale projection, unauthorized access, AI-generated factual hallucination.
