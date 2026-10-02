@@ -65,3 +65,21 @@ game.result.validated → M10 social hook → recipient projection → optional 
 Per-actor and per-target caps, dedupe keys, mute/block filtering before notification enqueue.
 ## Tests
 forged result, expired challenge, duplicate invite, blocked recipient, deleted group, removed build, notification storm.
+
+# D100 — TECHNICAL CONTRACT DETAIL
+## Challenge
+```
+Challenge { challengeId, sourceResultRef, challengerRef, targetScope,
+ rulesVersion, expiresAt, status, createdAt }
+```
+## Invite
+```
+GameInvite { inviteId, buildRef, challengeRef?, issuerRef, recipientScope,
+ expiresAt, revocationVersion, dedupeKey }
+```
+## Event flow
+game.result.validated → M10 hook → privacy/block/rate-limit → notification/share projection → optional M11 action.
+## Abuse control
+Actor-target and actor-global caps; duplicate invites collapse; mute/block checked immediately before dispatch.
+## Tests
+forged source result, duplicate invite, expired challenge, blocked recipient, group membership changed after invite, removed build, notification storm.
