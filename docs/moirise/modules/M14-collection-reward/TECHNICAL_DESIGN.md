@@ -38,3 +38,17 @@ RewardProposal is non-authoritative.
 Roulette authority = M14 configuration, selection algorithm, pull ledger, daily-limit policy.
 Commit = evidence validation → entitlement → reward transaction → event → projection.
 Tests : AI cannot mint/grant/roll; duplicate pull; version mismatch; invalid reward reference; replay safety; economic invariants.
+
+# D10 — M14 COLLECTION / REWARD — CONCEPTION TECHNIQUE
+## RewardGrant
+`RewardGrant={grantId,playerId,rewardId,sourceEvent,reason,ledgerVersion,createdAt}` unique by sourceEvent+reward target where appropriate.
+## RouletteDraw
+`RouletteDraw={drawId,playerId,configVersion,seedCommit?,outcomeTier,outcomeRef,createdAt}` with server-authoritative outcome and idempotency.
+## Share projection
+RewardShareProjection contains rewardRef, display fields, privacy-safe metadata and M01 share token reference.
+## AI boundary
+Analysis proposal → M14 rules → optional config change through governed admin process. Model output can never directly write ledger.
+## Audit
+Every grant/draw/config version is traceable. No silent probability changes.
+## Tests
+double grant, replayed draw, quota edge, config version migration, forged reward claim, private collection share, provider outage.
