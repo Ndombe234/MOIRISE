@@ -39,3 +39,17 @@ Duplicate grant, invalid source, concurrent pulls, allowance limit, RNG interrup
 ## AI-INTÉGRATION M14 — CONTRAT DE COMPRÉHENSION POUR L'IA DE FABRICATION
 
 M14 est l'unique autorité de collection, rewards, roulette et intégrité économique. AI peut analyser la collection, expliquer une rareté, suggérer une présentation, détecter des anomalies ou recommander une action. AI ne grant jamais, ne mint jamais, ne roll jamais et ne modifie jamais le ledger. Roulette = configuration versionnée + algorithme M14 + ledger idempotent + limites d'usage. Reward = evidence validée → entitlement → ledger → event. Toute proposition AI reste descriptive jusqu'à validation M14. Fallback : ledger et algorithmes déterministes continuent sans AI. DONE exige impossibilité technique de l'écriture directe par AI.
+
+# D10 — M14 COLLECTION / REWARD — EXPANSION COMPORTEMENTALE
+## Reward surfaces
+Collection, titles, roulette, cards/collectibles and validated reward drops. M14 owns ledger/outcome; M05 owns progression.
+## Roulette
+Default 3 pulls/day with versioned odds (Common 50, Rare 30, Epic 13, Legendary 5, Mythic 2) unless product configuration is intentionally changed and audited.
+## Viral surfaces
+A player may share a newly earned title/item/result through a safe projection. Share never exposes private inventory details when policy forbids it.
+## Collection loops
+Discover → earn → inspect → customize/display → share → discover next related item. No fake scarcity or cash-purchase pressure.
+## AI role
+M15 can analyze collection balance and propose content ideas. It cannot grant rewards or choose lottery outcomes.
+## DONE
+Ledger idempotence, outcome audit, daily limit, duplicate prevention, share privacy, rollback and AI outage validated.
