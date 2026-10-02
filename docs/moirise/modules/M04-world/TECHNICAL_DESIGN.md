@@ -64,3 +64,17 @@ Provider output est candidat. M04 l'accepte, le dégrade ou le supprime. L'IA ne
 
 ### 13.4 Tests
 private signal not public, card suppression during typing, expired source, target forbidden, provider down, deterministic fallback, repeated suggestions bounded, no invented future event.
+
+# D10 — M04 WORLD — CONCEPTION TECHNIQUE
+## WorldProjection
+`WorldObject = objectRef,type,visibility,safetyState,sourceOwner,projectionVersion,expiresAt,actions[]`.
+## Ingestion
+Owner event → policy/visibility filter → projection builder → versioned WorldObject. M04 never copies mutable owner state as authority.
+## Handoff
+Action target contains ownerModule + capabilityId + targetRef + expectedVersion?. Client calls M01/M15/M03/etc through normal boundaries.
+## Cache
+World projections are safe-to-cache only with source version and revocation timestamp. Source deletion invalidates projection.
+## Adaptive input
+M13 outputs proposal/signal; M04 validates and projects. No direct world mutation from model output.
+## Tests
+source deletion, privacy change, blocked creator, stale projection, adaptive provider outage, deep-link, mobile navigation.
