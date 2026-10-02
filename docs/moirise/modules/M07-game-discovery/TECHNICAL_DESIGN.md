@@ -56,3 +56,27 @@ Publication = build validation + M09 runtime compatibility + content/safety chec
 L'AI rerank ne voit que les candidats déjà autorisés. M07 recalcule visibility, diversity et novelty avant projection.
 
 Un build invalidé ou retiré ne doit plus être lançable même si une ancienne projection est en cache. Tests : build non validé absent, retrait, filtres 2D/3D, compatibilité mobile, pagination et fallback sans AI.
+
+## 12. CREATIVE SOCIAL DISCOVERY TECHNICAL CONTRACT
+Canonical shared design = `docs/moirise/CREATIVE_MEDIA_VIRALITY_TECHNICAL_DESIGN.md`.
+
+### 12.1 Public media candidate
+`MediaDiscoveryCandidate = mediaRef + ownerRef + visibilityClass + safetyStatus + originalityStatus + freshness + novelty + creatorDiversityKey + interactionFeatures + optionalAIScore`.
+
+### 12.2 Hard filters
+Before any AI scoring: visibility → block/mute → recommendation eligibility → safety → originality publish state → dedupe. A Story with `expiresAt <= now` is excluded.
+
+### 12.3 Ranking signals
+Use versioned bounded signals: view choice, completion, dwell quality, likes, not-interested, shares, follows, saves, freshness, novelty and creator diversity. Burst activity is downweighted. No private activity is used in public projections.
+
+### 12.4 Friends activity
+`FriendsActivityProjection` contains only public eligible objects and allowed relationship activity. User-controlled hiding/muting removes the relevant projection.
+
+### 12.5 Create-from-concept
+M07 emits a capability reference to M15/M03 rather than copying source media. The sourceRef and permission state remain attached to the candidate.
+
+### 12.6 Cold start
+New users receive a deterministic diverse baseline using declared interests, language and public safe content. The system does not fabricate a social graph.
+
+### 12.7 Tests
+Expired Story exclusion, private like exclusion, hidden creator exclusion, not-interested suppression, repeated-share burst suppression, diversity floor, creator cold-start, originality inconclusive and provider outage fallback.
