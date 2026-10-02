@@ -131,3 +131,10 @@ Les grandes plateformes convergent actuellement vers : davantage de contenu orig
 
 ## 23. Quality gate global
 Aucune nouvelle capability média/sociale n'est DONE tant que les scénarios nominal, permissions, privacy, blocage, suppression, panne provider, réseau interrompu, mobile, desktop, accessibilité, observabilité et fallback déterministe ne sont pas testés.
+
+
+## 24. Detail-level governance
+Chaque demande « détaille » augmente d'un facteur 10 la précision d'ingénierie de tous les PLAN.md et TECHNICAL_DESIGN.md actifs, conformément à docs/moirise/DETAIL_LEVEL_GOVERNANCE.md. Le facteur concerne la couverture des contrats et cas limites, pas une inflation artificielle de texte.
+
+## 25. Project-time governance
+Chaque expansion de détail déclenche une révision de l'estimation de délai conformément à docs/moirise/PROJECT_TIME_MODEL.md. Le temps n'est jamais multiplié mécaniquement par 10 : il est recalculé selon les nouvelles tâches, dépendances, tests, intégration et automatisation disponibles.
