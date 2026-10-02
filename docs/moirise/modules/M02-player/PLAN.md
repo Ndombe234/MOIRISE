@@ -217,3 +217,19 @@ Profile has shareable safe entry points: profile card, selected Reel/Photo/Story
 Store only validated memories with scope/provenance/retention/consent. Promotion to broader scope requires owner/policy.
 ## DONE D10
 Cold-start profile, profile editing, avatar generation, media highlight, privacy changes, account deletion propagation, AI outage and cross-player isolation are validated.
+
+# D100 — SPÉCIFICATION COMPORTEMENTALE
+## Profile projection
+VIEW_PUBLIC charge uniquement les champs autorisés par privacyVersion. EDIT_PROFILE compare expectedVersion avant mutation. Une modification privée ne modifie jamais la projection publique tant qu'aucun champ public n'a été validé.
+## Handle
+normalize Unicode → validate syntax → reserved-word check → availability check → transactional claim. Une course de deux clients retourne CONFLICT pour le perdant sans révéler le propriétaire.
+## Avatar/media
+UPLOAD/GENERATE → QUARANTINE → MIME/DIMENSION/size → safety → provenance → owner decision → replace transaction. L'ancien avatar reste actif tant que le nouveau n'est pas validé.
+## Memory
+Toute mémoire Player possède sourceRef, scope, provenance, confidence, retention et policy. Une suppression du Player déclenche la suppression/invalidation des projections et des mémoires selon retention policy.
+## AI
+AI peut proposer profil, avatar, résumé, personnalisation et création dérivée. M02 reste le seul commit owner.
+## Share
+ProfileShare crée un token M01 et une projection privacy-safe. Un blocage ou changement de privacy invalide les projections affectées.
+## Tests
+cross-player read denial, private setting leak, concurrent handle, avatar quarantine failure, delete propagation, AI outage, stale profile update.
