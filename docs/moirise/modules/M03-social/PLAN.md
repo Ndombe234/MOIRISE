@@ -140,7 +140,6 @@ feed, contenu social, relations, conversations privées, pièces jointes et trad
 **Réseau :** perte de réponse après commit = récupération par commandId, jamais seconde mutation.
 **Tests :** nominal, chaque guard, double clic, deux clients concurrents, session expirée, cible supprimée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
-
 ## 3. États
 Chaque capacité définit explicitement ses états et transitions. Une transition est trigger → auth guard → business guard → mutation → event → projection. Une guard échouée n'écrit rien. Un résultat INCONCLUSIVE n'est jamais traité comme VALID.
 
@@ -184,3 +183,30 @@ Message original conservé. Si traduction/modération AI indisponible, le produi
 
 ### G. DONE
 Aucune capability AI de M03 ne permet un provider direct depuis UI; chaque action possède privacy class, validator, reason/error code et recovery.
+
+## 10. CREATIVE MEDIA / REELS / STORIES / SHARING
+The canonical cross-module plan is `docs/moirise/CREATIVE_MEDIA_VIRALITY_PLAN.md` and the canonical technical contract is `docs/moirise/CREATIVE_MEDIA_VIRALITY_TECHNICAL_DESIGN.md`.
+
+### M03.7 Media post
+Actor = player. Trigger = publish media. Preconditions = authenticated owner + media asset validated + visibility policy + originality/provenance state. Exact order = derive actor → load asset ref → check ownership/permission → validate MIME/size/status → moderation/originality gate → persist Post/Media relation → commit → event → feed projection.
+
+### M03.8 Reel
+A Reel is a published media projection owned by M03. It has owner, mediaRef, caption, optional audioRef, visibility, remixPolicy, attributionRef and status. Draft → Validated → Published → Distributed → Removed/Archived. Feed ranking belongs to M07.
+
+### M03.9 Story
+A Story contains one or more eligible media refs, audience policy and expiresAt. Default lifecycle = Draft → Validated → Published → Expired → Archived/Deleted. Private/close-friends audience is server-enforced.
+
+### M03.10 Repost/remix
+Repost references the original object and preserves attribution. Remix requires source permission and records sourceRef, transformation type, new creator and resulting asset. A trivial copy is not treated as original creation.
+
+### M03.11 Share-to-DM/group
+M03 creates a permission-checked share reference; it never copies private media into a public projection. Recipient access is evaluated at open time as well as share time.
+
+### M03.12 User media → AI creation
+M03 may request M15 analysis of explicitly permitted media. M15 receives only the minimum allowed context and returns a creative proposal/artifact candidate. M03 commits publication only after validator + privacy + provenance + owner decision.
+
+### M03.13 Intelligent sharing
+M03 emits meaningful `ShareOpportunity` events only after completed creations, games, challenges, collection milestones or similarly valuable outcomes. Cooldowns, dedupe and recipient relevance prevent spam.
+
+### M03.14 Viral loop tests
+Test upload → Reel → watch → share → recipient open → follow → create-from-concept → publish; Story expiry; repost attribution; remix permission; private-media leakage; duplicate share; provider outage; mobile/desktop; no-button-explosion UX.
