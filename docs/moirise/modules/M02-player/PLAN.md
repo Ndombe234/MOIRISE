@@ -140,7 +140,6 @@ identité, profil, préférences, confidentialité, avatars, mémoire et preuves
 **Réseau :** perte de réponse après commit = récupération par commandId, jamais seconde mutation.
 **Tests :** nominal, chaque guard, double clic, deux clients concurrents, session expirée, cible supprimée, réseau coupé après commit, dépendance indisponible, mobile et desktop.
 
-
 ## 3. États
 Chaque capacité définit explicitement ses états et transitions. Une transition est trigger → auth guard → business guard → mutation → event → projection. Une guard échouée n'écrit rien. Un résultat INCONCLUSIVE n'est jamais traité comme VALID.
 
@@ -187,3 +186,18 @@ Sans IA, le profil, les préférences, la privacy et les projections déterminis
 
 ### H. DONE AI
 Chaque capacité de personnalisation possède schema, privacy policy, validator, owner commit et tests d'isolation entre Player.
+
+## 10. CREATIVE MEDIA / PROFILE VIRALITY INTEGRATION
+M02 remains the sole owner of identity/profile/avatar. The cross-module contract `CREATIVE_MEDIA_VIRALITY_PLAN.md` and its technical design define the shared media pipeline.
+
+### Profile media behavior
+A Player may expose avatar, optional profile visual/video, public creator highlights and selected public creations. These are projections of M02-owned identity plus M03-owned published content; M02 never duplicates the social feed rules.
+
+### AI-generated profile media
+The sequence is upload/generate request → M02 privacy/identity guard → M15 capability request → media originality/provenance validation → M02 owner commit → profile projection.
+
+### User media learning
+M02 may expose explicitly permitted Player-owned media references to M15. It must not silently promote private media into global training/memory. The context includes provenance, permission, scope, retention and sourceRef.
+
+### DONE
+Profile photo/avatar generation, profile media, deletion, privacy changes and AI creative suggestions remain functional when AI providers are unavailable.
