@@ -84,3 +84,18 @@ Client submits candidate result; server validates against M09 telemetry/result s
 ResultCard uses validated result only; share token from M01.
 ## Tests
 build removed mid-session, stale build, forged result, duplicate result command, reconnect, mobile control loss, desktop keyboard, provider outage irrelevant to runtime.
+
+# D100 — TECHNICAL CONTRACT DETAIL
+## PlaySession schema
+```
+PlaySession { sessionId, playerRef, buildRef, buildVersion, deviceProfile,
+ state, startedAt, lastHeartbeatAt?, version, commandId }
+```
+## Start transaction
+validate build eligibility → create session → acquire runtime lease if needed → emit PlayStarted. Runtime start failure moves session to ABORTED and releases resources.
+## Result admission
+validate session ownership → build still compatible → result schema → anti-replay/nonce rules where required → server business validation → commit Result → event.
+## Runtime relationship
+M09 provides runtime evidence/telemetry; M06 decides admission. M15 does not bypass this boundary.
+## Tests
+forged result, replay, duplicated finish, build removal, session expiry, reconnect, concurrent tabs, mobile input loss, desktop keyboard and share after validated result only.
