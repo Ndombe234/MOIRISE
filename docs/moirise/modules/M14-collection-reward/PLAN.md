@@ -53,3 +53,15 @@ Discover → earn → inspect → customize/display → share → discover next 
 M15 can analyze collection balance and propose content ideas. It cannot grant rewards or choose lottery outcomes.
 ## DONE
 Ledger idempotence, outcome audit, daily limit, duplicate prevention, share privacy, rollback and AI outage validated.
+
+# D100 — SPÉCIFICATION COMPORTEMENTALE
+## Ledger authority
+All reward grants and roulette outcomes are server-authoritative. M15 only analyzes/proposes.
+## Grant
+validated source event → eligibility → duplicate check → ledger write → collection projection → optional M05 progression event.
+## Roulette
+Daily counter and configured odds are versioned. Each draw has one authoritative outcome. Replay returns prior outcome rather than rolling again.
+## Sharing
+Reward share exposes only privacy-safe fields. It never exposes hidden inventory or private collection entries.
+## Economy safety
+No hidden probability changes. Configuration changes are versioned and auditable.
