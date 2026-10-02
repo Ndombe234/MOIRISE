@@ -356,3 +356,23 @@ Candidate changes are isolated, compared to baseline, tested for regression/secu
 Dependency failure selects degraded/fallback route. Oscillation uses failure fingerprints and maxAttempts. No unbounded auto-repair.
 ## Tests
 single-brain invariant, cross-owner write denied, privacy-scope violation, provider invalid output, task graph cycle, memory promotion abuse, agent prompt injection, rollback.
+
+# D100 — TECHNICAL CONTRACT DETAIL
+## ModuleManifest
+ModuleManifest = moduleId + version + owner + capabilities[] + schemas[] + events[] + dependencies[] + contextScopes[] + authorityBoundaries[] + validators[] + autonomyMax + privacyClasses[] + fallback + observability.
+## TaskGraph validation
+Every edge must reference an existing node; graph must be acyclic; every node must declare capability/version, inputs, validator, timeout and resource profile. Invalid graph = GRAPH_INVALID and no task starts.
+## Policy evaluation
+identity → action existence → owner policy → safety → privacy → destination → quota → autonomy → confirmation → execution.
+## Resource reservation
+Reserve after policy and before execution. Lease expiry returns task to retry/degraded according to policy. Worker loss never becomes silent success.
+## Provider adapter
+Adapter normalizes request/response to canonical capability schemas. Health/quota/privacy/resource checks occur before routing. Provider outputs carry provenance and validationStatus.
+## Memory promotion
+Candidate memory requires provenance, evidence, confidence, scope, policy and validation status. Contradiction creates new evidence; no silent overwrite.
+## Agent execution
+Agent receives workspaceRef, taskNode, tool allowlist, resource profile, deadline and outputRefs. It cannot access production secrets, admin APIs or arbitrary network/filesystem.
+## Evolution
+Candidate change includes baseline, revision, benchmark suite, security/policy checks, canary configuration and rollback ref. Promotion is reversible.
+## Tests
+single-brain invariant, provider swap, context leakage, graph cycle, worker loss, agent injection, invalid output, memory scope escalation, failed canary and rollback.
