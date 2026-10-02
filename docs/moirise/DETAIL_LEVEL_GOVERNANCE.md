@@ -58,3 +58,26 @@ Detailing itself does not mechanically multiply implementation time by ten. Bett
 
 MOIRISE is only 100% complete when the relevant feature is:
 specified → implemented → persisted securely → tested → integrated → verified in desktop and mobile browser flows → resilient to dependency failure → observable → production-ready.
+
+
+## 9. Agent fabrication contract
+
+The operational protocol for ChatGPT/Codex is canonical at:
+transversal/AGENT_FABRICATION_PROTOCOL.md
+
+Every « détail » expansion must be converted into progressively more executable engineering information:
+D0 baseline → D10 behavior → D100 architecture/contracts/state → D1K implementation/files/tests → D10K adversarial/browser/mobile/resilience/production evidence.
+
+The protocol is not a new business authority. It instructs the agent to follow the existing owner hierarchy and to produce traceable implementation and verification evidence.
+
+## 10. User-as-tester rule
+
+For interactive features, completion requires browser verification from the perspective of a normal user, including the success path, recovery path, navigation/refresh behavior, mobile behavior and relevant failure cases.
+
+## 11. Time recalculation rule
+
+A detail expansion must update the estimate only from newly exposed engineering work, integration, tests, corrections and verification burden. It must never multiply elapsed time by an arbitrary factor merely because documentation became longer.
+
+## 12. Agent stopping rule
+
+An agent must not stop at « page renders » or « tests pass ». It stops only after the applicable DONE evidence exists, or after explicitly reporting BLOCKED/PARTIAL/INCONCLUSIVE with the missing evidence identified.
