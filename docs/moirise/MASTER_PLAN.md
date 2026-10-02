@@ -92,3 +92,42 @@ No fake users, fake counters, fake scarcity, fake urgency or artificial social p
 
 ## 18. Universal Gate
 PLAN → TECHNICAL DESIGN → code/migrations → auth/security → tests → desktop/mobile browser → resilience → production evidence → DONE.
+
+
+# D10 — EXPANSION CANONIQUE — SOCIAL MEDIA + CRÉATION + VIRALITÉ — 2026-10-02
+
+## 15. Principe d'évolution produit
+MOIRISE ne concurrence pas les grandes plateformes par addition de boutons. Il combine leurs primitives les plus utiles dans une boucle unique : découvrir → ressentir → interagir → créer → transformer → jouer → rejoindre → partager → revenir. Les portes globales restent SYSTEM, PLAYER, SOCIAL, WORLD, PLAY et CREATE. Aucune nouvelle capability sociale ou média ne crée une porte globale.
+
+## 16. Médias comme Living Objects
+Image, photo, vidéo, Reel, Story, audio et musique sont des objets versionnés avec owner, provenance, visibilité, privacyClass, moderationState, lifecycle, derivationGraph, usagePolicy, createdAt, updatedAt et deletion/retention policy. Une dérivation est une nouvelle création avec une nouvelle identité ; elle ne remplace pas silencieusement la source.
+
+## 17. Creative Transformation Loop
+Pour tout média utilisateur explicitement autorisé à être analysé :
+DISCOVER_SOURCE → AUTHORIZE_USE → PRIVACY_FILTER → CONTENT_ANALYSIS → CONCEPT_ABSTRACTION → PROTECTED_ELEMENT_DETECTION → CREATIVE_BRIEF → GENERATION → ORIGINALITY/SAFETY/QUALITY_VALIDATION → OWNER_REVIEW_WHEN_REQUIRED → PUBLISH_OR_SAVE.
+Le système ne transforme pas une œuvre protégée en simple paraphrase mécanique. Il vise une nouvelle expression à partir de concepts autorisés et de contributions créatives significatives.
+
+## 18. Social surfaces minimales
+SOCIAL expose une projection adaptative pouvant regrouper Feed, Reels, Stories, Photos, Friends, Groups, Conversations, reposts, saves et discovery sans afficher simultanément toutes les surfaces. Le SYSTEM choisit le prochain contexte en fonction de l'intention et du contexte, sans masquer les commandes essentielles.
+
+## 19. Viral loop contractuelle
+Une fonctionnalité sociale n'est considérée complète que si elle définit :
+1. valeur immédiate pour l'auteur ;
+2. raison concrète pour un tiers de regarder ;
+3. action de réponse/remix/jeu ou conversation ;
+4. mécanisme de retour ;
+5. découverte hors du cercle initial lorsque la visibilité l'autorise ;
+6. anti-spam et anti-manipulation.
+Aucune mesure de succès n'est inventée et aucun compteur n'est simulé.
+
+## 20. Cold-start
+Un nouveau Player reçoit un environnement non vide uniquement avec du contenu réellement disponible. La personnalisation initiale combine choix explicites très courts, signaux de session, découverte multi-thèmes et nouveautés. Aucun faux ami, faux follower, faux groupe ou faux compteur n'est créé.
+
+## 21. Global media learning boundary
+MORISE peut apprendre des patrons de fabrication à partir de médias utilisateur seulement selon la classe de consentement, la privacy et la provenance. Le contenu privé n'entre pas dans la mémoire globale par défaut. Les sorties générées à partir d'une source restent liées à sourceRef et policyRef.
+
+## 22. Market-informed principles
+Les grandes plateformes convergent actuellement vers : davantage de contenu original, recommandations plus fraîches, surfaces sociales autour des amis, création assistée par IA et transparence sur le contenu synthétique. MOIRISE doit donc différencier son expérience par l'orchestration « découverte → transformation → création → jeu », pas par un simple clone de Reels/Stories.
+
+## 23. Quality gate global
+Aucune nouvelle capability média/sociale n'est DONE tant que les scénarios nominal, permissions, privacy, blocage, suppression, panne provider, réseau interrompu, mobile, desktop, accessibilité, observabilité et fallback déterministe ne sont pas testés.
