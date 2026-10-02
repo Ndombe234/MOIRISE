@@ -92,3 +92,12 @@ Invite is deduplicated and rate-limited. Recipient can mute or reject without re
 M10 asks M11 membership/permissions when a community or guild is involved; M10 does not mutate membership.
 ## Media handoff
 Validated result can create safe visual/text projection in M03; it cannot fabricate scores.
+
+# D110 — CROSS-LOOP INTEGRATION GOVERNANCE
+M10 est le bridge social principal entre un résultat de jeu réel et une action sociale : challenge, rematch, invite, share ou projection communautaire.
+
+M10 reçoit des résultats validés de M06 et ne fabrique jamais de score/sourceRef. Une transition PLAY → SOCIAL ou SOCIAL → PLAY doit rester idempotente, rate-limited et contrôlée par recipient/privacy policy.
+
+M10 peut être une étape centrale du Cross-Loop Engine, mais ne devient pas propriétaire des memberships M11, des résultats M06 ou des récompenses M14.
+
+Référence : `docs/moirise/transversal/PRODUCT_LOOP_GOVERNANCE.md`.
