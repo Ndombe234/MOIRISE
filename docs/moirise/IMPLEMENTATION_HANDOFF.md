@@ -42,3 +42,20 @@ Error/retry.
 Mobile.
 No blank screen.
 Authenticated and unauthenticated paths.
+
+
+## Canonical reading order before implementation
+1. docs/moirise/PRODUCT_CONSTITUTION.md
+2. docs/moirise/ARCHITECTURE_MASTER.md
+3. docs/moirise/MASTER_PLAN.md
+4. module PLAN.md
+5. module TECHNICAL_DESIGN.md
+6. docs/moirise/SPECIFICATION_STANDARD.md
+7. docs/moirise/IMPLEMENTATION_CONTRACT_STANDARD.md
+8. transversal contracts/dependencies/security/events/testing
+9. current code and migrations
+10. tests/browser evidence
+
+For AI work, insert docs/moirise/ai/AI_CONSTITUTION.md before AI_MASTER_PLAN.md and AI_TECHNICAL_DESIGN.md.
+
+A fabrication task is BLOCKED as SPECIFICATION_GAP when the agent would otherwise need to invent ownership, schema, permission, API route, event semantics, privacy class or recovery behavior.
