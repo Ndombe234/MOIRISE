@@ -66,3 +66,7 @@ Default 3 draws/day; Common 50%, Rare 30%, Epic 13%, Legendary 5%, Mythic 2%. An
 AI proposal → governed review/config commit. AI never calls ledger/grant/draw mutation directly.
 ## Tests
 replay, double grant, quota reset, config migration, forged event, private share, concurrent draw, AI outage.
+
+# D110 — CROSS-LOOP REWARD CONTRACT
+Toute récompense cross-loop référence un sourceEventRef ou sourceResultRef validé et un commandId/dedupeKey.
+M14 ne récompense aucune donnée simulée. Les grants restent server-authoritative, auditables et idempotentes.
