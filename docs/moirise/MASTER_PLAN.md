@@ -163,3 +163,11 @@ Avant toute fabrication, un agent doit lire les niveaux nécessaires dans cet or
 
 ## 22. No-gaps gate
 Une feature ne passe en implémentation que si les décisions essentielles sont présentes à au moins l'un des niveaux appropriés. Une information manquante qui forcerait l'agent à inventer une autorité, un schéma, une permission, un endpoint ou une règle métier doit être traitée comme un SPECIFICATION_GAP avant le code.
+
+## 26. Product Loop, Cross-Loop & Product Validation Governance
+La référence transversale pour les boucles produit, les transitions inter-modules, le cold-start, l'expérimentation du ranking, la boucle créateur, la validation produit et les analytics cross-loop est désormais :
+`docs/moirise/transversal/PRODUCT_LOOP_GOVERNANCE.md`.
+
+Ce contrat ne crée aucun M16. Il impose que les transitions restent ownerées, que M07 conserve l'autorité du ranking, que M15 reste un orchestrateur/proposeur et que les statistiques représentent exclusivement des faits réels.
+
+La classification de livraison et les exigences cross-loop complètent, sans remplacer, les règles d'ownership de cette page.
