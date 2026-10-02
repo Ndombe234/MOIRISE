@@ -119,3 +119,17 @@ When a profile media source is deleted or its permission is revoked, dependent A
 
 ### 14.5 Tests
 Profile media privacy, unauthorized media-analysis request, revoked permission, provider outage, stale cache, deletion propagation, duplicate generation request, mobile upload, desktop upload and degraded no-AI operation.
+
+# D10 — M02 PLAYER — CONCEPTION TECHNIQUE
+## PlayerProjection
+`PlayerProjection = playerRef,handle,displayName,avatarRef,bio,locale,publicCreations[],highlights[],privacyVersion`.
+## Media permission classes
+PLAYER_PRIVATE, PLAYER_PUBLIC, PUBLIC_CREATION, SHAREABLE_HIGHLIGHT. Provider context allowlists are derived from class.
+## Avatar pipeline
+upload → quarantine → inspect → safety → provenance → publish ref → transactional replace → event.
+## Profile share
+M02 asks M01 for ShareToken; it never signs tokens itself. Target projection contains only fields permitted by privacy.
+## AI proposal
+AIProposal(ProfileChange) → M02 validate → transaction → event → projection. Model/provider cannot mutate Player tables.
+## Tests
+private field leakage, avatar unsafe file, duplicate handle, concurrent profile edit, stale version, deletion cascade, share token revocation, deterministic fallback without AI.
