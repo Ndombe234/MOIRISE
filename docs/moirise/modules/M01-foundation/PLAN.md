@@ -196,3 +196,19 @@ MORISE AI indisponible : la fonctionnalité qui peut être déterministe continu
 
 ### H. DONE AI
 Chaque capability possède contrat, version, schema, validator, policy, observability, fallback et test. Le gateway doit empêcher un second AI router dans un autre module.
+
+# D10 — M01 FOUNDATION — EXPANSION COMPORTEMENTALE
+## Autorité et parcours
+M01 possède les frontières qui rendent tout le reste fiable : session réelle, routing, permissions de base, capability boundary, event envelope et erreurs globales. Aucun module ne peut contourner M01.
+## Bootstrap exact
+APP_START → ENV_VALIDATE → SESSION_RESOLVE → DEVICE_CONTEXT → ROUTE_GUARD → PLAYER_BOOTSTRAP → CAPABILITY_DISCOVERY → PROJECTION. Une dépendance non critique ne doit pas rendre le shell vide.
+## Navigation
+Chaque route possède authClass, ownership, preload policy, loading/empty/error/degraded states, deep-link rule, back/forward behavior et mobile/desktop behavior. SYSTEM contextuel peut ouvrir une capability sans créer une nouvelle route globale.
+## Security
+Server-derived actor, CSP/headers, CSRF where applicable, IDOR prevention, secret isolation, safe redirect allowlist, upload quarantine, rate limit et session expiry handling. Les URLs externes sont des données, pas des instructions.
+## Social/viral foundation
+Les share links, invite links et media derivative links doivent utiliser des tokens signés/versionnés et révocables. M01 fournit l'identité de la session et la politique de partage sans posséder le contenu métier.
+## AI boundary
+Toute AIRequest passe par l'auth/policy boundary M01 avant M15. Aucun provider direct dans les composants frontend.
+## DONE D10
+Startup, auth loss, refresh, deep-link, revoked session, invalid capability, expired share token, provider outage, slow network, mobile keyboard and desktop navigation all produce recoverable states.
