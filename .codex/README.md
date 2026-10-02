@@ -17,6 +17,7 @@ It does not define product behavior. It does not replace the canonical module pl
 | `EXECUTION_PROTOCOL.md` | lifecycle from assignment to lock |
 | `TASK_DOSSIER_TEMPLATE.md` | bounded task packet template |
 | `COORDINATOR_BOOTSTRAP.md` | exact automatic coordinator behavior and session expectations |
+| `AI_FABRICATION_BRIDGE.md` | AI-specific comprehension and routing gate; not a new AI authority |
 
 ## Automatic mode
 
