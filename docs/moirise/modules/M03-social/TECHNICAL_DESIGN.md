@@ -149,3 +149,26 @@ M03 sends MediaRef/inputRefs/privacyClass/capability to M15. M15 returns artifac
 DM bodies are never general analytics memory; only bounded operational metadata may be logged.
 ## Tests
 story expiration, reel removal cache invalidation, repost provenance, remix originality failure, private share denial, DM context leakage, upload resume, provider outage.
+
+# D100 — TECHNICAL CONTRACT DETAIL
+## MediaRef
+```
+MediaRef { mediaId, ownerId, type, storageRef, visibilityClass, privacyClass,
+ moderationState, provenanceRef, derivativeOf[], usagePolicyRef, version,
+ lifecycleState, createdAt, updatedAt }
+```
+## Story transaction
+validate assets → validate audience → calculate expiresAt → insert Story → insert audience projection → emit StoryPublished. Expiration worker is idempotent and can only move ACTIVE→EXPIRED once.
+## Reel transaction
+upload chunks → finalize asset → enqueue scan → scan result → READY → publish mutation → ranking eligibility event. Any scan failure blocks publication.
+## Remix contract
+```
+Remix { remixId, sourceRefs[], creatorContributionRef, transformSpecRef,
+ originalityStatus, provenanceRef, policyVersion }
+```
+## Share token boundary
+M03 asks M01 to issue tokens; M03 never signs authority itself. Token audience and expiration are part of projection.
+## Feed/event boundary
+M03 owns social events; M07 consumes bounded engagement signals. M03 never directly changes ranking weights.
+## Tests
+private-to-public denial, source deletion, story expiration cache, resumable upload, duplicate publish, replayed share, DM leakage, provider outage, moderation inconclusive.
