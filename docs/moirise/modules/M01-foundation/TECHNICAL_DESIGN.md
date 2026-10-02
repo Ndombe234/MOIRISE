@@ -126,3 +126,35 @@ POST /api/ai accepts capabilityId/inputRefs/constraints/requestedAutonomy. M01 a
 requestId/traceId/capability/route/status/latency only; no raw DM/private media content.
 ## Tests
 auth expiry, refresh race, deep-link, back/forward, share revocation, invalid route, provider outage, no-white-screen, CSP and mobile viewport.
+
+# D100 — TECHNICAL CONTRACT DETAIL
+
+## 100.7 RequestContext
+```
+RequestContext {
+ requestId, traceId, actorId?, sessionId?, routeId, authState,
+ deviceProfile, locale, capabilityId?, privacyClass?, createdAt
+}
+```
+actorId/sessionId are server-derived. Client-supplied identity is advisory input only and is ignored for authority.
+
+## 100.8 API error envelope
+```
+AppError {
+ code, requestId, retryable, userMessageKey,
+ recoveryAction?, technicalRef?
+}
+```
+No token, stack trace, provider secret or private payload may enter user-facing errors or broad telemetry.
+
+## 100.9 Idempotency
+Mutating requests accept commandId. Same commandId + byte-equivalent normalized payload returns the previous result. Same commandId + different payload = CONFLICT. Response-loss after commit is recovered with GET-by-commandId.
+
+## 100.10 Route failure isolation
+Each route has an error boundary and degraded fallback. A child capability failure must not unmount the global shell. Heavy AI/media modules are lazy and cannot block critical navigation.
+
+## 100.11 Security checks
+Order: session validity → route authorization → target scope → schema → rate limit → business handler. Redirect targets are allowlisted. External URLs are data until explicitly classified.
+
+## 100.12 Acceptance
+Production evidence must include: build, typecheck, tests, browser path, refresh, back/forward, session revoke, share revoke, mobile touch/keyboard, slow network and dependency outage.
