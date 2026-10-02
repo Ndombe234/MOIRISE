@@ -84,3 +84,26 @@ Client submits candidate result; server validates against M09 telemetry/result s
 ResultCard uses validated result only; share token from M01.
 ## Tests
 build removed mid-session, stale build, forged result, duplicate result command, reconnect, mobile control loss, desktop keyboard, provider outage irrelevant to runtime.
+
+# D100K — M06 Play — FABRICATION / CONTRACT / EVIDENCE LAYER
+
+## 1. Task record
+Every implementation unit: TASK_ID → FEATURE_ID → FILES → SYMBOLS → INPUT/OUTPUT SCHEMA → AUTHORITY → MUTATIONS → EVENTS → DEPENDENCIES → TESTS → BROWSER → EXPECTED → EVIDENCE → STATUS.
+
+## 2. File contract
+Exact path, owner M06, exports, allowed dependencies, forbidden ownership, side effects, persistence/events, errors, tests, browser surfaces.
+
+## 3. Function contract
+Exact symbol/types, preconditions, authoritative reads/writes, idempotency, concurrency/version, errors, observability, callers, direct tests.
+
+## 4. Adversarial verification
+Forged references/results, permission bypass, replay, duplicate commands, races, stale versions, malformed AI/provider output, dependency timeout, partial network failure, privacy leakage and client-side authority bypass.
+
+## 5. Evidence
+TASK_ID → COMMIT → TEST/SCENARIO → EXPECTED → ACTUAL → ENVIRONMENT → STATUS. Evidence from older commits cannot certify newer code.
+
+## 6. Ownership firewall
+A task cannot write another module's authoritative state. It must use an allowed use-case, event or projection.
+
+## 7. Production lock
+Unit tests alone never produce VERIFIED for a user-facing capability.
