@@ -279,3 +279,19 @@ Successful game patterns, failures and repair recipes become retrievable knowled
 M15 can optimize user value and content quality, but not through dark patterns, fake scarcity, fake popularity or hidden manipulation.
 ## DONE
 All modules can call capabilities through one brain; all mutations return to owners; media and game creation survive provider changes.
+
+# D100 — SPÉCIFICATION COMPORTEMENTALE
+## Module comprehension
+For every cross-module request, M15 resolves the relevant ModuleManifests, identifies owners, loads only required context, compiles requirements, constructs a TaskGraph and selects execution targets.
+## Context minimization
+Every task declares inputRefs, privacyClass and scope. Unused context is excluded. Private conversation context cannot become global memory through summarization alone.
+## Planning
+Planner rejects cycles, impossible dependencies, unavailable capabilities and resource-over-budget graphs before execution.
+## Validation
+Every provider/agent result is candidate state until validators pass. INCONCLUSIVE never becomes VALID by assumption.
+## Owner commit
+M15 emits proposals/results; the owner commits durable state. M15 receives the committed event and may learn from the validated outcome.
+## AI Lab
+Candidate patch → isolated workspace → baseline tests → candidate tests → benchmark → security/policy → canary → monitor → promote/reject → rollback.
+## Media/game/social
+Image/video/music generation, game fabrication and social intelligence use the same request/policy/validation/memory backbone.
