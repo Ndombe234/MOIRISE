@@ -107,3 +107,22 @@ La clé de déduplication est commandId ou idempotencyKey selon use-case. Même 
 
 ### 13.5 Tests de contrat IA
 boot sans AI, route protégée, provider down, invalid output, duplicate request, session expired, privacy escalation, forged actorId, no-secret client bundle, concurrent calls, degraded response.
+
+# D10 — M01 FOUNDATION — CONCEPTION TECHNIQUE
+## Runtime envelope
+`RequestContext = {requestId,traceId,actorId,sessionId,route,deviceProfile,locale,capabilityId?,privacyClass?}`.
+actorId/sessionId derive server-side.
+## Route registry
+RouteSpec = path + auth + owner + loader + boundary + errorBoundary + analyticsClass + mobilePolicy + prefetchPolicy.
+No route may call a provider directly.
+## Share token
+`ShareToken = tokenId,sourceRef,issuerRef,audience,permission,expiresAt,revocationVersion,signature`.
+Validation order = signature → expiry → revocation → audience → source visibility.
+## Error envelope
+`AppError = code,requestId,retryable,userMessageKey,technicalRef?` with no secret/stack in UI.
+## AI boundary
+POST /api/ai accepts capabilityId/inputRefs/constraints/requestedAutonomy. M01 authenticates and M15 executes. Provider identifiers are never client authority.
+## Observability
+requestId/traceId/capability/route/status/latency only; no raw DM/private media content.
+## Tests
+auth expiry, refresh race, deep-link, back/forward, share revocation, invalid route, provider outage, no-white-screen, CSP and mobile viewport.
