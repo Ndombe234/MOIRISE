@@ -83,3 +83,8 @@ Les registres provider séparés ont été supprimés pour éviter une troisièm
 - ai/AI_TECHNICAL_DESIGN.md — canonical operational HOW.
 
 The AI constitution does not create a second AI brain or a competing implementation. It defines higher-order invariants; the two AI operational documents remain the implementation sources of truth.
+
+## Product Loop Governance
+- transversal/PRODUCT_LOOP_GOVERNANCE.md — contrat canonique pour T01 Product Priority Layer, T02 Cross-Loop Engine, T03 Recommendation Experimentation, T04 Cold-Start & Content Density, T05 Creator Career Loop, T06 Product Validation Layer et T07 Cross-Loop Analytics.
+
+Ce fichier transversal est un contrat de coordination. Il ne devient pas propriétaire des règles métier détenues par M01–M15.
