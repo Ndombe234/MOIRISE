@@ -69,3 +69,17 @@ L'IA reçoit la ruleVersion applicable ou demande sa résolution à M05. Une ver
 
 ### 13.4 Tests
 AI cannot grant XP, duplicate source event, create illegal mission, unlock title from text-only claim, bypass activity suppression, invent future event, or alter ledger on retry.
+
+# D10 — M05 SYSTEM — CONCEPTION TECHNIQUE
+## ProgressionCommand
+`ProgressionCommand={commandId,actorRef,eventRef,ruleVersion,expectedVersion}`.
+## Authority
+M14 owns reward ledger; M05 owns progression state and visible SYSTEM. Cross-owner awards use events/use-cases.
+## Title lifecycle
+PROPOSED → VALIDATED → UNLOCKED → REVOKED? with immutable audit record. One deterministic title grammar can address large title space without materializing all titles.
+## SYSTEM projection
+`SystemCard={cardId,type,priority,contextRef,copyKey,cta,expiresAt,dismissPolicy}`.
+## Anti-spam
+Deduplicate equivalent cards by semantic key + context window; do not generate repeated alerts merely to create engagement.
+## Tests
+duplicate event, out-of-order event, reward owner boundary, title share privacy, SYSTEM overload, AI unavailable, mobile overlay and accessibility.
