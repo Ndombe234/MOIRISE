@@ -49,3 +49,13 @@ EventContentProposal contains factual fields + creative fields separately; only 
 Results are immutable facts after owner commit; recap projections may include validated media links.
 ## Tests
 timezone boundary, duplicate registration, cancellation, reminder race, stale projection, unauthorized access, AI-generated factual hallucination.
+
+# D100K — M12 EVENTS — FABRICATION / EVIDENCE
+
+Every M12 task resolves to TASK_ID → FEATURE_ID → FILE/SYMBOL → state machine → persistence authority → events → consumers → tests → browser scenarios → evidence.
+
+Function contracts specify exact input/output, guards, state mutation, idempotency, versioning, failure/recovery and observability. Schedule and lifecycle operations must remain replay-safe.
+
+Evidence = commit + exact check/scenario + expected + actual + environment + status. Unit tests alone do not produce VERIFIED.
+
+Ownership firewall: M12 owns event lifecycle state; consumers use contracts/events/projections and do not write M12 private state directly.
