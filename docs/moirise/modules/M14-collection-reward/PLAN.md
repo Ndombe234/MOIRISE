@@ -65,3 +65,12 @@ Daily counter and configured odds are versioned. Each draw has one authoritative
 Reward share exposes only privacy-safe fields. It never exposes hidden inventory or private collection entries.
 ## Economy safety
 No hidden probability changes. Configuration changes are versioned and auditable.
+
+# D110 — CROSS-LOOP INTEGRATION GOVERNANCE
+M14 ferme une partie de la boucle par DISCOVER/PLAY/CREATE → EARN → DISPLAY/SHARE → DISCOVER.
+
+M14 peut récompenser une transformation cross-loop seulement à partir d'une source événementielle validée et idempotente. Il ne récompense jamais une simple impression et ne peut pas être appelé par M15 pour fabriquer une récompense.
+
+Les signaux de partage d'une récompense restent des projections privacy-safe ; la boucle créateur peut utiliser M14 pour transformer une création ou une réussite validée en unlock réel.
+
+Référence : `docs/moirise/transversal/PRODUCT_LOOP_GOVERNANCE.md`.
