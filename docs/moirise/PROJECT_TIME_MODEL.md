@@ -101,3 +101,9 @@ It can expose additional engineering work when formal properties reveal:
 - rollback/recovery gaps.
 
 Time is recalculated only from those newly exposed engineering obligations. Documentation depth itself does not multiply the project duration.
+
+
+## D100K update — 2026-10-02
+La profondeur D100K a été appliquée aux 15 modules sur leurs 30 documents actifs. Elle ne multiplie pas artificiellement le délai. L'estimation est recalculée uniquement lorsqu'une propriété formelle révèle une obligation d'implémentation, de sécurité, de concurrence, de récupération, de test ou de preuve supplémentaire.
+
+La bande globale reste environ 4–5 mois agressif, 5–6 mois central, 6–8 mois intégration-safe jusqu'à découverte d'un nouveau travail matériel.
