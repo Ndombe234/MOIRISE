@@ -70,3 +70,17 @@ M06 demande à M09 d'allouer le runtime. M06 ne choisit ni engineVersion ni sand
 Chaîne résultat : Runtime evidence → M06 validator → AuthoritativeResult. Aucun résultat AI ne peut écrire XP ou reward.
 
 Le contrat session/save/result est commun à tous les jeux. Tests : 2D, 3D, incompatible device, runtime denied, worker loss, result replay, save migration, adaptive AI unavailable.
+
+# D10 — M06 PLAY — CONCEPTION TECHNIQUE
+## PlaySession
+`PlaySession={sessionId,playerRef,buildRef,deviceProfile,state,startedAt,version}`.
+## State machine
+READY → STARTING → ACTIVE → PAUSED → FINISHING → RESULT_PENDING → VALIDATED → COMMITTED / ABORTED.
+## Result contract
+Client submits candidate result; server validates against M09 telemetry/result schema and M06 rules. Client never self-awards authoritative score/reward.
+## EntryRef
+`PlayEntry={sourceType,sourceRef,buildRef,visibilitySnapshot,policyVersion}`.
+## Share card
+ResultCard uses validated result only; share token from M01.
+## Tests
+build removed mid-session, stale build, forged result, duplicate result command, reconnect, mobile control loss, desktop keyboard, provider outage irrelevant to runtime.
