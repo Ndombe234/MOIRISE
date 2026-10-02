@@ -604,3 +604,64 @@ The agent must reject a task definition when:
 - persistence authority is ambiguous;
 - expected result is missing;
 - required evidence class is missing.
+
+
+## 20. D100K — formal verification contract
+
+At D100K, the agent works from properties, not only from procedures.
+
+For every critical task, define:
+
+~~~text
+PRE
+→ COMMAND
+→ GUARDS
+→ TRANSITION
+→ POST
+→ INVARIANTS
+→ FORBIDDEN STATES
+→ SECURITY PROPERTIES
+→ FAILURE PROPERTIES
+→ RECOVERY PROPERTIES
+→ COMPATIBILITY RULES
+→ EVIDENCE OBLIGATIONS
+~~~
+
+### Property classes
+
+**Safety properties**
+- forbidden mutation never occurs;
+- forbidden owner access is rejected;
+- secrets never cross the public boundary;
+- invalid capability never executes.
+
+**Liveness/recovery properties**
+- retryable failure has an explicit recovery path;
+- a committed command remains recoverable after response loss;
+- degraded state does not silently become authoritative success.
+
+**Consistency properties**
+- authoritative state and event order are compatible;
+- projections never replace authority;
+- duplicate delivery does not double-apply business mutation.
+
+**Evidence properties**
+- VERIFIED requires all applicable evidence classes;
+- stale evidence cannot certify a newer commit;
+- missing browser evidence keeps a user-facing feature non-verified.
+
+### Agent decision contract
+
+If a D100K property cannot be checked from available code/contracts/evidence, the agent must classify it as:
+UNPROVEN
+rather than assuming PASS.
+
+### Change contract
+
+A shared contract change is incomplete until:
+- impacted owners are identified;
+- affected tests are identified;
+- affected browser scenarios are identified;
+- compatibility is decided;
+- evidence requirements are updated.
+
