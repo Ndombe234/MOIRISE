@@ -15,7 +15,7 @@ When a substantial implementation, debugging, migration, test, or verification t
 - Read `AGENTS.md`.
 - Read `.codex/MULTI_AGENT_CONTRACT.md`.
 - Inspect repository status/diff.
-- Read only the canonical module plans, technical designs, contracts, and dependency sources needed by the requested task.
+- For every module in scope, load its complete PLAN.md + TECHNICAL_DESIGN.md pair. For AI work, load both AI_MASTER_PLAN.md + AI_TECHNICAL_DESIGN.md. Load transversal contracts required by impact.
 - Do not use the old legacy runtime as product authority.
 
 ### Phase B — Plan
@@ -51,6 +51,8 @@ When multi-agent orchestration is available:
 - do not ask the user to manually create or route those workers;
 - do not delegate tasks that overlap a shared mutable surface;
 - keep shared contracts and ordered migrations serialized.
+
+Canonical document gate: a worker cannot receive a module task with only PLAN.md or only TECHNICAL_DESIGN.md. The coordinator must pass the complete pair and record the pair in the task dossier.
 
 Recommended worker packet:
 
