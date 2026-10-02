@@ -118,3 +118,27 @@ M15 may transform an authorized media concept into a game requirement; M08 build
 Sharing a game must not bypass content/safety/publication checks. Failed builds are never exposed as playable links.
 ## DONE
 2D/3D build, result integrity, resume/retry, social entry, network loss, mobile controls and desktop controls all work with real states.
+
+# D100K — M06 Play — FORMAL BEHAVIOR / PROOF LAYER
+
+## 1. Machine-complete behavior contract
+Owner: M06. Scope: PlaySession, launch/resume, result admission. Dependencies: M01,M02,M05,M09. Primary invariant: client/runtime never becomes result authority.
+For every capability: ACTOR → TRIGGER → PRECONDITIONS → INPUTS → AUTHORITY → GUARDS → STATE TRANSITION → POSTCONDITIONS → EVENTS → PROJECTIONS → FAILURE → RECOVERY → EVIDENCE.
+
+## 2. Forbidden states
+Authorization failure, invalid schema, incompatible version, ownership violation, idempotency conflict or critical dependency failure must produce zero unauthorized authoritative mutation.
+
+## 3. AI boundary
+M15 may propose or analyze only through capability contracts. M06 remains authoritative for PlaySession, launch/resume, result admission.
+
+## 4. Proof obligations
+SUCCESS + NO-DATA + ERROR + DEGRADED/UNAVAILABLE + REFRESH/REOPEN + DESKTOP + MOBILE + PERMISSION DENIAL + RETRY/REPLAY where applicable.
+
+## 5. Impact obligation
+M06 → consumers → events → projections → routes/UI → AI capabilities → tests → security/resilience. UNKNOWN impact is UNRESOLVED, never assumed safe.
+
+## 6. Formal acceptance properties
+Owner authority cannot be bypassed; duplicate commands cannot duplicate authoritative mutation; stale versions cannot silently overwrite current state; projections remain rebuildable; privacy survives handoffs; VERIFIED requires applicable evidence.
+
+## 7. Completion
+This D100K section defines what must be provable. It does not claim implementation completion.
