@@ -480,3 +480,22 @@ Originality: low-transformation result blocks/asks.
 Cold-start: no-content case returns real empty state with creation/discovery fallback.
 Ranking: blocked and private excluded before score.
 Mobile: media upload resume and degraded playback.
+
+
+# D100 — CRÉATIVE MEDIA + VIRALITÉ — CONCEPTION TECHNIQUE PROFONDE
+## MediaNode
+MediaNode stores owner, type, sourceRef, visibility, privacy, moderation, provenance, lifecycle, version, hash and derivative links. Public projections never carry private source payload.
+## Derivation
+Source selection → permission check → analysis task → concept abstraction → creative brief → generation task → validators → artifact commit → social publication. Source stays immutable unless owner explicitly edits it through its own owner workflow.
+## Story cache
+Cache key includes storyVersion, audienceVersion and current time bucket. Expired stories must fail closed rather than render from stale cache.
+## Reel ranking eligibility
+Eligibility is a state owned by discovery policy; removal event immediately invalidates cached recommendation entries. A stale feed projection may show unavailable, never playable content.
+## ShareToken
+Share token validation sequence: signature → issuer → expiry → revocationVersion → recipient scope → source visibility → current lifecycle. Token is not a permanent copy of the underlying object.
+## Analytics
+Store bounded event metadata: objectRef, event type, actor scope class, sessionRef, policyVersion, timestamp. Exclude raw DM/private payloads and secrets.
+## Originality evidence
+Store transformationDepth, sourceRefs, userContributionRef and validator outcomes. A low-transformation result remains ineligible for automatic public discovery when policy blocks it.
+## Tests
+source-private cannot become public; delete propagation; token revoke; story expiry; reel removal; audio generation provenance; duplicate derivation idempotency; mobile upload resume; slow-network playback.
