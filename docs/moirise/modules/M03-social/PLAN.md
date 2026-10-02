@@ -230,3 +230,46 @@ Share recipient may be friend, group, conversation or public share-token scope. 
 Every public social object may expose at most one primary next-action cluster in the current context: react/share/create/follow/play depending on object type.
 ## DONE
 Posts, photos, Reels, Stories, DMs, repost/remix/share all obey privacy, idempotence, deletion, moderation, mobile/desktop and AI fallback.
+
+# D100K — M03 Social — FORMAL BEHAVIOR / PROOF LAYER
+
+## 1. Machine-complete behavior contract
+Owner: M03. Scope: feed/posts/reactions/private messaging/published media. Dependencies: M01,M02.
+Primary invariant: private state remains private; publishing is explicit.
+
+For every capability of M03, the canonical state transition is:
+ACTOR → TRIGGER → PRECONDITIONS → INPUTS → AUTHORITY → GUARDS → STATE TRANSITION → POSTCONDITIONS → EVENTS → PROJECTIONS → FAILURE → RECOVERY → EVIDENCE.
+
+No capability is complete if an implementation decision remains inferable from prose alone.
+
+## 2. Forbidden states
+A transition must have zero mutation when:
+- authorization fails;
+- input/schema validation fails;
+- required version is incompatible;
+- target is outside owner scope;
+- idempotency conflict occurs;
+- a required authoritative dependency is unavailable.
+
+## 3. AI boundary
+AI/M15 may propose, classify, summarize or generate candidates only within the capability contract. M03 remains the owner of its authoritative state. AI output without validated evidence is non-authoritative.
+
+## 4. Proof obligations
+Each user-visible capability must prove:
+SUCCESS + EMPTY/NO-DATA + ERROR + UNAVAILABLE/DEGRADED where applicable + REFRESH/REOPEN + MOBILE + DESKTOP + PERMISSION DENIAL + RETRY/REPLAY behavior.
+
+## 5. Change-impact obligation
+A change to a M03 contract requires traversal:
+M03 → direct consumers → events → projections → routes/UI → AI capabilities → tests → security/resilience scenarios.
+Unknown impact is UNRESOLVED, never assumed safe.
+
+## 6. Formal acceptance properties
+- owner authority cannot be bypassed;
+- duplicate commands do not duplicate authoritative mutation;
+- stale versions do not silently overwrite newer state;
+- projections can be rebuilt from authoritative state;
+- privacy/visibility constraints survive every handoff;
+- VERIFIED cannot be emitted without applicable evidence.
+
+## 7. Completion
+D100K means the feature definition is machine-checkable. It does not mean the code is already fabricated.
