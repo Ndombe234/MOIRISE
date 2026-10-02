@@ -138,3 +138,7 @@ Chaque demande « détaille » augmente d'un facteur 10 la précision d'ingénie
 
 ## 25. Project-time governance
 Chaque expansion de détail déclenche une révision de l'estimation de délai conformément à docs/moirise/PROJECT_TIME_MODEL.md. Le temps n'est jamais multiplié mécaniquement par 10 : il est recalculé selon les nouvelles tâches, dépendances, tests, intégration et automatisation disponibles.
+
+
+## 26. Formal fabrication completeness
+Le plan canonique comprend désormais 30 documents actifs de module : 15 PLAN.md + 15 TECHNICAL_DESIGN.md. Chaque paire doit converger vers le modèle D100K : comportement/propriétés dans PLAN, fabrication/contrats/preuves dans TECHNICAL_DESIGN, sans transfert d'autorité ni troisième source de vérité.
