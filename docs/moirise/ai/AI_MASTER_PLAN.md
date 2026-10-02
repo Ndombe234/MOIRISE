@@ -1182,3 +1182,257 @@ A0 répond ; A1 propose ; A2 exécute après confirmation ; A3 exécute un graph
 
 ## 32. Viral optimization guardrail
 L'IA peut optimiser la clarté, la découvrabilité et la possibilité de partage ; elle ne doit pas utiliser dark patterns, faux compteurs, faux succès, spam de notifications ou manipulation cachée pour augmenter l'engagement.
+
+
+# D100K — MORISE AI — FORMAL COGNITION / AUTHORITY / EVOLUTION LAYER
+
+## 40. Purpose
+
+This layer formalizes MORISE AI as a machine-verifiable orchestration system. It does not create a second AI specification. AI_MASTER_PLAN remains the canonical WHAT; this section defines the properties that every implementation must preserve.
+
+## 41. Canonical cognition state machine
+
+The canonical request lifecycle is:
+
+REQUESTED
+→ AUTHENTICATED
+→ CLASSIFIED
+→ CONTEXT_READY
+→ INTENT_READY
+→ REQUIREMENTS_READY
+→ PLAN_READY
+→ POLICY_ALLOWED
+→ RESOURCES_RESERVED
+→ EXECUTING
+→ VALIDATING
+→ OWNER_COMMIT_PENDING
+→ COMMITTED
+→ MEMORY_ELIGIBLE
+→ EVALUATED
+→ EVOLUTION_ELIGIBLE
+
+Terminal branches:
+REJECTED, BLOCKED, DEGRADED, INCONCLUSIVE, CANCELLED, ROLLED_BACK.
+
+A transition must define:
+actor, trigger, preconditions, input schema, authoritative state, guards, state mutation, emitted events, recovery and proof obligation.
+
+## 42. AI authority invariants
+
+The following are mandatory invariants:
+
+1. A provider is never the AI authority.
+2. A tool is never a permission authority.
+3. A worker is never a business-state authority.
+4. A memory record is never authoritative merely because AI retrieved it.
+5. A generated artifact is never valid merely because a model produced it.
+6. An AI proposal never bypasses the owner module's commit boundary.
+7. Requested autonomy never overrides policy.
+8. Private context never becomes global memory without an explicit permitted policy.
+9. An INCONCLUSIVE validation result can never become VALID by default.
+10. Evolution candidates never become production behavior without the promotion gate.
+
+## 43. Formal intent contract
+
+Every AI request resolves to:
+
+INTENT_ID
+→ ACTOR
+→ SOURCE_MODULE
+→ CAPABILITY
+→ GOAL
+→ INPUT_REFS
+→ CONTEXT_SCOPE
+→ CONSTRAINTS
+→ PRIVACY_CLASS
+→ REQUESTED_AUTONOMY
+→ RESOURCE_BUDGET
+→ DEADLINE
+→ EXPECTED_OUTPUT_CLASS.
+
+Intent is a description of what the system is allowed to attempt. It is not an authorization by itself.
+
+## 44. Requirements contract
+
+Requirements Compiler output must distinguish:
+
+- MUST: mandatory functional/property constraint;
+- SHOULD: preferred behavior;
+- MAY: optional behavior;
+- MUST_NOT: forbidden behavior.
+
+Every MUST_NOT becomes a validator/policy obligation where technically applicable.
+
+Ambiguous requirements that could change security, privacy, ownership, public behavior or persistence are not silently interpreted. They become unresolved requirements.
+
+## 45. Autonomy contract
+
+A0 = answer.
+A1 = propose.
+A2 = execute after explicit confirmation.
+A3 = execute bounded authorized graph.
+A4 = execute bounded long workflow.
+
+An operation can downgrade requested autonomy after policy evaluation. It can never silently upgrade autonomy.
+
+Public publication, private-media use, financial/economic mutations, identity changes and other high-impact actions require their module owner and applicable policy gates regardless of model confidence.
+
+## 46. Capability contract
+
+A capability is defined by:
+
+CAPABILITY_ID
+→ VERSION
+→ OWNER
+→ INPUT_SCHEMA
+→ OUTPUT_SCHEMA
+→ REQUIRED_CONTEXT
+→ PRIVACY_CLASS
+→ ALLOWED_AUTONOMY
+→ RESOURCE_BUDGET
+→ TOOLS
+→ PROVIDER_POLICY
+→ VALIDATORS
+→ FALLBACK
+→ OBSERVABILITY
+→ EVIDENCE_REQUIREMENTS.
+
+Capability IDs are stable references. Providers/models are implementation details behind M15 routing.
+
+## 47. Memory truth model
+
+Memory classes are distinct:
+
+- FACT: validated durable evidence;
+- EXPERIENCE: observed execution outcome;
+- PATTERN: derived statistical/semantic pattern;
+- PROPOSAL: candidate not yet committed;
+- EPHEMERAL_CONTEXT: request-scoped information;
+- PRIVATE_MEMORY: user-scoped authorized memory.
+
+Only permitted classes enter long-lived memory. A proposal cannot be promoted to FACT without validation/evidence.
+
+## 48. Evolution state machine
+
+EVOLUTION_GAP
+→ ROOT_CAUSE
+→ HYPOTHESIS
+→ CANDIDATE
+→ STATIC_CHECK
+→ SANDBOX_CHECK
+→ TEST
+→ BENCHMARK
+→ SECURITY/POLICY
+→ CANARY
+→ PROMOTION_DECISION
+→ PROMOTED or REJECTED
+→ MONITOR
+→ ROLLBACK when required.
+
+Self-improvement cannot modify its own production authorization boundary.
+
+## 49. Provider/worker invariants
+
+Provider selection:
+request → policy → resource availability → router → adapter → normalized output → validator.
+
+Worker selection:
+task → capability → policy → resource reservation → lease → sandbox → execution → result validation.
+
+Neither path may write another module's private business state directly.
+
+## 50. Creative AI proof contract
+
+For generated image/video/audio/music/game artifacts:
+
+AUTHORIZED SOURCE/BRIEF
+→ PRIVACY CHECK
+→ CONTENT ANALYSIS
+→ CREATIVE SPECIFICATION
+→ GENERATION
+→ ORIGINALITY/SAFETY/QUALITY VALIDATION
+→ PROVENANCE
+→ OWNER REVIEW WHEN REQUIRED
+→ OWNER COMMIT
+→ PUBLISH/STORE.
+
+The presence of an original file or source does not by itself authorize unrestricted transformation.
+
+## 51. Game AI proof contract
+
+Game fabrication is:
+
+INTENT
+→ REQUIREMENTS
+→ GAME_SPECIFICATION
+→ TASK_GRAPH
+→ TEMPLATE/COMPONENT PLAN
+→ BUILD
+→ STATIC VALIDATION
+→ SECURITY VALIDATION
+→ SIMULATION
+→ BEHAVIOR TEST
+→ RESOURCE TEST
+→ RUNTIME VALIDATION
+→ OWNER PUBLICATION.
+
+M08 owns the package; M09 owns runtime execution; M06 owns Play result admission.
+
+## 52. Formal safety properties
+
+MORISE AI must satisfy:
+
+- unauthorized capability execution = impossible by policy;
+- provider-selected permission bypass = impossible;
+- cross-owner mutation = rejected;
+- secret exposure to client = forbidden;
+- private context leak = forbidden;
+- invalid model output = non-authoritative;
+- duplicate command = idempotent according to capability contract;
+- failed validation = no authoritative commit;
+- rollback candidate = auditable;
+- stale capability version = rejected or explicitly migrated.
+
+## 53. Formal liveness/recovery properties
+
+For each retryable capability:
+- retry policy is explicit;
+- committed result is recoverable after response loss;
+- provider timeout does not imply success;
+- worker loss does not silently erase committed state;
+- degraded mode is explicit;
+- recovery never fabricates an outcome.
+
+## 54. Evidence contract for MORISE AI
+
+A capability is VERIFIED only when applicable proof exists for:
+
+CONTRACT
+→ IMPLEMENTATION
+→ UNIT
+→ INTEGRATION
+→ SECURITY
+→ PROVIDER/WORKER FAILURE
+→ BROWSER when user-facing
+→ MOBILE when user-facing
+→ RESILIENCE
+→ OBSERVABILITY
+→ PRODUCTION.
+
+AI self-assessment is never evidence of its own correctness.
+
+## 55. D100K completion criterion
+
+An independent implementation agent must be able to determine:
+- what MORISE may do;
+- what MORISE must not do;
+- who owns each mutation;
+- which capability is required;
+- what context is legal;
+- what evidence is mandatory;
+- what happens on failure;
+- what happens on replay;
+- how evolution is promoted or rejected;
+- how a change impacts dependent modules.
+
+If any of these remain materially ambiguous, the relevant AI contract is not closed.
