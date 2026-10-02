@@ -3037,3 +3037,252 @@ Provider timeout → retry only according to policy; provider failure → fallba
 Unit: schema, privacy scopes, provenance, protected-range handling, originalness policy.
 Integration: source→analysis→brief→generation→validation.
 Browser: create from photo, create from Reel, Story creation, share, revoke, mobile, desktop, offline/degraded.
+
+
+# D100K — MORISE AI — MACHINE FABRICATION / FORMAL VERIFICATION LAYER
+
+## 40. Fabrication unit schema
+
+Every M15 implementation unit is reduced to:
+
+TASK_ID
+→ CAPABILITY_ID / MECHANISM_ID
+→ OWNER
+→ FILES
+→ SYMBOLS
+→ INPUT_SCHEMA
+→ OUTPUT_SCHEMA
+→ CONTEXT_READS
+→ AUTHORITY
+→ TOOL_ACCESS
+→ PROVIDER_POLICY
+→ RESOURCE_POLICY
+→ STATE
+→ EVENTS
+→ VALIDATORS
+→ FAILURE_MODES
+→ RECOVERY
+→ TESTS
+→ BROWSER_TEST
+→ EVIDENCE
+→ STATUS.
+
+M15 owns the AI orchestration mechanisms, but it does not absorb module business persistence.
+
+## 41. File-level contract
+
+Each AI file must declare:
+- exact path;
+- mechanism/capability owner;
+- exported symbols;
+- imported authorities;
+- allowed side effects;
+- secrets boundary;
+- network boundary;
+- persistence boundary;
+- validator boundary;
+- direct tests;
+- observability requirements.
+
+A file cannot acquire hidden provider authority merely by importing a provider adapter.
+
+## 42. Function-level contract
+
+Each critical AI function must specify:
+- exact signature;
+- preconditions;
+- context requirements;
+- policy checks;
+- authoritative reads;
+- mutations, if any;
+- side effects;
+- idempotency;
+- concurrency;
+- timeout/cancellation;
+- error/result union;
+- telemetry fields;
+- callers;
+- tests.
+
+Model output is typed as untrusted until validation.
+
+## 43. Request pipeline contract
+
+The implementation pipeline is:
+
+RequestGate
+→ ActorResolver
+→ Classifier
+→ ContextEngine
+→ IntentCompiler
+→ RequirementsCompiler
+→ Reasoning/Planner
+→ PolicyEngine
+→ ResourceScheduler
+→ CapabilityRegistry
+→ Tool/Provider/Worker Router
+→ Execution
+→ ValidationEngine
+→ OwnerCommit
+→ Event
+→ Memory/Experience
+→ Evaluation.
+
+Every stage has an explicit failure output. A stage cannot silently skip a security or ownership guard.
+
+## 44. Provider router contract
+
+Router input:
+capability + policy + context class + resource budget + requested autonomy + provider availability.
+
+Router output:
+selected adapter OR explicit fallback/degraded/rejected result.
+
+Forbidden:
+- provider selected directly by UI;
+- model selecting arbitrary URL;
+- module-specific hidden provider trees;
+- raw provider output becoming business state.
+
+## 45. Worker contract
+
+Worker task must include:
+taskId, graphId, capabilityVersion, dependencies, resource requirements, lease, attempt, validator, idempotency key and cancellation policy.
+
+Worker execution is isolated from production secrets and unauthorized persistence.
+
+## 46. Validation pipeline
+
+Validation must be layered when applicable:
+
+SCHEMA
+→ POLICY
+→ SECURITY
+→ PROVENANCE
+→ SEMANTIC
+→ BEHAVIOR
+→ RESOURCE/PERFORMANCE
+→ OWNER COMMIT ELIGIBILITY.
+
+A failure at a required layer yields INVALID, BLOCKED or INCONCLUSIVE according to the contract; never implicit VALID.
+
+## 47. Memory implementation contract
+
+Memory writes require:
+sourceRef, memoryClass, scope, privacyClass, evidenceRefs, policyVersion, createdAt, expiry/retention and validationStatus.
+
+Retrieval must enforce:
+scope → policy → freshness → relevance → evidence quality.
+
+Private memory is never returned to a different actor without explicit authorization.
+
+## 48. Evolution implementation contract
+
+A candidate change requires:
+candidateId, parentVersion, hypothesis, affected mechanisms, expected improvement, benchmark suite, safety policy, rollback point and promotion decision.
+
+No production promotion without benchmark + security/policy + canary evidence.
+
+## 49. Formal adversarial matrix
+
+At minimum, test:
+- prompt/tool injection;
+- capability spoofing;
+- actor spoofing;
+- privacy escalation;
+- provider output poisoning;
+- malformed tool result;
+- provider timeout;
+- worker loss;
+- duplicate execution;
+- replay;
+- stale capability version;
+- stale memory;
+- poisoned memory;
+- sandbox escape attempt;
+- resource exhaustion;
+- unauthorized owner commit;
+- public/private context crossover;
+- rollback after promotion.
+
+## 50. Property-based verification obligations
+
+Where practical, tests should assert properties rather than only examples:
+
+P1: invalid capability ⇒ no tool execution.
+P2: unauthorized context ⇒ no provider/worker call.
+P3: failed validation ⇒ no owner commit.
+P4: duplicate idempotency key + same payload ⇒ one logical execution.
+P5: same idempotency key + changed payload ⇒ CONFLICT.
+P6: private scope mismatch ⇒ retrieval denied.
+P7: unvalidated artifact ⇒ publish denied.
+P8: evolution candidate without promotion evidence ⇒ production use denied.
+P9: provider failure ⇒ defined fallback/degraded behavior.
+P10: rollback-required candidate ⇒ prior valid version remains available.
+
+## 51. Evidence graph
+
+For every critical task:
+
+TASK_ID
+→ COMMIT_SHA
+→ IMPLEMENTATION_REFS
+→ TEST_REFS
+→ SECURITY_REFS
+→ BROWSER_REFS
+→ MOBILE_REFS
+→ RESILIENCE_REFS
+→ EXPECTED
+→ ACTUAL
+→ VERIFIED_AT
+→ STATUS.
+
+Evidence from a different commit is stale.
+
+## 52. Dependency Impact Layer for AI
+
+An M15 change must traverse:
+
+AI mechanism
+→ capability contract
+→ requesting module
+→ provider/worker adapters
+→ data/context scopes
+→ events
+→ projections
+→ UI
+→ tests
+→ security/privacy scenarios
+→ evolution benchmarks.
+
+Impact labels:
+DIRECT, TRANSITIVE, POTENTIAL, UNRESOLVED.
+
+An UNRESOLVED impact blocks VERIFIED for a critical change until inspected or explicitly bounded.
+
+## 53. AI-specific DONE gate
+
+For every critical M15 capability:
+
+CANONICAL AI PLAN
+→ AI TECHNICAL DESIGN
+→ FILE/SYMBOL IMPLEMENTATION
+→ SCHEMA
+→ POLICY
+→ VALIDATION
+→ UNIT TEST
+→ INTEGRATION
+→ ADVERSARIAL SECURITY
+→ PROVIDER/WORKER FAILURE
+→ BROWSER/MOBILE when user-facing
+→ OBSERVABILITY
+→ PRODUCTION EVIDENCE
+→ VERIFIED.
+
+## 54. No third AI authority
+
+AI_MASTER_PLAN.md remains WHAT.
+AI_TECHNICAL_DESIGN.md remains HOW.
+No separate provider registry, AI brain, router, memory authority or evolution authority may be introduced as a competing canonical document.
+
+Generated task inventories are derived artifacts, not business authorities.
