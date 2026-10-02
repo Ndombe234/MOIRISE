@@ -253,3 +253,10 @@ Le principe permanent devient :
 
 > chaque nouveau niveau doit réduire une classe identifiable d'incertitude ou ajouter une capacité de vérification réelle.
 
+
+
+## Context precision rule
+
+Each detail expansion must increase not only prose but the machine-usable context needed by the fabrication agent. Newly exposed decisions MUST be attached to the relevant owner, dependencies, state transitions, failure/recovery paths, tests and evidence requirements. Repetition without reducing implementation uncertainty does not count as useful depth.
+
+The goal of deeper detail is to reduce the agent's guess surface. Every implementation-critical statement should ultimately be traceable to OWNER → CONTRACT → CURRENT STATE → FILE/SYMBOL → TEST → EVIDENCE. Detail depth never authorizes inventing missing repository facts.

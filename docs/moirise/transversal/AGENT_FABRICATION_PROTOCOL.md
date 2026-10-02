@@ -665,3 +665,27 @@ A shared contract change is incomplete until:
 - compatibility is decided;
 - evidence requirements are updated.
 
+
+
+## Controlled AI Context Package — mandatory pre-fabrication layer
+
+Every substantial Codex/ChatGPT task must assemble a controlled context package before code generation. The package is derived from canonical documents and the real repository state; it is not a third source of truth.
+
+Required package fields:
+- project identity and current canonical architecture;
+- target module/feature and ownership;
+- complete PLAN + TECHNICAL_DESIGN pair for every affected module;
+- AI pair whenever M15, capabilities, providers, workers, memory, evolution or creative AI is involved;
+- exact branch/commit and repository-state snapshot;
+- EXISTS / MISSING / TO_MODIFY / FORBIDDEN / AFFECTED_DEPENDENCY inventory;
+- direct, transitive, event, route/projection and security dependency impact;
+- exact writable surfaces and one-writer ownership;
+- acceptance criteria and expected invariants;
+- required unit/contract/integration/browser/mobile/security/resilience checks;
+- evidence required before LOCKED.
+
+The package is an anti-ambiguity contract: anything that the canonical documents or repository can establish must not be guessed. When sources conflict, fabrication pauses on the affected path and the coordinator resolves the authority.
+
+Quality reporting MUST distinguish first-pass success, correction count, integration defects, regressions, test failures, browser failures and unresolved assumptions. An 80% first-pass target or 10–20% error envelope is an optional KPI, never a guarantee and never a waiver of verification.
+
+A worker report, generated code, isolated green test, or successful build is not by itself proof. Only fresh evidence from the integrated commit can satisfy the DONE gate.
