@@ -248,3 +248,14 @@ M03 checks owner/usePolicy → creates analysis request through M15 → receives
 Private context is member-scoped. AI may translate/moderate only the minimum necessary content. DM raw bodies stay out of broad analytics and global memory.
 ## Social loops
 Each object chooses a bounded next-action set; rank/share systems may not fabricate popularity or social proof.
+
+# D110 — CROSS-LOOP INTEGRATION GOVERNANCE
+M03 est le propriétaire des objets sociaux qui servent de sources aux transitions cross-loop. Après une publication/résultat social réel, M03 peut exposer un `sourceRef` et les projections autorisées vers M07/M10/M11/M12/M14.
+
+M03 ne classe pas lui-même les recommandations. Il fournit des signaux factuels bornés à M07 et rejette toute projection qui violerait visibility/privacy/block policy.
+
+Pour la boucle créateur, M03 est le point de départ `CREATE → PUBLISH`. Un publish valide doit laisser une trace permettant ensuite discovery, transformation, share ou progression sans fabriquer d'engagement.
+
+Pour le cold-start, M03 ne crée aucun faux social proof. Tout objet exposé possède une source réelle, un owner/provenance et un état de disponibilité.
+
+Référence détaillée : `../transversal/PRODUCT_LOOP_GOVERNANCE.md`.
