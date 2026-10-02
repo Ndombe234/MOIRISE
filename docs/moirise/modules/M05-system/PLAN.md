@@ -117,3 +117,17 @@ Achievements and creations can produce shareable projections: title reveal, chal
 Fun & Surprise can schedule bounded surprises from real state. No fake scarcity or fake urgency. Surprise must be reversible/observable.
 ## DONE
 Progression remains correct when AI is unavailable; SYSTEM overlays never block reading/playing/creating; duplicate events cannot award twice.
+
+# D100 — SPÉCIFICATION COMPORTEMENTALE
+## Progression event handling
+M05 consumes validated domain events. Each event is matched against ruleVersion and player state version. A duplicate source event must be idempotent.
+## XP/title
+Calculate → validate bounds → create progression mutation → commit once → emit → project SYSTEM card. M15 may propose, never grant.
+## Mission proposal
+AI/system signal → proposal → M05 rule validation → mission creation/update. Mission status is always a real state.
+## SYSTEM cards
+Only relevant cards appear. Critical errors may interrupt; normal recommendations must not interrupt reading, creating or playing. Equivalent cards are deduplicated.
+## Shareable progression
+Public-safe title/achievement/result projections may be shared through M01. Private progression details remain private.
+## Surprise
+Fun & Surprise uses real state and bounded scheduling, never false scarcity or fake urgency.
