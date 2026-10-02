@@ -104,3 +104,17 @@ M06 consomme le RuntimeManifest produit/validé par M09. Il ne choisit pas arbit
 La grande porte PLAY reste stable pour l'utilisateur. Les détails 2D/3D sont internes à l'expérience.
 
 DONE : un jeu fabriqué par M08 et validé par M09 peut être lancé, repris, terminé et partagé sans recopier la logique de session dans chaque jeu.
+
+# D10 — M06 PLAY — EXPANSION COMPORTEMENTALE
+## Play entry points
+PLAY may start from catalog, post, Reel, Story, DM, group, event, World or challenge. The entry always resolves to a validated GameBuild reference.
+## Session
+OPEN_GAME → DEVICE_CHECK → LOAD_MANIFEST → START → PLAY → RESULT → VALIDATE → COMMIT → SHARE/REMATCH/HANDOFF.
+## Social result loop
+A result may generate a compact share card, challenge invitation or group rematch. It never falsifies scores or rankings.
+## Media-to-game
+M15 may transform an authorized media concept into a game requirement; M08 builds; M09 runs; M06 launches and validates result.
+## Viral protection
+Sharing a game must not bypass content/safety/publication checks. Failed builds are never exposed as playable links.
+## DONE
+2D/3D build, result integrity, resume/retry, social entry, network loss, mobile controls and desktop controls all work with real states.
