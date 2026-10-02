@@ -56,3 +56,19 @@ PLAN → TECHNICAL DESIGN → implementation → migrations/auth/security → te
 
 For the whole project:
 all 15 modules + MORISE AI + game platform + media creation + social surfaces + security/privacy + performance + production validation.
+
+
+## Agent-execution recalibration — 2026-10-02
+
+The current execution model assumes ChatGPT/Codex/agents perform the main construction loop:
+ANALYZE → IMPLEMENT → TEST → BROWSER AS USER → CORRECT → RETEST.
+
+For the currently documented scope, including the 15 canonical modules, MORISE AI, native 2D/3D game platform, creative media/social contracts and production verification:
+
+- Aggressive: approximately 4–5 months.
+- Central working estimate: approximately 5–6 months.
+- Integration-safe: approximately 6–8 months.
+
+The central estimate assumes the agent also performs browser verification and iterative correction rather than stopping after code generation.
+
+The estimate is not multiplied by the detail factor. A deeper document can reduce ambiguity and agent rework while revealing hidden implementation, integration, security, recovery, browser and mobile work. The estimate therefore follows newly discovered engineering work, not document length.
