@@ -151,3 +151,105 @@ The D10K endpoint must expose, where applicable:
 - unresolved blockers.
 
 No further level is created merely to produce more prose. A new level is justified only when it introduces a genuinely new engineering control, verification dimension or execution boundary.
+
+
+## 17. D100K — formal machine-specification layer
+
+Après D10K, augmenter encore le volume de prose n'apporte plus de valeur. Le prochain niveau utile est une formalisation qui permet à un agent ou à un vérificateur de contrôler mécaniquement la cohérence de la spécification.
+
+D100K ajoute, lorsque pertinent :
+- préconditions et postconditions formelles ;
+- invariants permanents ;
+- transitions d'état déterministes ;
+- règles de compatibilité de versions ;
+- schémas d'entrée/sortie normalisés ;
+- contraintes d'autorité ;
+- contraintes d'ownership ;
+- règles d'idempotence ;
+- règles de concurrence ;
+- propriétés de sécurité ;
+- propriétés de confidentialité ;
+- conditions de rollback ;
+- conditions de reprise ;
+- graphe d'impact versionné ;
+- matrice requirement → implementation → evidence ;
+- critères explicites de falsification ;
+- critères empêchant l'agent de déclarer VERIFIED sans preuve applicable.
+
+### 17.1 Différence entre D10K et D100K
+
+D10K répond :
+« comment fabriquer et comment essayer de casser ? »
+
+D100K répond :
+« quelles propriétés doivent toujours être vraies, quelles propriétés doivent être fausses, et comment démontrer mécaniquement chacune d'elles ? »
+
+### 17.2 Forme canonique
+
+~~~text
+ENTITY
+→ VERSION
+→ OWNER
+→ INPUTS
+→ PRECONDITIONS
+→ STATE
+→ COMMAND
+→ GUARDS
+→ TRANSITION
+→ POSTCONDITIONS
+→ MUTATION
+→ EVENTS
+→ PROJECTIONS
+→ INVARIANTS
+→ SECURITY PROPERTIES
+→ PRIVACY PROPERTIES
+→ FAILURE PROPERTIES
+→ RECOVERY PROPERTIES
+→ COMPATIBILITY
+→ DEPENDENCY IMPACT
+→ TEST PROPERTY
+→ EVIDENCE PROPERTY
+→ VERIFICATION RESULT
+~~~
+
+### 17.3 Machine-verifiable rule
+
+Une affirmation telle que « cette feature est sécurisée » n'est pas un contrat.
+
+Elle doit devenir une propriété falsifiable, par exemple :
+- actorId provenant du client ≠ source d'autorité ;
+- capability inconnue ⇒ mutation = 0 ;
+- commandId identique + payload identique ⇒ aucune seconde mutation ;
+- commandId identique + payload différent ⇒ CONFLICT ;
+- événement dupliqué ⇒ mutation métier secondaire = 0 ;
+- session expirée avant commit ⇒ mutation = 0 ;
+- résultat AI INCONCLUSIVE ⇒ état métier VALID = impossible.
+
+### 17.4 Specification closure
+
+Une spécification atteint D100K seulement si un agent indépendant peut :
+1. reconstruire le graphe de dépendances ;
+2. identifier l'autorité de chaque état ;
+3. détecter une violation d'ownership ;
+4. identifier les entrées qui doivent être rejetées ;
+5. dériver les tests nécessaires ;
+6. savoir quelle preuve manque ;
+7. refuser une déclaration VERIFIED insuffisamment démontrée.
+
+D100K n'exige pas que tout soit implémenté. Il exige que la définition de ce qui doit être implémenté et prouvé soit non ambiguë.
+
+## 18. Fin de l'échelle de détail
+
+Il n'y a pas de valeur à créer artificiellement D1M, D10M, D100M, etc.
+
+Après D100K, la progression devient **extensive**, pas volumétrique :
+- plus de propriétés à formaliser ;
+- plus de dépendances à résoudre ;
+- plus de scénarios adversariaux ;
+- plus de preuves à obtenir ;
+- plus de versions à compatibiliser.
+
+Le principe permanent devient :
+
+> chaque nouveau niveau doit réduire une classe identifiable d'incertitude ou ajouter une capacité de vérification réelle.
+
