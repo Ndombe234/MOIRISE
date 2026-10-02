@@ -46,3 +46,17 @@ MembershipCommand est la seule porte de création/join/leave/role-change.
 AI result = proposal/evidence; never MembershipState.
 Validation = actor → community policy → block/privacy → membership version → business rule → commit → event.
 Tests : role escalation denied, blocked user denied, private context excluded, stale version conflict, duplicate join idempotency, owner-safety, AI unavailable.
+
+# D10 — M11 COMMUNITIES — CONCEPTION TECHNIQUE
+## Community
+`Community={communityId,ownerId,visibility,state,settingsVersion,createdAt}`.
+## Membership
+`Membership={communityId,playerId,role,status,version,joinedAt,leftAt?}` with unique (communityId,playerId).
+## Creation transaction
+validate → policy → create community → owner membership → settings → event → projection. Any failure rolls back all creation parts.
+## AI proposal
+AffinityProposal → policy → M11 decision → commit. No provider can insert membership.
+## Invite
+Invite record has inviter, target, scope, expiry, status and dedupeKey. Block/mute/privacy enforced before sending.
+## Tests
+concurrent create, duplicate membership, unauthorized role change, invite abuse, private community leakage, deleted creator, AI outage.
