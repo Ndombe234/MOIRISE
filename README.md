@@ -1,67 +1,41 @@
-# MORISE
+# MOIRISE
 
-MORISE — a global social world centered on an evolving personal SYSTEM.
+MOIRISE est un réseau social Otaku, ludique et créatif dont le SYSTEM constitue le langage d'interaction central. Les portes globales canoniques sont SYSTEM, PLAYER, SOCIAL, WORLD, PLAY et CREATE.
 
-## Project status
+## État de construction
 
-**Module 0 — VALIDATED**
+Le dépôt a été **réinitialisé volontairement sur une nouvelle architecture canonique à 15 modules**. L'ancienne implémentation applicative ne constitue plus une base de progression.
 
-**Module 1 — AUTH + PLAYER — VALIDATED**
+- M01 Foundation : **IN PROGRESS — nouveau socle initial uniquement**
+- M02 Player → M15 Meta / MORISE AI Lab : **NOT STARTED dans le code**
+- Documentation canonique : `docs/moirise/MASTER_PLAN.md`
+- Ordre de construction : `docs/moirise/BUILD_ORDER.md`
+- État précis du reset : `docs/moirise/RESET_STATE.md`
 
-**Module 2 — SYSTEM CORE — IMPLEMENTED / AUTHENTICATED E2E PENDING**
+## Règle de travail
 
-This repository intentionally started from zero. No legacy OtakuWorld/NexoraVerse application code, database schema, RPCs, Edge Functions or RLS policies are reused.
+La documentation ne vaut pas preuve d'implémentation. Chaque module passe :
 
-## Product principles
+PLAN → TECHNICAL DESIGN → CODE → DATA/AUTH/SECURITY → TESTS → BROWSER DESKTOP → BROWSER MOBILE → RESILIENCE → DONE.
 
-- Simple surface, deep architecture.
-- Every user is a Player.
-- SYSTEM is a dedicated destination.
-- Solo-first: discover, play, explore, create and progress alone.
-- Social depth emerges from real user actions.
-- No fake users, fake engagement or fake statistics.
-- Global and multilingual by design.
-- Render is the current build/QA environment.
-- Cloudflare is the intended final production platform.
-- Vercel is not used unless explicitly justified.
+Aucune ancienne route, migration, RPC, test ou service métier n'est considérée comme du travail validé du nouveau plan.
 
-## Module 0 validation evidence
+## Runtime
 
-- GitHub repository: clean-slate MORISE foundation.
-- Next.js App Router + TypeScript foundation builds successfully on Render.
-- Render runtime uses the Next standalone server with HOSTNAME=0.0.0.0.
-- Supabase public schema was initialized cleanly after removal of legacy RLS automation.
-- /api/health returns HTTP 200 with status: ok.
-- Home, /discover, and /system return HTTP 200.
-- Browser Use verified real-user navigation, back navigation, console/runtime health, asset loading and 390×844 mobile layout.
-- Standalone static assets are copied into the runtime bundle during build.
+- Next.js App Router
+- React + TypeScript
+- Supabase pour l'identité et la persistance lorsqu'un module le requiert
+- Vitest pour les tests
+- Node.js 22+
 
-## Module 1 validation evidence
+Les secrets restent server-only. Le navigateur ne reçoit que la configuration publique explicitement nécessaire.
 
-- Real Supabase email/password signup and sign-in verified through the deployed browser flow.
-- Hosted email confirmation behavior verified; the QA account was explicitly confirmed for controlled end-to-end testing, then removed after verification.
-- public.players is linked one-to-one to auth.users with cascade deletion.
-- Player RLS is enabled with owner-only SELECT/INSERT/UPDATE policies based on auth.uid().
-- Table grants are explicitly restricted to authenticated SELECT/INSERT/UPDATE; anon and public grants are revoked.
-- Player creation is idempotent against concurrent initialization races.
-- Player display name and handle updates validate input, handle uniqueness conflicts, persist to PostgreSQL and survive reload.
-- Authenticated SYSTEM displays the persisted Player; sign-out returns to public home and protected SYSTEM routes redirect to sign-in.
-- Performance advisors are clean. Supabase security advisors report only the platform-level leaked-password-protection warning described below.
-- Browser Use verified the sign-in flow, Player persistence, SYSTEM synchronization, sign-out protection, 390×844 layout and console/runtime health.
-- A favicon route was added and verified HTTP 200.
-- CI now runs TypeScript validation and unit tests during the production build.
+## Principes non négociables
 
-## Current platform-level auth note
-
-Supabase's leaked-password protection remains disabled because the current project plan does not provide that feature. The application does not attempt to bypass or emulate it. Supabase documents leaked-password protection as a Pro Plan and above feature.
-
-
-## Module 2 validation evidence
-
-- PostgreSQL SYSTEM schema is deployed: profiles, seven dimensions, immutable progression events and memories.
-- All four SYSTEM tables have RLS enabled; anonymous reads and authenticated direct writes to SYSTEM aggregates/events are blocked.
-- The progression RPC is the authenticated mutation boundary and is protected by caller identity, fixed search_path, strict v1 event validation and idempotency.
-- Player creation initializes SYSTEM state through a database trigger; the initialization RPC is not executable by authenticated clients.
-- Render production build: TypeScript passed; 6 test files and 14 tests passed; Next.js production build and standalone preparation passed; deployment is LIVE at https://morise.onrender.com.
-- Browser Use verified unauthenticated /system and /system/progression protection, 390x844 layout without horizontal overflow, no visible runtime/console errors, and /api/system returning HTTP 401.
-- Authenticated end-to-end persistence is deliberately not marked validated yet because the connected browser session has no authenticated QA account/session for the live project.
+- un seul owner métier par règle ;
+- pas de faux utilisateurs, compteurs, scores, rareté ou urgence ;
+- 2D et 3D sont des citoyens de première classe ;
+- les providers IA sont des instruments, pas le cerveau ;
+- M15 orchestre l'IA mais ne remplace pas les owners des modules ;
+- aucune capability interne ne crée automatiquement une nouvelle porte globale ;
+- aucun écran blanc : loading, empty, error, unavailable et degraded sont des états explicites.

@@ -1,10 +1,36 @@
-import { type NextRequest } from "next/server";
-import { updateSession } from "@/lib/supabase/proxy";
+import { createServerClient } from "@supabase/ssr";
+import { type NextRequest, NextResponse } from "next/server";
 
 export async function proxy(request: NextRequest) {
-  return await updateSession(request);
+  let response = NextResponse.next({ request });
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+
+  if (!url || !publishableKey) {
+    return response;
+  }
+
+  const supabase = createServerClient(url, publishableKey, {
+    cookies: {
+      getAll() {
+        return request.cookies.getAll();
+      },
+      setAll(cookiesToSet) {
+        for (const { name, value, options } of cookiesToSet) {
+          request.cookies.set(name, value);
+          response = NextResponse.next({ request });
+          response.cookies.set(name, value, options);
+        }
+      },
+    },
+  });
+
+  await supabase.auth.getUser();
+  return response;
 }
 
 export const config = {
-  matcher: ["/system/:path*", "/player/:path*", "/auth/callback"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
 };
