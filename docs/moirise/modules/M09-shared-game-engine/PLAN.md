@@ -81,3 +81,27 @@ Game code/assets run inside bounded runtime. No arbitrary filesystem, unrestrict
 Engine may emit allowed gameplay events (started, milestone, finished) consumed by M06/M10; it never decides rewards or ranking.
 ## DONE
 2D/3D sandbox, performance budget, clean shutdown, malformed build rejection, offline/degraded behavior and mobile/desktop verification.
+
+# D100K — M09 Shared Game Engine — FORMAL BEHAVIOR / PROOF LAYER
+
+## 1. Machine-complete behavior contract
+Owner: M09. Scope: runtime réutilisable, sandbox, capacités 2D/3D. Dependencies: M01,M08. Primary invariant: runtime cannot access production secrets or arbitrary network.
+Capability transition: ACTOR → TRIGGER → PRECONDITIONS → INPUTS → AUTHORITY → GUARDS → STATE → POSTCONDITIONS → EVENTS → PROJECTIONS → FAILURE → RECOVERY → EVIDENCE.
+
+## 2. Forbidden states
+No authoritative mutation on failed auth/policy/schema/version/ownership/idempotency guards or unavailable critical dependency.
+
+## 3. AI and cross-module boundary
+M15 may propose/analyze but cannot mutate M09 private authority. Consumers use defined contracts/events/projections only.
+
+## 4. Proof obligations
+Nominal, empty/no-data, error, unavailable/degraded, retry/replay, refresh/reopen, permission denial, concurrency where relevant, desktop and mobile, plus adversarial cases specific to M09.
+
+## 5. Impact obligation
+M09 → consumers → events → projections → routes/UI → AI capabilities → tests → security/resilience. Unknown impact remains UNRESOLVED.
+
+## 6. Formal properties
+Authority is unique; duplicate commands are idempotent; stale versions do not overwrite; projections remain rebuildable; privacy follows the object; VERIFIED requires fresh applicable evidence.
+
+## 7. Completion
+This section defines proof requirements, not implementation completion.
