@@ -332,3 +332,27 @@ The SYSTEM can create a bounded graph that chooses one relevant discovery, one l
 
 ### Tests
 Private media never enters public context; source permission revoked invalidates generation; malformed provider output rejected; originality inconclusive cannot publish; share cooldown enforced; recommendation reason never leaks hidden sensitive signals; AI outage leaves social/feed functions usable.
+
+# D10 — M15 META SYSTEM + MORISE AI LAB — CONCEPTION TECHNIQUE
+## ModuleManifest
+`ModuleManifest={moduleId,owner,capabilities,schemas,events,dependencies,contextScopes,authorityBoundaries,validators,autonomyMax,version}`.
+## Request pipeline
+REQUEST → ACTOR → CONTEXT → INTENT → REQUIREMENTS → PLAN → POLICY → RESERVE → EXECUTE → VALIDATE → OWNER COMMIT → EVENT → MEMORY → EVALUATE.
+## TaskGraph node
+`TaskNode={taskId,graphId,capabilityId,version,dependencies,inputRefs,outputRefs,resourceProfile,validatorId,idempotencyKey,timeout,retryPolicy,state,lease?}`.
+## Media pipeline
+MediaRef → MediaAnalysis → ConceptAbstraction → CreativeBrief → GenerationTask → Validation → ArtifactRef → OwnerCommit.
+## Provider adapter
+ProviderAdapter = capabilityVersion + requestSchema + responseSchema + authMode + healthProbe + privacyClass + resourceProfile + validator.
+## Output validation
+Every provider result is VALID/INVALID/DEGRADED/INCONCLUSIVE before becoming evidence. INCONCLUSIVE cannot promote memory or publish sensitive content.
+## Memory
+MemoryRecord carries scope, provenance, confidence, utility, evidenceRefs, validationStatus, policyVersion and expiry. Private DM content is not global memory by default.
+## Agent boundary
+Agent output is candidate artifact. Workspace allowlist, resource profile, deadline and filesystem/network restrictions are mandatory.
+## Evolution
+Candidate changes are isolated, compared to baseline, tested for regression/security/policy, canaried and reversible.
+## Failure control
+Dependency failure selects degraded/fallback route. Oscillation uses failure fingerprints and maxAttempts. No unbounded auto-repair.
+## Tests
+single-brain invariant, cross-owner write denied, privacy-scope violation, provider invalid output, task graph cycle, memory promotion abuse, agent prompt injection, rollback.
