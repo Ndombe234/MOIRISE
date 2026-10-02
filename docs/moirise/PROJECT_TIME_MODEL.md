@@ -72,3 +72,17 @@ For the currently documented scope, including the 15 canonical modules, MORISE A
 The central estimate assumes the agent also performs browser verification and iterative correction rather than stopping after code generation.
 
 The estimate is not multiplied by the detail factor. A deeper document can reduce ambiguity and agent rework while revealing hidden implementation, integration, security, recovery, browser and mobile work. The estimate therefore follows newly discovered engineering work, not document length.
+
+
+## D1K fabrication update — 2026-10-02
+
+The project now has a machine-fabrication contract layered onto the canonical documentation, with M01 represented as a dependency-ordered file/symbol/test/browser task graph.
+
+This is an execution-control improvement, not a new product scope. Therefore the global estimate remains:
+- aggressive: approximately 4–5 months;
+- central: approximately 5–6 months;
+- integration-safe: approximately 6–8 months.
+
+For M01, the previous remaining envelope of approximately 16–28 hours remains the working estimate for closing the full DONE gate. The D1K layer makes the work more traceable; it does not justify multiplying the estimate by ten.
+
+The estimate must be revised if the next fabrication pass discovers additional persistence, browser, security, concurrency or production work beyond the currently documented gaps.
