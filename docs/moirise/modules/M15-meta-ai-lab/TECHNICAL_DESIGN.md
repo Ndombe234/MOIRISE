@@ -376,3 +376,8 @@ Agent receives workspaceRef, taskNode, tool allowlist, resource profile, deadlin
 Candidate change includes baseline, revision, benchmark suite, security/policy checks, canary configuration and rollback ref. Promotion is reversible.
 ## Tests
 single-brain invariant, provider swap, context leakage, graph cycle, worker loss, agent injection, invalid output, memory scope escalation, failed canary and rollback.
+
+# D110 — CROSS-LOOP ORCHESTRATION CONTRACT
+Le Cross-Loop Engine est une capability d'orchestration, pas une autorité de données.
+TaskGraphBuilder doit pouvoir modéliser source owner → proposal → validator → destination owner command → authoritative event → projection → analytics.
+Toute ranking hypothesis ou product hypothesis reste candidate jusqu'à validation expérimentale/owner. Toute évolution de production reste sandbox/canary/rollback.
