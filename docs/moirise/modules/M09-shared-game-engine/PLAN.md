@@ -67,3 +67,17 @@ M09 fournit via contrat les services communs nécessaires : input, lifecycle, sa
 Le jeu ne peut utiliser que les APIs présentes dans RuntimeManifest.allowedCapabilities. Une capability présente dans M15 n'est pas automatiquement disponible dans un jeu.
 
 Si le budget 3D ou la compatibilité device échoue, M09 applique uniquement le fallback déclaré ou renvoie INCOMPATIBLE. Il ne réécrit pas le jeu arbitrairement.
+
+# D10 — M09 SHARED GAME ENGINE — EXPANSION COMPORTEMENTALE
+## Runtime role
+M09 executes validated GameBuilds from M08. It is not a game generator and does not publish games.
+## Runtime lifecycle
+RESOLVE_BUILD → VERIFY_HASH → CHECK_COMPATIBILITY → SANDBOX → LOAD_RUNTIME → RUN → COLLECT_VALID_TELEMETRY → SHUTDOWN.
+## 2D/3D
+The engine exposes separate runtime packages/capability sets but a common session interface. Device profile selects a safe preset; unsupported features degrade or block before launch.
+## Safety
+Game code/assets run inside bounded runtime. No arbitrary filesystem, unrestricted network, secrets or admin APIs.
+## Social hooks
+Engine may emit allowed gameplay events (started, milestone, finished) consumed by M06/M10; it never decides rewards or ranking.
+## DONE
+2D/3D sandbox, performance budget, clean shutdown, malformed build rejection, offline/degraded behavior and mobile/desktop verification.
