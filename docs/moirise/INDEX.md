@@ -75,7 +75,8 @@ Les registres provider séparés ont été supprimés pour éviter une troisièm
 - transversal/DEPENDENCIES.md — module and change-impact graph.
 - transversal/DEFINITION_OF_DONE.md — evidence gate.
 - modules/M01-foundation/TECHNICAL_DESIGN.md — current M01 D1K/D10K fabrication map.
-- lib/m01/fabrication.ts — executable M01 task graph and graph validator.
+
+The repository does not currently contain a separate executable `lib/m01/fabrication.ts`; the canonical M01 fabrication map remains in `TECHNICAL_DESIGN.md` and the coordinator control plane.
 
 
 ## D100K formal layer
