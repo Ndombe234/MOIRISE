@@ -303,3 +303,117 @@ The following are explicitly NOT implemented/closed and must become their own fu
 - dependency-failure/resilience verification;
 - concurrency/replay verification;
 - production evidence package.
+
+
+## D1K implementation binding — executable fabrication graph
+
+The code-level graph lives in lib/m01/fabrication.ts. It is an execution aid owned by M01, not a new business authority.
+
+### Runtime contract
+
+FabricationTask contains:
+id, featureId, ownerModule, dependencies, files, symbols, status.
+
+The graph must satisfy:
+- task IDs unique;
+- every dependency resolves;
+- no self-dependency;
+- no dependency cycle;
+- owner is M01;
+- a PLANNED task is executable only when every dependency is IMPLEMENTED or VERIFIED;
+- implementation status never implies browser/production verification.
+
+### Required helper behavior
+
+- listFabricationTasks() returns the canonical in-code task graph.
+- getFabricationTask(taskId) returns one exact task or null.
+- validateFabricationGraph(tasks) rejects duplicate IDs, invalid ownership, missing dependencies and cycles.
+- getReadyFabricationTasks(tasks) returns only PLANNED tasks whose predecessors have acceptable implementation status.
+- fabricationGraphIsCanonical() is a contract invariant used by tests.
+
+This graph must never be used to grant product authority, mutate other modules, choose AI providers or bypass the canonical owner documents.
+
+# D10K — M01 ADVERSARIAL / EVIDENCE FABRICATION CONTRACT
+
+D10K is the final useful depth for the current M01 scope. It adds adversarial cases and production-proof semantics rather than repeating the D1K task graph.
+
+## 1. Failure matrix
+
+| Boundary | Attack / failure | Expected invariant | Evidence |
+|---|---|---|---|
+| session | forged actorId | server identity wins | route/API test |
+| session | expired cookie | unauthenticated/re-auth, no mutation | browser + API |
+| callback | missing code | safe redirect, no session write | route test |
+| callback | unsafe next | redirect allowlist enforced | route test |
+| auth form | duplicate submit | at most one in-flight command | browser |
+| route | unknown route | recoverable 404, no blank screen | browser |
+| Supabase | dependency unavailable | explicit unavailable/degraded state | integration/browser |
+| event contract | duplicate delivery | consumer mutation once | integration |
+| command | replay | same idempotency key gives same result | integration |
+| command | key with different payload | conflict | integration |
+| concurrency | two writers | no lost update / version conflict | integration |
+| AI boundary | provider output malformed | INCONCLUSIVE, never VALID | contract test |
+| secrets | service-role key in bundle | zero secret exposure | build/bundle inspection |
+| privacy | private payload in telemetry | metadata only | observability test |
+| mobile | keyboard/viewport | no clipped controls or horizontal overflow | browser |
+| production | build failure | task remains non-VERIFIED | CI evidence |
+
+## 2. Evidence classification
+
+A task may become VERIFIED only when all applicable layers are fresh:
+
+1. static implementation evidence;
+2. focused test evidence;
+3. integration evidence where data/network boundaries exist;
+4. security evidence where authority/privacy exists;
+5. desktop browser evidence for user-facing behavior;
+6. mobile browser evidence for responsive behavior;
+7. resilience evidence for dependency/failure paths;
+8. production build/CI evidence.
+
+If an applicable layer cannot run, status remains PARTIAL, BLOCKED or INCONCLUSIVE.
+
+## 3. Evidence identity
+
+Every evidence record should reference:
+- task ID;
+- commit SHA;
+- exact command/scenario;
+- expected result;
+- actual result;
+- timestamp;
+- environment;
+- status.
+
+Evidence from an older commit is not proof of the current commit.
+
+## 4. Cross-module mutation firewall
+
+Before any M01 task writes state, the agent must check:
+- owner module;
+- authoritative source;
+- allowed contract;
+- event boundary.
+
+A task that would write Player/Social/World/Play/Reward/Community state is rejected as an ownership violation and must be transferred to its owner.
+
+## 5. Fabrication recovery
+
+When a task fails:
+1. preserve the failing evidence;
+2. classify defect vs environment;
+3. identify root control/data path;
+4. make the smallest correction;
+5. rerun focused evidence;
+6. rerun dependent tasks;
+7. update status;
+8. never erase the prior failure record.
+
+## 6. Production lock
+
+A task with successful unit tests but no current CI/build/browser evidence remains NOT VERIFIED.
+
+## 7. M01 current D10K status
+
+The fabrication graph and contract layer are implemented and testable.
+The M01 product gate remains open because event durability, persistence, browser/mobile verification, resilience, concurrency/replay and production evidence are not yet closed.
