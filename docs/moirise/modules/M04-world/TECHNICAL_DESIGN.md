@@ -78,3 +78,57 @@ World projections are safe-to-cache only with source version and revocation time
 M13 outputs proposal/signal; M04 validates and projects. No direct world mutation from model output.
 ## Tests
 source deletion, privacy change, blocked creator, stale projection, adaptive provider outage, deep-link, mobile navigation.
+
+# D100K — M04 World — FABRICATION / CONTRACT / EVIDENCE LAYER
+
+## 1. Task record
+Every implementation unit owned by M04 resolves to:
+TASK_ID → FEATURE_ID → FILES → SYMBOLS → INPUT_SCHEMA → OUTPUT_SCHEMA → AUTHORITATIVE_STATE → MUTATIONS → EVENTS → DEPENDENCIES → TESTS → BROWSER → EXPECTED → EVIDENCE → STATUS.
+
+## 2. File contract
+For every file:
+- exact path;
+- owner M04;
+- exported symbols;
+- allowed dependencies;
+- forbidden ownership;
+- side effects;
+- persistence/event access;
+- error contract;
+- direct tests;
+- affected browser surfaces.
+
+## 3. Function contract
+For every non-trivial function:
+- symbol and types;
+- preconditions;
+- authoritative reads/writes;
+- idempotency;
+- concurrency/version rule;
+- error behavior;
+- observability fields;
+- direct callers;
+- direct tests.
+
+## 4. D10K adversarial matrix
+At minimum test:
+forged actor/reference, authorization denial, replay, duplicate command, concurrent writers, stale version, malformed provider/AI output, dependency timeout, partial network failure, private-data leakage, and client-side bypass of authoritative state.
+
+## 5. D100K evidence
+Fresh evidence must link:
+TASK_ID → COMMIT → TEST/SCENARIO → EXPECTED → ACTUAL → ENVIRONMENT → STATUS.
+Older evidence cannot verify a newer commit.
+
+## 6. Impact firewall
+A task attempting to mutate a state owned outside M04 is rejected and redirected to that owner. Consumers may call contracts, consume events or read projections only.
+
+## 7. Production lock
+Unit tests passing alone never yields VERIFIED. A user-facing feature remains PARTIAL/UNVERIFIED until the applicable desktop/mobile, resilience, security and production evidence exists.
+
+## 8. Current status semantics
+PLANNED = no implementation evidence.
+IMPLEMENTED = code/test evidence only.
+PARTIAL = missing applicable proof.
+BLOCKED = prerequisite unavailable.
+INCONCLUSIVE = evidence does not prove outcome.
+VERIFIED = all applicable evidence is fresh and successful.
