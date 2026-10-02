@@ -8,7 +8,7 @@ It does not define product behavior. It does not replace the canonical module pl
 
 | File | Purpose |
 |---|---|
-| `CONFIG.yaml` | execution policy and concurrency limits |
+| `CONFIG.yaml` | execution policy, automatic delegation policy, and concurrency limits |
 | `MULTI_AGENT_CONTRACT.md` | governing rules for delegated work |
 | `ROLES.md` | agent role definitions and responsibilities |
 | `OWNERSHIP.yaml` | write-surface ownership and conflict boundaries |
@@ -16,6 +16,21 @@ It does not define product behavior. It does not replace the canonical module pl
 | `HANDOFF_CONTRACT.md` | exact worker → coordinator handoff format |
 | `EXECUTION_PROTOCOL.md` | lifecycle from assignment to lock |
 | `TASK_DOSSIER_TEMPLATE.md` | bounded task packet template |
+| `COORDINATOR_BOOTSTRAP.md` | exact automatic coordinator behavior and session expectations |
+
+## Automatic mode
+
+The repository is configured so that, whenever the Codex execution harness exposes multi-agent/subagent orchestration, the root agent should proactively:
+
+1. inspect the canonical specification;
+2. derive the dependency graph;
+3. spawn independent bounded workers without asking the user to manually create them;
+4. isolate concurrent writers;
+5. collect handoffs;
+6. independently verify the integrated result;
+7. continue into the next eligible wave.
+
+The repository cannot itself flip a product/session-level multi-agent switch. That capability is supplied by the Codex execution harness. When the harness is unavailable, the same graph executes sequentially.
 
 ## What this layer deliberately does not contain
 
@@ -41,6 +56,8 @@ COORDINATOR
     ↓
 TASK GRAPH
     ↓
+AUTOMATIC DELEGATION
+    ↓
 ROLE ASSIGNMENT
     ↓
 ISOLATED WORKTREE
@@ -55,9 +72,7 @@ INTEGRATION
     ↓
 INDEPENDENT VERIFICATION
     ↓
+NEXT ELIGIBLE WAVE
+    ↓
 LOCK
 ```
-
-## Important
-
-This layer prepares the repository for multi-agent Codex execution. It does not itself turn on multi-agent execution in the ChatGPT/Codex product; that capability is provided by the execution harness.
