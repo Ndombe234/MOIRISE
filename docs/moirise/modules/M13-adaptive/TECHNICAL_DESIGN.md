@@ -52,3 +52,15 @@ Observation must pass provenance/confidence/policy and scope checks. Promotion t
 Store only bounded feature references and evidence keys; avoid sensitive attribute inference.
 ## Tests
 private signal leak, stale signal, duplicate proposal, oscillation, provider outage, owner rejection and rollback.
+
+# D100 — TECHNICAL CONTRACT DETAIL
+## AdaptiveSignal
+AdaptiveSignal = signalId + sourceRef + sourceModule + scope + confidence + observedAt + expiresAt + evidenceRefs[] + policyVersion.
+## AdaptiveProposal
+AdaptiveProposal = proposalId + targetOwner + action + inputRefs[] + reasonKey + confidence + policyVersion + expiresAt + status.
+## Pipeline
+ingest → scope check → normalize → dedupe → decay → correlate → candidate → policy → owner validation → event → projection.
+## Memory promotion
+Scope widening stores source scope + target scope + justification + policy version + owner decision. Rejected candidates remain historical evidence only where retention permits.
+## Tests
+private signal promotion, stale signal, duplicate proposal, oscillation, low confidence, provider outage, owner rejection and rollback.
