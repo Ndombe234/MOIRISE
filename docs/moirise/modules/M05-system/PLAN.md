@@ -103,3 +103,17 @@ M15 unavailable ne bloque jamais le cœur XP/level/rank/mission déjà détermin
 
 ### H. DONE
 Tests prouvent qu'un provider ou M15 ne peut ni écrire le ledger XP, ni forcer un title, ni terminer une mission, ni bypasser une règle.
+
+# D10 — M05 SYSTEM — EXPANSION COMPORTEMENTALE
+## SYSTEM visibility
+Le SYSTEM est une couche contextuelle, pas une suite de popups. Il peut présenter une suggestion, progression, mission, titre, recommandation créative, alerte ou handoff seulement quand le contexte le justifie.
+## Progression
+EVENT_VALIDATED → PROGRESSION_RULE → XP/TITLE/MISSION_PROPOSAL → OWNER_VALIDATION → COMMIT → SYSTEM_PROJECTION. M15 ne donne jamais directement XP/titres.
+## Adaptive messaging
+Le texte du SYSTEM dépend du contexte, mais les règles de mutation sont déterministes et versionnées. AI peut proposer la présentation, pas modifier le ledger.
+## Viral hooks
+Achievements and creations can produce shareable projections: title reveal, challenge result, creation transformation, game result. Sharing is optional and respects privacy.
+## Surprise
+Fun & Surprise can schedule bounded surprises from real state. No fake scarcity or fake urgency. Surprise must be reversible/observable.
+## DONE
+Progression remains correct when AI is unavailable; SYSTEM overlays never block reading/playing/creating; duplicate events cannot award twice.
