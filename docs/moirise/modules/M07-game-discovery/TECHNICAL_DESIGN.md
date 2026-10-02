@@ -94,3 +94,21 @@ reasonKey enumerates factual causes; no hidden sensitive reason leaks.
 External evidence is isolated from social ranking and marked verified/inconclusive/stale.
 ## Tests
 blocked candidate, private candidate, device incompatibility, new-user cold start, stale score, duplicate feedback, pagination cursor stability.
+
+# D100 — TECHNICAL CONTRACT DETAIL
+## Candidate contract
+```
+DiscoveryCandidate { itemRef, ownerRef?, visibility, safetyStatus, deviceCompat,
+ freshness, novelty, lexicalScore, relationshipSignals[], qualitySignals[], aiScore? }
+```
+## Ranking order
+Hard filter first. Deterministic score then optional bounded AI score. Then diversity/novelty pass. Persist rankingVersion with recommendation projection.
+## Explanation
+reasonKey is enumerated and maps to safe factual classes. It cannot stringify hidden profile fields.
+## Feedback storage
+```
+DiscoveryFeedback { id, actorRef, itemRef, action, dedupeKey, policyVersion, createdAt }
+```
+Unique/dedupe + rate limit before ranking consumption.
+## Tests
+privacy-before-AI, blocked-before-score, stale ranking invalidation, cold-start, device mismatch, provider outage, pagination cursor stability.
