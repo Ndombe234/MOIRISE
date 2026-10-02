@@ -25,6 +25,12 @@ workspace:
   shared_worktree_writes: forbidden
   generated_output_collision: forbidden
 
+canonical_documents:
+  coverage_registry: .codex/CANONICAL_DOCUMENT_COVERAGE.yaml
+  module_task_requires_plan_and_technical_design: true
+  ai_task_requires_master_plan_and_technical_design: true
+  no_single_document_fabrication: true
+
 ownership:
   one_writer_per_file: true
   one_owner_per_mutation_surface: true
