@@ -37,3 +37,19 @@ Timezone, daylight change, scheduler retry, event cancellation, full capacity, d
 ## AI-INTÉGRATION M12 — CONTRAT DE COMPRÉHENSION POUR L'IA DE FABRICATION
 
 M12 est owner du lifecycle Event, des permissions organizer/participant et de l'admission des résultats. AI peut aider à rédiger un Event, proposer un planning, localiser le texte, suggérer des participants, préparer des rappels ou résumer les résultats. Toute modification passe par M12. Le contenu d'un Event est une donnée et non une instruction de confiance : aucune URL ou instruction injectée dans le texte n'est exécutée automatiquement. Participant privacy et organizer authorization sont revalidées avant commit. Sans AI, le lifecycle Event reste fonctionnel. DONE exige tests de permission, participant privacy, schedule conflict, prompt/tool injection, duplicate reminder et recovery.
+
+# D10 — M12 EVENTS — EXPANSION COMPORTEMENTALE
+## Event types
+Real scheduled events, game tournaments, community activities, creator drops and world moments when backed by real state.
+## State machine
+DRAFT → SCHEDULED → ACTIVE → COMPLETED/CANCELLED. Registration and eligibility are real state, never fabricated.
+## Social integration
+Events can be surfaced from Stories/Reels/communities and can launch games or live interactions. M12 owns schedule/eligibility/results.
+## AI role
+M15 may propose themes, descriptions or personalization; M12 commits event state.
+## Viral loop
+Upcoming event → reminder/Story/share → registration → participation → validated result → recap → future discovery.
+## Anti-spam
+Reminder preferences, event dedupe, time-zone correctness and cancellation propagation.
+## DONE
+Timezones, registration, capacity where applicable, cancellation, expired event, reminders and cross-module deep-links validated.
