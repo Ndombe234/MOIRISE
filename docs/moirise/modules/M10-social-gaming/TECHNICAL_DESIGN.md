@@ -51,3 +51,17 @@ Le runtime émet des signaux de gameplay autorisés → M10 valide source/result
 AI request = gameRef + playSessionRef + participant projection + explicit preferences + permitted social hooks. La proposition ne peut pas créer un participant ni modifier un rôle.
 
 Tests : jeu solo sans hook, party join, blocked participant, duplicate invite, score sharing privacy, challenge validation, AI proposal expiry, network loss, membership revoked.
+
+# D10 — M10 SOCIAL GAMING — CONCEPTION TECHNIQUE
+## GameSocialManifest
+`gameBuildRef,shareableResults[],challengeModes[],inviteModes[],groupHooks[],privacyDefaults,rateLimits`.
+## Challenge
+Challenge = sourceResultRef + challenger + targetScope + rulesVersion + expiresAt + status. Result is validated before resolution.
+## Invite
+InviteToken references build + challenge + recipient scope + expiry + revocationVersion; recipient can reject/mute.
+## Event flow
+game.result.validated → M10 social hook → recipient projection → optional M11 membership action.
+## Anti-abuse
+Per-actor and per-target caps, dedupe keys, mute/block filtering before notification enqueue.
+## Tests
+forged result, expired challenge, duplicate invite, blocked recipient, deleted group, removed build, notification storm.
