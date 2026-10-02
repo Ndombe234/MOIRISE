@@ -279,3 +279,15 @@ Successful game patterns, failures and repair recipes become retrievable knowled
 M15 can optimize user value and content quality, but not through dark patterns, fake scarcity, fake popularity or hidden manipulation.
 ## DONE
 All modules can call capabilities through one brain; all mutations return to owners; media and game creation survive provider changes.
+
+# D100K — M15 Meta System / MORISE AI Lab — FORMAL VERIFICATION
+
+Owner: M15. Scope: AI brain, routing, workers, memory, validation, evolution. Dependencies: all contract surfaces. Invariant: AI/provider outputs are untrusted until validated and committed by the module owner.
+
+Canonical transition: ACTOR → INTENT → PRECONDITIONS → CONTEXT/POLICY → INPUTS → AUTHORITY → GUARDS → STATE → OUTPUT → VALIDATION → COMMIT → EVENTS → PROJECTIONS → FAILURE → RECOVERY → EVIDENCE.
+
+Forbidden: hidden owner transfer, unauthorized mutation, silent privacy expansion, stale overwrite, duplicate authoritative mutation, or treating an unverified proposal as fact.
+
+Proof must cover nominal, empty/no-data, failure, degraded/unavailable, replay, concurrency where relevant, refresh/reopen, permissions, mobile and desktop, and the module-specific invariant.
+
+Impact path: M15 → consumers → contracts/events → projections → routes/UI → AI capabilities → tests → security/resilience. Unknown impact remains UNRESOLVED.
