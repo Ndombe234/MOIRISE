@@ -57,3 +57,27 @@ Communities can host feeds, Stories/Reels projects, challenges, game sessions an
 A community grows from a real shared action (play, creation, event, discussion), not from fake recommendations or auto-added users. Invitations are scoped and rate-limited.
 ## DONE
 Public/private membership, moderation, roles, invite controls, cross-module projections and leave/delete recovery validated.
+
+# D100K — M11 Communities / Guilds — FORMAL BEHAVIOR / PROOF LAYER
+
+## 1. Machine-complete behavior contract
+Owner: M11. Scope: membership, roles, moderation, community state. Dependencies: M02,M03,M12,M13. Primary invariant: membership/role authority is M11 only.
+Capability transition: ACTOR → TRIGGER → PRECONDITIONS → INPUTS → AUTHORITY → GUARDS → STATE → POSTCONDITIONS → EVENTS → PROJECTIONS → FAILURE → RECOVERY → EVIDENCE.
+
+## 2. Forbidden states
+No authoritative mutation on failed auth/policy/schema/version/ownership/idempotency guards or unavailable critical dependency.
+
+## 3. AI and cross-module boundary
+M15 may propose/analyze but cannot mutate M11 private authority. Consumers use defined contracts/events/projections only.
+
+## 4. Proof obligations
+Nominal, empty/no-data, error, unavailable/degraded, retry/replay, refresh/reopen, permission denial, concurrency where relevant, desktop and mobile, plus adversarial cases specific to M11.
+
+## 5. Impact obligation
+M11 → consumers → events → projections → routes/UI → AI capabilities → tests → security/resilience. Unknown impact remains UNRESOLVED.
+
+## 6. Formal properties
+Authority is unique; duplicate commands are idempotent; stale versions do not overwrite; projections remain rebuildable; privacy follows the object; VERIFIED requires fresh applicable evidence.
+
+## 7. Completion
+This section defines proof requirements, not implementation completion.
