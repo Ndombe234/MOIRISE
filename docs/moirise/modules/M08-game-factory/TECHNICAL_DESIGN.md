@@ -87,3 +87,19 @@ A repair pattern is only reusable after build success, impacted tests, regressio
 
 ### 15. Independence
 The M08 factory workspace must remain usable with Codex disabled. Missing execution tooling is reported as a capability/tool limitation, not as loss of memory.
+
+# D10 — M08 GAME FACTORY — CONCEPTION TECHNIQUE
+## GameSpecification
+`GameSpecification={gameId,specVersion,mode2D3D,loop,controls,winLoss,duration,targetDevices,socialHook,assetPolicy,resourceBudget,validators}`.
+## TaskGraph
+Each node contains taskId,nodeKey,capabilityVersion,dependencies,inputRefs,outputRefs,resourceProfile,validatorId,idempotencyKey,timeout,retryPolicy.
+## Reuse algorithm
+search compatible validated patterns → score by compatibility/evidence → choose or create candidate → validate after adaptation. Reuse never bypasses tests.
+## Agent boundary
+Codex/other coding agents receive sandbox workspace + task node + allowlisted tools. Output is candidate artifact only; M08 validates and publishes.
+## Repair loop
+DIAGNOSIS → HYPOTHESIS → PATCH → IMPACTED_TESTS → BUILD → REGRESSION → BENCHMARK. Same failure fingerprint twice escalates instead of oscillating.
+## Build provenance
+buildId, sourceCommit, toolchain, dependency lock, runtime target, artifact hash, test evidence.
+## Tests
+2D/3D build reproducibility, malicious asset, oversized asset, runtime mismatch, agent output injection, failed repair, resource overrun.
