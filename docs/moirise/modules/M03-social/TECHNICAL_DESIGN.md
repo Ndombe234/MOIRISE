@@ -101,3 +101,33 @@ AI output = candidate labels/evidence, pas décision de mutation automatique si 
 
 ### 13.4 Tests
 DM not leaked to public context, private prompt injection blocked, translation preserves protected ranges, provider failure keeps source, duplicate translation idempotent, revoked share token invalidated, moderation output INCONCLUSIVE handled safely.
+
+## 14. CREATIVE MEDIA TECHNICAL INTEGRATION
+Canonical cross-module design = `docs/moirise/CREATIVE_MEDIA_VIRALITY_TECHNICAL_DESIGN.md`.
+
+### 14.1 Media upload
+`client → signed upload → quarantine → file validation → safety/originality state → M03 commit → event → projection`.
+The original asset is canonical; thumbnails, streaming renditions and AI-analysis representations are derivatives.
+
+### 14.2 Reel contract
+`Reel = { id, ownerRef, mediaRef, captionRef, audioRef?, visibility, remixPolicy, attributionRef, rankingSignalsVersion, status }`.
+M03 validates publication; M07 ranks it.
+
+### 14.3 Story contract
+`Story = { id, ownerRef, itemRefs[], audiencePolicy, expiresAt, archivePolicy, replyPolicy, provenanceRefs[], status }`.
+Expiration is authoritative server state, not a client timer.
+
+### 14.4 Repost/remix contract
+Repost stores source reference + actor + optional note. Remix stores sourceRef + permission + transformationType + newAssetRef + attribution. No ownership duplication.
+
+### 14.5 User media AI contract
+M03 sends `MediaAnalysisRequest` only when permission allows. M15 creates semantic features/creative brief. The generator must not receive an instruction to copy a third-party expressive work. `originalityStatus` can be VALID, INCONCLUSIVE or REJECTED.
+
+### 14.6 Viral share opportunity
+`ShareOpportunity` is emitted only after a meaningful event and includes sourceEventRef, recipient candidates, reasonKey, cooldownKey, expiry and privacyClass. The UI renders only a small contextually relevant action.
+
+### 14.7 Failure modes
+Provider down → source media and normal social publishing remain available. Transcoding failure → retry/degraded preview. Originality inconclusive → no automatic public publish. Permission revoked → invalidate dependent private AI candidates. Recipient loses access → shared projection returns unavailable.
+
+### 14.8 Test matrix
+Upload, duplicate upload, invalid MIME, large file, corrupt media, Story expiry, Reel playback, share, DM share, group share, repost attribution, remix authorization, private-media leakage, provider outage, originality inconclusive, mobile and desktop.
