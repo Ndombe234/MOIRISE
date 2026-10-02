@@ -94,3 +94,26 @@ reasonKey enumerates factual causes; no hidden sensitive reason leaks.
 External evidence is isolated from social ranking and marked verified/inconclusive/stale.
 ## Tests
 blocked candidate, private candidate, device incompatibility, new-user cold start, stale score, duplicate feedback, pagination cursor stability.
+
+# D100K — M07 Game Discovery — FABRICATION / CONTRACT / EVIDENCE LAYER
+
+## 1. Task record
+Every implementation unit: TASK_ID → FEATURE_ID → FILES → SYMBOLS → INPUT/OUTPUT SCHEMA → AUTHORITY → MUTATIONS → EVENTS → DEPENDENCIES → TESTS → BROWSER → EXPECTED → EVIDENCE → STATUS.
+
+## 2. File contract
+Exact path, owner M07, exports, allowed dependencies, forbidden ownership, side effects, persistence/events, errors, tests, browser surfaces.
+
+## 3. Function contract
+Exact symbol/types, preconditions, authoritative reads/writes, idempotency, concurrency/version, errors, observability, callers, direct tests.
+
+## 4. Adversarial verification
+Forged references/results, permission bypass, replay, duplicate commands, races, stale versions, malformed AI/provider output, dependency timeout, partial network failure, privacy leakage and client-side authority bypass.
+
+## 5. Evidence
+TASK_ID → COMMIT → TEST/SCENARIO → EXPECTED → ACTUAL → ENVIRONMENT → STATUS. Evidence from older commits cannot certify newer code.
+
+## 6. Ownership firewall
+A task cannot write another module's authoritative state. It must use an allowed use-case, event or projection.
+
+## 7. Production lock
+Unit tests alone never produce VERIFIED for a user-facing capability.
