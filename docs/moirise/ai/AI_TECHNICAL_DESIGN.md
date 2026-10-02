@@ -3060,3 +3060,8 @@ AgentExecution = workspaceRef + taskNode + toolAllowlist + resourceProfile + dea
 RepairAttempt = diagnosisRef + hypothesis + candidateRevision + impactedTests[] + attemptNumber + maxAttempts. Same failureFingerprint with no progress evidence triggers escalation.
 ## 100.20 Evolution controller
 candidate → static/tests → benchmark → security/policy → canary → monitor → promote/reject → rollback. Every transition is versioned and auditable.
+
+# D110 — AI TECHNICAL INTEGRATION FOR PRODUCT LOOPS
+Minimal task contract : sourceOwner + targetOwner + inputRefs[] + privacyClass + capabilityId/version + validatorId + outputRefs[] + policyVersion + idempotencyKey.
+Pour le ranking expérimental, les modèles produisent des candidates ; M07 décide la promotion. Pour la validation produit, M15 distingue explicitement evidence technique et evidence produit.
+Une candidate auto-évolutive à impact utilisateur suit sandbox → tests → benchmark → security/policy → canary → product validation when applicable → promote/reject → monitor/rollback.
