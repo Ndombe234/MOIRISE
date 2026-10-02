@@ -1,0 +1,60 @@
+version: 1
+
+control_plane:
+  mode: supervised_parallel
+  coordinator: root
+  purpose: "Coordinate independent Codex workers without creating a second product authority."
+
+concurrency:
+  default_active_workers: 3
+  target_active_workers: 4
+  hard_rule: "Never increase concurrency when it causes shared-file, schema, lockfile, migration, or environment contention."
+  sequential_fallback: true
+
+workspace:
+  concurrent_writers_require_isolation: true
+  isolation_preference: worktree
+  shared_worktree_writes: forbidden
+  generated_output_collision: forbidden
+
+ownership:
+  one_writer_per_file: true
+  one_owner_per_mutation_surface: true
+  coordinator_resolves_overlap: true
+  canonical_docs_are_not_copied_into_this_layer: true
+
+integration:
+  worker_result_is_not_acceptance: true
+  coordinator_rechecks_integrated_diff: true
+  independent_verification_required: true
+  unresolved_dependency_blocks_merge: true
+  stale_evidence_cannot_certify_new_commit: true
+
+evidence:
+  required_before_lock:
+    - implementation_present
+    - focused_tests
+    - affected_integration_tests
+    - build_or_typecheck
+    - browser_when_user_facing
+    - mobile_when_user_facing
+    - security_when_boundary_changed
+    - resilience_when_failure_surface_changed
+    - dependency_impact_review
+  states:
+    - READY
+    - BLOCKED
+    - PARTIAL
+    - INCONCLUSIVE
+    - VERIFIED
+    - LOCKED
+
+communication:
+  worker_must_use_handoff_contract: true
+  credentials_in_messages: forbidden
+  secrets_in_repository: forbidden
+
+canonicality:
+  existing_fabrication_docs_remain_authoritative: true
+  this_control_plane_cannot_define_business_state: true
+  this_control_plane_cannot_define_ai_authority: true
