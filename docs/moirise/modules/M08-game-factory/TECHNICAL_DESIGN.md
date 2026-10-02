@@ -103,3 +103,24 @@ DIAGNOSIS → HYPOTHESIS → PATCH → IMPACTED_TESTS → BUILD → REGRESSION �
 buildId, sourceCommit, toolchain, dependency lock, runtime target, artifact hash, test evidence.
 ## Tests
 2D/3D build reproducibility, malicious asset, oversized asset, runtime mismatch, agent output injection, failed repair, resource overrun.
+
+# D100 — TECHNICAL CONTRACT DETAIL
+## GameRequirements
+```
+GameRequirements { requestRef, mode, coreLoop, controls[], durationProfile,
+ winLossRules, targetDevices[], performanceBudget, assetPolicy, socialHook,
+ accessibility, securityClass }
+```
+## GameSpecification
+Adds architecture/runtime choice, scene graph or canvas structure, asset manifest, save model, resource plan, validators and task graph reference.
+## TaskGraph node contract
+```
+TaskNode { taskId,nodeKey,capabilityId,version,deps[],inputRefs[],outputRefs[],
+ resourceProfile,validatorId,idempotencyKey,timeout,retryPolicy,state }
+```
+## Build provenance
+Store source revision, toolchain, lockfile identity, artifact hashes, runtime target, test evidence. This permits reproducibility and rollback.
+## Agent workspace
+Agent gets allowlisted workspace/tool set and deadline. Agent output enters candidate artifact state only.
+## Tests
+2D/3D reproducibility, dependency mismatch, malicious asset, oversized asset, agent prompt/tool injection, failed repair, resource budget breach, missing manifest.
