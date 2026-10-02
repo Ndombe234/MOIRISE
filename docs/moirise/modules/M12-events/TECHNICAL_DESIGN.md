@@ -49,3 +49,21 @@ EventContentProposal contains factual fields + creative fields separately; only 
 Results are immutable facts after owner commit; recap projections may include validated media links.
 ## Tests
 timezone boundary, duplicate registration, cancellation, reminder race, stale projection, unauthorized access, AI-generated factual hallucination.
+
+# D100 — TECHNICAL CONTRACT DETAIL
+## Event
+```
+Event { eventId, ownerRef, startAt, endAt, timezone, status, visibility,
+ eligibilityVersion, version, createdAt, updatedAt }
+```
+## Registration
+```
+EventRegistration { eventId, playerId, status, registeredAt, sourceRef? }
+```
+Unique event/player. Capacity allocation uses transaction/constraint appropriate to configuration.
+## Reminder job
+Re-read authoritative Event before dispatch. If version/status/time changed, recompute or cancel. Dispatch command carries eventVersion.
+## Proposal split
+AI content proposal separates factual fields from creative copy. Factual fields require owner verification when externally sourced.
+## Tests
+timezone/DST edge, event edit race, cancel race, duplicate registration, stale reminder, unauthorized registration, recap with deleted media.
