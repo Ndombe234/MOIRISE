@@ -80,3 +80,15 @@ Invite dedupe, recipient controls, mute, frequency caps and block enforcement.
 Challenge links should make the next action obvious and reversible: play, join group, rematch or share result.
 ## DONE
 Friend/group challenge, privacy, block, duplicate invite, build removal and mobile/desktop behavior tested.
+
+# D100 — SPÉCIFICATION COMPORTEMENTALE
+## Challenge
+Create only from validated result. RulesVersion and expiration are fixed at creation. Recipient scope respects block/privacy.
+## Rematch
+Result → rematch proposal → target accepts → new PlaySession. A rejected/expired proposal cannot reopen a session.
+## Invite
+Invite is deduplicated and rate-limited. Recipient can mute or reject without revealing hidden profile data.
+## Group play
+M10 asks M11 membership/permissions when a community or guild is involved; M10 does not mutate membership.
+## Media handoff
+Validated result can create safe visual/text projection in M03; it cannot fabricate scores.
