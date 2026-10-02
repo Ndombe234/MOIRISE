@@ -40,3 +40,19 @@ Sensitive inference attempt, blocked actor, low-confidence convergence, repeated
 ## AI-INTÉGRATION M13 — CONTRAT DE COMPRÉHENSION POUR L'IA DE FABRICATION
 
 M13 est owner de l'adaptation du World, du ranking contextualisé et des réponses du monde vivant. M15 fournit l'intelligence et le calcul de propositions à partir de signaux réels. Les signaux doivent avoir sourceModule/sourceRef, timestamp, privacyClass, provenance et expiry. Une convergence ou emergence ne peut être déclenchée que par plusieurs signaux réels satisfaisant une règle versionnée. AI ne peut pas créer artificiellement des utilisateurs, événements, engagements ou récompenses pour provoquer une adaptation. Toute adaptation doit rester bornée, versionnée, explicable et, lorsque possible, réversible. Fallback = baseline déterministe.
+
+# D10 — M13 ADAPTIVE WORLD — EXPANSION COMPORTEMENTALE
+## Purpose
+M13 observes validated world/social/game signals and proposes adaptive projections. It never silently rewrites owner truth.
+## Convergence
+SIGNALS → NORMALIZE → PRIVACY FILTER → CLUSTER/RELATION HYPOTHESIS → EVIDENCE → PROPOSAL → OWNER VALIDATION → PROJECTION.
+## Missions
+M13 may propose emergent missions from real activity, but M05/M06/M11/M12 commit the corresponding domain state.
+## World memory
+Only validated/public-or-authorized observations enter broader World Memory. Private conversations remain scoped.
+## Adaptation
+Changes are bounded by policy, rate and novelty budgets. A failed provider does not freeze the world; deterministic fallback remains.
+## Viral value
+Adaptive surfaces can expose timely communities, games, stories or creative prompts that connect existing real states without manufacturing popularity.
+## DONE
+Privacy boundaries, convergence evidence, mission proposal, rollback, stale signals and provider failure validated.
