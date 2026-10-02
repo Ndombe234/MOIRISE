@@ -80,3 +80,9 @@ Les registres provider séparés ont été supprimés pour éviter une troisièm
 
 ## D100K formal layer
 Les 15 modules disposent d'une couche D100K dans leurs PLAN.md et TECHNICAL_DESIGN.md. PLAN porte la définition comportementale et les propriétés de preuve; TECHNICAL_DESIGN porte la fabrication, les contrats fichier/fonction, l'impact et les preuves d'implémentation.
+
+## AI D100K
+La paire AI canonique est également couverte par D100K :
+- ai/AI_MASTER_PLAN.md — WHAT + propriétés formelles d'autorité, cognition, mémoire et évolution.
+- ai/AI_TECHNICAL_DESIGN.md — HOW + contrats fichier/fonction, validation, sécurité, adversarial testing, evidence graph et impact.
+Aucun troisième document AI ne devient une source de vérité.
