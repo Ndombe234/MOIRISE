@@ -26,3 +26,54 @@ describe("M01 application error contract", () => {
     });
   });
 });
+
+import {
+  fabricationGraphIsCanonical,
+  getFabricationTask,
+  getReadyFabricationTasks,
+  listFabricationTasks,
+  validateFabricationGraph,
+} from "@/lib/m01/fabrication";
+
+describe("M01 machine-fabrication graph", () => {
+  it("is canonical, acyclic, and uniquely identified", () => {
+    const tasks = listFabricationTasks();
+
+    expect(tasks).toHaveLength(14);
+    expect(validateFabricationGraph(tasks)).toEqual([]);
+    expect(fabricationGraphIsCanonical()).toBe(true);
+    expect(new Set(tasks.map((task) => task.id)).size).toBe(tasks.length);
+  });
+
+  it("does not report planned tasks as ready before their predecessors are implemented", () => {
+    const ready = getReadyFabricationTasks();
+
+    expect(ready.map((task) => task.id)).toEqual(["M01-T11", "M01-T13"]);
+  });
+
+  it("resolves exact task/file contracts", () => {
+    expect(getFabricationTask("M01-T06")).toMatchObject({
+      featureId: "M01-F06",
+      files: ["lib/m01/session.ts"],
+      symbols: ["resolveSessionContext"],
+      status: "IMPLEMENTED",
+    });
+  });
+
+  it("rejects malformed fabrication graphs", () => {
+    const malformed = [
+      ...listFabricationTasks(),
+      {
+        id: "M01-BAD",
+        featureId: "M01-F01",
+        ownerModule: "M01" as const,
+        dependencies: ["M01-BAD"],
+        files: ["lib/m01/bad.ts"],
+        symbols: ["bad"],
+        status: "PLANNED" as const,
+      },
+    ];
+
+    expect(validateFabricationGraph(malformed)).toContain("self dependency: M01-BAD");
+  });
+});
