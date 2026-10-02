@@ -76,3 +76,7 @@ Les registres provider séparés ont été supprimés pour éviter une troisièm
 - transversal/DEFINITION_OF_DONE.md — evidence gate.
 - modules/M01-foundation/TECHNICAL_DESIGN.md — current M01 D1K/D10K fabrication map.
 - lib/m01/fabrication.ts — executable M01 task graph and graph validator.
+
+
+## D100K formal layer
+Les 15 modules disposent d'une couche D100K dans leurs PLAN.md et TECHNICAL_DESIGN.md. PLAN porte la définition comportementale et les propriétés de preuve; TECHNICAL_DESIGN porte la fabrication, les contrats fichier/fonction, l'impact et les preuves d'implémentation.
