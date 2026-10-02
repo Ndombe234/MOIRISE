@@ -223,7 +223,6 @@ M15 technique est DONE lorsqu'il :
 - isole AI Lab ;
 - n'introduit aucune deuxième implémentation des mécanismes centraux.
 
-
 ## AI MODULE CONTRACT — M15
 
 Canonical components = RequestGate, ContextEngine, IntentCompiler, RequirementsCompiler, Reasoner, Planner, PolicyEngine, CapabilityRegistry, ToolRegistry, ProviderRouter, ResourcePlanner, ValidationEngine, MemoryService, ExperienceService, EvolutionPipeline.
@@ -262,3 +261,74 @@ M15 consulte le MemoryService central pour retrouver les connaissances GAME_* va
 Une connaissance de fabrication doit conserver ses conditions d'application, preuves, compatibilité 2D/3D, version runtime, utilité, confiance, statut et références d'artifacts/tests. Les échecs et réparations sont versionnés ; une réparation échouée n'est jamais proposée comme recette validée.
 
 Les outils de développement sont des cibles d'exécution interchangeables. Leur utilisation enrichit l'expérience, mais la connaissance appartient à MORISE et reste disponible indépendamment de cet outil.
+
+## CREATIVE MEDIA TECHNICAL ORCHESTRATION
+
+Canonical cross-module contract = `docs/moirise/CREATIVE_MEDIA_VIRALITY_TECHNICAL_DESIGN.md`.
+
+### MediaAnalysisTask
+```ts
+MediaAnalysisTask = {
+  mediaRef,
+  actorRef,
+  purpose,
+  privacyClass,
+  permissionState,
+  sourceOwnershipClass,
+  requiredCapabilities,
+  retention,
+  outputScope,
+  status
+}
+```
+
+### GenerationTask
+```ts
+GenerationTask = {
+  creativeBriefRef,
+  sourceRefs,
+  transformationClass,
+  capabilityId,
+  providerPolicy,
+  originalityPolicy,
+  validatorRefs,
+  outputScope,
+  status
+}
+```
+
+### Mandatory pipeline
+`REQUEST → PERMISSION → PROVENANCE → ANALYZE → SEMANTIC PROFILE → TRANSFORM → CREATIVE BRIEF → ROUTE → GENERATE → VALIDATE → ORIGINALITY CHECK → ARTIFACT CANDIDATE → OWNER COMMIT`.
+
+### Modality behavior
+IMAGE uses vision → semantic composition → image generation. VIDEO uses frame/scene/motion/audio analysis → storyboard → video generation/editing. MUSIC uses audio feature analysis → new musical brief → music generation → audio validation. AUDIO uses waveform/speech/environment features → new audio artifact where permitted.
+
+### Copyright-risk boundary
+The system must not implement a “rename words/notes to escape copyright” routine. The safe technical abstraction is semantic transformation + new expression + provenance + validation. Rights uncertainty produces INCONCLUSIVE, not automatic publication.
+
+### Provider independence
+A media request never contains a provider URL chosen by the client. The Capability Registry resolves the capability; Provider Router applies hard filters; adapter executes; Validator evaluates; M15 decides next action; owner commits publication.
+
+## VIRALITY TECHNICAL ORCHESTRATION
+
+### ShareOpportunity
+```ts
+ShareOpportunity = {
+  sourceEventRef,
+  contentRef,
+  audienceCandidates,
+  reasonKey,
+  cooldownKey,
+  privacyClass,
+  expiresAt
+}
+```
+
+### Recommendation loop
+M07 owns ranking. M15 can generate features/proposals but cannot bypass M07 policy. `reasonKey` is enumerated and privacy-safe.
+
+### First-session task graph
+The SYSTEM can create a bounded graph that chooses one relevant discovery, one low-friction interaction, one creative/playable action and one optional social connection. It must terminate when the user disengages.
+
+### Tests
+Private media never enters public context; source permission revoked invalidates generation; malformed provider output rejected; originality inconclusive cannot publish; share cooldown enforced; recommendation reason never leaks hidden sensitive signals; AI outage leaves social/feed functions usable.
