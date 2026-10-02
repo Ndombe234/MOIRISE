@@ -133,3 +133,24 @@ M02 asks M01 for ShareToken; it never signs tokens itself. Target projection con
 AIProposal(ProfileChange) → M02 validate → transaction → event → projection. Model/provider cannot mutate Player tables.
 ## Tests
 private field leakage, avatar unsafe file, duplicate handle, concurrent profile edit, stale version, deletion cascade, share token revocation, deterministic fallback without AI.
+
+# D100 — TECHNICAL CONTRACT DETAIL
+## PlayerProjection
+```
+PlayerProjection { playerRef, handle, displayName, avatarRef?, bio?, locale,
+ publicFieldsVersion, highlights[], publicCreations[], privacyVersion }
+```
+## AI context
+``
+PlayerAIContext { playerRef, locale, explicitPrefs[], publicProfileRef?,
+ allowedMemoryRefs[], activityRef?, privacyVersion, contextHash }
+```
+No auth secret, private email, raw DM or hidden sensitive attribute is allowed.
+## Memory promotion
+Read scope may be broad only when policy permits; write scope defaults narrower. Scope promotion requires explicit policy/owner decision and records previous scope/version.
+## Avatar transaction
+stage upload → validate metadata → moderation result → create MediaRef → update Player.avatarRef → emit PlayerAvatarChanged. Failure before commit leaves old reference.
+## Concurrency
+expectedVersion on profile writes; unique constraint on handle; commandId on idempotent mutations.
+## Deletion
+Player delete/revoke → disable public projection → revoke shares → invalidate caches → apply retention-specific purge → emit deletion event. Ordering must prevent resurrection from stale cache.
