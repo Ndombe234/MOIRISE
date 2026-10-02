@@ -88,3 +88,12 @@ The AI constitution does not create a second AI brain or a competing implementat
 - transversal/PRODUCT_LOOP_GOVERNANCE.md — contrat canonique pour T01 Product Priority Layer, T02 Cross-Loop Engine, T03 Recommendation Experimentation, T04 Cold-Start & Content Density, T05 Creator Career Loop, T06 Product Validation Layer et T07 Cross-Loop Analytics.
 
 Ce fichier transversal est un contrat de coordination. Il ne devient pas propriétaire des règles métier détenues par M01–M15.
+
+## QA et validation
+- AGENTS.md — règles permanentes de fabrication, vérification, internationalisation et release.
+- docs/qa/TEST_STRATEGY.md — stratégie QA opérationnelle.
+- docs/qa/USER_JOURNEYS.md — parcours utilisateurs simulés.
+- docs/qa/REGRESSION_MATRIX.md — matrice de régression.
+- docs/qa/RELEASE_CHECKLIST.md — checklist avant/après déploiement.
+- tests/e2e/README.md — contrat des tests navigateur exécutables.
+- .agents/agents/ — browser-tester, bug-hunter, regression-tester, security-tester.
