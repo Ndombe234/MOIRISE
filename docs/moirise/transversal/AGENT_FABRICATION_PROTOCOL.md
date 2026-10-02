@@ -378,3 +378,175 @@ When « détail » is requested again:
 8. record new evidence.
 
 Never create duplicate business rules to make a feature appear more detailed.
+
+
+## 16. Machine-fabrication layer — D1K operational contract
+
+D1K turns a canonical feature into a dependency-ordered assembly graph without changing business ownership.
+
+### 16.1 Fabrication record
+
+Each TASK_ID is represented conceptually by this record:
+
+~~~text
+TASK_ID
+FEATURE_ID
+FEATURE_VERSION
+OWNER_MODULE
+NON_OWNER_MODULES
+ACTOR
+TRIGGER
+PRECONDITIONS
+INPUT_SCHEMA
+OUTPUT_SCHEMA
+COMMAND_OR_QUERY
+AUTHORITY
+MUTATIONS
+PERSISTENCE
+EVENTS_EMITTED
+EVENTS_CONSUMED
+IDEMPOTENCY
+CONCURRENCY
+FILES_CREATE
+FILES_MODIFY
+SYMBOLS
+IMPLEMENTATION_ORDER
+DEPENDENCY_TASKS
+UNIT_TEST
+INTEGRATION_TEST
+SECURITY_TEST
+BROWSER_TEST
+MOBILE_TEST
+RESILIENCE_TEST
+EXPECTED_RESULT
+FAILURE_RESULT
+RECOVERY_ACTION
+DONE_EVIDENCE
+STATUS
+~~~
+
+The record is derived from canonical PLAN/TECHNICAL_DESIGN/contracts. It is not an independent business specification.
+
+### 16.2 File contract
+
+A file contract must answer:
+- exact repository path;
+- why the file exists;
+- owner module;
+- allowed imported authorities;
+- forbidden business ownership;
+- exported symbols;
+- side effects;
+- persistence/event access;
+- failure contract;
+- tests covering the file;
+- browser surface, when applicable.
+
+Generated code must not introduce an undocumented route, table, event, provider, capability or business authority.
+
+### 16.3 Function contract
+
+A function-level contract must identify:
+- exact symbol name;
+- input type;
+- output type;
+- preconditions;
+- authoritative state touched;
+- side effects;
+- idempotency/concurrency behavior;
+- thrown/returned error contract;
+- observability fields;
+- direct callers;
+- direct tests.
+
+For planned symbols that do not exist yet, mark them PLANNED, never IMPLEMENTED.
+
+### 16.4 Assembly graph
+
+The agent executes:
+
+~~~text
+TASK DISCOVERY
+→ PRECONDITION CHECK
+→ DEPENDENCY TASKS
+→ FILE/SYMBOL IMPLEMENTATION
+→ FOCUSED TEST
+→ INTEGRATION TEST
+→ BROWSER TEST
+→ FAILURE/RECOVERY TEST
+→ EVIDENCE
+→ LOCK TASK
+→ NEXT TASK
+~~~
+
+A failed task stays open. The agent may not mark dependent tasks VERIFIED while their required predecessor is FAILED, BLOCKED or INCONCLUSIVE.
+
+### 16.5 Status semantics
+
+- PLANNED = specified, no implementation evidence.
+- IMPLEMENTED = required symbols/files exist and focused checks pass.
+- PARTIAL = some required evidence is missing.
+- BLOCKED = an external prerequisite prevents execution or implementation.
+- INCONCLUSIVE = evidence exists but does not prove the required outcome.
+- VERIFIED = every applicable D1K evidence item is fresh and successful.
+
+### 16.6 Fabrication stop rule
+
+A fabrication agent must stop at the first unresolved contract ambiguity that could change:
+authority, persistence, security, public interface, user-visible behavior, cross-module ownership, or data semantics.
+
+It may continue through low-risk implementation details when the canonical contract already fixes the behavior.
+
+## 17. Dependency Impact Layer
+
+Before changing a shared contract or module feature, the agent builds a reverse impact graph.
+
+Edge types:
+- IMPORTS — source file imports symbol/module;
+- CALLS — function/service invokes another symbol;
+- READS — component/query reads an authoritative projection;
+- WRITES — owner mutates authoritative state;
+- EMITS — owner emits an event;
+- CONSUMES — module reacts to an event;
+- ROUTES_TO — route enters a capability/owner;
+- CAPABILITY_USES — module requests an AI capability;
+- PROJECTS_TO — authoritative state feeds a projection;
+- TESTS — test asserts behavior;
+- BROWSER_TESTS — browser scenario validates a user-facing path.
+
+Impact traversal:
+
+~~~text
+CHANGED NODE
+→ DIRECT CONTRACT DEPENDENTS
+→ CROSS-MODULE DEPENDENTS
+→ EVENT CONSUMERS
+→ DATA PROJECTIONS
+→ ROUTES/UI
+→ AI CAPABILITIES
+→ TESTS
+→ SECURITY/RESILIENCE SCENARIOS
+~~~
+
+The impact report must distinguish:
+DIRECT, TRANSITIVE, POTENTIAL, UNRESOLVED.
+
+UNRESOLVED means the agent must not silently assume compatibility; it must inspect code/contracts or report the gap.
+
+## 18. Evidence package v1
+
+For each completed TASK_ID, evidence should be recorded as:
+
+~~~text
+TASK_ID
+COMMIT
+IMPLEMENTATION_REFS
+TEST_REFS
+BROWSER_REFS
+EXPECTED
+ACTUAL
+STATUS
+VERIFIED_AT
+~~~
+
+A repository assertion such as "the function exists" is implementation evidence, not behavioral verification.
