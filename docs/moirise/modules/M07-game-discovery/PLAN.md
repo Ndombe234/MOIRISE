@@ -136,3 +136,11 @@ AI recommendation is optional and must not be regenerated on every scroll. Deter
 ## D100K proof
 Cursor replay, duplicate candidates, stale rankingVersion, empty catalog, deterministic tie-breaking, fabricated metric prevention, AI/provider outage, cache isolation, unauthorized private candidate leakage and mobile scroll behavior.
 
+
+
+# D100K — EXPLICIT DISCOVERY GENERATION RESTORATION
+
+AI recommendations are not regenerated on every scroll. The discovery surface uses bounded paginated queries, lazy thumbnails and cached public metadata. When deterministic ranking is sufficient it is preferred; AI remains an optional enhancement.
+
+D100K: repeat-scroll stability, query bounds, cache separation and provider-free discovery.
+
