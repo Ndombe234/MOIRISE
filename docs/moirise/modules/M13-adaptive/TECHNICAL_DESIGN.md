@@ -64,3 +64,12 @@ Adversarial proof must include replay, duplicate command, stale state, unauthori
 Evidence is fresh only when tied to the exact commit and exact scenario/check. Unit tests cannot alone certify a user-facing or production-sensitive feature.
 
 Ownership firewall: M13 may consume other modules through contracts, events or projections, but may not assume their private authority.
+\n\n# D100K — CONTEXT/MEMORY INTEGRATION — M13 ADAPTIVE RETRIEVAL
+## Owner scope
+M13 owns retrieval/adaptation/convergence; it never changes authoritative Player facts.
+## Retrieval algorithm
+Use structured filters first, semantic retrieval second, then relevance × recency × authority × taskFit × privacyEligibility. Exclude SUPERSEDED/DELETED/EXPIRED facts.
+## Conflict handling
+Return conflicts explicitly to M15 rather than selecting an arbitrary value when policy requires confirmation.
+## D100K tests
+Recall hierarchy, correction, stale vector entry, deleted fact, conflicting facts, low-confidence extraction, privacy filter, multilingual retrieval, cache poisoning.\n
