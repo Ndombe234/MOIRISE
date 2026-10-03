@@ -73,3 +73,21 @@ Applicable tests must cover:
 
 Legacy tests may be used as intent/reference only. They are not fresh evidence for the canonical rebuild.
 
+
+
+# QA AGENT / ANONYMOUS PUBLIC TEST CONTRACT
+
+The browser QA agent must test the real MOIRISE application through three complementary modes:
+
+1. PUBLIC_TEST — anonymous, real public UI/components, read-only or explicitly sandboxed actions, no private access and no production mutation;
+2. AUTH_TEST — dedicated isolated test accounts and test data for authenticated journeys and role/permission checks;
+3. ADVERSARIAL_TEST — invalid permissions, expired sessions, replay, duplicates, malformed input, network interruption, provider failure and concurrency cases.
+
+PUBLIC_TEST is not a fake demo surface. It uses the same application components and contracts as the real product wherever practical. A dedicated test deployment is acceptable only when its state and side effects are isolated from production.
+
+The agent must record route, actor mode, viewport, action sequence, expected/actual result, console/network failures and evidence. A successful page render is not proof of correctness.
+
+Production protection is mandatory: automated tests must not manufacture users, likes, followers, views, scores, rewards, scarcity, popularity or other social/economic signals.
+
+Canonical loop:
+OPEN → INSPECT → ACT → OBSERVE → ASSERT → EVIDENCE → DIAGNOSE → PATCH → REBUILD → REPEAT.
