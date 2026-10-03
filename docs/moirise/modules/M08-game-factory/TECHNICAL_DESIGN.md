@@ -195,3 +195,11 @@ The published package contains a runtime manifest and never calls the provider/a
 
 D100K: malformed spec, missing dependency, malicious asset, unverifiable license, injected agent output, artifact signature/hash mismatch, provider outage, reproducible build and 2D/3D resource overrun.
 
+
+
+# D100K — EXPLICIT FABRICATION PROVENANCE RESTORATION
+
+Every generated artifact records provider/agent identity when used, model/tool version where available and artifact/content hashes. This provenance survives build/package conversion.
+
+D100K: missing provenance, tampered hash, provider disagreement and provider removal.
+
