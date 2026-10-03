@@ -50,3 +50,36 @@ request_id, actor_ref, locale, active_frame, explicit_facts, relevant_memory, co
 ## Ownership
 M02 = durable Player facts; M01 = session identity; M03 = conversation context; M04 = World state; M12 = temporal event state; M13 = retrieval; M15 = extraction/orchestration.
 
+
+
+# D100K — LEGACY PERSISTENCE CONTRACT RESTORATION
+
+## Base data invariants
+When PostgreSQL/Supabase is used by an implementation:
+- UUID primary identifiers use `gen_random_uuid()` unless an externally issued identifier is explicitly required.
+- Instants are stored as `timestamptz`; timezone is presentation state, not persistence semantics.
+- `jsonb` is restricted to extensible metadata, provider payloads and bounded state snapshots. Authoritative business fields remain typed.
+- User-owned records reference `auth.users(id)` directly or an owned application profile relation when required by the canonical module.
+- Server-side authorization and RLS are both required where applicable; client state never becomes the persistence authority.
+- Idempotency keys are first-class for retryable mutations.
+
+## Memory Vault data classes
+Memory media types may include PHOTO, VIDEO, AUDIO, TEXT, CREATION, MOMENT and CARD. Memory lifecycle may include UPLOADING, READY, PROCESSING, FAILED and DELETED.
+
+Memory permissions are distinct:
+- STORE;
+- ANALYZE;
+- SHARE;
+- TRAIN.
+
+Granting one permission never implies the others. Private memory cannot enter global learning by default.
+
+## Async jobs
+Long-running work is represented by an explicit job identity, status, resource request, owner/privacy scope, idempotency key, timeout/expiry, result reference and validation outcome. A job is not authoritative merely because it exists.
+
+## Translation data
+Message translations and cached translations are derived data. Original message authority remains M03. Translation entries retain source/target locale, source message/reference, version, status and provenance.
+
+## Rights/provenance
+Media/creative records retain sourceRef, owner, provenance, license/permission class, derivation lineage and visibility. Publication rights are separate from generation success.
+
