@@ -126,3 +126,20 @@ EXPLICIT_PREFERENCE, RECENT_ACTION, SOCIAL_SIGNAL, WORLD_CONTEXT, SYSTEM_CONTEXT
 Each recommendation keeps reason codes and source class; raw private memory is never shown as ranking explanation.
 ## D100K tests
 Cold start; preference update; sensitive-field exclusion; stale signal expiry; multilingual search; recommendation diversity; cache invalidation.\n
+
+# D100K — RECOVERED FEATURE FABRICATION BINDING — M07
+## RF-M07-01 Discovery Broadcast eligibility
+Accept only real published/eligible artifacts. Candidate carries sourceRef, visibility, age, provenance and reason codes.
+
+## RF-M07-02 Curiosity / novelty / diversity
+Ranking inputs include freshness, novelty, diversity, explicit preference and recent actions. Sensitive memory fields are excluded by default.
+
+## RF-M07-03 Social recommendation loop
+Recommendation → interaction → validated feedback → ranking update. No fake activity or synthetic engagement.
+
+## RF-M07-04 Cross-domain capability discovery
+M07 can recommend a real capability only when the capability registry says it exists and the user is eligible. It cannot invent an absent feature.
+
+## RF-M07-05 Cold-start / first-session discovery
+Cold start uses declared interests + safe session signals, not sensitive inference. Every result remains explainable by reason codes.
+
