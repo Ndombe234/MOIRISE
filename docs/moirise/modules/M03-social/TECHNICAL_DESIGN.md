@@ -203,3 +203,14 @@ PARTIAL = missing applicable proof.
 BLOCKED = prerequisite unavailable.
 INCONCLUSIVE = evidence does not prove outcome.
 VERIFIED = all applicable evidence is fresh and successful.
+\n\n# D100K — CONTEXT/MEMORY INTEGRATION — M03 SOCIAL
+## Owner scope
+M03 owns conversation context and the social surface, but not the durable Player memory store.
+## Message pipeline
+message.persist → context.extract proposal → privacy/policy gate → optional durable-memory request → M02 owner commit → context.fact.* event.
+## Conversation references
+Support « celui-là », « ma dernière création », « chez moi », « le groupe précédent » by resolving against the active conversation/session frame.
+## Privacy
+DM context is private by default. No DM memory may enter feed ranking, group recommendations or provider prompts without an authorized purpose.
+## D100K tests
+Multi-turn enrichment; pronoun resolution; multilingual turns; deletion; blocked user; message retry; private/public boundary; attachment-derived claims never treated as explicit user facts.\n
