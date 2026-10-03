@@ -1,6 +1,10 @@
 # MOIRISE
 
-MOIRISE est un réseau social Otaku, ludique et créatif dont le SYSTEM constitue le langage d'interaction central. Les portes globales canoniques sont SYSTEM, PLAYER, SOCIAL, WORLD, PLAY et CREATE.
+MOIRISE est un réseau social général, ludique et créatif dont le SYSTEM constitue le langage d'interaction central. Les portes globales canoniques sont SYSTEM, PLAYER, SOCIAL, WORLD, PLAY et CREATE.
+
+## Autorité de construction
+
+Cette branche `rebuild/canonical-m01-reset` est la branche de reconstruction canonique. `main` conserve encore l'ancienne implémentation historique et ne constitue pas une preuve d'avancement du nouveau plan.
 
 ## État de construction
 
