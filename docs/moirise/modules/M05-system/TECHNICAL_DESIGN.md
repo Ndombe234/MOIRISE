@@ -136,3 +136,21 @@ Every hinted possibility has a resolvable condition/state or is explicitly frame
 ## RF-M05-05 SYSTEM companion continuity
 Remember only authorized memories. Surface memory with source/time and allow correction/removal. Never generate a false recollection.
 
+
+
+# D100K — RESTORED SYSTEM TECHNICAL CONTRACTS
+
+`Progression={playerId:string,level:number,xp:number,rank:string,version:number}`
+`XPEvent={id:string,playerId:string,source:string,amount:number,idempotencyKey:string,ruleVersion:number,createdAt:string}`
+`SystemNotice={id:string,playerId:string,kind:string,priority:'low'|'normal'|'high',readAt?:string}`
+
+Canonical server methods:
+`getProgression`, `recordValidatedProgressionEvent`, `listSystemNotices`, `markSystemNoticeRead`, `explainProgression`.
+
+Authoritative progression sequence:
+validated source event → authorization → amount/source validation → XP event insert → progression recomputation → SYSTEM notice → cache invalidation.
+
+Rules are immutable/versioned. Negative/overflow/impossible sources are rejected. Idempotency protects retried events. Low-priority notices are grouped. AI remains explanatory/advisory and cannot mutate progression or validate its own source event.
+
+D100K: threshold boundaries, concurrent grants, duplicate source event, forged amount, ruleset migration, rollback, notice grouping/read state, reconnect, provider outage and mobile HUD.
+
