@@ -130,3 +130,11 @@ Sharing communicates something the Player actually did or created rather than ad
 
 D100K: stale target, expired challenge, private result leakage, duplicate participation, blocked recipient, empty friend list, async retry and public share reconstruction.
 
+
+
+# D100K — EXPLICIT SPECTATOR / SOCIAL VALIDATION RESTORATION
+
+Spectator behavior is available only when the GameSpecification/RuntimeManifest declares it. Social invitations/share operations resolve current block, privacy and eligibility rules before producing any public action.
+
+D100K: unauthorized spectator, blocked invite, private result leak and stale eligibility.
+
