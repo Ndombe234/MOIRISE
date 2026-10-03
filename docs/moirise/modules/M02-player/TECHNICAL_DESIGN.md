@@ -232,3 +232,13 @@ Validate string lengths, locale membership, avatar MIME/size and privacy enum be
 
 D100K: other-user mutation denial, persistence-level privacy enum, failed-update rollback/retry, deletion scope, duplicate mutation, session expiry and mobile profile evidence.
 
+
+
+# D100K — RESTORED DEVICE PROFILE TECHNICAL CONTRACT
+
+`DeviceCapabilityProfile={deviceId,playerId,deviceClass,ramClass,webgpu,wasm,webcodecs,browserFamily,capabilities,lastSeenAt,createdAt}`.
+
+Device capability is advisory unless verified by the runtime. It may select lighter/heavier UI/runtime paths but cannot bypass security or resource policy.
+
+A Player may own multiple devices. Updates are idempotent and versioned. Exact location, secrets and sensitive identity attributes are never stored merely because device capability detection exists.
+
