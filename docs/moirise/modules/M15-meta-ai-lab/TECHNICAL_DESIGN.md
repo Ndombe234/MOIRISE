@@ -472,3 +472,11 @@ An AI fallibility experiment is a versioned sandboxed experiment with hypothesis
 
 D100K: zero-provider boot, zero-worker operation, malformed provider output, worker loss, deterministic fallback, no-fake-success and rollback.
 
+
+
+# D100K — EXPLICIT AI LAB PROMOTION RESTORATION
+
+No canary starts without baseline metrics, applicable tests, security checks and benchmark evidence. Production changes affecting RLS, worker trust, provider registry or security policy require the configured owner/policy gate. Prompt injection, data leakage, cross-player isolation, malicious patch, worker loss and provider disagreement are mandatory adversarial scenarios.
+
+D100K: candidate → evidence → policy → canary → outcome → promotion/rejection → rollback.
+
