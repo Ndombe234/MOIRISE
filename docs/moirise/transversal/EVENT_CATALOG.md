@@ -112,3 +112,36 @@ Retryable consumers are idempotent. An event delivery failure cannot silently ro
 
 Time-based events use UTC persistence and explicit occurrence identifiers when recurrence exists.
 
+
+# D100K — RESTORED CROSS-MODULE EVENT CATALOG
+
+The following historical event identifiers are retained as canonical logical event names where the corresponding capability exists. They do not create new modules or owners.
+
+## Identity / Player
+`auth.session.created`, `auth.session.expired`, `player.created`, `player.updated`, `player.role.granted`, `player.role.revoked`, `player.preferences.updated`, `player.device.updated`.
+
+## Social / Messaging
+`social.post.created`, `social.post.updated`, `social.post.deleted`, `social.message.sent`, `social.message.read`, `social.message.revoked`, `social.translation.requested`, `social.translation.completed`, `social.translation.failed`.
+
+## World / Agents
+`world.created`, `world.state.changed`, `world.object.changed`, `world.discovery.unlocked`, `world.agent.action.proposed`, `world.agent.action.validated`.
+
+## SYSTEM / AI orchestration
+`system.intent.created`, `system.plan.created`, `system.capability.selected`, `system.capability.fallback`.
+
+## Play / Games
+`play.session.created`, `play.action.accepted`, `play.action.rejected`, `play.session.completed`, `play.result.validated`, `game.discovery.requested`, `game.experience.selected`, `game.build.requested`, `game.build.completed`, `game.build.failed`, `game.validation.completed`, `game.session.created`, `game.action.accepted`, `game.result.created`.
+
+## Communities / Events
+`community.created`, `community.member.joined`, `community.member.left`, `community.role.changed`, `community.moderation.action`, `community.post.created`, `event.created`, `event.started`, `event.stage.started`, `event.participation.recorded`, `event.completed`.
+
+## Adaptive / Economy
+`adaptive.proposal.created`, `adaptive.proposal.accepted`, `adaptive.proposal.rejected`, `adaptive.world.changed`, `reward.issued`, `reward.rejected`, `ledger.credit.posted`, `ledger.debit.posted`, `creator.threshold.reached`.
+
+## Media / Memory / Infrastructure
+`memory.upload.requested`, `memory.upload.completed`, `memory.shared`, `memory.deleted`, `media.job.created`, `media.job.completed`, `media.job.failed`, `provider.health.changed`, `capability.state.changed`.
+
+## AI Lab / Administration
+`ai.learning.candidate.created`, `ai.experiment.started`, `ai.experiment.completed`, `ai.experiment.rejected`, `admin.configuration.changed`, `audit.event.created`.
+
+Every emitted event must carry request/trace correlation, actor when applicable, owner module, schemaVersion, occurredAt and safe metadata. Event names are contracts; they do not authorize a consumer to mutate another owner's state.
