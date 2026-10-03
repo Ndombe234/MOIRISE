@@ -107,3 +107,11 @@ Un test d'indépendance par rapport à Codex est défini : désactivation de Cod
 ## 2026-10-03 — Context Intelligence and recovered-feature D100K propagation
 The 15 module TECHNICAL_DESIGN files now contain two explicit additions: (1) Context/Memory D100K integration and (2) recovered historical feature fabrication bindings. The canonical transversal contract is docs/moirise/transversal/CONTEXT_MEMORY_TECHNICAL_DESIGN.md and AI execution is bound through ai/AI_TECHNICAL_DESIGN.md.
 This establishes documentation-level D100K coverage. It does not claim that the M01–M15 runtime is implemented or that any module has runtime DONE evidence.
+
+
+## Provider-independence clarification — 2026-10-03
+The canonical AI pair now explicitly states that the MORISE AI Core is **not allowed to depend on external AI APIs, API keys, remote AI endpoints, OAuth tokens, or a specific third-party provider**. Providers remain optional execution extensions.
+
+The AI Technical Design defines execution modes, provider configuration, secret resolution, public-vs-secret configuration, no-key behavior, provider removal tests, anonymous/public endpoint classification, and a zero-provider test suite.
+
+This is a documentation/architecture completion. It is **not runtime proof**. The implementation must still pass zero-provider, no-secret-in-client, provider-outage, invalid-key, quota-exhaustion and degraded-mode tests before the provider-independence gate can be marked VERIFIED.
