@@ -105,3 +105,18 @@ Authority is unique; duplicate commands are idempotent; stale versions do not ov
 
 ## 7. Completion
 This section defines proof requirements, not implementation completion.
+
+
+
+# HISTORICAL FUSION — M09 SHARED GAME ENGINE — PLAN
+
+M09 absorbe les anciens contrats de runtime partagé et d'exécution distribuée.
+
+Le runtime commun prend un GameBuild validé et vérifie manifest, hash, compatibilité device, resource profile et sandbox avant exécution.
+
+2D et 3D sont deux routes de premier niveau avec une interface de session commune.
+
+Les allocations peuvent être locales ou distribuées, mais M09 ne traite jamais le provider de fabrication comme une dépendance d'exécution. Un jeu publié doit continuer à fonctionner lorsque le provider qui l'a créé devient indisponible.
+
+Lorsqu'un runtime/worker dépasse son budget ou disparaît, M09 applique le protocole de lease/recovery approprié : DEGRADED, PAUSED, TERMINATED ou RESTART, sans contournement silencieux des limites.
+
