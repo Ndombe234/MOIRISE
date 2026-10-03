@@ -103,3 +103,17 @@ Required evidence:
 
 Deleted historical documentation is considered reconciled only after these conditions hold.
 
+
+
+## QA Agent gate
+
+For every user-facing module, DONE requires the applicable browser evidence in all three modes:
+- PUBLIC_TEST for anonymous/public behavior;
+- AUTH_TEST for authenticated behavior;
+- ADVERSARIAL_TEST for authorization, failure and abuse boundaries.
+
+PUBLIC_TEST must execute the real application components without authentication and must not be a privileged bypass. AUTH_TEST must use isolated test identities/data. Test mutations must never contaminate production metrics, rewards, rankings, creator eligibility or real user state.
+
+Required browser evidence includes route, actor mode, viewport, action sequence, expected result, actual result and runtime/network error state.
+
+Production smoke testing is read-only by default. Any mutation-capable production test requires an explicit, reversible, audited contract.
