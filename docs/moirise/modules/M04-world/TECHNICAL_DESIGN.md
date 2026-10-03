@@ -156,3 +156,15 @@ Broadcast candidates reference real Moments/World objects. Living Museum items r
 ## RF-M04-04 Return-after-absence
 A return experience references a real prior state and a new valid continuation opportunity. It must not claim the world changed while the player was away unless an authoritative event actually occurred.
 
+
+
+# D100K — RESTORED WORLD TECHNICAL CONTRACTS
+
+`WorldZone={id:string,key:string,titleKey:string,descriptionKey:string,order:number,enabled:boolean,version:number}`
+`WorldNode={id:string,zoneId:string,kind:string,targetRef:string,visibility:string}`
+`WorldContext={zoneId:string,locale:string,playerId:string,availableActions:string[]}`
+
+World configuration is server-authoritative and versioned. Public metadata may be cached only by stable version/locale. Player-specific availability is never mixed into public cache entries. No browser path mutates global world configuration directly. World events are emitted only after authoritative persistence.
+
+D100K: stale version, disabled zone, missing node, unauthorized mutation, personalized-cache leakage, locale fallback, persistence failure and rebuildable projection.
+
