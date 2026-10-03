@@ -1560,3 +1560,90 @@ A MORISE AI implementation is not accepted as provider-independent until all app
 12. no successful result is fabricated when every execution path is unavailable.
 
 **Evidence requirement:** these tests must be backed by runtime/CI evidence before implementation DONE. Documentation alone proves architecture, not runtime independence.
+
+
+
+# FUSION DES ANCIENS PLANS AI — CAPACITÉ, ÉVOLUTION ET COMPUTE — CANONIQUE
+
+Les anciens documents `00_MASTER_AI`, `01_CORE_ORCHESTRATOR`, `02_CONTEXT_INTENT_REASONING`, `03_CAPABILITY_PROVIDER_ROUTER`, `04_MEMORY_EXPERIENCE_LEARNING`, `05_CREATIVE_MEDIA_GAME_CREATOR`, `06_EVOLUTION_CODE_SANDBOX`, `07_DATA_SECURITY_PROVENANCE`, `08_RESOURCE_SCHEDULER_OBSERVABILITY`, `09_AI_ACTIONS_AND_CONTRACTS`, `11_GAME_CREATION_RUNTIME_CONTRACT`, `12_DISTRIBUTED_WORKER_CLUSTER`, `13_DISTRIBUTED_SYSTEM_IMPLEMENTATION` et `14_DETAILED_AI_DESIGN_INDEX` ont été fusionnés fonctionnellement dans cette source maître et sa conception technique associée.
+
+## 1. Logiciel évolutif
+
+MORISE ne doit pas être architecturée comme un logiciel dont les capacités sont figées à la première version. Une limitation mesurée peut devenir une tâche d'amélioration :
+
+OBSERVATION → LIMIT/GAP → ROOT CAUSE → HYPOTHESIS → CANDIDATE → IMPLEMENTATION → SANDBOX → TESTS → BENCHMARK → POLICY/SECURITY → CANARY → PROMOTION → MONITORING → ROLLBACK
+
+L'évolution peut toucher, selon policy :
+- algorithmes ;
+- règles non autoritaires ;
+- planners ;
+- stratégies de routing ;
+- skills ;
+- parsers ;
+- retrieval ;
+- optimiseurs ;
+- templates/components ;
+- validateurs ;
+- outils ;
+- composants de fabrication ;
+- code de support.
+
+L'état métier autoritatif et les contrôles de sécurité ne peuvent pas être remplacés par une sortie générée sans leurs gates propres.
+
+## 2. Croissance des ressources
+
+Le Resource Engine doit mesurer et utiliser la capacité réelle :
+- CPU/logical cores ;
+- RAM disponible ;
+- GPU ;
+- VRAM ;
+- stockage ;
+- réseau ;
+- concurrence ;
+- latence ;
+- queue depth.
+
+Le scheduler choisit selon capability, privacy, trust, health, resource fit, locality, queue age, reliability et budget.
+
+L'ajout d'un worker augmente la capacité agrégée lorsqu'il est autorisé, sain et réellement disponible. Il ne crée pas de RAM partagée entre machines.
+
+## 3. Compute pool évolutif
+
+Le modèle cible est :
+
+LOCAL RUNTIME → TRUSTED WORKER → COMMUNITY WORKER OPT-IN → PROVIDER/REMOTE EXTENSION
+
+Un worker est un moteur de calcul, pas un second cerveau et pas une autorité métier.
+
+Les tâches lourdes doivent être décomposables en jobs avec :
+- capability ;
+- resource requirements ;
+- privacy class ;
+- payload/reference ;
+- idempotency ;
+- timeout ;
+- output schema ;
+- validation ;
+- retry/recovery.
+
+## 4. Fabrication multimodale
+
+MORISE AI doit orchestrer, selon les capacités disponibles :
+TEXT, REASONING, VISION, IMAGE, VIDEO, MUSIC, AUDIO, TTS, STT, TRANSLATION, EMBEDDING, SEARCH, MODERATION, CODE, GAME_2D, GAME_3D.
+
+Pour une création complexe, la demande devient un DAG de tâches avec dépendances, budgets de ressources, validators et provenance.
+
+## 5. Jeu 2D/3D
+
+La fabrication suit :
+
+PLAYER IDEA → INTENT → GAME SPECIFICATION → TASK GRAPH → ENGINE → CODE/ASSETS/CONTENT → BUILD → SECURITY → SIMULATION → TEST → PLAYTEST → BALANCE → PREVIEW → PUBLISH
+
+L'exécution suit ensuite M08 → M09. Le runtime n'a aucune dépendance obligatoire au provider qui a fabriqué le jeu.
+
+## 6. Règle d'indépendance
+
+Provider, worker, Codex ou autre agent sont des mécanismes d'exécution facultatifs. La connaissance, les contrats, la mémoire, l'orchestration, les validators, la provenance et les règles d'évolution appartiennent à MORISE.
+
+La suppression d'un provider, d'un worker ou d'un agent doit réduire une capacité d'exécution disponible sans supprimer l'identité ou le cerveau contractuel de MORISE.
+
