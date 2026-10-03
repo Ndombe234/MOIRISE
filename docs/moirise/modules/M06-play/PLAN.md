@@ -142,3 +142,15 @@ Owner authority cannot be bypassed; duplicate commands cannot duplicate authorit
 
 ## 7. Completion
 This D100K section defines what must be provable. It does not claim implementation completion.
+
+
+# RECOVERED PLAY / MOMENT / SOCIAL CHALLENGE FUSION — 2026-10-03
+
+## Result-driven Moments
+A validated Play result may become a Moment candidate or shareable result card when it is genuinely meaningful. The result remains authoritative in M06; M03 controls social publication and M05/M14 control progression/reward ownership.
+
+## Proof of Impossible
+Play may expose a beat-my-result or proof challenge based on a real score, time, puzzle solution or other validated outcome. A recipient must be challenged against the actual source result; no fabricated record is permitted.
+
+## Async challenge families
+Preserved Play-compatible patterns include Duel, beat-my-score, beat-my-time, solve-my-puzzle, survive-my-rules and remix-my-world where the authoritative owner contracts permit them. Real-time multiplayer is not required when asynchronous play provides the intended value.
