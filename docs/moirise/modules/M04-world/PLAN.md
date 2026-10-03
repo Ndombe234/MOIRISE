@@ -183,3 +183,13 @@ World configuration is server-authoritative and versioned. Public world metadata
 ## D100K proof
 Stale version, unauthorized global mutation, personalized-cache leakage, missing node, disabled zone, locale fallback, authoritative persistence failure and rebuildable projection.
 
+
+
+# D100K — RESTORED LIVING WORLD / HIDDEN AREAS
+
+M04/M13 support a versioned world-memory surface. Real validated Player actions may alter world state, reveal hidden map areas or open discoverable routes. Unlock state must be persisted and attributable.
+
+Public cache never contains Player-specific discovery conditions. A hidden area is discoverable only from a real rule/event/condition; no fake secret marker is rendered.
+
+D100K: hidden-area false positive, stale world version, unauthorized unlock, cache leak, replayed discovery event, deletion/recovery and mobile navigation.
+
