@@ -59,3 +59,10 @@ Function contracts specify exact input/output, guards, state mutation, idempoten
 Evidence = commit + exact check/scenario + expected + actual + environment + status. Unit tests alone do not produce VERIFIED.
 
 Ownership firewall: M12 owns event lifecycle state; consumers use contracts/events/projections and do not write M12 private state directly.
+\n\n# D100K — CONTEXT/MEMORY INTEGRATION — M12 EVENTS
+## Owner scope
+M12 owns real temporal event state, reminders and seasons.
+## Temporal semantics
+Every event-related memory carries valid_from/valid_until or a version. Expired events must not be recalled as future obligations.
+## D100K tests
+Timezone boundary, expired event, cancellation, reschedule, duplicate reminder, return-after-absence, stale cache, deterministic no-AI reminder path.\n
