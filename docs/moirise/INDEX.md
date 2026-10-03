@@ -95,3 +95,6 @@ La paire AI canonique est également couverte par D100K :
 - ai/AI_MASTER_PLAN.md — WHAT + propriétés formelles d'autorité, cognition, mémoire et évolution.
 - ai/AI_TECHNICAL_DESIGN.md — HOW + contrats fichier/fonction, validation, sécurité, adversarial testing, evidence graph et impact.
 Aucun troisième document AI ne devient une source de vérité.
+## Context & Memory
+- transversal/CONTEXT_MEMORY_TECHNICAL_DESIGN.md — canonical D100K context, entity-resolution and memory contract.
+- ai/AI_TECHNICAL_DESIGN.md — M15 execution contract for ContextPacket and AI memory behavior.
