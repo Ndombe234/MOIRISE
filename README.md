@@ -2,28 +2,17 @@
 
 MORISE — a global social world centered on an evolving personal SYSTEM.
 
-## Project status
+## Canonical reconstruction status
 
-**Module 0 — VALIDATED**
+IMPORTANT: the main branch still contains the pre-reset runtime and its historical validation evidence. It is NOT the source of truth for the current 15-module implementation.
 
-**Module 1 — AUTH + PLAYER — VALIDATED**
+- Canonical rebuild branch: rebuild/canonical-m01-reset
+- Current canonical rebuild state: M01 FOUNDATION — IN PROGRESS
+- The previous M01–M06 runtime must not be counted as completion of the new M01–M15 architecture.
+- PR #14 is the controlled reset/rebuild path; it must be reconciled before the new runtime becomes the default branch.
 
-**Module 2 — SYSTEM CORE — IMPLEMENTED / AUTHENTICATED E2E PENDING**
-
-This repository intentionally started from zero. No legacy OtakuWorld/NexoraVerse application code, database schema, RPCs, Edge Functions or RLS policies are reused.
-
-## Product principles
-
-- Simple surface, deep architecture.
-- Every user is a Player.
-- SYSTEM is a dedicated destination.
-- Solo-first: discover, play, explore, create and progress alone.
-- Social depth emerges from real user actions.
-- No fake users, fake engagement or fake statistics.
-- Global and multilingual by design.
-- Render is the current build/QA environment.
-- Cloudflare is the intended final production platform.
-- Vercel is not used unless explicitly justified.
+The canonical implementation gate remains:
+PLAN → TECHNICAL DESIGN → CODE → DATA/AUTH/SECURITY → TESTS → BROWSER → MOBILE → RESILIENCE → PRODUCTION EVIDENCE → DONE.
 
 ## Module 0 validation evidence
 
