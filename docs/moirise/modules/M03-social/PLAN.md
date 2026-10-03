@@ -318,3 +318,11 @@ Actions with retryable side effects require idempotency. Realtime subscriptions 
 ## D100K proof
 RLS/privacy, block override, duplicate send, ordering, reconnect, pagination, unauthorized realtime subscription, delete/edit authorization, mobile keyboard and evidence.
 
+
+
+# D100K — EXPLICIT SOCIAL ACTION RESTORATION
+
+M03 supports the explicit player action to report a moderation risk and to modify/delete a publication only when the current server policy authorizes it. A conversation/message surface is opened contextually from Home/profile/notification/deep link rather than as a seventh permanent door.
+
+D100K: report action authorization, moderation audit, edit/delete policy and contextual message navigation.
+
