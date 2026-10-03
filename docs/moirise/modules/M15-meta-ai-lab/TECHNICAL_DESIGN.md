@@ -368,3 +368,20 @@ Adversarial proof must include replay, duplicate command, stale state, unauthori
 Evidence is fresh only when tied to the exact commit and exact scenario/check. Unit tests cannot alone certify a user-facing or production-sensitive feature.
 
 Ownership firewall: M15 may consume other modules through contracts, events or projections, but may not assume their private authority.
+\n\n# D100K — CONTEXT/MEMORY INTEGRATION — M15 META AI LAB
+## Owner scope
+M15 owns parsing orchestration, ContextPacket construction, provider routing and AI proposals. It is not the ultimate owner of Player/World/Reward mutations.
+## Required pipeline
+OBSERVE → EXTRACT → RESOLVE → CLASSIFY → POLICY → RETRIEVE → PLAN → PROPOSE → OWNER VALIDATE → COMMIT → EVENT → EVALUATE.
+## Structured memory
+Never rely on a single free-text summary. Provide field-level facts, relations, provenance, confidence, temporal scope, sensitivity and conflicts.
+## Hierarchical comprehension
+When a user gives progressively finer details, append/enrich the graph at the correct node. Example: country then city then street then building then unit; each remains independently addressable.
+## Sensitive data
+M15 must redact exact location and other sensitive fields unless the current capability is explicitly authorized to use them. It must never infer protected traits from appearance/media.
+## Correction
+User correction produces ContextCorrection and supersedes the target fact according to policy; every downstream cache is invalidated.
+## Provider boundary
+Providers receive a task-scoped ContextPacket after privacy filtering. Provider responses are untrusted candidates and cannot mutate Player memory directly.
+## D100K tests
+Multi-turn enrichment, language switch, coreference, correction, conflict, sensitive-field redaction, provider injection, tool-call leakage, memory deletion, degraded mode, deterministic parser fallback.\n
