@@ -87,3 +87,14 @@ M11 owns membership/role/community state. Community context is separate from per
 A community member's private memory never becomes community memory merely because a group exists. Shared memory requires explicit group scope and visibility.
 ## D100K tests
 Role boundary, private fact leakage, group deletion, membership removal, invitation, shared-memory consent, cross-community isolation.\n
+
+# D100K — RECOVERED FEATURE FABRICATION BINDING — M11
+## RF-M11-01 Collaborative creation space
+Community creation can host puzzles, stories, media, games, events or shared challenges. Every artifact keeps creator/contributor lineage.
+## RF-M11-02 Distributed community secrets
+A secret can require independent contribution(s); state is authoritative and auditable. No fabricated clue or completion counter.
+## RF-M11-03 Collective legends/history
+A legend is generated only from validated community Moments/Relays/Events. Contributors can inspect lineage according to visibility.
+## RF-M11-04 Community intelligence
+AI may propose formation/organization, but membership, roles and permissions remain M11 authoritative.
+
