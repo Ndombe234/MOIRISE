@@ -66,3 +66,14 @@ M12 owns real temporal event state, reminders and seasons.
 Every event-related memory carries valid_from/valid_until or a version. Expired events must not be recalled as future obligations.
 ## D100K tests
 Timezone boundary, expired event, cancellation, reschedule, duplicate reminder, return-after-absence, stale cache, deterministic no-AI reminder path.\n
+
+# D100K — RECOVERED FEATURE FABRICATION BINDING — M12
+## RF-M12-01 Seasons
+Season has version, startAt, endAt, rulesVersion, eligible activities and state. Season boundaries are authoritative and timezone-aware.
+## RF-M12-02 Low-population World Events
+Events remain meaningful at low population through solo/asynchronous participation. Population is never faked.
+## RF-M12-03 Return-after-absence continuation
+Resume offers a real event/state change since last observed checkpoint; otherwise it offers ordinary continuation without claiming hidden changes.
+## RF-M12-04 Living Object→Event
+Only validated object mutations can schedule an event. Scheduling is idempotent and cancellable.
+
