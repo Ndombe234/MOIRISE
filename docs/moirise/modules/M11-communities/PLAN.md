@@ -81,3 +81,17 @@ Authority is unique; duplicate commands are idempotent; stale versions do not ov
 
 ## 7. Completion
 This section defines proof requirements, not implementation completion.
+
+
+# D100K — HISTORICAL CONTRACT RESTORATION — M11 COMMUNITIES
+
+## Restored contracts
+`Community={id,name,description,visibility:'public'|'private',ownerId,createdAt}`
+`Membership={communityId,userId,role:'owner'|'admin'|'moderator'|'member',status:'active'|'pending'|'banned'}`
+`ModerationEvent={id,communityId,actorId,action,targetId,createdAt}`
+
+Moderation actions log actor, target, reason, timestamp and rule/version references. Community creation, membership, moderation, settings and community events remain contextual screens behind the primary Communities surface.
+
+## D100K proof
+Unauthorized role change, banned membership, private community access, duplicate invite/join, moderation audit, actor spoofing, stale role version and privacy propagation.
+
