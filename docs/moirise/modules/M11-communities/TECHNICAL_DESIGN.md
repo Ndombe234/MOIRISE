@@ -110,3 +110,11 @@ Role/membership mutations are server-authorized. Moderation records actor, targe
 
 D100K: forged role change, banned access, duplicate invite/join, moderation audit, stale membership, privacy propagation and owner transfer.
 
+
+
+# D100K — RESTORED COMMUNITY SECRET / MEDIA TECHNICAL CONTRACT
+
+A distributed community secret stores contributionRefs and completion conditions without exposing private source material. Collaborative media uses contributorRef, sourceRef, version and permission policy for every derivative.
+
+D100K: contribution spoofing, duplicate contribution, private-data leakage, attribution loss, permission revocation and community deletion.
+
