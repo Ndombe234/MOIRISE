@@ -92,3 +92,20 @@ A Player returning after absence may receive a real event consequence, updated s
 
 ## Emergence / Living Object conversion
 Validated Living Object outcomes may become event candidates through the existing owner handoff. M12 owns the event state only after its normal eligibility and authorization rules are satisfied.
+
+
+# D100K — HISTORICAL CONTRACT RESTORATION — M12 EVENTS
+
+## Restored operations
+`createEvent`, `updateEventDraft`, `publishEvent`, `joinEvent`, `withdrawEvent`, `cancelEvent`, `completeEvent`, `listUpcomingEvents`.
+
+All timestamps are persisted in UTC and localized only for presentation. Recurring events use explicit recurrence rules and occurrence IDs. Reminder jobs use a unique event/user/occurrence/channel key.
+
+`Event={id,title,startsAt,endsAt,status:'draft'|'scheduled'|'live'|'completed'|'cancelled'|'expired'|'archived',creatorId,visibility:'public'|'community'|'private',rulesHash}`
+`Participation={eventId,userId,status:'joined'|'withdrawn'|'completed',idempotencyKey}`
+
+M12 never shows an event as live without authoritative server state. AI event planning/copy is advisory; publishing is an authorized action.
+
+## D100K proof
+Timezone boundary, recurrence occurrence, duplicate join/withdraw, reminder retry, stale client state, cancellation, server outage, community membership authorization and AI outage.
+
