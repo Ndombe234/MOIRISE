@@ -168,3 +168,27 @@ Continuation may expose a real unanswered discovery, new path, changed object/wo
 M05 explicitly preserves these presentation/experience projections of the Evolution Engine: Trace; Living World; Hidden Possibilities; Unexplored Paths; Evolving Identity; MORISE Double; Fun & Surprise; Emergent Experience patterns; SYSTEM companion continuity.
 
 Durable lifecycle remains with the owner defined by the canonical architecture. M05 owns how eligible progression/evolution state is presented through SYSTEM and how progression-sensitive mutations are authorized.
+
+
+# D100K — HISTORICAL CONTRACT RESTORATION — M05 SYSTEM
+
+## Restored contracts
+`Progression={playerId,level,xp,rank,version}`
+`XPEvent={id,playerId,source,amount,idempotencyKey,ruleVersion,createdAt}`
+`SystemNotice={id,playerId,kind,priority:'low'|'normal'|'high',readAt?}`
+
+Canonical operations:
+`getProgression`, `recordValidatedProgressionEvent`, `listSystemNotices`, `markSystemNoticeRead`, `explainProgression`.
+Only the first two mutate authoritative progression and both are server-authorized.
+
+Authoritative sequence:
+`validated source event → authorize → validate amount/source → insert XP event → recompute progression → emit SYSTEM notice → invalidate player cache`.
+
+Rules are immutable/versioned after publication. Retries use idempotency. Negative/overflow/impossible source events are rejected. Low-priority notices are grouped to prevent SYSTEM spam. AI can explain or recommend; it cannot grant XP, alter rank/rules or validate its own source event.
+
+## Contextual experience
+M05 may present a contextual SYSTEM experience when a real eligible signal exists. It must never fabricate rewards, counters, events or notifications.
+
+## D100K proof
+Exact threshold boundaries, concurrent grants, duplicate events, forged payloads, ruleset upgrades, rollback, notice grouping/read state, reconnect, mobile HUD, provider outage and no-AI fallback.
+
