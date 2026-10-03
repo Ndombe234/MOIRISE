@@ -1682,3 +1682,15 @@ No provider is enabled from documentation alone. A provider can be removed witho
 
 Historical secret-name spellings are evidence only; canonical configuration uses verified environment/secret names. Secret values never enter repository documentation.
 
+
+
+# D100K — RESTORED CAPABILITY ORCHESTRATION / CROSS-DOMAIN LEARNING
+
+MORISE AI learns how to select, sequence, parameterize, combine, test and recover from validated capabilities. It may learn orchestration strategies from actual execution trajectories without granting a provider or agent authority over production policy.
+
+Cross-domain mechanics may be translated into MORISE-native experiences: music/audio can alter game/world state; visual creation can seed a Living Object; story structure can drive a playable scene. The domain is an internal source of mechanics, not a new navigation category.
+
+Music/audio remains a SYSTEM capability and can support Living Objects, communities, events, game/world mechanics and collaborative experiences. External music distribution, when ever enabled, requires provenance, rights/licence verification and explicit publication authorization; internal performance never implies distribution rights.
+
+Creation Runtime is the controlled environment used when an experience must be assembled, built, executed, tested, diagnosed and corrected. AI orchestration composes existing capabilities and runtime contracts rather than inventing an unbounded execution surface.
+
