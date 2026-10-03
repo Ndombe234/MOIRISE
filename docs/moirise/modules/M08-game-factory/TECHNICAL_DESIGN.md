@@ -150,3 +150,34 @@ A validated experience can become story/visual/audio/video/playable representati
 ## RF-M08-04 Fabrication memory
 Store reusable technical patterns and validated repairs with scope/version. Do not store private user memory in fabrication memory.
 
+
+
+
+# HISTORICAL FUSION — M08 GAME FACTORY — TECHNICAL DESIGN
+
+## Fabrication distribuable
+
+GameSpecification et TaskGraph sont les contrats d'entrée. Chaque node contient capabilityVersion, dependencies, input/output refs, resourceProfile, validator, timeout, retryPolicy et idempotencyKey.
+
+Le Resource Router peut envoyer les nodes compatibles vers local runtime, trusted worker, community worker autorisé ou provider vérifié. Les données privées restent dans les scopes autorisés.
+
+## Artifact safety
+
+`Artifact` = artifactId + projectId + sourceTaskId + contentHash + provenance + validatorRefs + sandboxRef + status.
+
+Generated code/assets sont non fiables jusqu'à validation. M08 ne publie pas un artefact simplement parce qu'un agent/provider l'a produit.
+
+## Repair loop
+
+Chaque réparation conserve failureFingerprint, diagnosticRef et revision. Build + impacted tests + regression + security + resource validation sont obligatoires avant promotion.
+
+## Creation memory
+
+M08 envoie les preuves de fabrication validées au MemoryService central. Il ne crée pas une seconde mémoire.
+
+Les patterns réutilisables doivent être compatibles avec engine/version/device/resource/security/policy avant REUSE ou ADAPT.
+
+## 2D / 3D resource model
+
+La spec conserve séparément les contraintes 2D/3D : CPU/RAM/GPU/VRAM, taille des assets, frame/memory budget, startup/load budget et fallback profile.
+
