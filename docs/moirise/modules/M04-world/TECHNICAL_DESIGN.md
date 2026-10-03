@@ -168,3 +168,11 @@ World configuration is server-authoritative and versioned. Public metadata may b
 
 D100K: stale version, disabled zone, missing node, unauthorized mutation, personalized-cache leakage, locale fallback, persistence failure and rebuildable projection.
 
+
+
+# D100K — RESTORED LIVING WORLD TECHNICAL CONTRACT
+
+World-memory mutation must be represented as a versioned owner-scoped record referencing the validated source event. Hidden/discoverable nodes use explicit unlock predicates or event references. Public cache keys exclude personalized availability.
+
+D100K evidence: source event, world version before/after, authorization decision, visibility, projection, rollback/replay result.
+
