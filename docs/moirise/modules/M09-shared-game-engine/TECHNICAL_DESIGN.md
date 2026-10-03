@@ -89,3 +89,10 @@ No task owned by M09 may silently take authority from another module. Cross-modu
 
 ## 6. Production lock
 Tests passing without applicable browser/mobile/security/resilience/production proof leave the task non-VERIFIED.
+\n\n# D100K — CONTEXT/MEMORY INTEGRATION — M09 SHARED GAME ENGINE
+## Owner scope
+M09 owns runtime sandbox state. Context is read-only runtime input after authorization.
+## Runtime contract
+Resolved ContextPacket → validated RuntimeInput → SandboxLease. Context cannot directly execute code, change privileges or bypass resource limits.
+## D100K tests
+Injected context payload, oversized payload, tampered runtime input, session expiry, cross-game context leakage, resume/reconnect, sandbox isolation.\n
