@@ -115,3 +115,21 @@ The canonical AI pair now explicitly states that the MORISE AI Core is **not all
 The AI Technical Design defines execution modes, provider configuration, secret resolution, public-vs-secret configuration, no-key behavior, provider removal tests, anonymous/public endpoint classification, and a zero-provider test suite.
 
 This is a documentation/architecture completion. It is **not runtime proof**. The implementation must still pass zero-provider, no-secret-in-client, provider-outage, invalid-key, quota-exhaustion and degraded-mode tests before the provider-independence gate can be marked VERIFIED.
+
+
+## HISTORICAL AI / COMPUTE FUSION — COMPLETED — 2026-10-03
+
+The canonical documentation now explicitly incorporates the historical AI architecture for:
+- native/provider-independent AI core;
+- context/reasoning/action orchestration;
+- multimodal capabilities;
+- memory/learning and provenance;
+- controlled self-evolution and code sandbox;
+- resource scheduler and capacity scaling;
+- trusted/community distributed workers;
+- 2D/3D game fabrication/runtime boundaries.
+
+The historical material was merged into existing PLAN.md and TECHNICAL_DESIGN.md owners rather than recreated as duplicate documents.
+
+This is documentation/architecture completion. Runtime implementation of these contracts remains a separate completion gate.
+
