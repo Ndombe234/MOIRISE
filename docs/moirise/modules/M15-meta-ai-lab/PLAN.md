@@ -318,3 +318,44 @@ M15 may orchestrate creator eligibility analysis, staged eligibility, contributi
 
 ## Operational control
 Owner/Admin Control Center behavior is constrained by M01 security and explicit administrative policy. M15 may provide analysis and alerts but cannot become an unrestricted superuser.
+
+
+
+# HISTORICAL FUSION — M15 AI LAB — PLAN
+
+M15 absorbe les anciens plans AI d'orchestration, context/reasoning, capability routing, memory/learning, evolution, resource scheduling, workers distribués, actions/tools et orchestration créative.
+
+## M15 doit évoluer avec le code
+
+Une limite observée peut déclencher une candidate d'amélioration. Les candidates peuvent concerner les algorithmes, skills, planners, parsers, retrieval, optimisations, validators ou composants de fabrication. Elles passent obligatoirement par sandbox, tests, benchmark, policy, canary et rollback.
+
+## M15 doit évoluer avec les ressources
+
+Le Resource Engine détecte les capacités disponibles des runtimes/workers. Une augmentation réelle de CPU/RAM/GPU/VRAM ou l'ajout d'un worker augmente l'espace d'exécution disponible sans modifier le contrat de capability.
+
+M15 ne suppose jamais que la puissance est infinie et ne traite jamais plusieurs machines comme une seule RAM physique.
+
+## Worker control plane
+
+M15 possède :
+- registry logique ;
+- scheduler ;
+- lease/retry ;
+- health/heartbeat ;
+- trust state ;
+- resource selection ;
+- task routing ;
+- validation de résultats.
+
+Le worker lui-même reste un runtime séparé. M15 ne lui délègue pas son autorité.
+
+## Provider relationship
+
+Les providers accélèrent ou étendent des capabilities mais ne définissent ni la mémoire, ni la policy, ni l'autorité, ni l'identité de MORISE.
+
+## AI Lab progression
+
+OBSERVE → DIAGNOSE → HYPOTHESIZE → FABRICATE → TEST → BENCHMARK → VALIDATE → CANARY → PROMOTE → MONITOR → ROLLBACK.
+
+Le succès d'une évolution doit être mesurable ; l'augmentation du volume de code n'est jamais une preuve suffisante.
+
