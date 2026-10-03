@@ -17,7 +17,7 @@ MOIRISE must provide the familiar social primitives users already understand:
 - creator/profile surfaces;
 - discovery/recommendations.
 
-The differentiation is not the existence of these primitives. The differentiation is the SYSTEM layer that connects them into a single Otaku creative loop:
+The differentiation is not the existence of these primitives. The differentiation is the SYSTEM layer that connects them into a single creative loop:
 
 DISCOVER → REACT → CREATE → REMIX SAFELY → SHARE → PLAY → MEET → FORM GROUP → CREATE AGAIN → SYSTEM LEARNS.
 
@@ -39,7 +39,7 @@ Every eligible public creation can expose a compact action surface:
 The SYSTEM chooses which secondary action is most relevant instead of displaying every possible action simultaneously.
 
 Example:
-A user watches an Otaku Reel → SYSTEM identifies an available creative action → “Transform this idea” → user creates a materially different image/video/song → publishes → original inspiration is credited when applicable → discovery can show both works → new viewers enter the loop.
+A user watches a Reel → SYSTEM identifies an available creative action → “Transform this idea” → user creates a materially different image/video/song → publishes → original inspiration is credited when applicable → discovery can show both works → new viewers enter the loop.
 
 ## 4. Reels / short video
 Reels are short-form vertical video experiences with:
@@ -146,7 +146,7 @@ The transformation layer must separate:
 Example: “banana” may remain a generic concept. Replacing “banana” with “anebane” is NOT itself an originality or copyright solution.
 
 For third-party content, MORISE should produce a new concept-level brief such as:
-“yellow tropical fruit on a bright table, playful Otaku poster composition, warm light”
+“yellow tropical fruit on a bright table, playful poster composition, warm light”
 without copying the source's exact image, text, melody, lyrics, recording, character design or other protected expression.
 
 ## 11. Provenance
@@ -233,7 +233,7 @@ The product must never fabricate scarcity, fake counters, fake popularity or fak
 
 ## 18. First-session conversion
 The first session should expose multiple reasons to stay without dumping buttons on the user. The SYSTEM can progressively reveal:
-- a personalized Otaku discovery;
+- a personalized interest-based discovery;
 - one quick creative action;
 - one playable experience;
 - one social connection opportunity;
@@ -280,7 +280,7 @@ The product is not differentiated by having “a feed + Stories + Reels.” Larg
 
 MOIRISE's intended differentiation is the integrated SYSTEM:
 - social identity;
-- Otaku discovery;
+- interest-based discovery;
 - games created by the platform;
 - AI-assisted creation;
 - adaptive world;
@@ -291,7 +291,7 @@ MOIRISE's intended differentiation is the integrated SYSTEM:
 - validated memory of successful creation patterns;
 - all coordinated through a small number of visible doors.
 
-The user should feel that the site is not “another social app with anime skins,” but an Otaku social world whose SYSTEM actively connects social, creative and playable experiences.
+The user should feel that the site is not “another social app with anime skins,” but a social world whose SYSTEM actively connects social, creative and playable experiences.
 
 ## 22. Anti-differentiation risks
 The following reduce differentiation/retention and must be controlled:
