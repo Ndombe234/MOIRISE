@@ -116,3 +116,16 @@ These historical mechanisms are now RECOVERED-FUSED, not deleted product scope.
 
 ## D100K technical reconciliation status — 2026-10-03
 Recovered historical behaviors are now represented in the canonical module TECHNICAL_DESIGN layer through explicit recovered-feature fabrication bindings. The transversal Context/Memory contract is centralized and reused by all modules. This closes the documentation-level reconciliation of the recovered feature set; it does not claim runtime implementation.
+
+
+## AI / COMPUTE HISTORICAL FUSION — STATUS — 2026-10-03
+
+The deleted AI specialist documents covering orchestration, reasoning/context, capabilities/providers, memory/learning, creative generation, evolution/code sandbox, data/security/provenance, resource scheduling, actions/tools, game runtime and distributed workers have been functionally absorbed.
+
+Canonical ownership after fusion:
+- M15 PLAN + TECHNICAL_DESIGN: AI Core, orchestration, capability routing, provider independence, resource scheduling, worker control plane, memory/learning, evolution and multimodal orchestration.
+- M08 PLAN + TECHNICAL_DESIGN: game fabrication DAG, artifacts, repairs, fabrication memory and 2D/3D factory concerns.
+- M09 PLAN + TECHNICAL_DESIGN: game runtime, resource enforcement, sandbox, worker/runtime leases and 2D/3D execution.
+
+Deleted documents are not restored as sources of truth. Their verified requirements are represented by the current canonical plans/designs and the traceability matrix.
+
