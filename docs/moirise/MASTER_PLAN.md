@@ -270,3 +270,18 @@ These capabilities reuse existing state, event, storage, runtime and module owne
 ## Canonical owner rule
 Recovered features are distributed to existing owners: M03 social/media/Moment/Relay publication; M04 World presentation and discovery handoffs; M05 SYSTEM presentation, First Contact and progression/evolution presentation; M06 play/result experiences; M07 discovery/ranking; M08 creation factory; M09 runtime; M10 social challenges; M11 communities; M12 temporal events/seasons; M13 adaptive world/convergence/memory retrieval; M14 rewards/collection/economic ledger; M15 AI orchestration, creation tools, World Agents, on-device/provider routing, creator eligibility analysis, collective intelligence and AI Lab; M01 security, auth and operational boundaries.
 No historical file is reintroduced as a competing source of truth.
+
+
+## RECOVERED FUNCTIONAL D100K COMPLETION — CONTEXT INTELLIGENCE
+The recovered features now have a concrete transversal technical owner for context comprehension and memory:
+docs/moirise/transversal/CONTEXT_MEMORY_TECHNICAL_DESIGN.md.
+
+This contract is mandatory for all AI-capable modules. It solves the specific failure mode where an AI remembers only the last coarse answer instead of progressively enriching the underlying state.
+
+Canonical pattern:
+PARTIAL FACT → ENRICHMENT → RELATION → TEMPORAL/SENSITIVITY CLASSIFICATION → VALIDATED MEMORY → RETRIEVAL → CONTEXT-AWARE ACTION.
+
+Location is a graph, not a single string. Profile facts, conversation facts, transient appearance/context and World state are separate domains. The AI never invents missing nodes, and corrections supersede previous values according to policy.
+
+D100K completion therefore requires both feature-level technical design and this shared ContextPacket/Memory contract. Documentation completion is not implementation completion.
+
