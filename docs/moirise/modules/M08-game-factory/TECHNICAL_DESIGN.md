@@ -181,3 +181,17 @@ Les patterns réutilisables doivent être compatibles avec engine/version/device
 
 La spec conserve séparément les contraintes 2D/3D : CPU/RAM/GPU/VRAM, taille des assets, frame/memory budget, startup/load budget et fallback profile.
 
+
+
+# D100K — RESTORED GAME FACTORY TECHNICAL CONTRACTS
+
+`AssetRef={id,kind,ref,license:'owned'|'generated'|'open',provenance,hash}`
+`GameSpecification={id,mode:'2d'|'3d',engine,scenes,entities,rules,controls,levels,assets,audio,tests}`
+`GamePackage={id,specHash,engineVersion,manifestRef,artifactRef,signature}`
+
+Generated code is untrusted; dependencies are allowlisted. Every asset retains license/provenance/hash. A build cannot be published until static, build, security, resource, runtime and policy gates pass.
+
+The published package contains a runtime manifest and never calls the provider/agent that created it. Provider/model/tool provenance remains attached to fabrication evidence.
+
+D100K: malformed spec, missing dependency, malicious asset, unverifiable license, injected agent output, artifact signature/hash mismatch, provider outage, reproducible build and 2D/3D resource overrun.
+
