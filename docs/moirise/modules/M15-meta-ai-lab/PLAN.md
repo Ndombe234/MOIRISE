@@ -386,3 +386,14 @@ AI fallibility itself can be a controlled experiment only when the experiment is
 
 D100K: zero providers, zero community workers, worker loss, provider disagreement, malformed output, deterministic fallback, false-success prevention and rollback evidence.
 
+
+
+# D100K — RESTORED ORCHESTRATION LEARNING CONTRACT
+
+M15 may retain validated orchestration lessons:
+which capability was selected, in what order, with which parameters, under which resource/privacy constraints, and how the result behaved.
+
+A lesson candidate is not production behavior. It requires benchmark comparison, policy/security review and controlled promotion.
+
+Cross-domain compositions are one MORISE experience graph, not separate AI brains or navigation modules.
+
