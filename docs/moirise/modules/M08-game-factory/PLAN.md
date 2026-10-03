@@ -155,3 +155,19 @@ DIAGNOSIS → HYPOTHESIS → PATCH → IMPACTED TESTS → BUILD → REGRESSION �
 
 Une réparation répétant le même failure fingerprint est escaladée au lieu de boucler.
 
+
+
+# D100K — HISTORICAL CONTRACT RESTORATION — M08 GAME FACTORY
+
+## Restored exact fabrication contracts
+`AssetRef={id,kind,ref,license:'owned'|'generated'|'open',provenance,hash}`
+`GameSpecification={id,mode:'2d'|'3d',engine,scenes[],entities[],rules[],controls[],levels[],assets[],audio[],tests[]}`
+`GamePackage={id,specHash,engineVersion,manifestRef,artifactRef,signature}`
+
+Generated code is untrusted. Dependencies are allowlisted. Generated assets retain source/license/provenance metadata. Unsupported or unverifiable assets are rejected instead of silently published.
+
+Published packages include the resources required by M09 and a runtime manifest. Playing a published package never calls the provider/agent that created it.
+
+## D100K proof
+Schema mismatch, missing dependency, malicious asset, unverifiable license, provider outage, agent output injection, build reproducibility, artifact hash/signature mismatch, 2D/3D resource overrun and publish denial until all validators pass.
+
