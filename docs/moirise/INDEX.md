@@ -3,6 +3,15 @@
 ## État d'implémentation
 Avant toute inspection de code, lire `RESET_STATE.md`. Ce fichier définit la frontière entre l'ancienne implémentation et le nouveau rebuild. `CURRENT_REPOSITORY_EVIDENCE.md` est historique et décrit uniquement l'état pré-reset.
 
+## Documents structurants obligatoires
+- `PRODUCT_CONSTITUTION.md` — invariants produit et identité canonique.
+- `ARCHITECTURE_MASTER.md` — carte structurelle et ownership inter-modules.
+- `MASTER_PLAN.md` — périmètre et ordre canonique.
+- `SPECIFICATION_STANDARD.md` — profondeur comportementale obligatoire.
+- `IMPLEMENTATION_CONTRACT_STANDARD.md` — contrat exploitable par l'agent de fabrication.
+
+La chaîne canonique est : PRODUCT_CONSTITUTION → ARCHITECTURE_MASTER → MASTER_PLAN → modules → SPECIFICATION_STANDARD → IMPLEMENTATION_CONTRACT_STANDARD → code/migrations → tests/browser/production evidence.
+
 ## Règle de lecture
 Chaque module possède exactement deux fichiers actifs :
 - PLAN.md = comportement détaillé, du déclencheur jusqu'au DONE.
