@@ -255,3 +255,28 @@ Unknown impact is UNRESOLVED, never assumed safe.
 
 ## 7. Completion
 D100K means the feature definition is machine-checkable. It does not mean the code is already fabricated.
+
+
+# D100K — HISTORICAL CONTRACT RESTORATION — M01 FOUNDATION
+
+## Restored behavioral contracts
+- L'application reste mobile-first, sombre/glass, avec des contrôles permanents rares.
+- Une opération longue utilise une surface de progression/status et n'ajoute pas un bouton global.
+- Les portes permanentes restent limitées ; les messages privés et sous-fonctions restent contextuels.
+- Les panneaux SYSTEM sont fermables sauf contrainte de sécurité.
+- Aucune action destructive n'est implicite.
+- Aucune fonction AI ne reçoit un accès global implicite.
+- La mémoire AI n'est pas chargée massivement au démarrage.
+- Aucun média lourd n'est préchargé sans besoin explicite.
+- Les fonctions protégées côté serveur utilisent la session/JWT selon le boundary d'autorité.
+- RLS reste la protection d'accès persistante pour les futures tables.
+
+## Canonical bootstrap objects
+`AppConfig={version,environment,defaultLocale,supportedLocales}`
+`RouteMeta={id,path,auth,primary}`
+`AsyncState<T>={status,data?,error?}`
+`SystemEvent={eventId,eventType,occurredAt,actorId?,moduleId,requestId?,schemaVersion,metadata}`
+
+## D100K proof
+Boot public, boot authenticated, expired session, unauthorized route, refresh, deep-link, slow network, provider unavailable, no-AI mode, mobile viewport and evidence of zero secret leakage.
+
