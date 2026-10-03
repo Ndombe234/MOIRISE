@@ -216,3 +216,19 @@ Tests: duplicate evidence, deletion, attribution, no hidden scoring.
 ## RF-M02-04 Preferences and current appearance
 Preferences may persist when selected by the player. Current appearance/tenue/coiffure are contextual by default and expire. Sensitive self-described attributes require explicit retention choice; never infer them.
 
+
+
+# D100K — RESTORED PLAYER TECHNICAL CONTRACTS
+
+`PlayerProfile={id:string,handle:string,displayName:string,avatarRef?:string,bio:string,locale:string,createdAt:string}`
+`PlayerPreferences={locale:string,theme:'dark',interests:string[],privacy:'public'|'friends'|'private'}`
+`PlayerPatch={displayName?:string,bio?:string,avatarRef?:string,locale?:string,interests?:string[],privacy?:PlayerPreferences['privacy']}`
+
+Canonical operations:
+`ensureProfile()`, `getMyProfile()`, `updateMyProfile(patch)`, `updateMyPreferences(patch)`, `removeProfileData(scope)`.
+Every mutation derives userId from the authenticated server session, never from an arbitrary client-supplied owner id.
+
+Validate string lengths, locale membership, avatar MIME/size and privacy enum before mutation. Identity/security changes await server acknowledgement. Public fields/private settings use separate policies; blocked users cannot retrieve restricted data. Audit identity/security changes.
+
+D100K: other-user mutation denial, persistence-level privacy enum, failed-update rollback/retry, deletion scope, duplicate mutation, session expiry and mobile profile evidence.
+
