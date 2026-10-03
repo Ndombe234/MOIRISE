@@ -51,3 +51,22 @@ Une révocation doit invalider les leases actives. Une tâche reprise doit respe
 - Prompt injection inside stored memory is treated as untrusted data, never as policy.
 - Share/feed/ranking systems cannot read private memory by default.
 
+
+
+# D100K — LEGACY SECURITY BOUNDARY RESTORATION
+
+Server authority is mandatory for permissions, role changes, private data access, progression/rewards, provider credentials and sensitive operations.
+
+RLS is not replaced by TypeScript checks. Client visibility is not an authorization grant.
+
+Role mutation sequence:
+requester → authorizeRoleMutation → validateTarget → writeRole → audit → event.
+
+Moderator/admin operations require explicit role policy and audit evidence. A route or button existing in the frontend never grants privilege.
+
+Memory STORE, ANALYZE, SHARE and TRAIN are independent permissions. Private memory is never a default training input.
+
+Translation of a private message inherits the original conversation/member authorization and cannot change publication visibility.
+
+Media license/rights state is an authorization input. A successful generation is not proof of publication rights.
+
