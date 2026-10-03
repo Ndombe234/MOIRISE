@@ -113,3 +113,14 @@ D100K: duplicate acquisition, rarity spoof, client mint attempt, stale definitio
 
 When an image/creative provider is unavailable, collection definitions, ownership, rarity, inventory and reward history remain functional. Provider-dependent visuals degrade independently and never become the authority for collection state.
 
+
+
+# D100K — RESTORED REWARD / LEDGER INVARIANT
+
+Historical economy contracts require immutable/versioned reward definitions and an audit ledger. A reward operation is:
+validated source → eligibility → ruleVersion → ledger transaction → inventory/collection mutation → history → notification.
+
+The ledger is authoritative for economic mutations; UI and AI are descriptive/proposal layers only. Duplicate idempotency keys cannot produce a second economic side effect.
+
+Optional monetization/advertising telemetry must remain truthful and non-authoritative; an impression event never creates a fake player, reward or popularity signal.
+
