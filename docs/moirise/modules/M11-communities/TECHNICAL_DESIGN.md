@@ -98,3 +98,15 @@ A legend is generated only from validated community Moments/Relays/Events. Contr
 ## RF-M11-04 Community intelligence
 AI may propose formation/organization, but membership, roles and permissions remain M11 authoritative.
 
+
+
+# D100K — RESTORED COMMUNITIES TECHNICAL CONTRACTS
+
+`Community={id,name,description,visibility:'public'|'private',ownerId,createdAt}`
+`Membership={communityId,userId,role:'owner'|'admin'|'moderator'|'member',status:'active'|'pending'|'banned'}`
+`ModerationEvent={id,communityId,actorId,action,targetId,createdAt}`
+
+Role/membership mutations are server-authorized. Moderation records actor, target, reason, timestamp and rule/version. Community-private objects never become public through AI or client-side projection.
+
+D100K: forged role change, banned access, duplicate invite/join, moderation audit, stale membership, privacy propagation and owner transfer.
+
