@@ -104,3 +104,19 @@ Authority is unique; duplicate commands are idempotent; stale versions do not ov
 
 ## 7. Completion
 This section defines proof requirements, not implementation completion.
+
+
+# D100K — HISTORICAL CONTRACT RESTORATION — M10 SOCIAL GAMING
+
+## Restored contracts
+`Challenge={id,gameId,creatorId,targetId?,rulesHash,expiresAt}`
+`ScoreSubmission={gameId,sessionId,playerId,score,stats:Record<string,number>,clientNonce}`
+`LeaderboardEntry={playerId,score,rank,seasonId}`
+
+Server validates session, package version, scoring-rules hash, timing bounds, identity and nonce before accepting a score. Invalid/suspicious results are rejected or quarantined. Leaderboards use deterministic ordering, stable tie-breakers, pagination and explicit season/rules versions.
+
+Spectator mode is optional when a game declares it. AI matchmaking/recommendation is advisory; deterministic fallback is mandatory.
+
+## D100K proof
+Forged score, duplicate submission, stale rulesHash, expired challenge, block/privacy restriction, season rollover, tie handling, spectator permission, AI outage and public/private share separation.
+
