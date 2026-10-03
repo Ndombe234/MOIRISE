@@ -68,3 +68,18 @@ Forbidden: hidden owner transfer, unauthorized mutation, silent privacy expansio
 Proof must cover nominal, empty/no-data, failure, degraded/unavailable, replay, concurrency where relevant, refresh/reopen, permissions, mobile and desktop, and the module-specific invariant.
 
 Impact path: M13 → consumers → contracts/events → projections → routes/UI → AI capabilities → tests → security/resilience. Unknown impact remains UNRESOLVED.
+
+
+# D100K — HISTORICAL CONTRACT RESTORATION — M13 ADAPTIVE WORLD
+
+## Restored contracts
+`AdaptationCandidate={id,target,changes:Record<string,unknown>,reasonRefs[],createdBy,version}`
+`AdaptationDecision={candidateId,status:'rejected'|'approved'|'canary'|'active'|'rolled_back',baseline,metrics,rollbackThreshold}`
+
+M13 consumes only authorized aggregate observations: engagement trends, completion rates, explicit feedback, event outcomes and public interaction statistics. Secrets, exact private content and sensitive attributes are excluded.
+
+Every active adaptation has immutable version metadata. Historical metrics are never mutated to hide regression. Data poisoning, low sample size, stale signals, provider disagreement, version conflict and unauthorized activation are explicit rejection/rollback cases.
+
+## D100K proof
+Candidate isolation, signal provenance, low-sample rejection, poisoned signal, stale version, canary regression, automatic rollback and recovery after rollback.
+
