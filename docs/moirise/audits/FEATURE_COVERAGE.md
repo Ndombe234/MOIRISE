@@ -115,3 +115,19 @@ Owner/Admin Control Center; administrative hierarchy; permissioned back office; 
 
 ## Interpretation
 CANONICAL means explicitly represented in active docs. RECOVERED-FUSED means recovered from deleted history and now reconciled into active canonical architecture. AUXILIARY means provider/tool/worker rather than product functionality. HISTORICAL-ALIAS means an old name mapped to a current capability. A specification entry never means code is already implemented or production-validated.
+
+## CONTEXT INTELLIGENCE / MEMORY COVERAGE — 2026-10-03
+- Progressive multi-turn fact enrichment ✅ M15 + transversal context contract
+- Hierarchical location graph ✅ M04/M15
+- Profile vs session/task memory separation ✅ M02/M01/M15
+- Provenance/confidence/temporal scope ✅ transversal
+- Correction/supersession semantics ✅ M02/M13/M15
+- Coreference and active context frame ✅ M03/M15
+- Sensitivity/privacy filtering ✅ M02/M15 + transversal Security
+- Provider-safe ContextPacket ✅ M15
+- Deterministic degraded parsing ✅ M01/M15
+- Cache/index invalidation ✅ M13/M15
+- Context deletion/expiration ✅ transversal
+- Browser/mobile/context acceptance ✅ transversal Testing + module contracts
+
+Coverage status rule remains: this is specification coverage, not implementation evidence.
