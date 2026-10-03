@@ -73,3 +73,16 @@ Use structured filters first, semantic retrieval second, then relevance × recen
 Return conflicts explicitly to M15 rather than selecting an arbitrary value when policy requires confirmation.
 ## D100K tests
 Recall hierarchy, correction, stale vector entry, deleted fact, conflicting facts, low-confidence extraction, privacy filter, multilingual retrieval, cache poisoning.\n
+
+# D100K — RECOVERED FEATURE FABRICATION BINDING — M13
+## RF-M13-01 Evolution Engine
+M13 consumes permitted signals and produces candidate contextual changes. Every rule has version, objective and validation strategy.
+## RF-M13-02 Convergence
+Convergence detects compatible validated signals across domains and proposes a bounded experiment. It does not invent relationships without evidence.
+## RF-M13-03 World Memory
+World Memory stores/retrieves validated world facts with temporal validity and scope. Expired/superseded facts are excluded.
+## RF-M13-04 Emergent Experience Engine
+Patterns such as What-If, Hidden Rule, Mutation, Role Inversion or Player Laboratory must be tied to real context and a declared experiment/entertainment objective.
+## RF-M13-05 Missions From Reality
+A mission can reference a real validated player action/event and expose a reversible next action. No false claim about external reality.
+
