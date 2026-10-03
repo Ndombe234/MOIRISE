@@ -128,3 +128,17 @@ Events represent committed facts and carry producerModule/schemaVersion/occurred
 A projection records source owner and source version. When source state is revoked or deleted, dependent projections become invalid/unavailable and are not recreated from stale cache.
 ## Cross-cutting rule
 Shared services such as validation, memory, provider routing and scheduling are invoked by capability contracts; modules do not fork their own implementation merely to change presentation.
+
+
+## 10. Automated QA architecture
+
+MOIRISE includes a canonical browser-QA contract at `docs/moirise/transversal/QA_AGENT_TESTING.md`.
+
+The QA agent is treated as an external verification actor, not as a privileged system identity. The architecture therefore separates:
+- PUBLIC_TEST: anonymous access to the real public application components;
+- AUTH_TEST: isolated authenticated test identities and state;
+- ADVERSARIAL_TEST: authorization, resilience and malformed-input validation.
+
+The public path is not a demo clone. It is a controlled verification path over the actual application surface, with explicit restrictions preventing private-data access and production mutation.
+
+No QA capability may create a new public navigation door or bypass an owner module's authorization boundary.
