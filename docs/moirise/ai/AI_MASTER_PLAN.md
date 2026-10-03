@@ -335,6 +335,85 @@ Les outils sont allowlistés et versionnés.
 
 # 15. RESOURCE / PROVIDER ROUTING
 
+## 15.0 — INVARIANT ABSOLU : MORISE AI CORE EST ZERO-DEPENDENCY PROVIDER
+
+**MORISE AI CORE MUST NEVER REQUIRE AN EXTERNAL AI API, API KEY, PROVIDER, REMOTE INFERENCE ENDPOINT, OAUTH TOKEN OR THIRD-PARTY AI SERVICE TO EXIST OR TO PERFORM ITS CORE INTELLIGENCE.**
+
+This is stronger than “provider optional”.
+
+The following must remain true:
+
+- no API key configured → MORISE AI Core remains operational;
+- no external provider configured → MORISE AI Core remains operational;
+- all external AI providers unavailable → MORISE AI Core remains operational;
+- network unavailable → offline-capable core capabilities remain operational;
+- provider quota exhausted → the core does not fail;
+- provider authentication invalid → the core does not fail;
+- provider endpoint deleted → the core does not fail;
+- provider terms/capability change → the core does not become unusable;
+- provider model discontinued → the core does not become unusable.
+
+External providers are **capability extensions**, never prerequisites.
+
+The canonical dependency direction is:
+
+`MORISE AI CORE → local/on-device/native execution → optional execution adapters`
+
+and never:
+
+`MORISE AI CORE → mandatory external provider`
+
+A provider may improve a result, add a modality, accelerate a task or enable a workload unsuitable for the local runtime. It must never define MORISE's identity, memory, context, authority, permissions, reasoning contract or authoritative state.
+
+### Core vs extension classification
+
+**CORE — must not depend on external provider**
+- request/context understanding;
+- context graph and ContextPacket construction;
+- identity and actor resolution;
+- memory policy and retrieval authorization;
+- intent/requirements compilation;
+- policy enforcement;
+- capability selection;
+- tool authorization;
+- deterministic planning/validation mechanisms;
+- state ownership and owner commits;
+- event contracts;
+- provenance;
+- privacy enforcement;
+- error/recovery state;
+- degraded-mode behavior;
+- AI evolution governance;
+- provider-independent tests and benchmarks.
+
+**EXTENSIONS — may use external providers**
+- remote LLM inference;
+- remote image generation;
+- remote music/audio generation;
+- remote video generation;
+- remote embeddings when no local equivalent is available;
+- remote search/retrieval;
+- optional specialized models/services.
+
+An extension failure MUST resolve to a validated alternative or an explicit degraded/unavailable state. It must never be represented as successful execution.
+
+### Absolute forbidden dependency
+
+No production code may contain a startup invariant equivalent to:
+
+`require(API_KEY) && require(PROVIDER) => startMORISEAI()`
+
+No core capability may contain:
+
+`if (!API_KEY) throw fatalError`
+
+when the requested capability has a valid deterministic/local/degraded path.
+
+Provider configuration must therefore be capability-scoped, not application-scoped.
+
+## 15.1 — RESOURCE / PROVIDER ROUTING
+
+
 Ordre de préférence conceptuel :
 1. local/on-device ;
 2. cache ;
@@ -1461,3 +1540,23 @@ CI-12 adversarial memory testing
 ## Non-goals
 No hidden psychological profiling. No silent inference of sensitive traits. No automatic persistence of exact private location. No provider-owned memory authority.
 
+
+
+# 56. PROVIDER INDEPENDENCE — ACCEPTANCE GATE
+
+A MORISE AI implementation is not accepted as provider-independent until all applicable tests prove:
+
+1. boot without AI provider secrets;
+2. boot without provider configuration;
+3. core context/memory/policy paths operate without remote inference;
+4. provider outage does not break core navigation or authoritative state;
+5. invalid/expired key produces normalized extension failure, not core failure;
+6. quota/rate-limit exhaustion produces controlled degradation;
+7. network loss preserves all supported offline/local capabilities;
+8. no browser bundle contains privileged provider secrets;
+9. no module business owner calls an external provider directly;
+10. provider removal leaves the Core architecture intact;
+11. provider-specific adapters can be disabled independently;
+12. no successful result is fabricated when every execution path is unavailable.
+
+**Evidence requirement:** these tests must be backed by runtime/CI evidence before implementation DONE. Documentation alone proves architecture, not runtime independence.
