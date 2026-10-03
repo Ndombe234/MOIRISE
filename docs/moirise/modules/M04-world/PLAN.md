@@ -167,3 +167,19 @@ When an eligible real state changed during the Player's absence, World may prese
 
 ## Continuation
 A World projection after First Contact can point to a real next possibility: changed world state, discovered path, playable experience, mission, object evolution or collective opportunity. The handoff is contextual and reversible.
+
+
+# D100K — HISTORICAL CONTRACT RESTORATION — M04 WORLD
+
+## Restored world contracts
+M04 remains the owner of the coherent world model: zones, nodes, themes, categories, contextual navigation metadata and feature availability. It does not own progression, games or AI internals.
+
+`WorldZone={id,key,titleKey,descriptionKey,order,enabled,version}`
+`WorldNode={id,zoneId,kind,targetRef,visibility}`
+`WorldContext={zoneId,locale,playerId,availableActions}`
+
+World configuration is server-authoritative and versioned. Public world metadata may be cached by version/locale; Player-specific availability must never be mixed into a public cache entry. World events are emitted only after authoritative persistence.
+
+## D100K proof
+Stale version, unauthorized global mutation, personalized-cache leakage, missing node, disabled zone, locale fallback, authoritative persistence failure and rebuildable projection.
+
