@@ -3876,3 +3876,189 @@ No endpoint moves to production merely because it appeared in an old document, s
 For each provider: official documentation reference, exact endpoint, auth mode, request schema, response schema, quota/rate limits, timeout behavior, privacy/data destination, terms/licensing where applicable, health probe, adapter contract test, failure normalization, fallback, and last verification timestamp.
 
 A provider without this evidence remains UNVERIFIED and cannot be required by the Core.
+
+
+# HISTORICAL ENGINEERING FUSION — TECHNICAL DESIGN
+
+Cette section absorbe dans la conception technique active les anciens contrats d'orchestration, reasoning, capability/provider routing, memory/learning, creative media, evolution, resource scheduling, distributed workers, actions/tools et game runtime.
+
+## 1. Runtime architecture
+
+```
+AI REQUEST
+  ↓
+AUTH / CLASSIFY
+  ↓
+CONTEXT ENGINE
+  ↓
+INTENT / REQUIREMENTS
+  ↓
+REASONING / PLANNER
+  ↓
+POLICY
+  ↓
+CAPABILITY REGISTRY
+  ↓
+RESOURCE ROUTER
+  ├── LOCAL / ON-DEVICE
+  ├── TRUSTED WORKER
+  ├── COMMUNITY WORKER
+  └── VERIFIED PROVIDER
+  ↓
+ACTION / TOOL ADAPTER
+  ↓
+SANDBOX
+  ↓
+EXECUTION
+  ↓
+VALIDATION
+  ↓
+OWNER COMMIT
+  ↓
+EVENT / MEMORY / EXPERIENCE
+```
+
+Aucune étape ne permet à un provider, worker ou modèle de devenir l'autorité.
+
+## 2. Resource model
+
+Canonical `ResourceRequirement` :
+- `minCpuCores?`
+- `minRamMb?`
+- `minGpuVramMb?`
+- `requiresGpu?`
+- `requiresLocalOnly?`
+- `storageMb?`
+- `networkClass?`
+- `maxExecutionMs?`
+
+Canonical resource observation :
+- total/available CPU ;
+- total/available RAM ;
+- GPU availability ;
+- VRAM;
+- storage headroom;
+- network health;
+- concurrency.
+
+Resource selection is hard-constrained by authorization/privacy before optimization.
+
+## 3. Distributed worker contract
+
+Canonical worker lifecycle :
+
+INSTALL/ENROLL → AUTHENTICATE → VERSION/ATTESTATION → REGISTER → CAPABILITY CHECK → VERIFIED/RESTRICTED → HEARTBEAT → ASSIGN → ACCEPT → RUN → UPLOAD → VALIDATE → COMPLETE/RETRY
+
+Worker descriptor must expose only operational data such as identity/version/status/capabilities/hardware/resource headroom/trust state.
+
+Worker job must contain:
+`jobId, capability, payloadRef, payloadHash, inputPolicy, expiresAt, timeoutMs, permissions, outputSchema, signature, resourceQuota`.
+
+A worker cannot choose arbitrary server operations.
+
+## 4. Worker trust domains
+
+TRUSTED WORKER :
+- explicitly owned/authorized;
+- may receive higher quotas;
+- may execute authorized private/sensitive workloads.
+
+COMMUNITY WORKER :
+- explicit opt-in;
+- sandboxed;
+- bounded CPU/RAM/network;
+- no production master secrets;
+- private data excluded unless an exact policy authorizes it.
+
+Community defaults are configurable by policy, with a safe baseline; they must be enforced by the runtime/sandbox, not by UI variables.
+
+## 5. Scheduler
+
+Candidate targets are filtered in this order:
+
+CAPABILITY → PRIVACY/TRUST → RESOURCE FIT → HEALTH → QUOTA → LOCALITY → QUEUE/CONCURRENCY → LATENCY/QUALITY/COST
+
+Worker selection may be automatic. No global code path may assume one specific worker exists.
+
+Worker loss :
+HEARTBEAT LOST → DEGRADED/OFFLINE → LEASE EXPIRE → RETRY/REASSIGN IF IDEMPOTENT → VALIDATE
+
+No job is considered completed because a worker connection disappeared.
+
+## 6. Evolution engine
+
+Canonical `EvolutionCandidate` fields:
+`id, target, baselineVersion, proposedVersion, hypothesis, evidenceRefs, changedArtifacts, tests, benchmarkBefore, benchmarkAfter, securityStatus, policyStatus, canaryStatus, rollbackRef`.
+
+Mandatory pipeline :
+
+OBSERVE → GAP → ROOT CAUSE → HYPOTHESIS → CANDIDATE → STATIC CHECKS → SANDBOX → TESTS → SECURITY → BENCHMARK → COMPARE → POLICY → CANARY → PROMOTE/REJECT → MONITOR → ROLLBACK
+
+Promotion requires explicit measurable acceptance criteria. A candidate cannot self-promote.
+
+## 7. Code-generation boundary
+
+Generated code is untrusted.
+
+It cannot by default:
+- access production secrets;
+- bypass RLS;
+- alter production permissions;
+- write authoritative production tables directly;
+- access arbitrary private data;
+- call unregistered network endpoints;
+- deploy itself;
+- disable safety gates.
+
+Generated artifacts remain candidates until validated and accepted by their owner.
+
+## 8. Knowledge/evolution memory
+
+Experience is separate from production truth:
+
+RAW RESULT → PROVENANCE → PRIVACY → QUALITY → POLICY → EXPERIENCE → PATTERN CANDIDATE → OFFLINE EVALUATION → PROMOTION
+
+One user result cannot rewrite global AI behavior. Repeated evidence, benchmark improvement and source diversity are required where global learning is allowed.
+
+## 9. Multimodal graph
+
+A multimodal job is a DAG. Each node declares:
+- capabilityId/version;
+- input/output refs;
+- dependencies;
+- resource profile;
+- privacy class;
+- validator;
+- timeout;
+- retry/idempotency;
+- provenance;
+- artifact outputs.
+
+Independent nodes may run concurrently when resource and privacy policies permit it.
+
+## 10. Game fabrication/runtime boundary
+
+M08 owns GameSpecification/TaskGraph/build artifacts. M09 owns RuntimeManifest/allocation/sandbox/runtime. Providers used during fabrication are not required during gameplay after a valid package is published.
+
+## 11. Scaling invariant
+
+Adding RAM/CPU/GPU to an authorized machine or adding another worker should require no redesign of capability contracts. The scheduler reads actual worker capacity and changes target selection automatically.
+
+Adding capacity is not assumed linear; bottlenecks are measured.
+
+## 12. Required verification
+
+The technical implementation is not considered complete until applicable tests demonstrate:
+- boot with no provider;
+- provider outage;
+- worker outage;
+- worker reassignment;
+- resource exhaustion;
+- quota enforcement;
+- sandbox isolation;
+- evolution rejection;
+- successful canary/rollback;
+- generated-code isolation;
+- 2D/3D runtime bounds;
+- no privileged secret exposure.
+
