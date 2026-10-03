@@ -107,3 +107,30 @@ Branches are content/state references, not privileged code. Runtime emits valida
 ## RF-M09-04 Recovery
 Pause/save/resume must be versioned against the exact runtime manifest and content hash.
 
+
+
+
+# HISTORICAL FUSION — M09 SHARED GAME ENGINE — TECHNICAL DESIGN
+
+## Allocation
+
+`RuntimeAllocation` doit vérifier build status → manifest hash → device compatibility → resource profile → worker/runtime eligibility → sandbox lease → bridge initialization.
+
+## Runtime budgets
+
+Le runtime surveille CPU, RAM, GPU/VRAM, storage, network et execution time selon le profile. Les limites sont imposées par le runtime/sandbox, pas par une simple variable JavaScript.
+
+## Worker failure
+
+Worker heartbeat loss → lease LOST → requeue uniquement les opérations idempotentes → nouvel allocation compatible → validation.
+
+Une session interactive déjà active n'est jamais clonée automatiquement sans procédure de reprise définie.
+
+## Provider independence
+
+Après publication d'un GameBuild valide, aucun provider de génération n'est requis pour jouer. La présence ou l'absence de Gemini/OpenRouter/Pollinations/Hugging Face/etc. ne change pas la validité du runtime package.
+
+## Tests ajoutés à la matrice
+
+resource overrun, worker loss, incompatible worker version, malicious generated artifact, undeclared network, filesystem escape, secret scan, 2D/3D memory pressure, deterministic restart, provider outage during fabrication versus runtime.
+
