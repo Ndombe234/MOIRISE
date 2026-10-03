@@ -88,3 +88,28 @@ MERGED = behavior retained under another owner.
 AUXILIARY = provider/tool rather than product mechanism.
 HISTORICAL_ALIAS = name retained only for traceability.
 REJECTED = intentionally not in current product, with reason.
+
+
+## Recovered V3 features now explicitly preserved
+
+The historical MORISE_MASTER_PLAN_V3.md contained a second layer of functionality that was not fully visible in the earlier inventory. These names are now retained here for traceability and canonical reconciliation.
+
+### First-session
+MORISE First Contact; 120-second discovery experience; SYSTEM invitation; meaningful first choice; living micro-world; anomaly/reaction; adaptive challenge; reveal/continuation; post-contact curiosity continuation.
+
+### Memorable/social continuity
+MORISE Moment; Moment artifact; shareable experience; MORISE Relay; Living Stories; dynamic stories; story lineage; story branching; player experience replay/reconstruction.
+
+### Evolution
+Trace; Living World; Hidden Possibilities; Unexplored Paths; Evolving Identity; MORISE Double; Fun & Surprise; MORISE Emergent Experience Engine; What If; You Missed Something; Hidden Rule; Play Against Your Trace; Worlds That Remember; One Problem, Many Approaches; Mutation; Role Inversion; Mystery Investigation; AI Fallibility; Player Laboratory; Emergent Experience; MORISE Dream / Hypothesis Synthesis.
+
+### Experience Economy
+Day-1 solo rule; personal Moment of the day; personal evolving world; SYSTEM companion continuity; Leave Something for the Next Player; Remix-me; Creator DNA/creative lineage; creation-to-world conversion; community music/collaborative media; MORISE discovery broadcast; Living Museum; creator capability progression; creator economic bridge; Proof of Impossible; low-population World Events; return-after-absence experience.
+
+### Creator / operational economy
+Creator Economy eligibility; progressive activation thresholds; eligibility stages; Creator Eligibility Engine; economic capability activation; creator contribution chains; controlled monetization activation; free-first growth; high-threshold owner alerts; Owner/Admin Control Center; permission hierarchy; operational audit.
+
+### Native execution
+MORISE Creation Runtime; MORISE Creation Tools; World Agents; bounded playtest/simulation/opponent/exploration agents; browser/on-device capability routing; device-tier execution; local model lifecycle; controlled browser compute; infrastructure-light retention engine.
+
+These historical mechanisms are now RECOVERED-FUSED, not deleted product scope.
