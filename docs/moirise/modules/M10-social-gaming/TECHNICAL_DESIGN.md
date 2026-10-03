@@ -92,3 +92,14 @@ M10 owns social challenge state. Context can personalize challenge framing, neve
 PartyAIContext contains only participant facts authorized for the challenge. Private profile/memory fields remain excluded.
 ## D100K tests
 Participant isolation, stale member context, opt-out, challenge replay, invitation privacy, contradictory preferences, result integrity.\n
+
+# D100K — RECOVERED FEATURE FABRICATION BINDING — M10
+## RF-M10-01 Proof-of-result social challenge
+Create Challenge from validated source result. Participants compete against a declared predicate/version; results are validated by M06/M09.
+## RF-M10-02 Rematch/invitation/co-op
+Invitation carries challenge/party scope, visibility, expiry and actor authorization. Membership changes cannot mutate historical results.
+## RF-M10-03 Shared milestones
+Milestone projection derives from authoritative attempts/events. Never synthesize participation to make a group appear active.
+## RF-M10-04 Asynchronous community challenge
+Challenge family can persist without simultaneous players. Anti-abuse limits, deduplication and lineage are mandatory.
+
