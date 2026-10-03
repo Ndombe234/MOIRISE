@@ -145,3 +145,15 @@ The following historical event identifiers are retained as canonical logical eve
 `ai.learning.candidate.created`, `ai.experiment.started`, `ai.experiment.completed`, `ai.experiment.rejected`, `admin.configuration.changed`, `audit.event.created`.
 
 Every emitted event must carry request/trace correlation, actor when applicable, owner module, schemaVersion, occurredAt and safe metadata. Event names are contracts; they do not authorize a consumer to mutate another owner's state.
+
+
+# D100K — RESTORED EVENT PAYLOAD CONTRACTS
+
+Selected payloads that were explicit in historical implementation contracts remain canonical logical shapes:
+`PlayActionAcceptedPayload={sessionId,actionId,sequenceNo,actionType,stateVersionBefore,stateVersionAfter}`
+`MessageSentPayload={messageId,conversationId,senderId,sourceLocale,hasAttachment}`
+`MemorySharedPayload={memoryId,ownerId,targetType:'player'|'community',permission:'view'|'download',expiresAt?}`
+`CapabilityStateChangedPayload={capabilityId,previous,next,reason,changedBy}`.
+
+Payload fields are versioned when evolved. Sensitive/private fields are excluded unless the event's privacy contract explicitly allows them.
+
