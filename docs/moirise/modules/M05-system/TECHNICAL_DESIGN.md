@@ -154,3 +154,13 @@ Rules are immutable/versioned. Negative/overflow/impossible sources are rejected
 
 D100K: threshold boundaries, concurrent grants, duplicate source event, forged amount, ruleset migration, rollback, notice grouping/read state, reconnect, provider outage and mobile HUD.
 
+
+
+# D100K — RESTORED SYSTEM MEMORY-CARD TECHNICAL CONTRACT
+
+A Moment/Memory Card record must reference its source event/artifact, owner, visibility, schemaVersion, provenance and derivation. Deleting or revoking the source invalidates downstream public projections according to policy.
+
+SYSTEM companion retrieval may read only authorized memory classes. Future-return notifications require a real persisted backing reference.
+
+D100K evidence: sourceRef, visibility decision, memory class, deletion propagation, no-fabrication check and deterministic fallback presentation.
+
