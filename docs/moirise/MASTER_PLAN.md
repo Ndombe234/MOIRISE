@@ -285,3 +285,6 @@ Location is a graph, not a single string. Profile facts, conversation facts, tra
 
 D100K completion therefore requires both feature-level technical design and this shared ContextPacket/Memory contract. Documentation completion is not implementation completion.
 
+
+## PLAN → TECHNICAL DESIGN traceability
+`docs/moirise/PLAN_TO_TECHNICAL_MATRIX.md` est la matrice canonique de correspondance. Toute capacité historique fusionnée doit être couverte dans le PLAN du owner et dans son TECHNICAL_DESIGN, avec les contrats transversaux applicables.
