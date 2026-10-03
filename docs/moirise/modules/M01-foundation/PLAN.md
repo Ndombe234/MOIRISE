@@ -288,3 +288,20 @@ M01 does not implement full machine learning or other module business features; 
 
 Protected Edge/server functions require the repository's authenticated/JWT boundary when protection is applicable. This is implementation evidence to be verified at the runtime gate, not a client-only assertion.
 
+
+
+# D100K — HISTORICAL UI/RESPONSIVENESS RESTORATION
+
+Historical UI invariants retained:
+- calm futuristic/premium presentation rather than permanent high-neon effects;
+- no flashing/rapid particle loops by default;
+- motion defaults around 160–260ms; long transitions ≤700ms unless explicitly gameplay; respect `prefers-reduced-motion`;
+- touch-friendly controls and no hover-only dependency;
+- desktop and mobile preserve one information architecture rather than duplicating navigation;
+- low-memory/low-quality displays preserve logical functionality with reduced visual/media cost;
+- optional capability failure never prevents shell rendering or produces a blank screen;
+- unsupported locale follows deterministic fallback policy;
+- current primary-door labels come only from the canonical Master Plan, not deprecated historical navigation labels.
+
+D100K browser proof: 320px/390x844/1440x900, keyboard/touch, reduced motion, long names, zero progress, unavailable provider, slow network and no horizontal overflow.
+
