@@ -1,7 +1,7 @@
 # MOIRISE — PLAN MAÎTRE CANONIQUE — RÉFÉRENCE UNIQUE
 
 ## 1. Produit
-MOIRISE est un réseau social général, ludique et créatif dont le SYSTEM constitue le langage d'interaction central. Il est conçu pour accueillir des centres d'intérêt, communautés et usages variés sans imposer une identité Otaku. Le produit garde peu de portes principales, mais chaque porte expose une profondeur importante au bon moment. SOLO reste utile; COLLECTIVE est utilisé lorsqu'il apporte une vraie valeur.
+MOIRISE est un réseau social général, ludique et créatif dont le SYSTEM constitue le langage d'interaction central. Il est conçu pour accueillir des centres d'intérêt, communautés et usages variés sans imposer une identité thématique. Le produit garde peu de portes principales, mais chaque porte expose une profondeur importante au bon moment. SOLO reste utile; COLLECTIVE est utilisé lorsqu'il apporte une vraie valeur.
 
 ## 2. Portes principales
 SYSTEM, PLAYER, SOCIAL, WORLD, PLAY, CREATE. Une capability interne n'ajoute pas automatiquement un bouton global.
