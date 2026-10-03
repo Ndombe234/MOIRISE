@@ -96,3 +96,14 @@ M09 owns runtime sandbox state. Context is read-only runtime input after authori
 Resolved ContextPacket → validated RuntimeInput → SandboxLease. Context cannot directly execute code, change privileges or bypass resource limits.
 ## D100K tests
 Injected context payload, oversized payload, tampered runtime input, session expiry, cross-game context leakage, resume/reconnect, sandbox isolation.\n
+
+# D100K — RECOVERED FEATURE FABRICATION BINDING — M09
+## RF-M09-01 2D/3D shared runtime
+RuntimeManifest declares engine adapter, asset permissions, input schema, resource budget, validatorVersion and save schema. 2D and 3D are equal first-class routes.
+## RF-M09-02 Generated-game execution
+Only validated GameArtifact versions may enter the sandbox. Generated code/assets are treated as untrusted.
+## RF-M09-03 Living Object / interactive branch runtime
+Branches are content/state references, not privileged code. Runtime emits validated result events to M06.
+## RF-M09-04 Recovery
+Pause/save/resume must be versioned against the exact runtime manifest and content hash.
+
