@@ -3351,3 +3351,363 @@ When the AI provider is unavailable, deterministic extraction of country/city/ob
 ### DONE evidence
 A capability is not DONE until ContextPacket fields, permissions, tests, browser acceptance, security evidence and owner commit proof are available on the current source revision.
 
+
+# D100K — AI BEHAVIORAL RUNTIME — RECOVERED CAPABILITIES AND HOW MORISE WORKS
+## 30. AI is a stateful system, not a single prompt
+
+The implementation target is not:
+USER → LLM → ANSWER.
+
+The implementation target is:
+USER TURN
+→ TURN RECORD
+→ LANGUAGE/SEGMENT ANALYSIS
+→ INTENT + ENTITY EXTRACTION
+→ COREFERENCE RESOLUTION
+→ CONTEXT GRAPH UPDATE PROPOSAL
+→ POLICY/PRIVACY GATE
+→ MEMORY RETRIEVAL
+→ CONTEXT PACKET
+→ REASONING
+→ PLAN
+→ TOOL/CAPABILITY SELECTION
+→ VALIDATION
+→ OWNER COMMIT
+→ RESPONSE GENERATION
+→ POST-ACTION EVENT
+→ MEMORY/PROJECTION UPDATE.
+
+The LLM is one reasoning backend in this graph.
+
+## 31. Concrete conversation-state example
+
+Input 1:
+« J'habite en France. »
+
+Canonical state proposal:
+- location.country = France
+- location.city = UNKNOWN
+- location.street = UNKNOWN
+- location.building = UNKNOWN
+- location.unit = UNKNOWN
+- location.entrance = UNKNOWN
+- location.door = UNKNOWN
+
+Input 2:
+« À Paris. »
+
+State update:
+- location.country = France [preserved]
+- location.city = Paris [added/linked]
+
+Input 3:
+« Dans [street]. »
+
+State update:
+- location.street = [street] linked to Paris
+
+Input 4:
+« bâtiment 15, sous [landmark], appartement 2, porte bleue, numéro 14. »
+
+State update:
+- building.number = 15
+- landmark.reference = [landmark]
+- unit.number = 2
+- entrance.description = blue
+- door.number = 14
+
+The model receives a structured graph, not only the last sentence.
+If the current task needs only city, exact address fields are omitted from the ContextPacket.
+If the current task needs exact address and the user has authorized that use, the relevant fields can be included.
+The system never invents missing levels.
+
+## 32. Appearance/context example
+
+If a user explicitly says:
+« Je suis noir, j'ai 20 ans, je porte un vêtement blanc Gucci et j'ai une coupe afro. »
+
+The parser creates explicit user-provided facts with distinct classes:
+- age_declared = 20
+- appearance.self_described = user-provided
+- clothing.current = white / Gucci
+- hairstyle.current = afro
+
+Rules:
+- the model does not infer race/ethnicity from an image;
+- current clothing/hairstyle expire as context unless explicitly retained;
+- sensitive facts are privacy-gated;
+- exact personal data is not copied to analytics/logs/provider prompts unless the capability requires it;
+- a later correction supersedes only the contradicted fact.
+
+## 33. Living conversation frame
+
+ActiveContextFrame contains:
+current actor
+current topic
+current task
+current location node
+current people
+current objects
+current experience
+last explicit entities
+unresolved references
+last corrections
+authorized memories.
+
+Example:
+« Mets-le dans mon groupe. »
+The resolver first checks the active object/entity in the same conversation. If ambiguous, it asks instead of selecting an arbitrary object.
+
+## 34. Memory classes
+
+### 34.1 Durable profile memory
+Explicit player-selected facts and product preferences that are intended to persist.
+
+### 34.2 Session memory
+Facts required during the current session.
+
+### 34.3 Task memory
+Short-lived facts needed for one task.
+
+### 34.4 Conversation memory
+Authorized facts from previous turns.
+
+### 34.5 World/game memory
+Authoritative M04/M06/M12 state.
+
+### 34.6 AI fabrication memory
+Reusable technical patterns, validated repair knowledge and capability metadata. Never a hidden dump of private player memory.
+
+The same value cannot silently change category.
+
+## 35. AI capability profiles
+
+Every AI capability declares:
+CapabilityId
+OwnerModule
+InputSchema
+ContextClassesAllowed
+SensitiveFieldsAllowed
+MemoryReadScope
+MemoryWriteScope
+ToolsAllowed
+AutonomyCeiling
+Validator
+Fallback
+Timeout
+Budget
+AuditClass.
+
+### CAP-01 Conversational understanding
+Reads current turn + authorized relevant conversation context.
+Writes only validated context proposals.
+
+### CAP-02 Player personalization
+Reads authorized PlayerProjection + contextual facts.
+May propose UI/content changes.
+Never changes Player data directly.
+
+### CAP-03 First Contact
+Reads session/capability state.
+Builds an adaptive task graph.
+M05/M04/M06 own resulting product mutations.
+
+### CAP-04 Evolution
+Reads validated Trace/World Memory/Player capability evidence.
+Proposes a bounded experiment.
+M13 validates; M05 presents.
+
+### CAP-05 Moment/Relay/Living Story
+Reads validated source lineage.
+Transforms representation while preserving provenance.
+M03 owns publication and visibility.
+
+### CAP-06 Game fabrication
+Reads CreativeBrief + authorized preferences + fabrication memory.
+Produces GameSpecification/TaskGraph candidates.
+M08 validates; M09 executes only validated artifacts.
+
+### CAP-07 World Agent
+Reads an authorized World ContextPacket.
+Can act only through typed tools with max autonomy and owner validation.
+
+### CAP-08 Creator Economy analysis
+Reads contribution evidence, not hidden personal profiling.
+Proposes eligibility.
+M14 owns economic commit.
+
+### CAP-09 Collective Intelligence
+Reads only aggregated/authorized shared signals.
+Cannot retrieve private player memory.
+
+## 36. Tool execution
+
+The AI never invents a tool call in natural language and expects the platform to execute it.
+ToolRegistry checks:
+- capability exists;
+- actor authorized;
+- scope allowed;
+- input schema valid;
+- memory/privacy policy valid;
+- resource budget valid;
+- idempotency key present when required.
+
+Then:
+PROPOSE → VALIDATE → EXECUTE → VALIDATE RESULT → OWNER COMMIT.
+
+## 37. AI response generation
+
+Response generation receives:
+- user intent;
+- committed result;
+- authorized context;
+- errors/fallback status;
+- explanation level;
+- language/locale.
+
+It does not generate a fictional success merely because the tool failed.
+If a mutation failed, the answer reflects failure.
+
+## 38. AI learning / evolution
+
+The AI can learn from validated task outcomes using:
+OBSERVE → LABEL → HYPOTHESIS → CANDIDATE CHANGE → SANDBOX → TEST → BENCHMARK → POLICY/SECURITY → CANARY → PROMOTE/REJECT → MONITOR → ROLLBACK.
+
+It must not learn by silently changing its own production rules from arbitrary conversations.
+
+## 39. First Contact internal behavior
+
+First Contact may use:
+1. invitation;
+2. meaningful choice;
+3. small interactive world;
+4. observable consequence;
+5. adaptive challenge;
+6. reveal/descriptor;
+7. next real capability.
+
+Adaptive behavior is selected from validated user actions. It is not based on hidden psychological profiling.
+
+## 40. Evolution / Emergent Experience internal behavior
+
+A candidate experience must contain:
+source signals
+objective
+rule version
+allowed transformation
+validator
+reversibility
+expected player-visible effect
+learning/entertainment rationale.
+
+Examples:
+What-If
+Hidden Rule
+Mutation
+Role Inversion
+Player Laboratory
+AI Fallibility
+Play Against Your Trace.
+
+Random novelty without a real trigger is rejected.
+
+## 41. Moment / Relay / Living Story internal behavior
+
+Moment:
+REAL SOURCE EVENT → CANDIDATE → VALIDATE → ARTIFACT.
+
+Relay:
+VALIDATED MOMENT → ONE CONTROLLED MODIFICATION → CONSEQUENCE → NEW MOMENT.
+
+Living Story:
+VALIDATED MOMENT/RELAY/EVENT CHAIN → NARRATIVE TRANSFORMATION → VERSIONED CHAPTER.
+
+Every transformation preserves source lineage.
+
+## 42. ContextPacket example
+
+{
+  requestId,
+  actorRef,
+  locale,
+  task: { type, input },
+  activeFrame: {...},
+  explicitFacts: [
+    { field: "location.country", value: "France", provenance: "USER_EXPLICIT" },
+    { field: "location.city", value: "Paris", provenance: "USER_EXPLICIT" }
+  ],
+  relevantMemory: [...],
+  unresolved: ["location.street"],
+  conflicts: [],
+  privacyFilter: {
+    exactLocation: "excluded",
+    sensitiveAppearance: "excluded"
+  },
+  toolsAllowed: [...]
+}
+
+The absence of a field means UNKNOWN or NOT_AUTHORIZED; it never means the model may guess.
+
+## 43. Failure behavior
+
+Provider unavailable:
+local/deterministic parser + cache + trusted worker fallback where permitted.
+
+Parser ambiguity:
+preserve known facts and ask one targeted clarification.
+
+Memory conflict:
+surface conflict to policy/resolution layer.
+
+Tool failure:
+no false success; retry only if idempotency permits.
+
+Deleted memory:
+must remain absent from retrieval.
+
+Privacy denial:
+remove denied fields and continue when possible.
+
+## 44. D100K adversarial examples
+
+- « France » followed three minutes later by « Paris ».
+- « Paris » followed by a different country.
+- « le bâtiment précédent » after multiple buildings.
+- multilingual correction.
+- « non, pas 14, 41 ».
+- deleted memory still present in vector cache.
+- provider prompt injection inside a remembered note.
+- one player requesting another player's location.
+- an image suggesting a sensitive trait without explicit user statement.
+- current clothing becoming stale after a new session.
+- World state changing while player context remains unchanged.
+- AI hallucinating a completed Moment.
+- AI claiming a game was published when M08/M09 rejected it.
+
+## 45. Technical UI contract for AI transparency
+
+The UI may expose:
+- what the system understood;
+- what it is unsure about;
+- editable remembered facts;
+- forget/delete action;
+- why a clarification is needed;
+- which action was actually executed.
+
+It must not expose:
+- hidden model chain-of-thought;
+- other users' private context;
+- provider secrets;
+- internal security policies.
+
+The user-visible explanation is a concise result/evidence summary, not hidden reasoning.
+
+## 46. Definition of technical completeness
+
+A Plan is behavior intent.
+A Technical Design is the executable architecture/contract.
+D100K is the fabrication/evidence layer.
+Code is implementation.
+Tests/browser/security are proof.
+
+Therefore the canonical AI documentation is complete only when the AI behavior described in PLAN is represented in Technical Design with concrete state, schemas, ownership, tool contracts, privacy rules, failure behavior and acceptance tests.
