@@ -113,3 +113,15 @@ Collection item definitions and rarity/reward rules are immutable/versioned. Sou
 
 D100K: client mint prevention, rarity tampering, duplicate reward, provider outage and source-event revocation.
 
+
+
+# D100K — RESTORED ECONOMY / AUDIT TECHNICAL CONTRACT
+
+`RewardDefinition={id,code,rewardType,ruleVersion,metadata,active,createdAt}`
+`EconomyLedger={id,playerId,sourceEventId?,assetType,amount,direction:'credit'|'debit',ruleVersion,idempotencyKey,status,createdAt}`
+`AuditEvent={id,actorId?,action,resourceType,resourceId?,result,correlationId?,metadata,createdAt}`.
+
+Audit events are append-oriented evidence, not editable business truth. Reward and ledger writes are server-authorized and transactionally linked to source evidence.
+
+If advertising capability exists, `ad.impression.recorded` is analytics/telemetry only; it cannot alter reward/ledger state unless an explicit validated reward rule exists.
+
