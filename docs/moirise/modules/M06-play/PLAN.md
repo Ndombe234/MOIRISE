@@ -154,3 +154,19 @@ Play may expose a beat-my-result or proof challenge based on a real score, time,
 
 ## Async challenge families
 Preserved Play-compatible patterns include Duel, beat-my-score, beat-my-time, solve-my-puzzle, survive-my-rules and remix-my-world where the authoritative owner contracts permit them. Real-time multiplayer is not required when asynchronous play provides the intended value.
+
+
+# D100K — HISTORICAL CONTRACT RESTORATION — M06 PLAY
+
+## Restored contracts
+`PlayEntry={gameId,title,mode:'2d'|'3d',status:'ready'|'processing'|'unavailable',packageVersion,thumbnailRef?}`
+`PlaySession={id,gameId,playerId,startedAt,endedAt?,status:'active'|'completed'|'aborted'}`
+
+Canonical launch sequence:
+`select → authorization/eligibility → package metadata → integrity/version check → preload → M09 mount → create session → play → result/save → unmount → history`.
+
+Dynamic difficulty is permitted only when bounded by GameSpecification/rules; it cannot rewrite authoritative scoring rules. Runtime memory must be released after the session whenever technically possible.
+
+## D100K proof
+Unauthorized launch, missing/invalid package, version mismatch, runtime unavailable, duplicate result, dynamic difficulty bounds, save failure, cleanup/unmount, reconnect, worker loss and mobile/desktop Play.
+
