@@ -107,3 +107,12 @@ A task cannot write another module's authoritative state. It must use an allowed
 
 ## 7. Production lock
 Unit tests alone never produce VERIFIED for a user-facing capability.
+\n\n# D100K — CONTEXT/MEMORY INTEGRATION — M06 PLAY
+## Owner scope
+M06 owns PlaySession state and authoritative results.
+## Context use
+Context may select an experience or parameter but cannot create a result, score or reward. Play result remains server-validated.
+## Continuation
+Save/resume references PlaySession state, not untrusted client memory.
+## D100K tests
+Context-selected game, no-context game, session resume, replayed result, tampered score, mobile recovery, context timeout, deleted memory reference.\n
