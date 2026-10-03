@@ -2,6 +2,16 @@
 
 Ce document décrit les faits observés dans le dépôt au moment de la reconstruction documentaire. Il n'est pas une spécification métier.
 
+## Canonical branch reconciliation
+
+The repository currently contains two materially different implementation states:
+
+- `main` still contains the pre-reset runtime. Its routes, migrations, services and tests are historical evidence only and must not be counted as completion of the canonical M01–M15 rebuild.
+- `rebuild/canonical-m01-reset` is the controlled canonical reconstruction branch. Its current implementation state is **M01 FOUNDATION — IN PROGRESS**.
+- PR #14 is the explicit reset/reconciliation path. Because that PR is not currently mergeable, no automatic replacement of `main` is claimed here.
+
+Therefore, implementation status must always identify the branch/ref that produced the evidence. Documentation coverage is not implementation evidence.
+
 ## Runtime
 
 package.json observé :
