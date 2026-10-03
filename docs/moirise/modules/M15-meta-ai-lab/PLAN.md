@@ -376,3 +376,13 @@ Required test families include prompt injection, data leakage, cross-user isolat
 ## D100K proof
 Every proposal has baseline metrics, measurable acceptance criteria, candidate artifact lineage, sandbox result, security/policy result, canary result, promotion decision and rollback reference.
 
+
+
+# D100K — RESTORED AI LAB FAILURE / NO-AI CONTINUITY
+
+M15 must preserve useful deterministic capabilities when providers, workers or model execution targets are unavailable. The AI Layer can fall back to rules, cached validated knowledge, deterministic planners, local computation, previously promoted skills or degraded presentation.
+
+AI fallibility itself can be a controlled experiment only when the experiment is real, reversible and clearly distinguishable from system corruption. A provider error must never be presented as a MORISE truth.
+
+D100K: zero providers, zero community workers, worker loss, provider disagreement, malformed output, deterministic fallback, false-success prevention and rollback evidence.
+
