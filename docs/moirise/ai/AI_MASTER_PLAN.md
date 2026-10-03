@@ -1666,3 +1666,19 @@ La suppression d'un provider, d'un worker ou d'un agent doit réduire une capaci
 ## D100K proof
 For each invariant: nominal path + provider outage + worker outage + unauthorized path + malformed output + retry/replay + evidence record.
 
+
+
+# D100K — PROVIDER / ENDPOINT HISTORICAL COVERAGE
+
+Historical provider candidates are preserved as **candidates/unverified until current evidence exists**: SiliconFlow, SambaNova Cloud, Cehpoint AI, OVH AI Endpoints, Quillly, LLM7, AI Horde, AI Horde OpenAI-compatible API, Replicate, Firecrawl, Openverse, Internet Archive, LibreTranslate, Cloudflare Workers AI and FreeToUse Music API, in addition to already documented Gemini, DeepSeek, Pollinations, OpenRouter, Puter, Hugging Face, Kilo and others.
+
+Historical endpoint reference preserved for verification only:
+`https://api.freetouse.com/v3/openapi.json`.
+
+Canonical provider fields:
+`id, baseUrl, authMode, secretName, capabilities, healthCheck, privacyClass, rateLimit, fallbacks, enabled, lastVerifiedAt`.
+
+No provider is enabled from documentation alone. A provider can be removed without changing the MORISE Core. No provider URL is supplied by the user/model as a direct execution destination.
+
+Historical secret-name spellings are evidence only; canonical configuration uses verified environment/secret names. Secret values never enter repository documentation.
+
