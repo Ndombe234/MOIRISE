@@ -483,3 +483,19 @@ No anonymous request may mutate persistent player memory. A client-supplied acto
 Implement resolveContextActor(), createContextTurn(), authorizeContextRead(), authorizeContextWrite(), redactContextForTelemetry().
 ## D100K tests
 Cross-account access, expired session, refresh/reconnect, replayed commandId, duplicate turn, provider timeout, malformed context packet, unauthorized memory mutation, mobile refresh.\n
+
+# D100K — RECOVERED FEATURE FABRICATION BINDING — M01
+## RF-M01-01 First-session orchestration boundary
+Input: authenticated/anonymous session + capability registry. Output: ordered First Contact task graph proposal for M15/M05/M04/M06. M01 only authorizes route/capability/session; it never fabricates personalized facts.
+State: NEW→SESSION_BOUND→CAPABILITIES_RESOLVED→HANDOFF→ACTIVE.
+Events: first_session.started, capability.handoff.requested, first_session.ended.
+Failures: missing capability, expired session, provider unavailable; deterministic route must remain usable.
+Tests: refresh/back/deep-link, session expiry, duplicate start, unauthorized capability, mobile.
+
+## RF-M01-02 Share-token / lineage boundary
+All Moment/Relay/Living Story share actions enter through an authorized capability token carrying actorRef, sourceRef, visibility and expiry. Token cannot authorize mutation outside its declared owner.
+Tests: replay, expiry, cross-user reuse, visibility downgrade, malformed token.
+
+## RF-M01-03 Privacy and anti-fabrication boundary
+M01 rejects telemetry containing raw exact location, sensitive profile values or provider secrets. Fake counters, popularity, rarity and memory claims are prohibited.
+
