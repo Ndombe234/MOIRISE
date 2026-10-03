@@ -1436,3 +1436,28 @@ An independent implementation agent must be able to determine:
 - how a change impacts dependent modules.
 
 If any of these remain materially ambiguous, the relevant AI contract is not closed.
+
+
+# CONTEXT INTELLIGENCE WORKSTREAM — CANONICAL ADDITION
+The AI roadmap explicitly includes a Context Intelligence layer.
+
+## Objective
+MORISE should understand cumulative user statements as structured state rather than isolated prompts. The system preserves hierarchy, continuity, corrections, provenance and privacy across turns.
+
+## Work packages
+CI-01 multilingual extraction
+CI-02 entity/coreference resolution
+CI-03 location hierarchy
+CI-04 profile/context separation
+CI-05 temporal memory
+CI-06 conflict/correction engine
+CI-07 privacy classifier
+CI-08 ContextPacket builder
+CI-09 retrieval ranking
+CI-10 cache/index invalidation
+CI-11 deterministic fallback
+CI-12 adversarial memory testing
+
+## Non-goals
+No hidden psychological profiling. No silent inference of sensitive traits. No automatic persistence of exact private location. No provider-owned memory authority.
+
