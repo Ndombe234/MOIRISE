@@ -70,3 +70,6 @@ Implementation presence is never sufficient by itself.
 When a changed contract has impacted dependents, DONE requires either:
 - fresh verification of the affected dependents; or
 - an explicit deterministic proof that the affected path is not exercised by the change.
+
+## Context/Memory D100K gate
+A context-capable feature is DONE at documentation level only when its owner Technical Design binds to CONTEXT_MEMORY_TECHNICAL_DESIGN, defines authorized fields, privacy class, correction semantics, retrieval scope, adversarial tests and browser acceptance. Runtime DONE still requires actual implementation evidence.
