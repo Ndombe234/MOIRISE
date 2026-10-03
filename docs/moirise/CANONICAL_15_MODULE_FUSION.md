@@ -153,3 +153,21 @@ M15 native AI orchestration, AI Lab and cross-module intelligence.
 # NON-NEGOTIABLE
 
 Provider outage must not destroy the core social product. AI output is untrusted until validation. M15 cannot become superuser. Generated code never runs directly in production. Private data is not global learning material. More code is not evidence of intelligence; benchmarked improvement is evidence.
+## CONTEXT INTELLIGENCE D100K CROSS-MODULE FUSION
+Canonical transversal owner: docs/moirise/transversal/CONTEXT_MEMORY_TECHNICAL_DESIGN.md.
+- M01: session/actor boundary
+- M02: durable player memory and explicit profile facts
+- M03: conversation/coreference context
+- M04: location/world projection
+- M05: SYSTEM continuity/presentation
+- M06: play-session context
+- M07: discovery signals
+- M08: creation/fabrication context
+- M09: runtime input sandbox
+- M10: social challenge context
+- M11: community-scoped shared context
+- M12: temporal/event context
+- M13: retrieval/convergence
+- M14: reward eligibility evidence
+- M15: extraction, ContextPacket, AI orchestration and policy
+No module may implement an independent memory brain.
