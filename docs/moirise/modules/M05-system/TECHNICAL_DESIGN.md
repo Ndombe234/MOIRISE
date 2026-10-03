@@ -164,3 +164,54 @@ SYSTEM companion retrieval may read only authorized memory classes. Future-retur
 
 D100K evidence: sourceRef, visibility decision, memory class, deletion propagation, no-fabrication check and deterministic fallback presentation.
 
+
+
+# D100K — RESTORED V1 PROGRESSION TECHNICAL CONTRACT
+
+## Exact domain structures
+
+`SystemProfile={playerId,level,totalXp,createdAt,updatedAt}`
+`SystemDimension={playerId,dimensionKey,xp,updatedAt}`
+`SystemProgressionEvent={id,playerId,eventType,dimensionKey?,xpDelta,idempotencyKey,sourceType,sourceId?,metadata,createdAt}`
+`SystemMemory={id,playerId,memoryKey,title,description,sourceEventId?,importance,createdAt}`.
+
+Constraints:
+- total XP starts at 0;
+- level starts at 1;
+- `xpDelta` is non-negative and bounded by the active ruleset;
+- dimension key belongs to the active versioned dimension set;
+- progression events are immutable;
+- unique(playerId,idempotencyKey);
+- memory importance is bounded;
+- unique(playerId,memoryKey).
+
+## Exact v1 dimension set
+`exploration|creation|knowledge|social|community|play|contribution`.
+
+## Exact level calculation
+`threshold(1)=0`;
+`threshold(L)=floor(100*(L-1)^1.65)` for L>=2.
+
+The authoritative implementation must share one versioned rule identifier between server calculation, tests and projections.
+
+## Exact first milestone
+`player_identity_completed`:
+- requires authenticated actor;
+- actorId/playerId derived server-side;
+- valid onboarding/identity transition false→true;
+- grants exactly 25 XP once;
+- no dimension;
+- creates at most one deterministic initialization/identity-completion memory;
+- duplicate/concurrent retries resolve through idempotency without double grant.
+
+## Authoritative transaction
+authenticate → authorize actor/player → validate event/source/ruleVersion → check idempotency → insert immutable progression event → update totalXp → recalculate level → optional dimension increment → create deterministic memory when eligible → commit → return authoritative projection.
+
+Two simultaneous identical requests must produce one authoritative event and one XP grant.
+
+## RLS/grants
+Authenticated clients never receive direct INSERT/UPDATE/DELETE authority on progression aggregate/event tables. The controlled server function/use-case performs the mutation and checks caller identity. Security-definer functions use fixed search path and explicit execute grants.
+
+## D100K proof
+Zero-state bootstrap, threshold(1/2/3), large XP, 25 XP milestone, concurrent duplicate, conflicting idempotency payload, forged playerId, source spoofing, direct-table mutation denial, RPC denial for anonymous users, memory uniqueness, migration/version mismatch, network lost after commit and deterministic reload.
+
