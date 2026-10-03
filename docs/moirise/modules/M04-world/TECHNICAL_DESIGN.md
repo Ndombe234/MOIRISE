@@ -132,3 +132,12 @@ PARTIAL = missing applicable proof.
 BLOCKED = prerequisite unavailable.
 INCONCLUSIVE = evidence does not prove outcome.
 VERIFIED = all applicable evidence is fresh and successful.
+\n\n# D100K — CONTEXT/MEMORY INTEGRATION — M04 WORLD
+## Owner scope
+M04 owns World projections and handoffs. Exact real-world location is context data, not automatically World state.
+## Handoff contract
+CurrentContext → authorized WorldIntent → WorldProjection. The world receives only the minimum location/task granularity required by the experience.
+## Location hierarchy
+country/city/street/building/unit/entrance/door must remain separate nodes; a coarse World view may consume only country/city.
+## D100K tests
+Coarse-to-fine location enrichment; location correction; ambiguous place names; offline fallback; privacy redaction; provider-denied exact location; world-state cache invalidation.\n
