@@ -359,3 +359,20 @@ OBSERVE → DIAGNOSE → HYPOTHESIZE → FABRICATE → TEST → BENCHMARK → VA
 
 Le succès d'une évolution doit être mesurable ; l'augmentation du volume de code n'est jamais une preuve suffisante.
 
+
+
+# D100K — HISTORICAL CONTRACT RESTORATION — M15 META AI LAB
+
+## Restored contracts
+`EvolutionProposal={id,target,rationale,patchRef,testsRef,baselineMetrics,status:'draft'|'testing'|'canary'|'approved'|'rejected'|'rolled_back'}`
+`SystemAction={id,capability,actorId,authorization,status:'requested'|'running'|'completed'|'failed'}`
+
+Evolution input is filtered by provenance, privacy, consent, safety and aggregation policy. External provider output is evidence, never unquestioned truth.
+
+Autonomous production changes are forbidden for security policy, provider registry, RLS, worker trust policy and destructive operations. M15 may submit work to the Control Plane; scheduler selects trusted/community workers; workers never receive production master secrets or unrestricted database access.
+
+Required test families include prompt injection, data leakage, cross-user isolation, malicious patches, stale proposals, worker failure, provider disagreement, rollback and canary regression.
+
+## D100K proof
+Every proposal has baseline metrics, measurable acceptance criteria, candidate artifact lineage, sandbox result, security/policy result, canary result, promotion decision and rollback reference.
+
