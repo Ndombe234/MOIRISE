@@ -84,3 +84,22 @@ For any AI capability declared part of the MORISE Core:
 - provider-specific capabilities have truthful degraded/unavailable behavior;
 - zero-provider tests are present and fresh;
 - runtime evidence, not documentation alone, proves independence.
+
+
+## D100K HISTORICAL COVERAGE GATE
+
+A canonical feature cannot be declared documentation-complete when an applicable historical requirement has no mapped current owner.
+
+Required evidence:
+1. historical source identified;
+2. feature/mechanic extracted;
+3. current owner assigned;
+4. PLAN behavior contract restored;
+5. TECHNICAL_DESIGN implementation contract restored;
+6. data/events/errors/security/tests/recovery specified;
+7. duplicate authority avoided;
+8. verification matrix updated;
+9. runtime implementation status distinguished from specification status.
+
+Deleted historical documentation is considered reconciled only after these conditions hold.
+
