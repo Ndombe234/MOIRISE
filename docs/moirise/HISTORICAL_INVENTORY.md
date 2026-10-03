@@ -129,3 +129,35 @@ Canonical ownership after fusion:
 
 Deleted documents are not restored as sources of truth. Their verified requirements are represented by the current canonical plans/designs and the traceability matrix.
 
+
+
+# D100K — HISTORICAL RUNTIME/CODE RECONCILIATION — 2026-10-03
+
+## Repository delta
+Historical backup before reset: 168 files. Canonical reconstruction after reset and documentation fusion: current tree is intentionally smaller. Direct path comparison found 145 historical paths no longer present in the canonical tree, including 43 documentation files and 101 code/test/migration files.
+
+## Historical code families intentionally not copied back
+- old App routes and components;
+- old Player/Social/System/Play services;
+- old Play selectors, session actions and three historical games;
+- old Supabase migrations/RPC/RLS implementation;
+- old test suites;
+- old navigation/HUD implementation.
+
+These are **not lost from the project definition** when their behavior has a mapped canonical owner and D100K contract. They are historical implementation evidence only.
+
+## Reimplementation status
+Historical runtime behavior is now contractually reconciled into the current M01–M15 PLAN/TECHNICAL_DESIGN pairs. The corresponding runtime implementation must be rebuilt against the current architecture and cannot be certified by the old code.
+
+## D100K rule
+Old code may be reused as reference for algorithms, edge cases or test intent only after:
+1. contract comparison;
+2. ownership check;
+3. security/privacy review;
+4. data/schema reconciliation;
+5. migration compatibility review;
+6. fresh implementation;
+7. fresh tests/browser/mobile/security evidence.
+
+A historical green test is never fresh evidence for the canonical reconstruction.
+
