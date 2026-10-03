@@ -54,3 +54,22 @@ ContextPacket integrity; no free-text-only memory; provider injection; determini
 ## Browser
 Multi-turn UI, correction UI, deletion UI, refresh, deep-link, mobile, desktop, offline/degraded.
 
+
+
+# D100K — LEGACY CONTRACT TEST RESTORATION
+
+Applicable tests must cover:
+- UUID/idempotency/replay invariants;
+- UTC/timezone/recurrence behavior;
+- RLS plus server authorization;
+- role mutation and audit;
+- private memory permission separation (STORE/ANALYZE/SHARE/TRAIN);
+- message translation privacy and failure fallback;
+- async job lifecycle, timeout, cancellation and duplicate prevention;
+- provider outage and malformed output;
+- media license/provenance enforcement;
+- rollback of promoted/evolving behavior;
+- browser/mobile evidence for user-facing flows.
+
+Legacy tests may be used as intent/reference only. They are not fresh evidence for the canonical rebuild.
+
