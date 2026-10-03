@@ -117,3 +117,22 @@ No fake memory, fake personalization, hidden psychological classification or fab
 SYSTEM session descriptors expire according to temporal scope. Durable titles/achievements come from authoritative ledgers, not inferred context.
 ## D100K tests
 Memory-present/memory-absent paths; correction after personalization; no-context fallback; sensitive-memory redaction; adaptive-message rate limit; deterministic fallback without AI.\n
+
+# D100K — RECOVERED FEATURE FABRICATION BINDING — M05
+## RF-M05-01 MORISE First Contact
+Sequence: invitation→meaningful choice→micro-world→observable reaction→adaptive challenge→reveal→continuation. The experience remains optional/restartable and has deterministic fallback.
+Acceptance: no tutorial dump, no fake anomaly, no sensitive profiling.
+
+## RF-M05-02 Evolution Engine presentation
+Inputs are validated Trace/Living World/World Memory/Player capability evidence. Output is bounded contextual change/proposal. Loop: ACTION→PERMITTED SIGNAL→EVOLUTION→CHANGE/PROPOSAL→PLAYER RESPONSE→FEEDBACK.
+Tests: same input deterministic under same rule version; no random novelty without objective.
+
+## RF-M05-03 Fun & Surprise
+Rare event, mystery, system memory or visual surprise requires a real trigger and auditable state. It cannot fabricate scarcity, reward or memory.
+
+## RF-M05-04 Hidden Possibilities / Unexplored Paths
+Every hinted possibility has a resolvable condition/state or is explicitly framed as hypothetical. No fake unfinished-world claims.
+
+## RF-M05-05 SYSTEM companion continuity
+Remember only authorized memories. Surface memory with source/time and allow correction/removal. Never generate a false recollection.
+
