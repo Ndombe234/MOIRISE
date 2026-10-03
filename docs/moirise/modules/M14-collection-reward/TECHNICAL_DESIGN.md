@@ -71,3 +71,16 @@ M14 owns reward/collection ledgers. Context can explain or select an eligible ex
 Reward eligibility must reference authoritative Player/Play/Event evidence. AI context is advisory.
 ## D100K tests
 Duplicate grant, context-only reward attempt, rollback, ledger reconciliation, deleted profile, stale eligibility, provider outage.\n
+
+# D100K — RECOVERED FEATURE FABRICATION BINDING — M14
+## RF-M14-01 Experience Economy
+Value events derive from real contribution, completion, replay, collaboration or validated reuse. No raw-time reward by itself.
+## RF-M14-02 Creator Economy eligibility
+Eligibility stages are configurable, auditable and independent from AI preference. Stage changes require measurable evidence and anti-manipulation checks.
+## RF-M14-03 Transparent rarity/collection
+Rarity tables are versioned and deterministic/auditable. No hidden odds changes or fake scarcity.
+## RF-M14-04 Creator value bridge
+Contribution chains resolve from source → transformation → reuse → audience participation. Rewards are ledger entries, never AI text.
+## RF-M14-05 Reward safety
+All grants require an authoritative source event and are idempotent/reconcilable.
+
