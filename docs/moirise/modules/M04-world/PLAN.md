@@ -193,3 +193,13 @@ Public cache never contains Player-specific discovery conditions. A hidden area 
 
 D100K: hidden-area false positive, stale world version, unauthorized unlock, cache leak, replayed discovery event, deletion/recovery and mobile navigation.
 
+
+
+# D100K — RESTORED WORLD REACTIVITY CONTRACT
+
+World is presented as a place that reacts to real Player actions, not as a directory of feature buttons. Even with one Player, the World can provide exploration, discovery, deterministic challenges, evolving objects, memories, contextual SYSTEM opportunities and asynchronous traces.
+
+World mechanisms such as World Memory, Living Objects, World Agents, anomaly detection and Convergence are cross-module capabilities owned according to the current master ownership map; they never create new global navigation doors.
+
+D100K: one-player mode, real world mutation, anomaly provenance, versioned snapshots and dependency-degraded rendering.
+
