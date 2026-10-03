@@ -120,3 +120,19 @@ Owner authority cannot be bypassed; duplicate commands cannot duplicate authorit
 
 ## 7. Completion
 This D100K section defines what must be provable. It does not claim implementation completion.
+
+
+# D100K — HISTORICAL CONTRACT RESTORATION — M07 DISCOVERY
+
+## Restored contracts
+`DiscoveryQuery={text?,kinds?,tags?,cursor?,limit,locale}`
+`Candidate={id,kind,score,reasons[]}`
+`DiscoveryResult={items:Candidate[],nextCursor?,rankingVersion}`
+
+M07 retrieves a bounded candidate set from authoritative public catalog data, applies deterministic relevance/freshness/diversity rules, then presents the result. Recommendations use explicit preferences, safe history and permitted aggregate signals; popularity/ratings are never fabricated.
+
+AI recommendation is optional and must not be regenerated on every scroll. Deterministic fallback remains available. Catalog pagination and lazy thumbnail loading are required.
+
+## D100K proof
+Cursor replay, duplicate candidates, stale rankingVersion, empty catalog, deterministic tie-breaking, fabricated metric prevention, AI/provider outage, cache isolation, unauthorized private candidate leakage and mobile scroll behavior.
+
