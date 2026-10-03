@@ -4265,3 +4265,36 @@ Any external distribution path remains outside generation authority and requires
 
 Creation Runtime is selected through an approved runtime manifest/sandbox contract. AI never executes arbitrary generated code outside the runtime boundary.
 
+
+
+# D100K — RESTORED PROVIDER / CAPABILITY LIFECYCLE + ADMIN CONTROL
+
+## Capability state machine
+`PLANNED → IMPLEMENTED → PENDING_DEPENDENCY → AVAILABLE → CONFIGURED → AUTHORIZED → ENABLED → EXECUTING → VALIDATING → COMPLETED`.
+
+Terminal/degraded states:
+`FAILED, CANCELED, DEGRADED, MAINTENANCE, DISABLED, UNAVAILABLE`.
+
+A capability may remain in PENDING_DEPENDENCY, MAINTENANCE, DISABLED or UNAVAILABLE without breaking unrelated application functionality.
+
+## Provider execution lifecycle
+`REQUESTED → POLICY_CHECK → CAPABILITY_CHECK → PROVIDER_SELECTION → QUEUED → EXECUTING → VALIDATING → READY`
+or `FAILED/UNAVAILABLE`.
+
+Provider selection order remains policy-driven:
+DETERMINISTIC → BROWSER/ON-DEVICE → LOCAL/TRUSTED WORKER → SELF-HOSTED WORKER → APPROVED CLOUD → APPROVED API → UNAVAILABLE.
+
+## Provider adapter contracts
+Typed adapter roles include:
+`TextProvider`, `TranslationProvider`, `ImageProvider`, `MusicProvider`, `VideoProvider`, `BrowserAIProvider`, `LocalExecutionProvider`.
+
+Every adapter must expose health/capability compatibility and normalized execution results. Adapter implementation stays behind the router.
+
+## Admin control contracts
+`AdminCapabilityController.getState/enable/disable/setMaintenance`
+`RoleController.grant/revoke`.
+
+Capability/provider/dependency changes require explicit admin policy, reason, audit event and state transition. M15 may propose or report changes; it never bypasses owner/admin authorization.
+
+D100K: enable disabled provider, invalid dependency, provider health failure, unauthorized admin, concurrent configuration change, rollback to prior state and no-startup-breakage.
+
