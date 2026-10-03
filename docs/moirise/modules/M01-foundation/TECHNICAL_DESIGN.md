@@ -472,3 +472,14 @@ PARTIAL = missing applicable proof.
 BLOCKED = prerequisite unavailable.
 INCONCLUSIVE = evidence does not prove outcome.
 VERIFIED = all applicable evidence is fresh and successful.
+\n\n# D100K — CONTEXT/MEMORY INTEGRATION — M01 FOUNDATION
+## Contract
+M01 owns the session/runtime boundary, not the memory domain. It creates requestId/turnId/sessionId and binds actorRef before any context extraction.
+## Required sequence
+INPUT → AUTHENTICATE → RESOLVE ACTOR → CREATE TURN → PASS RAW INPUT TO M15 → RECEIVE VALIDATED CONTEXT MUTATION PROPOSAL → OWNER COMMIT → EMIT EVENT.
+## Invariants
+No anonymous request may mutate persistent player memory. A client-supplied actorRef is never trusted. Session reset invalidates session-scoped ContextFact access. Deep-link/refresh/reconnect must preserve only authorized durable state.
+## Fabrication tasks
+Implement resolveContextActor(), createContextTurn(), authorizeContextRead(), authorizeContextWrite(), redactContextForTelemetry().
+## D100K tests
+Cross-account access, expired session, refresh/reconnect, replayed commandId, duplicate turn, provider timeout, malformed context packet, unauthorized memory mutation, mobile refresh.\n
