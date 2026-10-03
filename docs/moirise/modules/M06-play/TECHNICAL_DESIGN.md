@@ -132,3 +132,17 @@ Tests: anti-tamper, duplicate result, replay, expiry, mobile controls.
 ## RF-M06-04 Experience-to-Moment generation
 A Moment candidate is created from a real committed play result or meaningful state transition; M03 owns publication.
 
+
+
+# D100K — RESTORED PLAY TECHNICAL CONTRACTS
+
+`PlayEntry={gameId,title,mode:'2d'|'3d',status:'ready'|'processing'|'unavailable',packageVersion,thumbnailRef?}`
+`PlaySession={id,gameId,playerId,startedAt,endedAt?,status:'active'|'completed'|'aborted'}`
+
+Launch pipeline:
+select → authorization/eligibility → package metadata → integrity/version check → preload → M09 mount → create session → play → result/save → unmount → history.
+
+Dynamic difficulty is bounded by GameSpecification/rules and never rewrites authoritative scoring. Runtime resources are released after a session where possible.
+
+D100K: unauthorized launch, package mismatch, worker/runtime failure, duplicate result, save failure, dynamic difficulty bounds, cleanup, reconnect and mobile/desktop.
+
