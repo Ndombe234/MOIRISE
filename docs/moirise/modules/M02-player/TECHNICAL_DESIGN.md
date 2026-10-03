@@ -242,3 +242,15 @@ Device capability is advisory unless verified by the runtime. It may select ligh
 
 A Player may own multiple devices. Updates are idempotent and versioned. Exact location, secrets and sensitive identity attributes are never stored merely because device capability detection exists.
 
+
+
+# D100K — RESTORED MEMORY VAULT TECHNICAL CONTRACT
+
+`MemoryItem={id,ownerId,mediaType,storageRef,title?,description?,capturedAt?,visibility,status,checksum,sizeBytes,mimeType,metadata,createdAt,updatedAt}`
+`MemoryCollection={id,ownerId,name,description?,visibility,createdAt,updatedAt}`
+`MemoryShare={id,memoryItemId,ownerId,targetPlayerId?,targetCommunityId?,permission:'view'|'download',expiresAt?,createdAt}`.
+
+At most one share target type is populated. Storage ownership and authorization are checked before every read/share. Derived AI analysis references the source memory but never takes ownership.
+
+D100K: owner isolation, MIME/size, checksum, collection membership, share expiry, target privacy, deletion cascade and no-train-by-default.
+
