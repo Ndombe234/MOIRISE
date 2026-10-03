@@ -84,3 +84,21 @@ WORKER_TASK_COMPLETED
 ## Observability
 
 Les événements sécurité/audit et les événements produit ne doivent pas être confondus.
+
+
+# CONTEXT/MEMORY EVENTS D100K
+## Event types
+context.fact.observed
+context.fact.normalized
+context.relation.created
+context.correction.recorded
+context.fact.superseded
+context.fact.expired
+context.fact.deleted
+context.retrieval.performed
+
+## Payload rule
+Events use references and classified metadata. Exact addresses, sensitive attributes and private raw text are not placed into public/shared event payloads.
+## Ordering
+Fact mutation commits first; event is emitted after commit. Consumers must be idempotent using eventId/schemaVersion.
+
