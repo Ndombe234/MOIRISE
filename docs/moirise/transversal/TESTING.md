@@ -40,3 +40,17 @@ Unauthorized access.
 ## Definition of done
 
 Aucune action critique n'est seulement testée visuellement. Toute mutation importante possède au moins un test d'autorisation, un test nominal, un test d'échec et un test d'idempotence lorsque pertinent.
+
+
+# CONTEXT/MEMORY D100K TEST MATRIX
+## Parsing
+Progressive enrichment; corrections; pronouns; ellipsis; multilingual input; typo tolerance; ambiguity.
+## State
+ACTIVE/SUPERSEDED/EXPIRED/DELETED; cache invalidation; reconnect; session reset.
+## Privacy
+Cross-account reads; sensitive-field redaction; provider filtering; telemetry redaction; export/delete.
+## AI
+ContextPacket integrity; no free-text-only memory; provider injection; deterministic fallback; no hallucinated facts.
+## Browser
+Multi-turn UI, correction UI, deletion UI, refresh, deep-link, mobile, desktop, offline/degraded.
+
