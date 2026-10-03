@@ -288,3 +288,34 @@ D100K completion therefore requires both feature-level technical design and this
 
 ## PLAN → TECHNICAL DESIGN traceability
 `docs/moirise/PLAN_TO_TECHNICAL_MATRIX.md` est la matrice canonique de correspondance. Toute capacité historique fusionnée doit être couverte dans le PLAN du owner et dans son TECHNICAL_DESIGN, avec les contrats transversaux applicables.
+
+
+
+# ENGINEERING GROWTH MODEL — FUSION HISTORIQUE CANONIQUE — 2026-10-03
+
+La capacité de MOIRISE doit être conçue pour évoluer sur deux axes indépendants mais complémentaires :
+
+1. **Évolution logicielle** : le code, les algorithmes, les skills, les validateurs, les stratégies de planification et les composants de fabrication peuvent évoluer via M15 AI Lab.
+2. **Évolution de capacité d'exécution** : de nouvelles ressources CPU/RAM/GPU/VRAM peuvent être ajoutées via des runtimes/workers autorisés ; le scheduler exploite automatiquement la capacité réellement disponible.
+
+La croissance du code ne crée pas physiquement de calcul. L'ajout de ressources n'est pas supposé produire une augmentation linéaire : réseau, synchronisation, sérialisation, contention GPU, dépendances et taille des tâches restent des limites mesurées.
+
+## Growth loop
+
+OBSERVE → GAP DETECTED → HYPOTHESIS → CANDIDATE → SANDBOX → TEST → BENCHMARK → POLICY/SECURITY → CANARY → PROMOTE/REJECT → MONITOR → ROLLBACK
+
+En parallèle :
+
+DISCOVER CAPACITY → REGISTER RESOURCE → AUTHENTICATE → CAPABILITY CHECK → QUOTA/RESOURCE POLICY → SCHEDULER → EXECUTE → VALIDATE → RELEASE/RETRY
+
+## Canonical ownership
+
+- M15 : AI Core, orchestration, capability/resource/provider routing, AI memory, learning, evolution, worker control plane.
+- M08 : fabrication A→Z des jeux/expériences et graphes de tâches.
+- M09 : exécution runtime, sandbox, allocation et isolation 2D/3D.
+- M01/M02/M03/... : restent propriétaires de leurs états métier autoritatifs.
+
+## Historical fusion rule
+
+Les anciens documents AI/worker/resource/evolution sont désormais absorbés par les PLAN.md et TECHNICAL_DESIGN.md canoniques. Ils ne constituent plus des autorités séparées. Toute nouvelle évolution de ces mécanismes se fait dans le couple PLAN + TECHNICAL_DESIGN du owner concerné.
+
