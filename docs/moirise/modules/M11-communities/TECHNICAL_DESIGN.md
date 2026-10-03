@@ -80,3 +80,10 @@ No task owned by M11 may silently take authority from another module. Cross-modu
 
 ## 6. Production lock
 Tests passing without applicable browser/mobile/security/resilience/production proof leave the task non-VERIFIED.
+\n\n# D100K — CONTEXT/MEMORY INTEGRATION — M11 COMMUNITIES
+## Owner scope
+M11 owns membership/role/community state. Community context is separate from personal memory.
+## Isolation
+A community member's private memory never becomes community memory merely because a group exists. Shared memory requires explicit group scope and visibility.
+## D100K tests
+Role boundary, private fact leakage, group deletion, membership removal, invitation, shared-memory consent, cross-community isolation.\n
