@@ -97,3 +97,11 @@ validated source → eligibility → rule → transaction → inventory → hist
 
 D100K: duplicate grant, client mint attempt, quantity/rarity manipulation, stale rule, transaction rollback, provider outage and notification failure.
 
+
+
+# D100K — RESTORED RARE OBJECT TECHNICAL CONTRACT
+
+Rare-object status is derived only from authoritative immutable definitions and reward rules. Public collection cards contain verified ownership/acquisition data only.
+
+D100K: rarity spoofing, client mint, stale definition, duplicate grant, provider outage and source-event deletion.
+
