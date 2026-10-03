@@ -461,3 +461,14 @@ request → auth/policy → capability → resource reservation → worker/provi
 
 D100K: prompt injection, data leakage, cross-player isolation, malicious patch, stale proposal, provider disagreement, worker failure, resource exhaustion, rejected canary and rollback.
 
+
+
+# D100K — RESTORED AI LAB CONTINUITY TECHNICAL CONTRACT
+
+Provider/worker/model loss selects the highest eligible remaining execution mode:
+DETERMINISTIC_LOCAL → ON_DEVICE → CACHE → TRUSTED_WORKER → COMMUNITY_WORKER → VERIFIED_PROVIDER → DEGRADED/UNAVAILABLE according to policy.
+
+An AI fallibility experiment is a versioned sandboxed experiment with hypothesis, expected effect, reversibility and explicit player-visible framing. A provider failure is never converted into a success or authoritative fact.
+
+D100K: zero-provider boot, zero-worker operation, malformed provider output, worker loss, deterministic fallback, no-fake-success and rollback.
+
