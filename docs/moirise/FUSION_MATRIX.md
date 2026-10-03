@@ -38,3 +38,8 @@ The existence of a row never creates a new navigation tab.
 ## Functional coverage rule
 Each row must eventually point to:
 Plan section → Technical section → data/contract → tests → DONE evidence.
+
+## Context Intelligence D100K
+Historical context/memory capabilities map to the canonical owner chain:
+Input understanding=M15 → session boundary=M01 → durable player facts=M02 → conversation=M03 → world=M04 → retrieval/adaptation=M13 → AI orchestration/provider filtering=M15.
+Sensitive data remains policy-gated and is not copied between modules by default.
