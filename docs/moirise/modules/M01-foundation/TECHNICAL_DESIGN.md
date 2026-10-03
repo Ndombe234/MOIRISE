@@ -499,3 +499,18 @@ Tests: replay, expiry, cross-user reuse, visibility downgrade, malformed token.
 ## RF-M01-03 Privacy and anti-fabrication boundary
 M01 rejects telemetry containing raw exact location, sensitive profile values or provider secrets. Fake counters, popularity, rarity and memory claims are prohibited.
 
+
+
+# D100K — RESTORED FOUNDATION TECHNICAL CONTRACTS
+
+`AppConfig={version:string,environment:'dev'|'staging'|'prod',defaultLocale:string,supportedLocales:string[]}`
+`RouteMeta={id:string,path:string,auth:'public'|'user'|'admin',primary:boolean}`
+`AsyncState<T>={status:'idle'|'loading'|'success'|'error',data?,error?}`
+`SystemEvent={eventId,eventType,occurredAt,actorId?,moduleId,requestId?,schemaVersion,metadata}`
+
+Protected server functions use the authenticated session/JWT. RLS is a persistence-level boundary for future tables. No browser variable is a security boundary. No global AI access is implicit. No large AI memory preload occurs during boot.
+
+Route metadata is the single source for navigation, auth-intent preservation and analytics naming. Global state is restricted to shell/session concerns; feature entities remain owned by their module/cache.
+
+D100K: boot, protected route, expired JWT, deep link, refresh, no-provider/no-AI, slow network, zero secret bundle, mobile and desktop evidence.
+
