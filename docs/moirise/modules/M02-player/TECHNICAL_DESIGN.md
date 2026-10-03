@@ -198,3 +198,21 @@ observePlayerFact(), validatePlayerFact(), mergePlayerFact(), supersedePlayerFac
 Latest explicit correction supersedes the prior fact; unrelated facts remain intact. Partial location enrichment never replaces the parent hierarchy.
 ## D100K tests
 Country→city→street→building→unit merge; correction; deletion; visibility; consent; cross-user isolation; stale-cache invalidation; SUPERSEDED retrieval rejection.\n
+
+# D100K — RECOVERED FEATURE FABRICATION BINDING — M02
+## RF-M02-01 Evolving identity
+Inputs: explicit profile update + verified player capability evidence. State: proposed→validated→committed→projected. Never infer identity traits from behavior.
+Events: player.identity.updated, player.preference.updated.
+
+## RF-M02-02 Player memory / memory cards
+A durable memory is created only from explicit user-selected facts or validated product events. MemoryCard fields: memoryId, ownerRef, sourceRef, title, summary, visibility, retention, createdAt, state. Exact location defaults to non-durable session context.
+Tests: create/edit/delete/export, visibility, ownership, stale retrieval.
+
+## RF-M02-03 Creator DNA
+Creator DNA stores contribution evidence: meaningful creations, validated remixes, successful transformations, collaboration and reuse. It is an evidence projection, not a personality score.
+Events: creator.evidence.added, creator.evidence.superseded.
+Tests: duplicate evidence, deletion, attribution, no hidden scoring.
+
+## RF-M02-04 Preferences and current appearance
+Preferences may persist when selected by the player. Current appearance/tenue/coiffure are contextual by default and expire. Sensitive self-described attributes require explicit retention choice; never infer them.
+
