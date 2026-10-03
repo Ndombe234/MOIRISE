@@ -135,3 +135,18 @@ ContextPacket → CreativeBrief → GameSpecification → TaskGraph → validati
 Fabrication memory may store reusable technical patterns, not private personal data unless separately authorized.
 ## D100K tests
 Incomplete intent; contradictory constraints; creator-memory isolation; prompt injection inside brief; deterministic fallback; generated-game provenance; rollback.\n
+
+# D100K — RECOVERED FEATURE FABRICATION BINDING — M08
+## RF-M08-01 Game A→Z
+Research→Idea→Clarify→GameSpecification→TaskGraph→Engine→Code/Assets/Content→Security→Simulation→Tests→Playtest→Balance→Preview→Publish.
+Each stage persists versioned artifacts and can rollback.
+
+## RF-M08-02 Creation Runtime
+A generated artifact is executable only after M09 sandbox validation. M08 never executes arbitrary generated code in privileged context.
+
+## RF-M08-03 Creation-to-story/media transformation
+A validated experience can become story/visual/audio/video/playable representation while preserving sourceRef and lineage. Transformation is not treated as a new historical event.
+
+## RF-M08-04 Fabrication memory
+Store reusable technical patterns and validated repairs with scope/version. Do not store private user memory in fabrication memory.
+
