@@ -116,3 +116,19 @@ Context may select an experience or parameter but cannot create a result, score 
 Save/resume references PlaySession state, not untrusted client memory.
 ## D100K tests
 Context-selected game, no-context game, session resume, replayed result, tampered score, mobile recovery, context timeout, deleted memory reference.\n
+
+# D100K — RECOVERED FEATURE FABRICATION BINDING — M06
+## RF-M06-01 Proof of Impossible
+Stores a validated result that satisfies a declared challenge predicate. Schema: proofId, challengeId, runId, validatorVersion, resultHash, evidenceRef, createdAt.
+No client-only proof. Replays require the same validator/version semantics or explicit migration.
+
+## RF-M06-02 Asynchronous challenge families
+Challenge instance: sourceResultRef, rulesVersion, targetCondition, visibility, expiresAt, participationState. Attempts are independently validated.
+
+## RF-M06-03 Living Object playable branches
+A Living Object can expose a Play entry only after M13/M15 provides a validated capability. Runtime result remains M06/M09 authoritative.
+Tests: anti-tamper, duplicate result, replay, expiry, mobile controls.
+
+## RF-M06-04 Experience-to-Moment generation
+A Moment candidate is created from a real committed play result or meaningful state transition; M03 owns publication.
+
