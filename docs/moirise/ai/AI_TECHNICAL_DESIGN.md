@@ -4062,3 +4062,162 @@ The technical implementation is not considered complete until applicable tests d
 - 2D/3D runtime bounds;
 - no privileged secret exposure.
 
+
+
+# D100K — COMPLETE HISTORICAL AI CONTRACT RESTORATION — TECHNICAL DESIGN
+
+## 1. Core request/context exact contracts
+
+`AIContext` must preserve, where authorized:
+- sessionId?;
+- actorId?;
+- locale;
+- moduleId;
+- route?;
+- currentExperienceId?;
+- explicitIntent?;
+- permittedEvents[];
+- explicitPreferences;
+- worldState?;
+- gameState?;
+- availableCapabilities[];
+- providerHealth;
+- privacyPolicy;
+- deviceProfile?.
+
+`Intent` contains type, confidence, parameters and origin `user|system|event`. Context retrieval is bounded: retrieve relevant memory → deduplicate → compress → cap context.
+
+## 2. Action contract
+
+`AIActionDefinition={id,inputSchema,outputSchema,permission,confirmation:'none'|'user'|'owner',resourceClass:'light'|'medium'|'heavy'}`.
+
+No generic shell/command action exists. Message sending without explicit user request, publishing, destructive changes, external distribution and sensitive processing follow confirmation policy. Production evolution promotion may require owner authorization.
+
+## 3. Memory contract restoration
+
+Memory entries retain:
+- resultStatus `success|partial|failed`;
+- retention `ephemeral|short|long`;
+- privacy/ownership;
+- provenance;
+- expiry when applicable.
+
+Private/temporary memory expires by policy and eligible personal data can be deleted. One Player cannot directly change global AI rules.
+
+## 4. Capability/Provider Registry contract
+
+`CapabilityDefinition={id,version,inputSchema,outputSchema,permissions,resourceClass,validationContract,fallbackPolicy}`.
+
+Providers remain adapters. Each provider record contains:
+`id,baseUrl,authMode,secretName,capabilities,healthCheck,privacyClass,rateLimit,fallbacks,enabled,lastVerifiedAt`.
+
+Historical providers/candidates that must remain represented, with unverified status where applicable:
+Gemini, DeepSeek, Pollinations, OpenRouter, Puter, LLM7, AI Horde, AI Horde OpenAI-compatible API, Kilo, SiliconFlow, SambaNova Cloud, Cehpoint AI, OVH AI Endpoints, Quillly, Replicate, Hugging Face Inference Providers, Firecrawl, Openverse, Internet Archive, LibreTranslate, Cloudflare Workers AI and FreeToUse Music API.
+
+Known historical reference candidate:
+`https://api.freetouse.com/v3/openapi.json`
+This URL is **not enabled merely because it appears here**; endpoint, auth, schema, quota, licence/terms and health must be re-verified.
+
+Historical secret names that must remain represented as configuration contracts, never as values:
+`POLLINATIONS_API_KEY`, `LLM7_API_KEY`, plus the already canonical provider secret names. Historical misspellings/aliases such as `Gemin_API_KEY` or `Openrouter_API_KEY` are not canonical secret names and must never be invented.
+
+Anonymous URL rule:
+UNKNOWN → UNVERIFIED → VERIFIED_PUBLIC / VERIFIED_AUTHENTICATED / VERIFIED_SECRET → DISABLED.
+An anonymous endpoint is not assumed permanent, private, unlimited or free.
+
+## 5. Resource scheduler contract restoration
+
+`TaskRequest` requires:
+- taskId;
+- capability;
+- priority `interactive|normal|background|batch`;
+- privacyClass;
+- requiredResources?;
+- allowedWorkerClasses?;
+- timeoutMs;
+- cancellable.
+
+Background learning may not consume the resource reservation required for interactive Player actions. Cancellation is best-effort for already-running work and must not create inconsistent authoritative state.
+
+Safe cache classes include translations, provider/worker metadata, repeated deterministic calculations and content-hash-addressed generated assets only when policy permits.
+
+## 6. Creative execution graph
+
+Image:
+`IMAGE_INTENT → VISUAL_BRIEF → ORIGINALITY → PROVIDER/LOCAL → MODERATION → STORAGE`
+
+Video:
+`VIDEO_INTENT → SCRIPT → STORYBOARD → SCENE_PLAN → PROVIDER/LOCAL → VALIDATION`
+
+Music:
+`MUSIC_INTENT → BRIEF → PROVIDER/LOCAL → RIGHTS/PROVENANCE → VALIDATION`
+
+Creative generation must reject or constrain intentional reproduction of protected third-party assets or identifiable artist imitation when not authorized. Generated music is never assumed rights-free.
+
+## 7. Evolution sandbox exact safety
+
+Generated code may not:
+- access production secrets;
+- access arbitrary user data;
+- change RLS;
+- deploy itself;
+- install arbitrary system software;
+- call unregistered endpoints;
+- write production tables;
+- alter permissions;
+- disable safety checks.
+
+`EvolutionCandidate` carries securityStatus `pending|passed|failed` and policyStatus `pending|approved|rejected`, plus baseline/proposed version and rollback reference. Every promoted version points to a previous stable version.
+
+## 8. Distributed worker exact contract restoration
+
+Worker state:
+`online|busy|degraded|draining|offline|quarantined`.
+
+Trust state:
+`pending|verified|revoked|quarantined`.
+
+Trust level:
+`unverified|occasional|reliable|active|specialized`.
+
+Worker jobs never exceed configured CPU/RAM/GPU quotas. Large artifacts are transferred by reference/hash, not embedded into control envelopes.
+
+The administration console is owner/admin only and exposes worker ID, health, CPU/RAM/GPU telemetry, queue/task state, trust state, quota and lifecycle actions.
+
+Four separate questions are always evaluated:
+Authentication = who is the worker?
+Authorization = what may it do?
+Sandbox = what can it physically access?
+Validation = can MORISE trust its result?
+
+Community worker participation is explicit opt-in, with visible pause/resume/stop controls and configurable OFF/LIGHT/NORMAL/VOLUNTARY+ resource modes.
+
+## 9. Worker implementation map
+
+The implementation contract retained from the historical design is:
+- `apps/worker/src/config.ts`
+- `apps/worker/src/hardware-monitor.ts`
+- `apps/worker/src/quota-manager.ts`
+- `apps/worker/src/worker.ts`
+- `apps/worker/src/heartbeat.ts`
+- `apps/worker/src/task-runner.ts`
+- `packages/security/src/worker-auth.ts`
+- `packages/worker-sandbox/src/sandbox.ts`
+- `services/control-plane/registry/worker-registry.ts`
+- `services/control-plane/`
+
+Required interfaces include `getSnapshot()`, `validateTask()`, `canStart()`, `reserve()`, `release()`, `listEligible()`, worker credential/heartbeat/result transport and sandbox `run()`.
+
+The website remains only the control surface. The Worker is a separate executable/runtime installed after explicit enrollment.
+
+## 10. First-session and return contract
+
+The first-session window is a soft discovery experience, not a fixed timer script. It observes real actions, reveals only real available possibilities and creates continuation only when a persisted/validated next step exists.
+
+A future-return item must reference a real event/challenge/creation stage/reward availability/social response/scheduled state. No fake countdown, reward, social activity, notification or scarcity.
+
+## 11. D100K evidence obligations
+
+Every AI capability, worker job and evolution candidate must map:
+ACTOR → TRIGGER → PRECONDITIONS → INPUTS → CONTEXT SCOPE → AUTHORITY → RESOURCE BUDGET → ALGORITHM → EXECUTION TARGET → OUTPUT → VALIDATION → MUTATIONS → EVENTS → ERRORS → RECOVERY → SECURITY → OBSERVABILITY → TESTS → BROWSER/MOBILE → EVIDENCE → ROLLBACK/DISPOSITION.
+
