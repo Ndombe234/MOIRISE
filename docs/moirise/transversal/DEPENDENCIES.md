@@ -88,3 +88,14 @@ A consumer may not:
 - mutate another owner's private tables/state directly;
 - create a competing event authority;
 - create a competing AI capability/provider router.
+
+
+# D100K — LEGACY DEPENDENCY STATE RESTORATION
+
+Optional capabilities/dependencies may be:
+PLANNED → CONFIGURED → AUTHORIZED → ENABLED → EXECUTING → VALIDATING → COMPLETED
+or
+PENDING_DEPENDENCY / DEGRADED / MAINTENANCE / DISABLED / UNAVAILABLE / CANCELED / FAILED.
+
+A dependency outage must degrade only the dependent execution path when a fallback exists. No optional provider/dependency may become an application startup prerequisite.
+
