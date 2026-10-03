@@ -143,3 +143,15 @@ M07 can recommend a real capability only when the capability registry says it ex
 ## RF-M07-05 Cold-start / first-session discovery
 Cold start uses declared interests + safe session signals, not sensitive inference. Every result remains explainable by reason codes.
 
+
+
+# D100K — RESTORED DISCOVERY TECHNICAL CONTRACTS
+
+`DiscoveryQuery={text?:string,kinds?:string[],tags?:string[],cursor?:string,limit:number,locale:string}`
+`Candidate={id:string,kind:string,score:number,reasons:string[]}`
+`DiscoveryResult={items:Candidate[],nextCursor?:string,rankingVersion:string}`
+
+Candidate retrieval is bounded and public-catalog based. Ranking uses deterministic relevance/freshness/diversity, explicit preferences, permitted history and safe aggregate signals. AI may assist but is not required for each scroll or each candidate. Popularity/ratings are never invented.
+
+D100K: cursor replay, stale ranking version, duplicate candidates, empty result, fabricated metrics, private candidate leakage, cache poisoning, provider outage and mobile infinite-scroll behavior.
+
