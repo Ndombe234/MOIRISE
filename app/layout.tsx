@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "MOIRISE",
-  description: "Le réseau social Otaku piloté par un SYSTEM évolutif.",
+  description: "Le réseau social piloté par un SYSTEM évolutif.",
 };
 
 export default function RootLayout({
