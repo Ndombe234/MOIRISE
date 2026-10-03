@@ -135,3 +135,23 @@ Owner authority cannot be bypassed; duplicate commands cannot duplicate authorit
 
 ## 7. Completion
 This D100K section defines what must be provable. It does not claim implementation completion.
+
+
+
+# HISTORICAL FUSION — M08 GAME FACTORY — PLAN
+
+Les anciens contrats Game Factory/runtime sont intégrés à M08. La fabrication est un pipeline complet et versionné, pas une simple génération de code.
+
+PLAYER IDEA → INTENT → GAME SPECIFICATION → TASK GRAPH → ENGINE SELECTION → CODE/ASSETS/AUDIO/CONTENT → BUILD → SECURITY → SIMULATION → TEST → PLAYTEST → BALANCE → PREVIEW → PUBLISH.
+
+Chaque étape peut demander des ressources différentes et être distribuée lorsqu'elle est indépendante. Les tâches déclarent leurs dépendances, resource profile, timeout, retry/idempotency et validator.
+
+M08 fabrique pour 2D et 3D. 3D n'est pas une capability de second rang ; le choix dépend de la GameSpecification, du device et du resource budget.
+
+La fabrication doit rester utilisable sans provider spécifique ni Codex. Un provider/agent absent réduit une target d'exécution mais ne supprime pas les contrats ni les connaissances de fabrication.
+
+Les réparations suivent :
+DIAGNOSIS → HYPOTHESIS → PATCH → IMPACTED TESTS → BUILD → REGRESSION → BENCHMARK.
+
+Une réparation répétant le même failure fingerprint est escaladée au lieu de boucler.
+
