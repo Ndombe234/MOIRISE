@@ -142,3 +142,131 @@ Chaque expansion de détail déclenche une révision de l'estimation de délai c
 
 ## 26. Formal fabrication completeness
 Le plan canonique comprend désormais 30 documents actifs de module : 15 PLAN.md + 15 TECHNICAL_DESIGN.md. Chaque paire doit converger vers le modèle D100K : comportement/propriétés dans PLAN, fabrication/contrats/preuves dans TECHNICAL_DESIGN, sans transfert d'autorité ni troisième source de vérité.
+
+# RECOVERED FUNCTIONAL FUSION — HISTORICAL FEATURES RECONCILED — 2026-10-03
+
+Historical MOIRISE documents contained additional product mechanics that were deleted during documentation consolidation. They are now explicitly preserved as canonical cross-module capabilities. Restoring a feature here does not restore an old document as an authority; current owner documents remain authoritative.
+
+## First-session / First Contact
+Canonical first-session experience: PLAYER ACTION -> CONSEQUENCE -> DISCOVERY -> NEW POSSIBILITY -> PLAYER CHOICE -> SYSTEM REACTION.
+
+The approximately two-minute First Contact experience may use:
+- 0:00–0:15 SYSTEM invitation and immediate meaningful choice;
+- 0:15–1:00 small interactive micro-world/objective;
+- 0:40–1:20 reaction or anomaly produced by a real permitted action;
+- 1:00–1:40 bounded adaptive challenge;
+- 1:40–2:00 reveal, temporary session descriptor and contextual continuation.
+Historical wording examples are guidance, not immutable dialogue. First Contact must remain auditable, optional, reversible, privacy-safe and functional without AI through deterministic fallback.
+
+## MORISE Moment / Relay / Living Stories
+Preserved:
+- MORISE Moment detection from real meaningful events;
+- compact Moment artifacts and replay/reconstruction;
+- optional share-to-experience handoff;
+- MORISE Relay, where another Player performs one controlled transformation;
+- Dynamic Stories derived from validated experience chains;
+- Living Stories with lineage, branches and versions;
+- attribution and provenance across Moment -> Relay -> Story -> new experience.
+These remain contextual capabilities; none creates a new navigation door.
+
+## Evolution and emergent experience
+The Evolution Engine preserves Trace, Living World, Hidden Possibilities, Unexplored Paths, Evolving Identity, MORISE Double, Fun & Surprise and the MORISE Emergent Experience Engine.
+Supported patterns include What If, You Missed Something, Hidden Rule, Play Against Your Trace, Worlds That Remember, One Problem/Many Approaches, Mutation, Role Inversion, Mystery Investigation, AI Fallibility, Player Laboratory, Emergent Experience and MORISE Dream/Hypothesis Synthesis.
+
+## Experience Economy
+Preserved mechanics:
+- Day-1 solo value;
+- contextual or daily Moment;
+- personal evolving world;
+- SYSTEM companion continuity;
+- leaving traces for future Players;
+- Remix-me;
+- Creator DNA and creative lineage;
+- creation-to-world progression;
+- collaborative media/music chains;
+- discovery broadcasts;
+- Living Museum;
+- creator capability progression;
+- creator economic bridge;
+- Proof of Impossible / beat-my-result challenges;
+- low-population World Events;
+- return-after-absence experiences;
+- meaningful optional sharing.
+
+## Creator Economy and owner operations
+Preserved historical capabilities:
+- AI-orchestrated creator eligibility;
+- progressive creator activation thresholds;
+- eligibility stages;
+- creator contribution chains;
+- economic capability activation;
+- anti-manipulation and fraud review;
+- free-first growth;
+- controlled monetization activation;
+- high-threshold owner/admin alerts;
+- Owner/Admin Control Center;
+- administrative hierarchy and permissions;
+- audited operational control.
+These are permissioned operational/creator surfaces and do not create public global navigation doors.
+
+## Native creation, tooling and agents
+Preserved:
+- MORISE Creation Runtime;
+- MORISE Creation Tools;
+- scoped World Agents;
+- code generation, inspection, modification and refactoring tools;
+- 2D/3D scene and world construction;
+- asset, character, animation, material, lighting and camera tooling;
+- input, collision, physics, gameplay and state tooling;
+- build, execution, diagnostics, testing, correction and optimization tooling;
+- bounded agents for playtest, simulation, balance, exploration and validation.
+
+## On-device and infrastructure-light AI
+Preserved:
+- browser/on-device inference when eligible;
+- device capability detection;
+- adaptive execution tiers;
+- controlled burst use of underused device resources;
+- local model lifecycle;
+- device-aware media routing;
+- cache, local and degraded fallbacks;
+- offline deterministic experiences;
+- resource and UX safeguards.
+External providers remain optional instruments.
+
+## Internationalization and local translation
+Preserved:
+- 20 canonical locales;
+- complete UI/content translation contracts;
+- RTL and locale formatting;
+- browser/on-device-first translation;
+- deferred owner-controlled translation node;
+- private-message translation with privacy boundaries;
+- locale fallback to English when necessary;
+- no mandatory provider API key for core navigation.
+
+## Infrastructure-light retention mechanics
+Preserved:
+- persistent world state;
+- multi-solution puzzles;
+- auditable anomalies;
+- secret/discovery titles;
+- hidden map areas;
+- personal Memory Cards;
+- deterministic no-AI Remix;
+- asynchronous community challenges;
+- MORISE Laboratory;
+- distributed public secrets;
+- collective legends/history;
+- consequence-based branching;
+- SYSTEM presentation styles;
+- seasons;
+- deterministic player construction;
+- shareable Moment cards;
+- Easter eggs;
+- transparent rarity.
+These capabilities reuse existing state, event, storage, runtime and module owners. New experience does not imply new infrastructure.
+
+## Canonical owner rule
+Recovered features are distributed to existing owners: M03 social/media/Moment/Relay publication; M04 World presentation and discovery handoffs; M05 SYSTEM presentation, First Contact and progression/evolution presentation; M06 play/result experiences; M07 discovery/ranking; M08 creation factory; M09 runtime; M10 social challenges; M11 communities; M12 temporal events/seasons; M13 adaptive world/convergence/memory retrieval; M14 rewards/collection/economic ledger; M15 AI orchestration, creation tools, World Agents, on-device/provider routing, creator eligibility analysis, collective intelligence and AI Lab; M01 security, auth and operational boundaries.
+No historical file is reintroduced as a competing source of truth.
