@@ -83,3 +83,13 @@ Message translations and cached translations are derived data. Original message 
 ## Rights/provenance
 Media/creative records retain sourceRef, owner, provenance, license/permission class, derivation lineage and visibility. Publication rights are separate from generation success.
 
+
+
+# D100K — RESTORED NOTIFICATION / DEVICE / AUDIT DATA
+
+Derived notification projections may reference a real source event, recipient, priority, status, readAt, expiry and action target. Notifications never become authoritative business state.
+
+Device profiles record bounded execution capability metadata and are not a resource-sharing authorization. Resource sharing requires the separate worker consent/trust contract.
+
+Administrative/audit records preserve actor, action, target/resource, result, correlation ID and timestamp. They are evidence, not editable replacement state.
+
