@@ -118,3 +118,14 @@ A distributed community secret stores contributionRefs and completion conditions
 
 D100K: contribution spoofing, duplicate contribution, private-data leakage, attribution loss, permission revocation and community deletion.
 
+
+
+# D100K — EXPLICIT COMMUNITY SCHEMA RESTORATION
+
+Canonical persistence entities represented by the owner are:
+`communities`, `community_members`, `community_roles`, `community_posts`, `community_moderation_events`, `community_invites`.
+
+They remain one ownership domain; alternative parallel community tables are forbidden.
+
+D100K: schema/role consistency, moderation event audit, private-community isolation and invite idempotency.
+
