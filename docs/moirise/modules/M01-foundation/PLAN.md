@@ -280,3 +280,11 @@ D100K means the feature definition is machine-checkable. It does not mean the co
 ## D100K proof
 Boot public, boot authenticated, expired session, unauthorized route, refresh, deep-link, slow network, provider unavailable, no-AI mode, mobile viewport and evidence of zero secret leakage.
 
+
+
+# D100K — EXPLICIT FOUNDATION EXCLUSIONS / UX RESTORATION
+
+M01 does not implement full machine learning or other module business features; it supplies the boundaries they consume. It must remain mobile-first/dark-glass, keep permanent controls sparse, allow opening the SYSTEM panel when available, and avoid loading large AI memory or heavy media at boot without a concrete need.
+
+Protected Edge/server functions require the repository's authenticated/JWT boundary when protection is applicable. This is implementation evidence to be verified at the runtime gate, not a client-only assertion.
+
