@@ -117,3 +117,11 @@ AI matchmaking is optional; deterministic fallback is required. Spectator mode i
 
 D100K: forged score, duplicate nonce, stale rules, expired challenge, block/privacy restriction, season transition, ties, spectator permission and AI outage.
 
+
+
+# D100K — RESTORED ASYNC SHARE TECHNICAL CONTRACT
+
+Async challenges persist creator/target/rulesHash/expiresAt/resultRef and never require simultaneous presence. Public share artifacts contain only data permitted by M03 visibility policy. A dead friend list is not replaced with fabricated participants.
+
+D100K: expired target, blocked target, private-result leakage, duplicate join, stale challenge rule, share reconstruction and no-fake-social checks.
+
