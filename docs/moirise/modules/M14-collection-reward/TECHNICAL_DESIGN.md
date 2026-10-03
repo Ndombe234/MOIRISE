@@ -64,3 +64,10 @@ Adversarial proof must include replay, duplicate command, stale state, unauthori
 Evidence is fresh only when tied to the exact commit and exact scenario/check. Unit tests cannot alone certify a user-facing or production-sensitive feature.
 
 Ownership firewall: M14 may consume other modules through contracts, events or projections, but may not assume their private authority.
+\n\n# D100K — CONTEXT/MEMORY INTEGRATION — M14 COLLECTION/REWARD
+## Owner scope
+M14 owns reward/collection ledgers. Context can explain or select an eligible experience, never mint rewards.
+## Integrity
+Reward eligibility must reference authoritative Player/Play/Event evidence. AI context is advisory.
+## D100K tests
+Duplicate grant, context-only reward attempt, rollback, ledger reconciliation, deleted profile, stale eligibility, provider outage.\n
