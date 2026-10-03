@@ -447,3 +447,17 @@ requestId → target → resource reservation → execution → validation → o
 
 M15 reste opérationnel avec zéro provider et zéro Community Worker. La perte d'un worker ou provider dégrade l'exécution disponible, pas le cerveau ni l'état métier.
 
+
+
+# D100K — RESTORED META AI LAB TECHNICAL CONTRACTS
+
+`EvolutionProposal={id,target,rationale,patchRef,testsRef,baselineMetrics,status:'draft'|'testing'|'canary'|'approved'|'rejected'|'rolled_back'}`
+`SystemAction={id,capability,actorId,authorization,status:'requested'|'running'|'completed'|'failed'}`
+
+Every proposal carries baseline metrics, explicit tests, security/policy result, canary state and rollback reference. Production security policy, provider registry, RLS, worker trust policy and destructive operations cannot be changed autonomously.
+
+AI Lab Control Plane handoff:
+request → auth/policy → capability → resource reservation → worker/provider/local target → sandbox → execution → validation → owner decision → evidence.
+
+D100K: prompt injection, data leakage, cross-player isolation, malicious patch, stale proposal, provider disagreement, worker failure, resource exhaustion, rejected canary and rollback.
+
