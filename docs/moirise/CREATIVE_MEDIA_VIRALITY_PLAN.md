@@ -377,3 +377,13 @@ La boucle doit casser proprement si le contenu est privé, supprimé, bloqué, s
 
 ## 22. Measurement
 Mesures principales : activation, successful creation, meaningful share, invitation acceptance, repeat creation, return within defined cohort window, content diversity, creator retention, safety incidents. Ne pas optimiser sur un seul chiffre.
+
+
+# D100K — RESTORED HISTORICAL SHARING PRINCIPLE
+
+Sharing is a truthful consequence of something the Player actually did, found, created, remixed or achieved. It is not an advertisement disguised as a share.
+
+A shareable artifact must answer: source event/artifact, owner, visibility, reason to view, permitted response/remix/play action, lineage and return path. No fake social proof, fake counters, fake participants or artificial scarcity.
+
+D100K: share revoked after source deletion, private media leakage, duplicate derivative, blocked recipient, no-source artifact and mobile share/deep-link recovery.
+
