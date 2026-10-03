@@ -95,3 +95,13 @@ Moderation actions log actor, target, reason, timestamp and rule/version referen
 ## D100K proof
 Unauthorized role change, banned membership, private community access, duplicate invite/join, moderation audit, actor spoofing, stale role version and privacy propagation.
 
+
+
+# D100K — RESTORED COMMUNITY SECRETS / COLLABORATIVE MEDIA
+
+M11 can host distributed community secrets and collaborative media chains when a real shared objective exists. A community secret may require several independently valid contributions, but solving it must not expose private messages, private profiles or hidden moderation data.
+
+Community media contributions preserve contributor, source, version and permission lineage. A contribution may be accepted, rejected or transformed according to the canonical media policy; it cannot silently become anonymous global training data.
+
+D100K: malicious contribution, private-data leakage, duplicate contribution, contributor attribution loss, permission revocation and community deletion recovery.
+
