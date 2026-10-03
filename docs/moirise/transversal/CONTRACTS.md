@@ -43,3 +43,14 @@ Un cache possède owner, key schema, TTL, invalidation policy et privacy class.
 ## Data deletion
 
 Chaque donnée persistante sensible possède une politique de rétention et un chemin de suppression documenté.
+
+
+# D100K — LEGACY CORE CONTRACT RESTORATION
+
+Canonical cross-cutting TypeScript concepts that remain required where applicable:
+`SystemIntent`, `OrchestrationPlan`, `OrchestrationStep`, `OrchestrationResult`, `ValidationResult`, `SystemError`, `ProviderContext`, `ProviderHealth`, `ProviderAdapter`, `DomainEvent`, `CapabilityDescriptor`, `CapabilityRequest`, `CapabilityResult`, `IdempotencyContext`, `AsyncJob`.
+
+These names describe contract roles, not permission to recreate duplicate owners. Module-specific versions must remain owned by their canonical module/AI contract.
+
+A capability result may be COMPLETED, FAILED, UNAVAILABLE, DEGRADED or CANCELED. Unavailability is not fake success.
+
