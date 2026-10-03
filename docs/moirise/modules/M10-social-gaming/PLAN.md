@@ -120,3 +120,13 @@ Spectator mode is optional when a game declares it. AI matchmaking/recommendatio
 ## D100K proof
 Forged score, duplicate submission, stale rulesHash, expired challenge, block/privacy restriction, season rollover, tie handling, spectator permission, AI outage and public/private share separation.
 
+
+
+# D100K — RESTORED ASYNC / SHARE LOOP
+
+Social gaming remains solo-first. A Player can publish a challenge result, invite asynchronously, collaborate, rematch or contribute to a community goal without simultaneous presence.
+
+Sharing communicates something the Player actually did or created rather than advertising MORISE. A dead friend list must not make PLAY appear empty; available public/community activities can provide truthful alternatives.
+
+D100K: stale target, expired challenge, private result leakage, duplicate participation, blocked recipient, empty friend list, async retry and public share reconstruction.
+
