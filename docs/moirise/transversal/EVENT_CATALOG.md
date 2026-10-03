@@ -102,3 +102,13 @@ Events use references and classified metadata. Exact addresses, sensitive attrib
 ## Ordering
 Fact mutation commits first; event is emitted after commit. Consumers must be idempotent using eventId/schemaVersion.
 
+
+
+# D100K — LEGACY EVENT DELIVERY CONTRACT RESTORATION
+
+Business events that drive secondary processing must preserve request/event identity, actor, module, schema version, occurredAt and safe metadata. When transactionally required, authoritative persistence precedes delivery/consumption.
+
+Retryable consumers are idempotent. An event delivery failure cannot silently roll back an already committed authoritative state. Rebuildable projections use immutable source events rather than mutable UI state.
+
+Time-based events use UTC persistence and explicit occurrence identifiers when recurrence exists.
+
