@@ -105,3 +105,11 @@ World branches, hidden routes, evolving puzzles and deterministic remix candidat
 
 D100K: aggregate-signal provenance, low-sample gate, poisoned signal, branch conflict, stale version, rollback and no-AI execution evidence.
 
+
+
+# D100K — EXPLICIT ADAPTIVE OBSERVATION RESTORATION
+
+The aggregate observation model explicitly excludes sensitive raw data. Historical metrics are immutable for audit; rollback restores the previous known-safe version. Provider disagreement, stale signals and low-sample observations are policy inputs, not reasons to silently mutate behavior.
+
+D100K: observation minimization, sample threshold, version conflict, rollback and audit immutability.
+
