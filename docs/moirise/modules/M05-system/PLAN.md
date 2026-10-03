@@ -216,3 +216,51 @@ Progressive disclosure prevents UI overload. SYSTEM messages are grouped/rate-li
 
 D100K: message flood, repeated click, unavailable capability, long text, mobile HUD and reduced-motion presentation.
 
+
+
+# D100K — RESTORED V1 PROGRESSION CONTRACT
+
+### Starting state
+Every Player entering the SYSTEM for the first time must have:
+- level = 1;
+- total XP = 0;
+- all seven v1 dimensions = 0;
+- one initialization memory derived from a real Player creation event.
+
+### Canonical v1 dimensions
+`exploration`, `creation`, `knowledge`, `social`, `community`, `play`, `contribution`.
+
+The dimension key remains extensible; a future dimension requires a controlled versioned migration.
+
+### Canonical v1 level curve
+`threshold(1)=0`.
+For level >= 2:
+`threshold(level)=floor(100 * (level-1)^1.65)`.
+
+Level = greatest L >= 1 where total XP >= threshold(L).
+
+The progression UI uses:
+- current level;
+- current total XP;
+- XP remaining to next level;
+- current-level percentage.
+
+Changing the curve requires an explicit ruleset/version migration; no silent formula replacement is allowed.
+
+### First positive XP event
+Event type: `player_identity_completed`.
+
+Only valid after the Player's existing onboarding/identity state changes from false to true following a valid server-authorized identity save.
+
+V1:
+- reward = 25 XP;
+- no dimension assignment;
+- one deterministic memory;
+- exactly once per Player;
+- replayed save cannot grant a second award.
+
+Opening SYSTEM never grants XP.
+
+### D100K
+Test zero state, seven zero dimensions, exact threshold boundaries, curve version, 25 XP milestone, concurrent duplicate milestone requests, forged playerId, replayed save and provider/M15 outage.
+
