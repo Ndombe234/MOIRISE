@@ -107,3 +107,9 @@ Rare collection objects remain valid only when rarity and acquisition are derive
 
 D100K: duplicate acquisition, rarity spoof, client mint attempt, stale definition, provider image outage, deleted source event and truthful share reconstruction.
 
+
+
+# D100K — EXPLICIT COLLECTION FALLBACK RESTORATION
+
+When an image/creative provider is unavailable, collection definitions, ownership, rarity, inventory and reward history remain functional. Provider-dependent visuals degrade independently and never become the authority for collection state.
+
