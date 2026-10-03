@@ -131,3 +131,12 @@ CANONICAL means explicitly represented in active docs. RECOVERED-FUSED means rec
 - Browser/mobile/context acceptance ✅ transversal Testing + module contracts
 
 Coverage status rule remains: this is specification coverage, not implementation evidence.
+
+
+## Provider / API dependency audit
+- Zero-API / on-device AI architecture: documented M15
+- Provider independence invariant: documented M15 AI
+- Secret/public-config boundary: documented M15 AI
+- No-key / no-provider behavior matrix: documented M15 AI
+- Historical provider and endpoint classification: audited from repository history
+- Runtime zero-provider verification: **implementation evidence required; documentation alone is not DONE**
