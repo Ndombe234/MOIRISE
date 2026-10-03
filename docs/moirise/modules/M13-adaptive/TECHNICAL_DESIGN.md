@@ -97,3 +97,11 @@ Only aggregate authorized signals enter adaptation. Immutable version metadata p
 
 D100K: source provenance, low-sample gate, data poisoning, stale version, canary regression, unauthorized activation, rollback and rollback recovery.
 
+
+
+# D100K — RESTORED ADAPTIVE RETENTION TECHNICAL CONTRACT
+
+World branches, hidden routes, evolving puzzles and deterministic remix candidates use immutable versioned state with source-event references, visibility, owner scope and rollback reference. AI is optional; deterministic rules provide the degraded path.
+
+D100K: aggregate-signal provenance, low-sample gate, poisoned signal, branch conflict, stale version, rollback and no-AI execution evidence.
+
