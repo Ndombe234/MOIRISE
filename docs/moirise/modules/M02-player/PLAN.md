@@ -260,3 +260,24 @@ Unknown impact is UNRESOLVED, never assumed safe.
 
 ## 7. Completion
 D100K means the feature definition is machine-checkable. It does not mean the code is already fabricated.
+
+
+# D100K — HISTORICAL CONTRACT RESTORATION — M02 PLAYER
+
+## Restored behavior
+- Un seul Player peut modifier son propre profil/préférences.
+- Aucune mutation de profil d'un autre Player depuis client ou AI.
+- Les préférences explicites peuvent servir à la personnalisation non sensible.
+- La suppression de données est contrôlée et traçable.
+- Une mise à jour échouée possède une stratégie de rollback/retry sûre.
+- PLAYER DATA et MORISE MEMORY restent deux domaines différents.
+- Les changements d'identité/sécurité attendent une confirmation serveur.
+
+## Canonical contracts
+`PlayerProfile={id,handle,displayName,avatarRef?,bio,locale,createdAt}`
+`PlayerPreferences={locale,theme:'dark',interests,privacy:'public'|'friends'|'private'}`
+`PlayerPatch={displayName?,bio?,avatarRef?,locale?,interests?,privacy?}`
+
+## D100K proof
+Other-player mutation denial, privacy-policy enforcement at persistence layer, malformed avatar, invalid locale, deletion scope, retry/duplicate mutation, session expiry, audit event and mobile profile flow.
+
