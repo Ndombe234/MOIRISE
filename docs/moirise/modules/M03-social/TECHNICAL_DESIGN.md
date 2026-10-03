@@ -214,3 +214,22 @@ Support « celui-là », « ma dernière création », « chez moi », « le gro
 DM context is private by default. No DM memory may enter feed ranking, group recommendations or provider prompts without an authorized purpose.
 ## D100K tests
 Multi-turn enrichment; pronoun resolution; multilingual turns; deletion; blocked user; message retry; private/public boundary; attachment-derived claims never treated as explicit user facts.\n
+
+# D100K — RECOVERED FEATURE FABRICATION BINDING — M03
+## RF-M03-01 MORISE Moment
+Candidate source: real committed Player/Play/World/Event state. Create Moment only after source validation. Schema: momentId, sourceRef, artifactRef, provenance, visibility, lineage, replayRef?, state.
+State: CANDIDATE→VALIDATED→PUBLISHED/PRIVATE→ARCHIVED/DELETED.
+No fabricated rarity/popularity.
+
+## RF-M03-02 Relay
+Input: validated Moment. Receiver may apply one permitted modification. Store parentMomentId + transformationType + contributorRefs + resulting state. Every branch remains attributable.
+Events: relay.started, relay.committed, relay.failed.
+Tests: one-modification rule, provenance, privacy, replay, deletion.
+
+## RF-M03-03 Living Stories
+Build narrative only from validated Moment/Relay/event lineage. Every chapter records source events, transformation, branch, contributors and version. No synthetic event is presented as historical fact.
+Tests: lineage integrity, branch merge, contributor removal, recap regeneration.
+
+## RF-M03-04 Leave Something / Remix-me / collaborative media
+A contribution may be puzzle/object/message/sound/visual/scene/micro-story/rule. Publication contract requires owner, visibility and lineage. Collaborative media stores contributor chain and rights state.
+
