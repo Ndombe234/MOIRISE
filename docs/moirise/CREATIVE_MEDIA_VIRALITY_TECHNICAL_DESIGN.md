@@ -480,3 +480,13 @@ Originality: low-transformation result blocks/asks.
 Cold-start: no-content case returns real empty state with creation/discovery fallback.
 Ranking: blocked and private excluded before score.
 Mobile: media upload resume and degraded playback.
+
+
+# D100K — RESTORED SHARE/LINEAGE TECHNICAL CONTRACT
+
+`ShareArtifact={artifactId,sourceRef,ownerId,visibility,reasonCode,derivationRef?,lineageRef,createdAt}`.
+
+A deep link must resolve to a real artifact/experience. A downstream derivative preserves source and permission references. Source deletion/revocation invalidates or restricts downstream projections according to policy.
+
+D100K: forged sourceRef, visibility escalation, broken lineage, revoked source, blocked viewer, expired artifact and offline/degraded share reconstruction.
+
