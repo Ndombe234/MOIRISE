@@ -106,3 +106,14 @@ A task cannot write another module's authoritative state. It must use an allowed
 
 ## 7. Production lock
 Unit tests alone never produce VERIFIED for a user-facing capability.
+\n\n# D100K — CONTEXT/MEMORY INTEGRATION — M05 SYSTEM
+## Owner scope
+M05 turns authorized context into SYSTEM presentation/progression behavior; it does not own sensitive raw facts.
+## Presentation contract
+ContextPacket → SYSTEM decision → bounded presentation. The SYSTEM may say « je me souviens que tu as choisi X » only when X is an authorized real memory.
+## Anti-fabrication
+No fake memory, fake personalization, hidden psychological classification or fabricated anomaly.
+## Continuity
+SYSTEM session descriptors expire according to temporal scope. Durable titles/achievements come from authoritative ledgers, not inferred context.
+## D100K tests
+Memory-present/memory-absent paths; correction after personalization; no-context fallback; sensitive-memory redaction; adaptive-message rate limit; deterministic fallback without AI.\n
