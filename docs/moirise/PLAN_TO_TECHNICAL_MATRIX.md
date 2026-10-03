@@ -48,3 +48,28 @@ Examples:
 
 ## Rule
 A historical file being absent from the active tree does not mean its behavior lacks technical design. It must have exactly one canonical owner and one traceable technical owner. Duplicate authorities are prohibited.
+
+
+## HISTORICAL AI / COMPUTE FUSION — TRACEABILITY — 2026-10-03
+
+| Historical source | Canonical PLAN owner | Canonical TECHNICAL_DESIGN owner |
+|---|---|---|
+| 00_MASTER_AI | M15 | M15 |
+| 01_CORE_ORCHESTRATOR | M15 | M15 |
+| 02_CONTEXT_INTENT_REASONING | M15 | M15 |
+| 03_CAPABILITY_PROVIDER_ROUTER | M15 | M15 |
+| 04_MEMORY_EXPERIENCE_LEARNING | M15 | M15 |
+| 05_CREATIVE_MEDIA_GAME_CREATOR | M15 + M08 where game-specific | M15 + M08 where game-specific |
+| 06_EVOLUTION_CODE_SANDBOX | M15 | M15 |
+| 07_DATA_SECURITY_PROVENANCE | M15 + transversal security | M15 + transversal security |
+| 08_RESOURCE_SCHEDULER_OBSERVABILITY | M15 | M15 |
+| 09_AI_ACTIONS_AND_CONTRACTS | M15 | M15 |
+| 11_GAME_CREATION_RUNTIME_CONTRACT | M08 / M09 | M08 / M09 |
+| 12_DISTRIBUTED_WORKER_CLUSTER | M15 | M15 |
+| 13_DISTRIBUTED_SYSTEM_IMPLEMENTATION | M15 | M15 |
+| 14_DETAILED_AI_DESIGN_INDEX | M15 | M15 |
+| historical MORISE Game Factory | M08 | M08 |
+| historical Shared Game Engine | M09 | M09 |
+
+No historical file remains an active competing authority. Historical material is preserved only through the inventory and mapped into current owners.
+
