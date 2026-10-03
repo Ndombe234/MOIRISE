@@ -385,3 +385,20 @@ User correction produces ContextCorrection and supersedes the target fact accord
 Providers receive a task-scoped ContextPacket after privacy filtering. Provider responses are untrusted candidates and cannot mutate Player memory directly.
 ## D100K tests
 Multi-turn enrichment, language switch, coreference, correction, conflict, sensitive-field redaction, provider injection, tool-call leakage, memory deletion, degraded mode, deterministic parser fallback.\n
+
+# D100K — RECOVERED FEATURE FABRICATION BINDING — M15
+## RF-M15-01 First-session orchestration
+M15 creates the task graph for First Contact/post-contact curiosity but M05/M04/M06 own their mutations.
+## RF-M15-02 Creation Runtime + tools + world agents
+Capability registry exposes typed tools. Agent execution has max autonomy, context class, validator, timeout, budget and rollback.
+## RF-M15-03 On-device / zero-API routing
+Route local/on-device first, then cache, trusted worker, opted-in community worker, verified client-side provider, key provider, explicit paid provider, degraded. Provider is never the brain.
+## RF-M15-04 Collective intelligence
+Aggregate only permitted shared signals. No private memory leakage into collective models.
+## RF-M15-05 Creator Economy orchestration
+AI may evaluate evidence and propose eligibility; M14 commits economic state.
+## RF-M15-06 Owner/Admin control center
+Administrative actions require explicit privileged actor, audit event, policy check and safe rollback where applicable. AI never grants itself admin authority.
+## RF-M15-07 Self-evolution
+Observe gap→hypothesis→candidate→static checks→sandbox→tests→benchmark→security/policy→canary→promote/reject→monitor→rollback. Production self-modification without gates is prohibited.
+
