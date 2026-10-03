@@ -77,3 +77,16 @@ Resume offers a real event/state change since last observed checkpoint; otherwis
 ## RF-M12-04 Living Object→Event
 Only validated object mutations can schedule an event. Scheduling is idempotent and cancellable.
 
+
+
+# D100K — RESTORED EVENTS TECHNICAL CONTRACTS
+
+`Event={id,title,startsAt,endsAt,status:'draft'|'scheduled'|'live'|'completed'|'cancelled'|'expired'|'archived',creatorId,visibility:'public'|'community'|'private',rulesHash}`
+`Participation={eventId,userId,status:'joined'|'withdrawn'|'completed',idempotencyKey}`
+
+Operations: createEvent, updateEventDraft, publishEvent, joinEvent, withdrawEvent, cancelEvent, completeEvent, listUpcomingEvents.
+
+Persist UTC timestamps; timezone affects presentation only. Recurring events use explicit occurrence IDs. Reminder jobs are keyed by event/user/occurrence/channel. AI is advisory until an authorized publish action.
+
+D100K: DST/timezone boundaries, recurring occurrence, duplicate join/withdraw, stale client lifecycle, reminder retry, cancellation, community authorization and server outage.
+
