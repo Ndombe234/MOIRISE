@@ -83,3 +83,21 @@ Every active adaptation has immutable version metadata. Historical metrics are n
 ## D100K proof
 Candidate isolation, signal provenance, low-sample rejection, poisoned signal, stale version, canary regression, automatic rollback and recovery after rollback.
 
+
+
+# D100K — RESTORED ADAPTIVE RETENTION MECHANICS
+
+M13 owns the adaptive state used for:
+- World That Remembers;
+- hidden/discoverable routes;
+- evolving puzzles;
+- consequence branching;
+- one-problem/many-approaches recognition;
+- deterministic no-AI remix fallback.
+
+Adaptation is based on validated signals, not hidden psychological profiling. A no-AI deterministic path must exist for every mechanic that requires a degraded mode.
+
+A branch or world mutation always carries version, source-event refs, owner scope, visibility, recovery state and rollback semantics.
+
+D100K: poisoned signal, low sample, branch conflict, stale version, rollback, no-AI fallback, privacy boundary and mobile state restoration.
+
