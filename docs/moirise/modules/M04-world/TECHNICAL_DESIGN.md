@@ -141,3 +141,18 @@ CurrentContext → authorized WorldIntent → WorldProjection. The world receive
 country/city/street/building/unit/entrance/door must remain separate nodes; a coarse World view may consume only country/city.
 ## D100K tests
 Coarse-to-fine location enrichment; location correction; ambiguous place names; offline fallback; privacy redaction; provider-denied exact location; world-state cache invalidation.\n
+
+# D100K — RECOVERED FEATURE FABRICATION BINDING — M04
+## RF-M04-01 Personal evolving World
+World state changes only from validated signals/events. State mutation: observation→candidate consequence→validated world mutation→projection.
+Events: world.signal.accepted, world.mutation.committed.
+
+## RF-M04-02 Hidden/discoverable locations
+Hidden areas are authoritative world nodes with unlock condition and audit evidence. No fake discovery messages. Access is capability-checked.
+
+## RF-M04-03 Discovery Broadcast / Living Museum
+Broadcast candidates reference real Moments/World objects. Living Museum items require provenance and visibility. Ranking is M07-owned; M04 only provides eligible world artifacts.
+
+## RF-M04-04 Return-after-absence
+A return experience references a real prior state and a new valid continuation opportunity. It must not claim the world changed while the player was away unless an authoritative event actually occurred.
+
