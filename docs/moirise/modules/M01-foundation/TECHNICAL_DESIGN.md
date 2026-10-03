@@ -524,3 +524,19 @@ Performance profiles may lower asset/effect cost without changing domain behavio
 
 Browser evidence must cover at least 390x844 and 1440x900, plus a smaller-width overflow check.
 
+
+
+# D100K — RESTORED OWNER/RBAC TECHNICAL CONTRACT
+
+Logical contracts:
+`Role={id,code:'owner'|'admin'|'moderator'|'player',label}`
+`Permission={id,code,description}`
+`PlayerRole={playerId,roleId,grantedBy,createdAt}`
+`RolePermission={roleId,permissionId}`.
+
+`RoleController.grant(playerId, role, reason)` and `revoke(playerId, role, reason)` require server authorization and emit audit + role events. OWNER identity is resolved from the authenticated bootstrap state, never hard-coded.
+
+Direct client writes to role/permission tables are denied. Admin surfaces expose capability/dependency/provider configuration only to authorized roles.
+
+D100K: forged playerId, self-escalation, admin attempting owner escalation, revoked role, concurrent role mutation, stale role cache, audit failure and session expiry.
+
