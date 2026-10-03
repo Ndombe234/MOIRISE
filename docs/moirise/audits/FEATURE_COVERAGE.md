@@ -140,3 +140,21 @@ Coverage status rule remains: this is specification coverage, not implementation
 - No-key / no-provider behavior matrix: documented M15 AI
 - Historical provider and endpoint classification: audited from repository history
 - Runtime zero-provider verification: **implementation evidence required; documentation alone is not DONE**
+
+
+## D100K HISTORICAL RESTORATION AUDIT — 2026-10-03
+
+The audit covers historical product plans, historical AI specialist contracts, provider registry material, distributed worker/resource scheduler material, game factory/runtime material, and the fifteen pre-rebuild module specifications.
+
+Restoration status:
+- Historical requirements mapped to current canonical owner: YES.
+- Duplicate historical authority restored: NO.
+- 15 active PLAN.md files contain module-specific D100K recovery obligations: YES.
+- 15 active TECHNICAL_DESIGN.md files contain module-specific D100K recovery contracts: YES.
+- AI_MASTER_PLAN and AI_TECHNICAL_DESIGN contain the historical AI/provider/resource/worker/evolution contract family: YES.
+- Provider names/anonymous URL candidates preserved with unverified status: YES.
+- Real secrets restored: NO.
+- Runtime implementation of every contract: NOT CLAIMED; this remains a code/proof gate.
+
+A documentation check mark means contractual coverage, not runtime implementation.
+
