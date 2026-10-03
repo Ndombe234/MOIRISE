@@ -514,3 +514,13 @@ Route metadata is the single source for navigation, auth-intent preservation and
 
 D100K: boot, protected route, expired JWT, deep link, refresh, no-provider/no-AI, slow network, zero secret bundle, mobile and desktop evidence.
 
+
+
+# D100K — HISTORICAL UI TECHNICAL CONTRACT
+
+Visual behavior is implemented as reusable shell tokens/components. Active states must not depend solely on hover. Loading/error/unavailable states have explicit render branches. Optional provider failure is isolated from shell boot.
+
+Performance profiles may lower asset/effect cost without changing domain behavior. Reduced-motion media queries disable non-essential HUD animation.
+
+Browser evidence must cover at least 390x844 and 1440x900, plus a smaller-width overflow check.
+
