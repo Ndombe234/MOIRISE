@@ -305,3 +305,16 @@ Historical UI invariants retained:
 
 D100K browser proof: 320px/390x844/1440x900, keyboard/touch, reduced motion, long names, zero progress, unavailable provider, slow network and no horizontal overflow.
 
+
+
+# D100K — RESTORED OWNER / RBAC CONTRACT
+
+Canonical administrative roles from historical contracts: OWNER, ADMIN, MODERATOR, PLAYER.
+
+The initial OWNER is the already-existing authenticated owner account resolved at bootstrap; no email, UUID or identity is invented or hard-coded. Client input cannot self-assign a role.
+
+Role mutation:
+requester → authorizeRoleMutation → validateTarget → writeRole → audit → event.
+
+Only OWNER can grant/revoke ADMIN or MODERATOR unless an explicit policy says otherwise. ADMIN/MODERATOR permissions are explicit and narrower than OWNER. All privileged routes/actions re-check authorization server-side.
+
