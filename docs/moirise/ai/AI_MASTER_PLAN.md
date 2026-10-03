@@ -1647,3 +1647,22 @@ Provider, worker, Codex ou autre agent sont des mécanismes d'exécution faculta
 
 La suppression d'un provider, d'un worker ou d'un agent doit réduire une capacité d'exécution disponible sans supprimer l'identité ou le cerveau contractuel de MORISE.
 
+
+
+# D100K — HISTORICAL COVERAGE RESTORATION — AI PLAN
+
+## Canonical invariants restored
+- Une panne, quota, suppression ou indisponibilité d'un provider ne doit pas détruire les fonctions sociales ordinaires ni l'état métier autoritatif.
+- Plus de code ne crée pas physiquement de CPU/RAM/GPU. La croissance logicielle et la croissance de capacité sont deux axes distincts.
+- La capacité d'exécution peut croître par ressources locales supplémentaires et workers autorisés, sans changer les contrats de capability.
+- Aucun module ne hard-code une URL provider.
+- Une variable présente dans le navigateur n'est jamais une frontière de sécurité.
+- Les artefacts de jeux publiés restent utilisables sans le provider qui les a créés.
+- Les opérations à haut risque génèrent une trace d'audit.
+- Les modules consomment les contrats AI canoniques au lieu de recréer un second cerveau.
+- Les données privées/sensibles ne constituent jamais automatiquement une matière d'apprentissage globale.
+- Toute capacité AI doit être déclarée, versionnée, observable et testable.
+
+## D100K proof
+For each invariant: nominal path + provider outage + worker outage + unauthorized path + malformed output + retry/replay + evidence record.
+
