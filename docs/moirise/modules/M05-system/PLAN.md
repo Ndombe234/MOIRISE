@@ -141,3 +141,30 @@ Owner authority cannot be bypassed; duplicate commands cannot duplicate authorit
 
 ## 7. Completion
 This D100K section defines what must be provable. It does not claim implementation completion.
+
+
+# RECOVERED FIRST CONTACT + EXPERIENCE EVOLUTION FUSION — 2026-10-03
+
+## First Contact
+First Contact is the canonical first-session experience layer, not a new module.
+
+Target: approximately two minutes, with flexible termination when the meaningful discovery is reached.
+
+Canonical sequence:
+1. SYSTEM invitation with one immediate meaningful choice;
+2. small interactive objective or micro-world;
+3. real-time observation of permitted actions;
+4. auditable anomaly or reaction when an unusual valid action occurs;
+5. bounded adaptation of objective, rules or options;
+6. reveal and temporary, non-sensitive session descriptor;
+7. contextual continuation grounded in a real resulting state.
+
+Historical example dialogue may inspire presentation but is not an immutable script. The SYSTEM must not pretend to observe actions it did not observe. AI failure uses deterministic fallback.
+
+## Post-contact continuity
+Continuation may expose a real unanswered discovery, new path, changed object/world state, contextual mission, new playable experience, validated experiment, music/audio reaction or collective possibility. No fake anomaly, fake scarcity or fabricated personalization is allowed.
+
+## Evolution mechanics restored from historical V3
+M05 explicitly preserves these presentation/experience projections of the Evolution Engine: Trace; Living World; Hidden Possibilities; Unexplored Paths; Evolving Identity; MORISE Double; Fun & Surprise; Emergent Experience patterns; SYSTEM companion continuity.
+
+Durable lifecycle remains with the owner defined by the canonical architecture. M05 owns how eligible progression/evolution state is presented through SYSTEM and how progression-sensitive mutations are authorized.
