@@ -187,3 +187,14 @@ PARTIAL = missing applicable proof.
 BLOCKED = prerequisite unavailable.
 INCONCLUSIVE = evidence does not prove outcome.
 VERIFIED = all applicable evidence is fresh and successful.
+\n\n# D100K — CONTEXT/MEMORY INTEGRATION — M02 PLAYER
+## Owner scope
+M02 is the authoritative owner of durable Player facts: profile fields, preferences, privacy choices and explicitly retained memory.
+## Fact classes
+profile.basic, profile.preference, profile.appearance.opt_in, profile.age_declared, profile.life_context and user_selected_memory. Sensitive classes require explicit consent and purpose. Exact address defaults to session/task scope.
+## Required functions
+observePlayerFact(), validatePlayerFact(), mergePlayerFact(), supersedePlayerFact(), deletePlayerFact(), listAuthorizedPlayerMemory().
+## Merge rule
+Latest explicit correction supersedes the prior fact; unrelated facts remain intact. Partial location enrichment never replaces the parent hierarchy.
+## D100K tests
+Country→city→street→building→unit merge; correction; deletion; visibility; consent; cross-user isolation; stale-cache invalidation; SUPERSEDED retrieval rejection.\n
