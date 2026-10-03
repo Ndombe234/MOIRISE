@@ -3286,3 +3286,68 @@ AI_TECHNICAL_DESIGN.md remains HOW.
 No separate provider registry, AI brain, router, memory authority or evolution authority may be introduced as a competing canonical document.
 
 Generated task inventories are derived artifacts, not business authorities.
+
+
+# D100K — CONTEXT COMPREHENSION + MEMORY EXECUTION CONTRACT
+## AI-CONTEXT-001
+M15 is the AI orchestrator for a structured context system, not a free-text memory bot.
+
+### Mandatory execution graph
+USER_TURN
+→ language/segment analysis
+→ entity + attribute candidates
+→ coreference resolution
+→ canonicalization
+→ relation graph
+→ temporal classification
+→ sensitivity classification
+→ consent/policy
+→ conflict detection
+→ retrieval
+→ ContextPacket
+→ model reasoning
+→ tool proposal
+→ owner validation
+→ commit
+→ event-after-commit
+→ cache/index update.
+
+### AI-CONTEXT-002 — progressive enrichment
+The model must treat partial answers as partial state.
+If country is known and city is not, the ContextPacket represents country=KNOWN/city=UNKNOWN.
+When the user later says a city, the city node is linked to the active country rather than replacing the country.
+The same invariant applies to street/building/unit/entrance/door and to profile facts, preferences, current appearance and current task.
+
+### AI-CONTEXT-003 — provenance
+Every retrieved fact exposes its provenance and authority. USER_EXPLICIT is stronger than DERIVED. A provider-generated suggestion is never a user fact until independently confirmed.
+
+### AI-CONTEXT-004 — correction
+A correction creates a new fact/correction record and supersedes the previous claim according to policy. All derived projections and retrieval caches are invalidated.
+
+### AI-CONTEXT-005 — privacy
+The model only sees authorized fields. Exact location, sensitive appearance attributes and other high-sensitivity values are not included merely because they exist in storage. Provider routing applies the same filter.
+
+### AI-CONTEXT-006 — structured prompt
+Every capable AI task receives ContextPacket JSON-like structure rather than a single prose memory summary. Raw user text may be included only when necessary for the current task.
+
+### AI-CONTEXT-007 — adversarial memory
+Memory values are untrusted content. Instructions embedded in stored facts never override system/developer policy, tool authorization or owner boundaries.
+
+### AI-CONTEXT-008 — deterministic degradation
+When the AI provider is unavailable, deterministic extraction of country/city/obvious numeric fields and active references must still operate where feasible. Unknown remains UNKNOWN; no fabricated completion is permitted.
+
+### Required acceptance examples
+- multi-turn location enrichment;
+- profile preference enrichment;
+- appearance/tenue as time-bounded context;
+- explicit correction;
+- multilingual switches;
+- pronoun resolution;
+- deletion and retraction;
+- provider-redaction;
+- no-context cold start;
+- memory conflict requiring confirmation.
+
+### DONE evidence
+A capability is not DONE until ContextPacket fields, permissions, tests, browser acceptance, security evidence and owner commit proof are available on the current source revision.
+
