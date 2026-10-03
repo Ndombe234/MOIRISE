@@ -233,3 +233,19 @@ Tests: lineage integrity, branch merge, contributor removal, recap regeneration.
 ## RF-M03-04 Leave Something / Remix-me / collaborative media
 A contribution may be puzzle/object/message/sound/visual/scene/micro-story/rule. Publication contract requires owner, visibility and lineage. Collaborative media stores contributor chain and rights state.
 
+
+
+# D100K — RESTORED SOCIAL TECHNICAL CONTRACTS
+
+`Post={id:string,authorId:string,body:string,visibility:'public'|'followers'|'private',createdAt:string}`
+`Conversation={id:string,memberIds:string[],updatedAt:string,lastMessageId?:string}`
+`Message={id:string,conversationId:string,senderId:string,body:string,createdAt:string,clientNonce:string,status:'pending'|'sent'|'failed'}`
+
+Operations:
+`createPost, editPost, deletePost, addComment, toggleReaction, followPlayer, createConversation, sendMessage, markMessageRead, getConversationPage`.
+Retryable mutations require idempotency. Realtime subscriptions are scope-filtered to authorized conversations/visible social contexts. Conversations are paginated and never globally preloaded.
+
+Before each social mutation/send, server evaluates current block/report policy. Blocked relationships override client UI. Moderation deletion/rewriting requires explicit policy and audit path.
+
+D100K: offline send/retry/reconnect, duplicate clientNonce, message ordering, RLS/privacy, block/report, unauthorized realtime subscription, edit/delete authorization, mobile keyboard and public/private projection separation.
+
