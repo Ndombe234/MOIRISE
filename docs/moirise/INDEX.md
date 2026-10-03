@@ -98,3 +98,6 @@ Aucun troisième document AI ne devient une source de vérité.
 ## Context & Memory
 - transversal/CONTEXT_MEMORY_TECHNICAL_DESIGN.md — canonical D100K context, entity-resolution and memory contract.
 - ai/AI_TECHNICAL_DESIGN.md — M15 execution contract for ContextPacket and AI memory behavior.
+
+## Documentation traceability
+- PLAN_TO_TECHNICAL_MATRIX.md — preuve de correspondance entre plans actifs et conceptions techniques.
