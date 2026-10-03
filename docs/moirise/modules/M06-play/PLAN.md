@@ -170,3 +170,21 @@ Dynamic difficulty is permitted only when bounded by GameSpecification/rules; it
 ## D100K proof
 Unauthorized launch, missing/invalid package, version mismatch, runtime unavailable, duplicate result, dynamic difficulty bounds, save failure, cleanup/unmount, reconnect, worker loss and mobile/desktop Play.
 
+
+
+# D100K — RESTORED EXPERIENCE FAMILIES / CONSEQUENCE BRANCHING
+
+PLAY remains one primary entry surface. Historical experience families are retained as content patterns behind it:
+- Pulse: short skill/reaction/memory/rhythm challenges;
+- Drift: small exploration micro-worlds;
+- Forge: creation-oriented experiences;
+- Duel: asynchronous challenges;
+- Quest: progression-linked short missions;
+- World: larger spatial experiences when justified.
+
+The Player does not need to browse a directory. The selector can choose a real available experience or continuation according to Player state, context, device and time budget.
+
+Evolving puzzles may expose multiple valid solution paths. Consequence branches are versioned from real Player choices; no false branch state is presented.
+
+D100K: missing package, unavailable mode, branch replay, invalid solution, unsupported 3D device, async challenge continuation, share handoff and clean recovery.
+
