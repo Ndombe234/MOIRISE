@@ -126,3 +126,12 @@ A task cannot write another module's authoritative state. It must use an allowed
 
 ## 7. Production lock
 Unit tests alone never produce VERIFIED for a user-facing capability.
+\n\n# D100K — CONTEXT/MEMORY INTEGRATION — M08 GAME FACTORY
+## Owner scope
+M08 consumes structured creator intent and fabrication memory. User context is an input constraint, never an authorization shortcut.
+## Creation contract
+ContextPacket → CreativeBrief → GameSpecification → TaskGraph → validation. Every generated game keeps source/creator references and version lineage.
+## Memory safety
+Fabrication memory may store reusable technical patterns, not private personal data unless separately authorized.
+## D100K tests
+Incomplete intent; contradictory constraints; creator-memory isolation; prompt injection inside brief; deterministic fallback; generated-game provenance; rollback.\n
