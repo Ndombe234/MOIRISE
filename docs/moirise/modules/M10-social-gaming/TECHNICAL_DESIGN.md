@@ -103,3 +103,17 @@ Milestone projection derives from authoritative attempts/events. Never synthesiz
 ## RF-M10-04 Asynchronous community challenge
 Challenge family can persist without simultaneous players. Anti-abuse limits, deduplication and lineage are mandatory.
 
+
+
+# D100K — RESTORED SOCIAL GAMING TECHNICAL CONTRACTS
+
+`Challenge={id,gameId,creatorId,targetId?,rulesHash,expiresAt}`
+`ScoreSubmission={gameId,sessionId,playerId,score,stats,clientNonce}`
+`LeaderboardEntry={playerId,score,rank,seasonId}`
+
+Only validated M06/M09 evidence may feed score authority. Server checks package/version/rules hash/session/timing/identity/nonce. Invalid or suspicious results are rejected/quarantined. Leaderboards use deterministic ordering, stable tie-breakers, pagination and explicit season/rules versions.
+
+AI matchmaking is optional; deterministic fallback is required. Spectator mode is available only to games declaring it.
+
+D100K: forged score, duplicate nonce, stale rules, expired challenge, block/privacy restriction, season transition, ties, spectator permission and AI outage.
+
