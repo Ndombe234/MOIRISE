@@ -85,3 +85,10 @@ No task owned by M10 may silently take authority from another module. Cross-modu
 
 ## 6. Production lock
 Tests passing without applicable browser/mobile/security/resilience/production proof leave the task non-VERIFIED.
+\n\n# D100K — CONTEXT/MEMORY INTEGRATION — M10 SOCIAL GAMING
+## Owner scope
+M10 owns social challenge state. Context can personalize challenge framing, never alter authoritative outcomes.
+## Party context
+PartyAIContext contains only participant facts authorized for the challenge. Private profile/memory fields remain excluded.
+## D100K tests
+Participant isolation, stale member context, opt-out, challenge replay, invitation privacy, contradictory preferences, result integrity.\n
