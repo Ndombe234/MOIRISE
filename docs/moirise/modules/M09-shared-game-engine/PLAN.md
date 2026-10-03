@@ -120,3 +120,22 @@ Les allocations peuvent être locales ou distribuées, mais M09 ne traite jamais
 
 Lorsqu'un runtime/worker dépasse son budget ou disparaît, M09 applique le protocole de lease/recovery approprié : DEGRADED, PAUSED, TERMINATED ou RESTART, sans contournement silencieux des limites.
 
+
+
+# D100K — HISTORICAL CONTRACT RESTORATION — M09 SHARED GAME ENGINE
+
+## Restored exact runtime contracts
+`RuntimeLimits={maxEntities,maxAssetBytes,maxSessionMs,maxSaveBytes,maxSimulationHz}`
+`GamePermissions={network:'none'|'approved',storageMb,fullscreen,input[]}`
+`GameManifest={gameId,engineVersion,mode:'2d'|'3d',entryScene,assets[],capabilities[],limits,saveSchema,multiplayer?}`
+`GameSession={id,gameId,playerId,startedAt,state:'loading'|'running'|'paused'|'ended'|'failed'}`
+`GamePackage={id,version,engine,manifest,entry,assets[],integrityHash,signature,permissions}`
+
+Stable runtime operations:
+`verifyGamePackage`, `createRuntimeSession`, `saveGameState`, `reportRuntimeEvent`, `finalizeGameSession`, `terminateRuntime`.
+
+Subsystems are capability/lazy-loaded. 2D must not load unused 3D/multiplayer systems. Deterministic simulation uses a declared seed when reproducibility is required. Supported adapter families include Canvas/WebGL/Phaser for 2D and Three.js/Babylon/PlayCanvas/WebGL/WebGPU for 3D, behind the common runtime bridge.
+
+## D100K proof
+Manifest tamper, package hash/signature, save schema mismatch, deterministic seed, forbidden API/network, filesystem escape, CPU/RAM/entity/session limits, memory release, crash/restart, worker loss and mobile/desktop runtime.
+
