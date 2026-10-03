@@ -80,3 +80,22 @@ Validated contribution lineage may support reward attribution across original cr
 
 ## Monetization safeguards
 Any future economic activation remains free-first and policy-controlled, with fraud/anomaly checks, reconciliation and explicit owner/admin oversight. Provider output or AI recommendation never writes the economic ledger.
+
+
+# D100K — HISTORICAL CONTRACT RESTORATION — M14 COLLECTION / REWARD
+
+## Restored contracts
+`Item={id,definitionId,ownerId,quantity,acquiredAt}`
+`EquipState={playerId,slot,itemId,updatedAt}`
+`RewardGrant={id,playerId,source,sourceId,ruleVersion,itemDefinitionIds[],idempotencyKey}`
+
+Item definitions and rarity/reward rules are immutable/versioned. Reward transactions record source event, source ID, rule version, provenance and timestamp. The client cannot mint items, alter quantity or manipulate rarity.
+
+Canonical reward sequence:
+`validated source event → eligibility → reward rule → transaction → inventory update → reward history → notification`.
+
+Collection metadata remains functional when an image provider is unavailable.
+
+## D100K proof
+Duplicate reward event, client mint attempt, quantity manipulation, rarity manipulation, stale rule version, rollback/transaction failure, provider outage and notification failure.
+
