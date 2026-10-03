@@ -291,3 +291,30 @@ Forbidden: hidden owner transfer, unauthorized mutation, silent privacy expansio
 Proof must cover nominal, empty/no-data, failure, degraded/unavailable, replay, concurrency where relevant, refresh/reopen, permissions, mobile and desktop, and the module-specific invariant.
 
 Impact path: M15 → consumers → contracts/events → projections → routes/UI → AI capabilities → tests → security/resilience. Unknown impact remains UNRESOLVED.
+
+
+# RECOVERED AI / CREATOR / EXECUTION FUSION — 2026-10-03
+
+## First-session orchestration
+M15 may orchestrate First Contact through the existing capability registry, but M05 owns SYSTEM/progression presentation and module owners own durable state. First-session behavior remains functional without AI.
+
+## MORISE Moment / Relay / Living Stories
+M15 may detect Moment candidates from permitted signals; generate artifact and narrative proposals; propose Relay transformations; generate Living Story representations; and evaluate candidate quality/provenance. M03 and the relevant domain owner perform authoritative commit.
+
+## Creation Runtime + Creation Tools
+Preserved tool families include code generation/inspection/modification/refactoring; 2D/3D scene/world construction; assets/characters/animation/materials/lighting/camera; input/collision/physics/rules/state; UI/HUD/audio; persistence/networking/multiplayer adapters; build/execute/test/diagnose/correct/optimize; performance profiling. Tools are permissioned, versioned, observable and sandboxed.
+
+## World Agents
+M15 may orchestrate scoped World Agents for playtest, opponent/teammate simulation, exploration, event facilitation, validation and balancing. Agent observations are evidence candidates only; agents never become a second unrestricted AI authority.
+
+## On-device / zero-API execution
+M15 may route eligible tasks to local/browser/on-device execution, cache, trusted worker, optional community worker, approved provider, then degraded fallback. Device capability detection, memory/CPU budgets, local model lifecycle and UX safeguards are mandatory. External providers remain optional instruments.
+
+## Collective Intelligence
+M15 preserves the Collective Intelligence Engine mechanisms: Resonance; Proof of Discovery; Collective Lab; Knowledge Conflicts; Skill Transfer; Adaptive Roles; World Simulations; Contribution Intelligence. M15 orchestrates these capabilities but does not replace M13, M11, M12, M05 or M14 domain ownership.
+
+## Creator Economy
+M15 may orchestrate creator eligibility analysis, staged eligibility, contribution-chain analysis, economic capability proposals, fraud/anomaly analysis and owner/admin alerts. M14 and domain owners remain authoritative for economic/reward mutation and publication.
+
+## Operational control
+Owner/Admin Control Center behavior is constrained by M01 security and explicit administrative policy. M15 may provide analysis and alerts but cannot become an unrestricted superuser.
