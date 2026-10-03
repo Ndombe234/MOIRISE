@@ -281,3 +281,13 @@ D100K means the feature definition is machine-checkable. It does not mean the co
 ## D100K proof
 Other-player mutation denial, privacy-policy enforcement at persistence layer, malformed avatar, invalid locale, deletion scope, retry/duplicate mutation, session expiry, audit event and mobile profile flow.
 
+
+
+# D100K — RESTORED DEVICE CAPABILITY CONTRACT
+
+M02 owns the Player device capability profile used for adaptive execution. It may record non-sensitive operational capability data such as device class, RAM class, WebGPU/WASM/WebCodecs availability, browser family and a bounded capability map.
+
+A device profile must not be interpreted as consent to use device resources. Resource sharing requires the separate worker opt-in flow defined by M15.
+
+D100K: stale device profile, spoofed capability, privacy boundary, unsupported locale, low-memory fallback and update idempotency.
+
