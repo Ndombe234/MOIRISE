@@ -291,3 +291,16 @@ A device profile must not be interpreted as consent to use device resources. Res
 
 D100K: stale device profile, spoofed capability, privacy boundary, unsupported locale, low-memory fallback and update idempotency.
 
+
+
+# D100K — RESTORED MEMORY VAULT OWNER CONTRACT
+
+M02 owns Player identity-linked private memory references, while M03 owns social publication. The Memory Vault is private by default.
+
+Lifecycle:
+SELECT → VALIDATE → UPLOAD → METADATA → INDEX → READY → optional ORGANIZE → optional SHARE → DELETE.
+
+Media may be photo/video/audio/text/creation/Moment/Card according to current contracts. STORE, ANALYZE, SHARE and TRAIN are independent permissions. Private media is never silently sent to external models or promoted to global training memory.
+
+D100K: upload cancellation, invalid MIME/size, checksum mismatch, duplicate object, deletion propagation, revoked share and provider outage.
+
