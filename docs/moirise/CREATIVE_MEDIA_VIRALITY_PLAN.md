@@ -39,7 +39,7 @@ Every eligible public creation can expose a compact action surface:
 The SYSTEM chooses which secondary action is most relevant instead of displaying every possible action simultaneously.
 
 Example:
-A user watches an Otaku Reel → SYSTEM identifies an available creative action → “Transform this idea” → user creates a materially different image/video/song → publishes → original inspiration is credited when applicable → discovery can show both works → new viewers enter the loop.
+A user watches an interest-based Reel → SYSTEM identifies an available creative action → “Transform this idea” → user creates a materially different image/video/song → publishes → original inspiration is credited when applicable → discovery can show both works → new viewers enter the loop.
 
 ## 4. Reels / short video
 Reels are short-form vertical video experiences with:
