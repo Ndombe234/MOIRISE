@@ -99,3 +99,11 @@ Collection metadata remains functional when an image provider is unavailable.
 ## D100K proof
 Duplicate reward event, client mint attempt, quantity manipulation, rarity manipulation, stale rule version, rollback/transaction failure, provider outage and notification failure.
 
+
+
+# D100K — RESTORED RARE OBJECTS / TRUTHFUL SCARCITY
+
+Rare collection objects remain valid only when rarity and acquisition are derived from authoritative definitions/rules. The Player may share a real collection card, but the system cannot invent scarcity, popularity, ownership or acquisition history.
+
+D100K: duplicate acquisition, rarity spoof, client mint attempt, stale definition, provider image outage, deleted source event and truthful share reconstruction.
+
