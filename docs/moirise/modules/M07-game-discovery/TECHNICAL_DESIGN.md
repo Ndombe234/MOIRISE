@@ -117,3 +117,12 @@ A task cannot write another module's authoritative state. It must use an allowed
 
 ## 7. Production lock
 Unit tests alone never produce VERIFIED for a user-facing capability.
+\n\n# D100K — CONTEXT/MEMORY INTEGRATION — M07 GAME DISCOVERY
+## Owner scope
+M07 consumes authorized interest/context signals for discovery. It must distinguish explicit preferences from inferred recommendation signals.
+## Ranking input classes
+EXPLICIT_PREFERENCE, RECENT_ACTION, SOCIAL_SIGNAL, WORLD_CONTEXT, SYSTEM_CONTEXT. Sensitive profile facts are excluded by default.
+## Explainability
+Each recommendation keeps reason codes and source class; raw private memory is never shown as ranking explanation.
+## D100K tests
+Cold start; preference update; sensitive-field exclusion; stale signal expiry; multilingual search; recommendation diversity; cache invalidation.\n
