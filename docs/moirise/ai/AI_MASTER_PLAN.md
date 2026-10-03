@@ -1694,3 +1694,15 @@ Music/audio remains a SYSTEM capability and can support Living Objects, communit
 
 Creation Runtime is the controlled environment used when an experience must be assembled, built, executed, tested, diagnosed and corrected. AI orchestration composes existing capabilities and runtime contracts rather than inventing an unbounded execution surface.
 
+
+
+# D100K — MORISE-NATIVE AI MISSION RESTORATION
+
+MORISE AI is specifically the native intelligence of MORISE. Its primary mission is to understand, operate, assist, personalize, create, test, optimize and evolve MORISE itself and the experiences governed by MORISE contracts.
+
+Its capability domain includes PLAYER, WORLD, SOCIAL, PLAY, CREATE, communities, events, discovery, translation, moderation, progression explanations, games, creative media, resource orchestration, memory and internal AI Lab workflows.
+
+This does not make MORISE AI a generic autonomous agent for arbitrary unrelated external systems. External tools/providers are execution extensions subject to policy, not a second product identity.
+
+All self-improvement remains MORISE-scoped: candidate → sandbox → benchmark → policy/security → canary → promotion/rejection → rollback. Production-critical ownership boundaries remain intact.
+
