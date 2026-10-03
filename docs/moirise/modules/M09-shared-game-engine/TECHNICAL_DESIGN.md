@@ -134,3 +134,20 @@ Après publication d'un GameBuild valide, aucun provider de génération n'est r
 
 resource overrun, worker loss, incompatible worker version, malicious generated artifact, undeclared network, filesystem escape, secret scan, 2D/3D memory pressure, deterministic restart, provider outage during fabrication versus runtime.
 
+
+
+# D100K — RESTORED SHARED RUNTIME TECHNICAL CONTRACTS
+
+`RuntimeLimits={maxEntities,maxAssetBytes,maxSessionMs,maxSaveBytes,maxSimulationHz}`
+`GamePermissions={network:'none'|'approved',storageMb,fullscreen,input[]}`
+`GameManifest={gameId,engineVersion,mode:'2d'|'3d',entryScene,assets[],capabilities[],limits,saveSchema,multiplayer?}`
+`GameSession={id,gameId,playerId,startedAt,state:'loading'|'running'|'paused'|'ended'|'failed'}`
+`GamePackage={id,version,engine,manifest,entry,assets[],integrityHash,signature,permissions}`
+
+Operations:
+`verifyGamePackage`, `createRuntimeSession`, `saveGameState`, `reportRuntimeEvent`, `finalizeGameSession`, `terminateRuntime`.
+
+Subsystems load lazily. Reproducible simulation uses an explicit seed. Runtime adapters expose common mount/resize/input/pause/resume/destroy/diagnostics semantics. Runtime quotas are enforced outside untrusted game code.
+
+D100K: hash/signature mismatch, save corruption, forbidden network, filesystem escape, memory/CPU/entity/time overrun, deterministic restart, crash, worker loss and mobile/desktop runtime.
+
