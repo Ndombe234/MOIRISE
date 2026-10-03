@@ -249,3 +249,14 @@ Before each social mutation/send, server evaluates current block/report policy. 
 
 D100K: offline send/retry/reconnect, duplicate clientNonce, message ordering, RLS/privacy, block/report, unauthorized realtime subscription, edit/delete authorization, mobile keyboard and public/private projection separation.
 
+
+
+# D100K — PRIVATE TRANSLATION TECHNICAL CONTRACT
+
+Private message flow:
+`message → member/privacy authorization → target locale → cache lookup → browser/local translation → authorized fallback → render`.
+
+The original message remains canonical and in its original language. Translation is a derived projection. A translation outage never blocks the original message. Translation permission follows the conversation privacy boundary.
+
+D100K: unauthorized translation read, provider leak, cache cross-user contamination, source deletion, locale mismatch and offline fallback.
+
