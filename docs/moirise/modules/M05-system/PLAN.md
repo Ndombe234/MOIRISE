@@ -192,3 +192,17 @@ M05 may present a contextual SYSTEM experience when a real eligible signal exist
 ## D100K proof
 Exact threshold boundaries, concurrent grants, duplicate events, forged payloads, ruleset upgrades, rollback, notice grouping/read state, reconnect, mobile HUD, provider outage and no-AI fallback.
 
+
+
+# D100K — RESTORED SYSTEM COMPANION / MEMORY CARD BEHAVIOR
+
+A validated meaningful event may become a Personal Moment or Shareable Memory Card. Examples include a first discovery, surprising world reaction, unusual creation or validated challenge result. The artifact preserves provenance and visibility.
+
+SYSTEM companion continuity may surface selected persisted memories, propose a follow-up experiment or explain progression. It must never fabricate a past interaction.
+
+A Player may leave something for a future Player: puzzle, object, message, sound, scene, micro-story, challenge or permitted rule modification. Attribution and privacy are mandatory.
+
+Future-return prompts require a real persisted backing state and remain dismissible.
+
+D100K: fabricated-memory attempt, deleted source, privacy mismatch, stale reference, unauthorized share, duplicate card and no-AI deterministic presentation.
+
