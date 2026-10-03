@@ -206,3 +206,13 @@ Future-return prompts require a real persisted backing state and remain dismissi
 
 D100K: fabricated-memory attempt, deleted source, privacy mismatch, stale reference, unauthorized share, duplicate card and no-AI deterministic presentation.
 
+
+
+# D100K — RESTORED SYSTEM PRESENTATION CONTRACT
+
+SYSTEM is the central orchestration/presentation layer, not a permanent chatbot window. It may appear through contextual cards, status changes, short messages, suggestions, reactions, discovery moments and Play transitions.
+
+Progressive disclosure prevents UI overload. SYSTEM messages are grouped/rate-limited by policy; low-value interactions do not generate constant text spam. Internal capabilities appear only when a real condition, event, availability state or contextual usefulness justifies them.
+
+D100K: message flood, repeated click, unavailable capability, long text, mobile HUD and reduced-motion presentation.
+
