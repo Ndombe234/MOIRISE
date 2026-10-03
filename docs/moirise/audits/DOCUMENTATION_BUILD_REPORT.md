@@ -133,3 +133,11 @@ The historical material was merged into existing PLAN.md and TECHNICAL_DESIGN.md
 
 This is documentation/architecture completion. Runtime implementation of these contracts remains a separate completion gate.
 
+
+
+## D100K SECOND-PASS RESTORATION — 2026-10-03
+
+A second-pass differential review compared historical module contracts against current PLAN + TECHNICAL_DESIGN pairs and restored low-coverage contracts including exact data structures, action sets, idempotency rules, UTC/occurrence semantics, runtime limits, worker trust controls, provider verification fields, async challenge behavior, adaptive rollback, collection integrity and AI evolution safety.
+
+The remaining textual differences are intentional consolidation/renaming where the behavior is preserved under a current owner. No historical document is reactivated as an authority.
+
