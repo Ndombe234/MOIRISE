@@ -295,3 +295,26 @@ Lineage must preserve: original event; narrative interpretation; Player transfor
 M03 also preserves Leave Something for the Next Player; Remix-me on eligible public/shared creations; creator attribution and creative lineage; collaborative media/music contribution chains; contextual discovery broadcast; optional sharing driven by meaningful outcomes.
 
 Private content never becomes public merely because it enters a Moment, Relay or Living Story pipeline.
+
+
+# D100K — HISTORICAL CONTRACT RESTORATION — M03 SOCIAL
+
+## Restored actions
+`createPost`, `editPost`, `deletePost`, `addComment`, `toggleReaction`, `followPlayer`, `createConversation`, `sendMessage`, `markMessageRead`, `getConversationPage`.
+
+Actions with retryable side effects require idempotency. Realtime subscriptions remain scope-filtered to authorized conversations/public social contexts. Conversations are paginated; there is no preload of all private conversations.
+
+## Restored visibility/security
+- Messages remain contextual, not a permanent seventh navigation door.
+- Block/report policy is evaluated server-side before every social mutation or message send.
+- Moderation actions must have an explicit policy/audit path.
+- Offline send/retry/reconnect must not duplicate messages.
+
+## Canonical contracts
+`Post={id,authorId,body,visibility,createdAt}`
+`Conversation={id,memberIds,updatedAt,lastMessageId?}`
+`Message={id,conversationId,senderId,body,createdAt,clientNonce,status:'pending'|'sent'|'failed'}`
+
+## D100K proof
+RLS/privacy, block override, duplicate send, ordering, reconnect, pagination, unauthorized realtime subscription, delete/edit authorization, mobile keyboard and evidence.
+
