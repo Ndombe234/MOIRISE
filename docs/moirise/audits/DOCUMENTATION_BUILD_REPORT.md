@@ -103,3 +103,7 @@ La documentation couvre maintenant le stockage et l'apprentissage du savoir-fair
 Le pipeline distingue explicitement connaissance candidate, connaissance validée, connaissance expirée/invalide et artifact de jeu. Un build ou une sortie d'agent n'est pas automatiquement une nouvelle connaissance.
 
 Un test d'indépendance par rapport à Codex est défini : désactivation de Codex, conservation du corpus validé, récupération d'un pattern connu et tentative de fabrication avec les execution targets restantes.
+
+## 2026-10-03 — Context Intelligence and recovered-feature D100K propagation
+The 15 module TECHNICAL_DESIGN files now contain two explicit additions: (1) Context/Memory D100K integration and (2) recovered historical feature fabrication bindings. The canonical transversal contract is docs/moirise/transversal/CONTEXT_MEMORY_TECHNICAL_DESIGN.md and AI execution is bound through ai/AI_TECHNICAL_DESIGN.md.
+This establishes documentation-level D100K coverage. It does not claim that the M01–M15 runtime is implemented or that any module has runtime DONE evidence.
