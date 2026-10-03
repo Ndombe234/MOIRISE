@@ -319,3 +319,34 @@ DISCOVER CAPACITY → REGISTER RESOURCE → AUTHENTICATE → CAPABILITY CHECK �
 
 Les anciens documents AI/worker/resource/evolution sont désormais absorbés par les PLAN.md et TECHNICAL_DESIGN.md canoniques. Ils ne constituent plus des autorités séparées. Toute nouvelle évolution de ces mécanismes se fait dans le couple PLAN + TECHNICAL_DESIGN du owner concerné.
 
+
+
+# D100K — RESTORED RETENTION / EXPERIENCE ECONOMY COVERAGE — 2026-10-03
+
+The infrastructure-light retention mechanics found in historical documentation are canonical capabilities, not new modules.
+
+## Ownership and exact mechanics
+
+| Mechanic | Primary owner | Required behavior |
+|---|---|---|
+| World That Remembers | M04/M13 | Validated Player actions can alter versioned world state; the world never claims a change that was not persisted. |
+| Evolving Puzzles | M06/M13 | A puzzle can expose multiple valid solution branches; branch state is deterministic/versioned and recoverable. |
+| Hidden/Discoverable Map Areas | M04/M13 | Areas unlock only from real discovery conditions; no fabricated secret locations or fake unlock state. |
+| No-AI Deterministic Remix | M13/M15 | Validated inputs can be remixed using deterministic rules when AI is unavailable; lineage remains intact. |
+| Async Community Challenges | M10 | A challenge persists independently of simultaneous presence; target/result rules are explicit and auditable. |
+| Distributed Community Secrets | M11/M13 | A secret can require contributions across Players; private data is never exposed merely to solve the collective secret. |
+| Consequence Branching | M06/M13 | Real choices can lead to versioned consequences and reversible recovery where designed. |
+| Personal/Shareable Memory Cards | M05/M03 | Cards derive from real events/creations and respect visibility/provenance. |
+| Rare Objects | M14 | Rarity is explicit and auditable; no fake scarcity or fabricated acquisition history. |
+| Personal Moment | M05 | A meaningful validated event can become a compact Moment artifact. |
+| Leave Something for the Next Player | M05/M10 | Puzzle/object/message/sound/scene/challenge/rule contribution is persisted with attribution and policy. |
+| Creation → World | M08/M04 | A validated creation may become a world object/scene without losing source lineage. |
+| Community Music / Collaborative Media | M03/M11/M15 | Each contribution is versioned, attributable and permission-scoped. |
+| One Problem / Many Approaches | M13 | Equivalent valid solution classes may be recognized without ranking human worth. |
+
+## Infrastructure-light invariant
+A new experience must reuse existing storage, event, artifact, runtime and memory infrastructure whenever possible. NEW EXPERIENCE ≠ NEW INFRASTRUCTURE.
+
+## D100K proof
+For every mechanic: source event → eligibility → state mutation → lineage → visibility → event → projection → recovery → no-AI fallback → tests → browser/mobile evidence.
+
