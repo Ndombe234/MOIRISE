@@ -86,3 +86,14 @@ Patterns such as What-If, Hidden Rule, Mutation, Role Inversion or Player Labora
 ## RF-M13-05 Missions From Reality
 A mission can reference a real validated player action/event and expose a reversible next action. No false claim about external reality.
 
+
+
+# D100K — RESTORED ADAPTIVE WORLD TECHNICAL CONTRACTS
+
+`AdaptationCandidate={id,target,changes,reasonRefs[],createdBy,version}`
+`AdaptationDecision={candidateId,status:'rejected'|'approved'|'canary'|'active'|'rolled_back',baseline,metrics,rollbackThreshold}`
+
+Only aggregate authorized signals enter adaptation. Immutable version metadata protects historical measurement. Low-sample, poisoned, stale, conflicting or unauthorized candidates are rejected. Canary regression invokes rollback to the previous known-safe version.
+
+D100K: source provenance, low-sample gate, data poisoning, stale version, canary regression, unauthorized activation, rollback and rollback recovery.
+
