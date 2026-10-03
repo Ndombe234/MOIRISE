@@ -117,3 +117,11 @@ Events are surfaced contextually through Home, Communities, Play and SYSTEM; the
 
 Recurring occurrences have explicit IDs used for participation/reminder idempotency.
 
+
+
+# D100K — EXPLICIT EVENT TIME / SURFACE RESTORATION
+
+All event behavior is deterministic across timezone changes, retries and reconnects. The contextual event surface appears through Home, Communities, Play and SYSTEM. It never becomes a permanent global navigation door.
+
+D100K: UTC persistence, occurrence IDs, stale-client reconciliation and contextual rendering.
+
