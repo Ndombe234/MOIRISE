@@ -152,3 +152,18 @@ Unknown impact is UNRESOLVED, never assumed safe.
 
 ## 7. Completion
 D100K means the feature definition is machine-checkable. It does not mean the code is already fabricated.
+
+
+# RECOVERED WORLD / EXPERIENCE ECONOMY FUSION — 2026-10-03
+
+## Personal evolving world
+M04 preserves the World-facing projection of a real personal world state: environments, objects, characters, narrative fragments, music identity, visual identity, unlocked interaction patterns, Living Objects and contextual discoveries. Durable state remains owned by its canonical module; M04 presents only authorized projections and handoffs.
+
+## Asynchronous traces and discovery
+The World may expose a validated trace left by another Player, a discovery broadcast, a Living Museum item, a hidden area or an unexplored path when visibility and permissions allow. Encountering a trace never grants access to private data.
+
+## Return-after-absence
+When an eligible real state changed during the Player's absence, World may present the concrete consequence on return. It must never fabricate activity, messages, scarcity or social proof.
+
+## Continuation
+A World projection after First Contact can point to a real next possibility: changed world state, discovered path, playable experience, mission, object evolution or collective opportunity. The handoff is contextual and reversible.
