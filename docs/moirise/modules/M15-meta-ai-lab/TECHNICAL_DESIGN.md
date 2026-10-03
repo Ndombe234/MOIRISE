@@ -402,3 +402,48 @@ Administrative actions require explicit privileged actor, audit event, policy ch
 ## RF-M15-07 Self-evolution
 Observe gap→hypothesis→candidate→static checks→sandbox→tests→benchmark→security/policy→canary→promote/reject→monitor→rollback. Production self-modification without gates is prohibited.
 
+
+
+
+# HISTORICAL FUSION — M15 AI LAB — TECHNICAL DESIGN
+
+## ResourceEngine
+
+`ResourceProfile` doit représenter CPU, RAM, GPU/VRAM, storage, network, concurrency, timeout et locality. La réservation précède l'exécution lorsqu'une tâche est lourde ou distribuée.
+
+## WorkerRegistry / Scheduler
+
+`WorkerDescriptor` : workerId, version, status, trustState, capabilities, hardware, availableResources, maxConcurrency, heartbeat.
+
+`WorkerJob` : jobId, capability, payloadRef/hash, privacy/inputPolicy, resourceQuota, timeout, permissions, outputSchema, idempotency/signature.
+
+Sélection :
+capability → policy/trust → resource fit → health → quota → locality → queue/concurrency → optimization.
+
+Lease expiration permet le ré-assignement uniquement des tâches sûres/idempotentes.
+
+## EvolutionCandidate
+
+`EvolutionCandidate` contient baseline/proposed version, hypothesis, evidence, changed artifacts, tests, benchmarkBefore/After, security/policy status, canary state et rollback reference.
+
+Le pipeline est strictement :
+
+OBSERVE → GAP → CANDIDATE → STATIC → SANDBOX → TEST → SECURITY → BENCHMARK → POLICY → CANARY → PROMOTE/REJECT → MONITOR → ROLLBACK.
+
+## Safety boundary
+
+Generated code = untrusted artifact. Les sandbox/workers n'ont pas accès aux secrets production, permissions globales, RLS, SQL arbitraire ou réseau non autorisé.
+
+## Multimodal DAG
+
+Les capacités texte/image/vidéo/audio/musique/vision/traduction/code/jeu utilisent un graph de tâches versionné, avec ressources, dépendances, validators et provenance par node.
+
+## Evidence
+
+Chaque évolution ou job distribué produit une trace :
+requestId → target → resource reservation → execution → validation → outcome → artifact/result → event.
+
+## Acceptance
+
+M15 reste opérationnel avec zéro provider et zéro Community Worker. La perte d'un worker ou provider dégrade l'exécution disponible, pas le cerveau ni l'état métier.
+
