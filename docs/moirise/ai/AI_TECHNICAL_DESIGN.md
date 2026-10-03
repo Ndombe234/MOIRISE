@@ -4221,3 +4221,26 @@ A future-return item must reference a real event/challenge/creation stage/reward
 Every AI capability, worker job and evolution candidate must map:
 ACTOR → TRIGGER → PRECONDITIONS → INPUTS → CONTEXT SCOPE → AUTHORITY → RESOURCE BUDGET → ALGORITHM → EXECUTION TARGET → OUTPUT → VALIDATION → MUTATIONS → EVENTS → ERRORS → RECOVERY → SECURITY → OBSERVABILITY → TESTS → BROWSER/MOBILE → EVIDENCE → ROLLBACK/DISPOSITION.
 
+
+
+# D100K — RESTORED TRANSLATION / MEMORY VAULT / ASYNC JOB CONTRACTS
+
+## Translation
+`TranslationRequest={text,sourceLocale,targetLocale,contextClass,cacheKey,allowProvider}`
+`TranslationResult={text,sourceLocale,targetLocale,status:'completed'|'degraded'|'unavailable',provenance?}`
+`TranslationService.translate(request): Promise<TranslationResult>`
+
+Resolution order is local/browser deterministic resources → cached translation → authorized worker/local model → verified provider. A provider failure never destroys the original message/content. Private-message translation inherits M03 conversation authorization. Translation caches are derived data and never become source authority.
+
+## Memory Vault
+`MemoryItem={id,ownerId,mediaType,visibility,status,sourceRef?,capturedAt?,metadata,provenance}`
+`MemoryVaultService={createUploadSession,finalizeUpload,getMemory,deleteMemory}`
+`MediaRights={ownerId,licenseClass,allowStore,allowAnalyze,allowShare,allowTrain}`
+
+STORE, ANALYZE, SHARE and TRAIN remain four separate permissions. Memory deletion/revocation propagates to derived projections according to policy. A provider cannot acquire memory ownership by processing it.
+
+## Async Job
+`AsyncJob={jobId,ownerId,capability,status,priority,privacyClass,resourceRequirements,idempotencyKey,createdAt,expiresAt,resultRef?,errorCode?}`.
+
+Long-running creative, game, translation, build and evolution tasks use explicit job state. A queued/running job is never itself a successful business result. Cancellation, timeout, worker loss and provider outage have explicit terminal/retry states.
+
