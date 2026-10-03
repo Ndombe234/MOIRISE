@@ -105,3 +105,11 @@ Rare-object status is derived only from authoritative immutable definitions and 
 
 D100K: rarity spoofing, client mint, stale definition, duplicate grant, provider outage and source-event deletion.
 
+
+
+# D100K — EXPLICIT COLLECTION RULE RESTORATION
+
+Collection item definitions and rarity/reward rules are immutable/versioned. Source event, source ID, rule version, provenance and timestamp are mandatory reward evidence. Provider imagery is non-authoritative and has deterministic/degraded fallback.
+
+D100K: client mint prevention, rarity tampering, duplicate reward, provider outage and source-event revocation.
+
