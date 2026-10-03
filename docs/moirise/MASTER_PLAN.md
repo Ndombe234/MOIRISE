@@ -350,3 +350,20 @@ A new experience must reuse existing storage, event, artifact, runtime and memor
 ## D100K proof
 For every mechanic: source event → eligibility → state mutation → lineage → visibility → event → projection → recovery → no-AI fallback → tests → browser/mobile evidence.
 
+
+
+# D100K — RESTORED INTERNATIONALIZATION / CAPABILITY ORCHESTRATION
+
+## Canonical supported locale set
+`fr,en,hi,es,de,it,pt,ar,ja,ko,ru,tr,id,th,vi,pl,nl,ro,bn,ur`.
+
+Locale support is a product capability, not a new navigation area. Unsupported locale input falls back deterministically according to M01/M02 rules.
+
+## Cross-domain orchestration
+MORISE may compose mechanics from multiple domains internally — e.g. music + game + world + story + visual creation — without creating a new module or permanent button.
+
+Canonical loop:
+`INTENT → PLAN → CAPABILITY SELECTION → PARAMETERIZATION → EXECUTION → OBSERVATION → RESULT → ERROR/SUCCESS ANALYSIS → LESSON CANDIDATE → BENCHMARK → RETAIN/REVISE/REJECT`.
+
+The learning target is orchestration strategy, not uncontrolled production self-rewriting.
+
