@@ -3711,3 +3711,168 @@ Code is implementation.
 Tests/browser/security are proof.
 
 Therefore the canonical AI documentation is complete only when the AI behavior described in PLAN is represented in Technical Design with concrete state, schemas, ownership, tool contracts, privacy rules, failure behavior and acceptance tests.
+
+# 52. PROVIDER-INDEPENDENT AI CORE — TECHNICAL CONTRACT
+
+## 52.1 Hard invariant
+
+The MORISE AI Core MUST be executable without an external AI API, an API key, an OAuth token, a remote AI endpoint, a specific third-party provider, or a paid AI account.
+Provider adapters are optional execution extensions.
+
+## 52.2 Execution-mode contract
+
+```ts
+type ExecutionMode =
+  | "DETERMINISTIC_LOCAL"
+  | "ON_DEVICE"
+  | "CACHE"
+  | "TRUSTED_WORKER"
+  | "COMMUNITY_WORKER"
+  | "CLIENT_PROVIDER"
+  | "REMOTE_PROVIDER"
+  | "DEGRADED"
+  | "UNAVAILABLE";
+```
+
+The router MUST distinguish core execution from extension execution. Authoritative commits remain owned by module owners. A provider result can never directly mutate authoritative business state.
+
+## 52.3 Provider configuration contract
+
+```ts
+interface ProviderConfig {
+  providerId: string;
+  capabilityIds: string[];
+  enabled: boolean;
+  endpointRef?: string;
+  secretRef?: string;
+  publicConfigRef?: string;
+  authMode: "NONE" | "API_KEY" | "OAUTH" | "SIGNED_REQUEST" | "SERVICE_IDENTITY";
+  timeoutMs: number;
+  retryPolicy: RetryPolicy;
+  quotaPolicy: QuotaPolicy;
+  privacyClassesAllowed: string[];
+  fallbackCapability?: string;
+  healthCheck?: HealthCheckSpec;
+}
+```
+
+`secretRef` resolves through a server-side secret manager only. Its value MUST NOT enter source code, browser bundles, prompts, ContextPackets, logs, events, analytics payloads, or generated artifacts.
+
+## 52.4 Public configuration vs secret configuration
+
+Public browser configuration MAY contain values explicitly designed to be public, such as an application public URL or publishable client identifier.
+
+A value is NOT public merely because a provider calls it anonymous, anon, client, or public.
+
+`PUBLIC_CONFIG` → safe for browser exposure only after verification.
+`SECRET_CONFIG` → server/worker only.
+`AUTHENTICATED_PUBLIC_ENDPOINT` → endpoint may be public, authentication remains server-side.
+`SIGNED_URL` → short-lived and scope-limited.
+
+The term anonymous URL MUST NOT be interpreted as unrestricted endpoint or safe to hard-code.
+
+## 52.5 Secret resolver
+
+```ts
+interface SecretResolver {
+  resolve(secretRef: string, executionContext: ExecutionContext):
+    Promise<SecretHandle | SecretUnavailable>;
+}
+```
+
+Rules: browser code cannot resolve privileged secrets; capability policy authorizes each secret; adapters receive scoped secret handles; secret values never enter errors; rotation invalidates old versions; missing secret returns SECRET_UNAVAILABLE rather than crashing the application.
+
+## 52.6 Provider adapter
+
+```ts
+interface ProviderAdapter {
+  describe(): ProviderDescriptor;
+  health(ctx: HealthContext): Promise<HealthResult>;
+  execute(request: ProviderRequest): Promise<ProviderResult>;
+  normalizeError(error: unknown): NormalizedProviderError;
+  normalizeResponse(raw: unknown): ProviderResult;
+  cancel?(executionId: string): Promise<void>;
+}
+```
+
+The adapter owns transport details only. It does not own identity, memory, business state, permissions, progression, economy, or publication authority.
+
+## 52.7 Router decision
+
+```text
+REQUEST
+→ CAPABILITY RESOLUTION
+→ CORE PATH AVAILABLE?
+   ├─ YES → LOCAL/ON_DEVICE/CACHE/DETERMINISTIC
+   └─ NO
+      → OPTIONAL EXTENSION AUTHORIZED?
+         ├─ NO → DEGRADED/UNAVAILABLE
+         └─ YES → PROVIDER HEALTH + PRIVACY + QUOTA + AUTH
+                    → PROVIDER ADAPTER
+                    → VALIDATE
+                    → OWNER COMMIT
+```
+
+The router MUST NOT start by demanding a provider key.
+
+## 52.8 No-key behavior matrix
+
+| Condition | Required result |
+|---|---|
+| no provider key | use core/local path if applicable |
+| no provider configured | use core/local/degraded path |
+| invalid key | extension failure + fallback |
+| expired key | extension failure + fallback |
+| quota exhausted | retry/fallback/degraded |
+| provider timeout | normalized failure + fallback |
+| provider unavailable | fallback/degraded |
+| network unavailable | local/cache/offline path where supported |
+| all providers unavailable | Core remains alive; capability becomes explicit degraded/unavailable |
+| provider response invalid | validation failure; no authoritative commit |
+
+## 52.9 Retry/circuit-breaker
+
+Retries are adapter-level and bounded by timeout, maximum attempts, exponential backoff, retryable-status classification, circuit-open state, cooldown, and health recheck. Retries MUST NOT repeat non-idempotent owner mutations.
+
+## 52.10 Provider removal test
+
+A provider is removable when its adapter, secret references, and endpoint references can be disabled without breaking core tests; no UI/business module imports it directly; no authoritative state depends on its response; and affected capabilities return truthful degraded/unavailable state.
+
+## 52.11 Zero-provider test suite
+
+Mandatory architecture tests:
+
+BOOT_WITH_NO_PROVIDER_CONFIG
+BOOT_WITH_NO_PROVIDER_SECRETS
+CORE_CONTEXT_WITH_NO_PROVIDER
+CORE_MEMORY_POLICY_WITH_NO_PROVIDER
+CORE_POLICY_WITH_NO_PROVIDER
+PROVIDER_OUTAGE_DOES_NOT_BREAK_CORE
+INVALID_KEY_DOES_NOT_BREAK_CORE
+QUOTA_EXHAUSTION_DOES_NOT_BREAK_CORE
+NO_SECRET_IN_CLIENT_BUNDLE
+NO_SECRET_IN_LOGS
+NO_DIRECT_PROVIDER_CALL_FROM_MODULE_OWNER
+NO_FAKE_SUCCESS_WHEN_ALL_EXECUTION_PATHS_FAIL
+
+These are implementation gates, not documentation-only checkboxes.
+
+## 52.12 API-key independence vs model independence
+
+Provider independence does not mean MORISE must magically generate every possible modality without a model. It means the AI architecture itself does not belong to a provider, external inference is not mandatory, local/on-device/self-hosted execution may supply models, deterministic capabilities remain available without inference, and unsupported heavy capabilities return explicit unavailable/degraded state instead of pretending to work.
+
+`NO_API_DEPENDENCY` does not equal `NO_MODEL_DEPENDENCY`.
+
+## 52.13 Anonymous/public endpoint rule
+
+Any historical anonymous URL must be classified before implementation:
+
+`UNKNOWN` → `UNVERIFIED` → `VERIFIED_PUBLIC` → `VERIFIED_AUTHENTICATED` → `VERIFIED_SECRET` → `DISABLED`
+
+No endpoint moves to production merely because it appeared in an old document, screenshot, chat message, or generated configuration.
+
+## 52.14 Evidence required before provider activation
+
+For each provider: official documentation reference, exact endpoint, auth mode, request schema, response schema, quota/rate limits, timeout behavior, privacy/data destination, terms/licensing where applicable, health probe, adapter contract test, failure normalization, fallback, and last verification timestamp.
+
+A provider without this evidence remains UNVERIFIED and cannot be required by the Core.
