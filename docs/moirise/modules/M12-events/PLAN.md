@@ -109,3 +109,11 @@ M12 never shows an event as live without authoritative server state. AI event pl
 ## D100K proof
 Timezone boundary, recurrence occurrence, duplicate join/withdraw, reminder retry, stale client state, cancellation, server outage, community membership authorization and AI outage.
 
+
+
+# D100K — EXPLICIT EVENT SURFACE RESTORATION
+
+Events are surfaced contextually through Home, Communities, Play and SYSTEM; there is no permanent Events navigation door. Event lifecycle behavior is deterministic across timezones, retries and reconnects. The UI reconciles stale client state from authoritative server state and does not show an event as live without server confirmation.
+
+Recurring occurrences have explicit IDs used for participation/reminder idempotency.
+
