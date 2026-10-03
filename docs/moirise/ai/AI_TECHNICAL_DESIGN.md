@@ -4244,3 +4244,24 @@ STORE, ANALYZE, SHARE and TRAIN remain four separate permissions. Memory deletio
 
 Long-running creative, game, translation, build and evolution tasks use explicit job state. A queued/running job is never itself a successful business result. Cancellation, timeout, worker loss and provider outage have explicit terminal/retry states.
 
+
+
+# D100K — RESTORED CAPABILITY ORCHESTRATION TECHNICAL CONTRACT
+
+`CapabilityDescriptor={id,version,inputSchema,outputSchema,permissions,resourceRequirements,validationRequirements,failureModes,provenanceRequirements}`.
+
+Orchestration evidence stores capability selection, ordering, parameterization, execution target, observed result, error/success classification, lesson candidate and benchmark outcome.
+
+Cross-domain DAG example:
+`GAME_3D + WORLD + MUSIC + PHYSICS + EVALUATION`
+may be assembled under one request when each capability contract, resource profile, privacy class and validator is satisfied.
+
+Music/audio technical paths:
+`MUSIC_INTENT → BRIEF → GENERATION/LOCAL → RIGHTS/PROVENANCE → VALIDATION`
+and
+`PLAYER ACTION → MUSIC CHANGE → WORLD/GAME CHANGE → RESPONSE → EXPERIENCE`.
+
+Any external distribution path remains outside generation authority and requires explicit rights/license/provenance checks plus user/operator authorization.
+
+Creation Runtime is selected through an approved runtime manifest/sandbox contract. AI never executes arbitrary generated code outside the runtime boundary.
+
