@@ -146,3 +146,13 @@ Dynamic difficulty is bounded by GameSpecification/rules and never rewrites auth
 
 D100K: unauthorized launch, package mismatch, worker/runtime failure, duplicate result, save failure, dynamic difficulty bounds, cleanup, reconnect and mobile/desktop.
 
+
+
+# D100K — RESTORED PLAY EXPERIENCE-FAMILY TECHNICAL CONTRACT
+
+ExperienceFamily is a content classification, not a new module. A PlayEntry may declare Pulse/Drift/Forge/Duel/Quest/World metadata. Selection remains behind the single PLAY surface.
+
+ConsequenceBranch state stores branchVersion, sourceChoiceRef, parentStateRef, visibility and recovery status. Branch execution is validated by M09 and result authority remains M06.
+
+D100K: unsupported family, branch replay, stale branch version, no-AI fallback and async handoff.
+
