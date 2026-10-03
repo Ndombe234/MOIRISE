@@ -151,3 +151,11 @@ Subsystems load lazily. Reproducible simulation uses an explicit seed. Runtime a
 
 D100K: hash/signature mismatch, save corruption, forbidden network, filesystem escape, memory/CPU/entity/time overrun, deterministic restart, crash, worker loss and mobile/desktop runtime.
 
+
+
+# D100K — EXPLICIT RUNTIME RESOURCE RESTORATION
+
+Simulation frequency is configurable within the GameSpecification/runtime resource profile. Every reusable runtime primitive has a stable interface, direct tests and a documented reuse justification. Save data is namespaced by player/game/package version and falls back to the last valid snapshot after corruption.
+
+D100K: frequency overrun, resource enforcement, corrupted save, primitive contract regression and sandbox escape.
+
