@@ -273,3 +273,25 @@ Unknown impact is UNRESOLVED, never assumed safe.
 
 ## 7. Completion
 D100K means the feature definition is machine-checkable. It does not mean the code is already fabricated.
+
+
+# RECOVERED MOMENT / RELAY / LIVING STORIES FUSION — 2026-10-03
+
+## MORISE Moment
+M03 preserves the social publication/presentation side of meaningful Moments: candidate Moment from a real validated event; compact artifact/replay/reference; source event and provenance; optional share; privacy/visibility checks; recipient handoff to an underlying experience when allowed.
+
+Moment generation must never fabricate rarity, popularity or a result that did not occur.
+
+## MORISE Relay
+A shared Moment may expose one controlled transformation to another Player: change one eligible rule, objective, object, scene, music layer or behavior; record sourceRef and contributor; create a new branch/version; preserve original attribution; send the result into existing Social/Play/World contracts.
+Relay is contextual and does not create a new navigation surface.
+
+## Living Stories
+Validated chains of Moments, Relays and discoveries may be represented as dynamic narrative artifacts or interactive continuations. M03 owns social publication and audience permissions; M15 handles AI transformation/generation; domain owners remain authoritative for game, world and event state.
+
+Lineage must preserve: original event; narrative interpretation; Player transformation; resulting branch; contributors; permissions; version.
+
+## Experience-economy social primitives
+M03 also preserves Leave Something for the Next Player; Remix-me on eligible public/shared creations; creator attribution and creative lineage; collaborative media/music contribution chains; contextual discovery broadcast; optional sharing driven by meaningful outcomes.
+
+Private content never becomes public merely because it enters a Moment, Relay or Living Story pipeline.
