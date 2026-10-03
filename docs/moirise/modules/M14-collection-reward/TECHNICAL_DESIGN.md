@@ -84,3 +84,16 @@ Contribution chains resolve from source → transformation → reuse → audienc
 ## RF-M14-05 Reward safety
 All grants require an authoritative source event and are idempotent/reconcilable.
 
+
+
+# D100K — RESTORED COLLECTION/REWARD TECHNICAL CONTRACTS
+
+`Item={id,definitionId,ownerId,quantity,acquiredAt}`
+`EquipState={playerId,slot,itemId,updatedAt}`
+`RewardGrant={id,playerId,source,sourceId,ruleVersion,itemDefinitionIds[],idempotencyKey}`
+
+Item definitions and rarity/reward rules are immutable/versioned. Reward transactions carry source/provenance/rule-version evidence. Client cannot mint items, change quantity or manipulate rarity. Canonical reward sequence:
+validated source → eligibility → rule → transaction → inventory → history → notification.
+
+D100K: duplicate grant, client mint attempt, quantity/rarity manipulation, stale rule, transaction rollback, provider outage and notification failure.
+
