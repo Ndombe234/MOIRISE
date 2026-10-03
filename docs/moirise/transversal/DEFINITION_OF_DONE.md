@@ -73,3 +73,14 @@ When a changed contract has impacted dependents, DONE requires either:
 
 ## Context/Memory D100K gate
 A context-capable feature is DONE at documentation level only when its owner Technical Design binds to CONTEXT_MEMORY_TECHNICAL_DESIGN, defines authorized fields, privacy class, correction semantics, retrieval scope, adversarial tests and browser acceptance. Runtime DONE still requires actual implementation evidence.
+
+
+## Provider-independence gate
+For any AI capability declared part of the MORISE Core:
+- no external API is required to boot the Core;
+- no API key is required for Core operation;
+- provider outage, invalid credentials and quota exhaustion cannot break authoritative Core state;
+- no privileged secret reaches browser code, logs or prompts;
+- provider-specific capabilities have truthful degraded/unavailable behavior;
+- zero-provider tests are present and fresh;
+- runtime evidence, not documentation alone, proves independence.
