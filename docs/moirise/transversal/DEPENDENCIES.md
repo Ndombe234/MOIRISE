@@ -99,3 +99,16 @@ PENDING_DEPENDENCY / DEGRADED / MAINTENANCE / DISABLED / UNAVAILABLE / CANCELED 
 
 A dependency outage must degrade only the dependent execution path when a fallback exists. No optional provider/dependency may become an application startup prerequisite.
 
+
+
+# D100K — RESTORED DEPENDENCY/CAPABILITY STATE MACHINE
+
+Canonical optional-capability states:
+`PLANNED, IMPLEMENTED, PENDING_DEPENDENCY, AVAILABLE, CONFIGURED, AUTHORIZED, ENABLED, EXECUTING, VALIDATING, COMPLETED, FAILED, CANCELED, DEGRADED, MAINTENANCE, DISABLED, UNAVAILABLE`.
+
+A dependency may be required for one capability while remaining irrelevant to unrelated product functionality. Missing optional infrastructure must produce a deterministic degraded/unavailable state, not a blank screen.
+
+Configuration changes are owner/admin authorized, versioned and audited. No provider/worker may silently become required merely because its SDK is installed.
+
+D100K: missing dependency, health regression, invalid credentials, quota exhaustion, maintenance, disable/reenable, fallback and audit.
+
