@@ -188,3 +188,11 @@ Evolving puzzles may expose multiple valid solution paths. Consequence branches 
 
 D100K: missing package, unavailable mode, branch replay, invalid solution, unsupported 3D device, async challenge continuation, share handoff and clean recovery.
 
+
+
+# D100K — EXPLICIT PLAY RESOURCE RESTORATION
+
+Leaving a PlaySession triggers engine unmount and release of media/resources whenever possible. Dynamic difficulty remains subordinate to declared game rules and cannot change authoritative scoring.
+
+D100K: resource release evidence, difficulty-rule validation and leak/reconnect checks.
+
