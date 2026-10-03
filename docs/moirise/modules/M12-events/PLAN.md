@@ -77,3 +77,18 @@ Authority is unique; duplicate commands are idempotent; stale versions do not ov
 
 ## 7. Completion
 This section defines proof requirements, not implementation completion.
+
+
+# RECOVERED EVENT / SEASON / LOW-POPULATION FUSION — 2026-10-03
+
+## Seasons
+M12 may group real activities, discoveries, challenges, secrets, collection goals and collective events into bounded seasons with explicit start/end state and retrospective output. Absence does not create hidden punishment or irreversible loss.
+
+## Low-population World Events
+Events remain useful when population is small by using solo contribution, asynchronous participation, deterministic state and validated collective accumulation. M12 must not simulate a crowd to make a low-population event look populated.
+
+## Return-after-absence event continuation
+A Player returning after absence may receive a real event consequence, updated state or missed-but-available activity when such state exists. No fabricated urgency is allowed.
+
+## Emergence / Living Object conversion
+Validated Living Object outcomes may become event candidates through the existing owner handoff. M12 owns the event state only after its normal eligibility and authorization rules are satisfied.
