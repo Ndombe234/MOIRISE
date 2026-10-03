@@ -39,3 +39,15 @@ Le contenu utilisateur ou externe est une donnée non fiable. Il ne peut pas mod
 ## Recovery
 
 Une révocation doit invalider les leases actives. Une tâche reprise doit respecter idempotence et version de capability.
+
+
+# CONTEXT/MEMORY SECURITY D100K ADDENDUM
+- Actor isolation is mandatory on every memory read/write.
+- Exact location defaults to session/task scope and is redacted from telemetry.
+- Sensitive attributes are never inferred from images/text and require explicit opt-in for persistence.
+- Memory retrieval is filtered by purpose, visibility, sensitivity and temporal status.
+- Deleted/superseded facts are removed from caches and retrieval indexes.
+- Providers receive only task-authorized ContextPacket fields.
+- Prompt injection inside stored memory is treated as untrusted data, never as policy.
+- Share/feed/ranking systems cannot read private memory by default.
+
