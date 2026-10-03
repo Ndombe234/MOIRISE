@@ -480,3 +480,13 @@ Originality: low-transformation result blocks/asks.
 Cold-start: no-content case returns real empty state with creation/discovery fallback.
 Ranking: blocked and private excluded before score.
 Mobile: media upload resume and degraded playback.
+
+
+## AI FABRICATION CONTEXT CONTRACT — CREATIVE MEDIA / VIRALITY
+
+Before changing implementation, the agent MUST produce a machine-usable context record: current commit; exact files/functions/routes/schemas/events; source-media permissions; provenance/derivation rules; privacy and moderation constraints; producer/consumer dependencies; allowed write surfaces; acceptance criteria; focused/integration/browser tests; failure and recovery cases; and evidence required for DONE.
+
+Technical ambiguity must be resolved through canonical contracts or repository evidence. The fabrication chain is FEATURE → FLOW → STATE → EVENT/COMMAND → API → SCHEMA → FILE/FUNCTION → TEST → BROWSER ACTION → EXPECTED RESULT → EVIDENCE.
+A green isolated test or worker handoff is insufficient proof of integrated correctness.
+
+Track first-pass success and error classes separately instead of using a single ungrounded percentage. Any unsupported assumption becomes an explicit blocker or assumption requiring coordinator resolution; it is never silently promoted into a contract.

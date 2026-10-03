@@ -107,3 +107,11 @@ Time is recalculated only from those newly exposed engineering obligations. Docu
 La profondeur D100K a été appliquée aux 15 modules sur leurs 30 documents actifs. Elle ne multiplie pas artificiellement le délai. L'estimation est recalculée uniquement lorsqu'une propriété formelle révèle une obligation d'implémentation, de sécurité, de concurrence, de récupération, de test ou de preuve supplémentaire.
 
 La bande globale reste environ 4–5 mois agressif, 5–6 mois central, 6–8 mois intégration-safe jusqu'à découverte d'un nouveau travail matériel.
+
+## Quality and rework metrics for time estimation
+
+The elapsed-time model must account for the cost of ambiguity and correction, not only initial coding volume. During execution, track first-pass task success, correction count, integration defects, regressions, test failures, browser failures and unresolved assumptions.
+
+A target such as 80% first-pass success can be used to judge whether fabrication is becoming more predictable. A 10–20% error envelope may be an operational target for avoidable task corrections. Neither figure is guaranteed; actual evidence governs completion and schedule recalculation.
+
+When these metrics worsen, the project should first improve context quality, dependency visibility, task granularity, automated tests and verification before increasing raw parallelism. Time estimates are recalculated from newly exposed engineering work and observed rework, never from document length alone.

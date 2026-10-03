@@ -377,3 +377,15 @@ La boucle doit casser proprement si le contenu est privé, supprimé, bloqué, s
 
 ## 22. Measurement
 Mesures principales : activation, successful creation, meaningful share, invitation acceptance, repeat creation, return within defined cohort window, content diversity, creator retention, safety incidents. Ne pas optimiser sur un seul chiffre.
+
+
+## AI FABRICATION CONTEXT CONTRACT — CREATIVE MEDIA / VIRALITY
+
+This plan is a canonical behavioral source and must be read together with its technical-design pair and the affected module owners before fabrication. A coding agent MUST establish the current repository state, exact media/social surfaces in scope, authorization and provenance constraints, dependency impact, expected user flow, failure paths, and DONE evidence before implementing.
+
+The controlled sequence is READ → CURRENT-STATE RECONCILIATION → DEPENDENCY CHECK → PLAN → FABRICATE → TEST → BROWSER VERIFY → REGRESSION → LOCK.
+EXISTS, MISSING, TO_MODIFY, FORBIDDEN and AFFECTED_DEPENDENCY states must be explicit. No route, media policy, event, visibility behavior, AI capability or fallback may be invented merely because a task prompt is short.
+
+Observed quality is measured, not promised: track first-pass success, correction count, integration defects, regressions, browser failures and unresolved assumptions independently. A target such as 80% first-pass success is a KPI only; it never replaces evidence.
+
+Anything not freshly demonstrated is UNVERIFIED. Conflicts between this plan, the technical design, transversal contracts and the repository block the affected path until the canonical authority is resolved.

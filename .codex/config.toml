@@ -1,0 +1,9 @@
+# MOIRISE project-level Codex configuration
+# Loaded only when this repository is trusted.
+#
+# Multi-agent is a stable Codex feature and is enabled for this project.
+# The root agent's proactive delegation behavior is defined in AGENTS.md
+# and .codex/COORDINATOR_BOOTSTRAP.md.
+
+[features]
+multi_agent = true

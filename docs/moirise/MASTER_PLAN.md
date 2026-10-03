@@ -142,3 +142,43 @@ Chaque expansion de détail déclenche une révision de l'estimation de délai c
 
 ## 26. Formal fabrication completeness
 Le plan canonique comprend désormais 30 documents actifs de module : 15 PLAN.md + 15 TECHNICAL_DESIGN.md. Chaque paire doit converger vers le modèle D100K : comportement/propriétés dans PLAN, fabrication/contrats/preuves dans TECHNICAL_DESIGN, sans transfert d'autorité ni troisième source de vérité.
+
+## 27. AI fabrication context and error-reduction contract
+
+MOIRISE is presented to ChatGPT/Codex through controlled canonical context, not through a single informal project prompt. Before any substantial implementation task, the agent MUST read the complete canonical pair for every affected module, the relevant transversal contracts, dependency rules, definition of done, the applicable AI pair when MORISE AI is involved, and the current repository state.
+
+The pre-fabrication context MUST distinguish:
+- what EXISTS now;
+- what is MISSING;
+- what must be TO_MODIFY;
+- what is FORBIDDEN to change;
+- what is an AFFECTED_DEPENDENCY;
+- which document/module owns each decision.
+
+The agent MUST separate understanding from fabrication:
+READ → CURRENT-STATE RECONCILIATION → DEPENDENCY CHECK → PLAN → FABRICATE → TEST → VERIFY → INTEGRATE → REGRESSION → LOCK.
+
+A task must expose implementation-critical facts rather than forcing the agent to infer them: exact files/functions, routes, schemas, events, states, commands, guards, permissions, dependencies, acceptance criteria and evidence requirements. When evidence or canonical sources conflict, the affected fabrication path is blocked until the coordinator resolves the authority. Legacy runtime code is never treated as current architecture merely because it exists in the repository.
+
+## 28. Quality metrics and realistic success targets
+
+MOIRISE does not claim a guaranteed 80% success rate or a guaranteed 10–20% error rate. Instead, engineering quality is measured with separate observable metrics:
+- first-pass task success;
+- correction count;
+- integration defects;
+- regressions;
+- focused/integration test failures;
+- browser failures;
+- unresolved assumptions.
+
+An 80% first-pass success target or a 10–20% error envelope may be used as an operational KPI. It is not a correctness guarantee and never permits bypassing verification.
+
+The primary strategy for improving these metrics is to reduce the agent's guess surface through canonical context, precise ownership, dependency visibility, deterministic tests and independent integrated verification.
+
+## 29. Universal fabrication proof gate
+
+No module, AI capability, game, social surface, media workflow or cross-module mechanism is DONE from code generation alone. The applicable proof chain is:
+
+CODE EXISTS → TYPE/BUILD → FOCUSED TESTS → CONTRACT/INTEGRATION → RUNTIME/ROUTE → DESKTOP/MOBILE BROWSER WHERE RELEVANT → ERROR/RELOAD/PERMISSION/SECURITY CASES → DEPENDENCY REGRESSION → FRESH EVIDENCE → LOCKED.
+
+A worker handoff, generated code, isolated green test, successful build or previous run is evidence input, not the final proof of integrated correctness.

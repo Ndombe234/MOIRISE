@@ -1,0 +1,138 @@
+version: 1
+
+# Wave planning only. Feature-level task decomposition still comes from canonical docs.
+
+principle:
+  order: "dependencies first"
+  parallelism: "maximize independent work without overlapping write surfaces"
+  verification: "continuous, not deferred to the final wave"
+
+waves:
+  W0:
+    label: "Control plane"
+    tasks:
+      - id: CP-001
+        owner: R0
+        surface: ".codex/** + AGENTS.md"
+        depends_on: []
+        parallel: false
+
+  W1:
+    label: "Foundation"
+    tasks:
+      - id: M01-FOUNDATION
+        owner: R1
+        surface: "M01 exact files from canonical design"
+        depends_on: [CP-001]
+        parallel: false
+
+  W2:
+    label: "Core user/world capabilities"
+    tasks:
+      - id: M02-PLAYER
+        owner: R2
+        surface: "M02 exact files"
+        depends_on: [M01-FOUNDATION]
+      - id: M03-SOCIAL
+        owner: R2
+        surface: "M03 exact files"
+        depends_on: [M01-FOUNDATION]
+      - id: M04-WORLD
+        owner: R2
+        surface: "M04 exact files"
+        depends_on: [M01-FOUNDATION]
+      - id: M05-SYSTEM
+        owner: R3
+        surface: "M05 exact files"
+        depends_on: [M01-FOUNDATION]
+      - id: M06-PLAY
+        owner: R3
+        surface: "M06 exact files"
+        depends_on: [M01-FOUNDATION]
+
+  W3:
+    label: "Discovery and game platform"
+    tasks:
+      - id: M07-DISCOVERY
+        owner: R4
+        surface: "M07 exact files"
+        depends_on: [M02-PLAYER, M05-SYSTEM, M06-PLAY]
+      - id: M08-GAME-FACTORY
+        owner: R4
+        surface: "M08 exact files"
+        depends_on: [M01-FOUNDATION]
+      - id: M09-GAME-ENGINE
+        owner: R4
+        surface: "M09 exact files"
+        depends_on: [M01-FOUNDATION]
+      - id: M15-AI-BASE
+        owner: R6
+        surface: "M15 exact files + canonical AI implementation targets"
+        depends_on: [M01-FOUNDATION]
+
+  W4:
+    label: "Social gaming, communities, events, adaptive world and rewards"
+    tasks:
+      - id: M10-SOCIAL-GAMING
+        owner: R5
+        surface: "M10 exact files"
+        depends_on: [M03-SOCIAL, M06-PLAY]
+      - id: M11-COMMUNITIES
+        owner: R5
+        surface: "M11 exact files"
+        depends_on: [M02-PLAYER, M03-SOCIAL]
+      - id: M12-EVENTS
+        owner: R5
+        surface: "M12 exact files"
+        depends_on: [M01-FOUNDATION, M05-SYSTEM]
+      - id: M13-ADAPTIVE
+        owner: R5
+        surface: "M13 exact files"
+        depends_on: [M02-PLAYER, M05-SYSTEM, M07-DISCOVERY]
+      - id: M14-ECONOMY
+        owner: R5
+        surface: "M14 exact files"
+        depends_on: [M05-SYSTEM, M06-PLAY]
+
+  W5:
+    label: "Deep integration"
+    tasks:
+      - id: AI-INTEGRATION
+        owner: R6
+        surface: "M15 cross-module integration seams"
+        depends_on: [M02-PLAYER, M03-SOCIAL, M05-SYSTEM, M06-PLAY, M07-DISCOVERY, M08-GAME-FACTORY, M09-GAME-ENGINE]
+      - id: GAME-SOCIAL-INTEGRATION
+        owner: R4
+        surface: "M08/M09/M10/M06 integration seams"
+        depends_on: [M06-PLAY, M08-GAME-FACTORY, M09-GAME-ENGINE, M10-SOCIAL-GAMING]
+      - id: WORLD-SYSTEM-INTEGRATION
+        owner: R2
+        surface: "M04/M05/M13 handoffs"
+        depends_on: [M04-WORLD, M05-SYSTEM, M13-ADAPTIVE]
+
+  W6:
+    label: "Verification and hardening"
+    tasks:
+      - id: BROWSER-REGRESSION
+        owner: R7
+        surface: "dedicated verification surfaces"
+        depends_on: [AI-INTEGRATION, GAME-SOCIAL-INTEGRATION, WORLD-SYSTEM-INTEGRATION]
+      - id: SECURITY-RESILIENCE
+        owner: R8
+        surface: "dedicated security/resilience surfaces"
+        depends_on: [AI-INTEGRATION, GAME-SOCIAL-INTEGRATION, WORLD-SYSTEM-INTEGRATION]
+      - id: FINAL-INTEGRATION
+        owner: R0
+        surface: "integration only"
+        depends_on: [BROWSER-REGRESSION, SECURITY-RESILIENCE]
+
+continuous_tracks:
+  - QA-REVIEW
+  - SECURITY-REVIEW
+  - DEPENDENCY-IMPACT
+  - EVIDENCE-COLLECTION
+
+notes:
+  - "Wave labels do not override module ownership."
+  - "A task may start earlier when its exact canonical dependencies are satisfied."
+  - "A changed shared contract invalidates downstream tasks until reconciled."

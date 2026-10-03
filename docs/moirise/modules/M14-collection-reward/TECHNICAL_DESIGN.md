@@ -64,3 +64,23 @@ Adversarial proof must include replay, duplicate command, stale state, unauthori
 Evidence is fresh only when tied to the exact commit and exact scenario/check. Unit tests cannot alone certify a user-facing or production-sensitive feature.
 
 Ownership firewall: M14 may consume other modules through contracts, events or projections, but may not assume their private authority.
+
+
+## AI FABRICATION CONTEXT CONTRACT — ANTI-AMBIGUITY AND PROOF GATE
+
+This document is an authoritative fabrication input for **M14-collection-reward**. It must be consumed with its complete canonical pair, applicable transversal contracts, dependency rules, definition of done, and current repository evidence. It never becomes a third authority.
+
+### Controlled context gate
+Before implementation, the agent MUST capture: branch/commit; exact files/functions/surfaces in scope; EXISTS/MISSING/TO_MODIFY/FORBIDDEN/AFFECTED_DEPENDENCY status; direct and transitive dependencies; relevant data/API/schema/event contracts; permissions/privacy/security constraints; acceptance criteria; required tests; browser/mobile checks; and evidence required for DONE. Missing decisions must be resolved from canonical evidence, not guessed.
+
+### Fabrication sequence
+**READ → RECONCILE CURRENT STATE → CHECK DEPENDENCIES → PLAN → IMPLEMENT → TEST → VALIDATE → INTEGRATE → REGRESSION → LOCK.** Code generation, isolated green tests, or worker summaries do not prove integrated correctness. The coordinator verifies the integrated commit independently.
+
+### AI-specific authority rule
+When this document concerns MORISE AI, the AI orchestrates and validates capabilities but does not silently acquire business-state authority owned by other modules. Providers/workers are execution instruments, not a second brain. Owner modules still validate and commit their own state.
+
+### Error-reduction KPI
+The engineering objective is to reduce avoidable errors by reducing undocumented choices. Track first-pass task success, correction count, integration defects, regressions, test failures, browser failures, and unresolved assumptions separately. An 80% first-pass target or 10–20% error envelope may be a KPI; it is not a guarantee and never replaces verification.
+
+### Evidence and conflict gate
+DONE requires the applicable proof chain: **code → type/build → focused tests → integration/contracts → runtime → browser (desktop/mobile where relevant) → error/reload/permission/security cases → dependency regression → fresh evidence**. Anything not demonstrated is **UNVERIFIED**. Any unresolved conflict between canonical documents and repository state blocks the affected path until the coordinator resolves the authority.

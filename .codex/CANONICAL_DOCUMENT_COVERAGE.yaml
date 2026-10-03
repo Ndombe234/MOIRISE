@@ -1,0 +1,189 @@
+version: 1
+purpose: "Machine-readable coverage registry for the canonical fabrication documents. It adds orchestration metadata only; it does not redefine module behavior."
+
+read_policy:
+  module_task:
+    required:
+      - PLAN.md
+      - TECHNICAL_DESIGN.md
+    rule: "PLAN defines WHAT; TECHNICAL_DESIGN defines HOW. A worker may not fabricate a module task from only one of the pair."
+  ai_task:
+    required:
+      - docs/moirise/ai/AI_MASTER_PLAN.md
+      - docs/moirise/ai/AI_TECHNICAL_DESIGN.md
+    rule: "AI_MASTER_PLAN defines WHAT; AI_TECHNICAL_DESIGN defines HOW. No third AI authority."
+  cross_module_task:
+    required: "All directly affected module pairs plus the AI pair when M15/capabilities/providers/workers are involved."
+  change_impact:
+    required:
+      - docs/moirise/transversal/DEPENDENCIES.md
+      - docs/moirise/transversal/CONTRACTS.md
+      - docs/moirise/transversal/DEFINITION_OF_DONE.md
+    rule: "Shared-contract changes require dependency impact before dependent workers resume."
+
+modules:
+  01: 
+    id: M01
+    name: "M01 Foundation"
+    owner_role: R1
+    plan: docs/moirise/modules/M01-foundation/PLAN.md
+    technical_design: docs/moirise/modules/M01-foundation/TECHNICAL_DESIGN.md
+    required_together: true
+    formal_layer: D100K
+    fabrication_layers: [D1K, D10K, D100K]
+    orchestration: coordinator_reads_pair_then_delegates
+  02: 
+    id: M02
+    name: "M02 Player"
+    owner_role: R2
+    plan: docs/moirise/modules/M02-player/PLAN.md
+    technical_design: docs/moirise/modules/M02-player/TECHNICAL_DESIGN.md
+    required_together: true
+    formal_layer: D100K
+    fabrication_layers: [D1K, D10K, D100K]
+    orchestration: coordinator_reads_pair_then_delegates
+  03: 
+    id: M03
+    name: "M03 Social + Private Messaging"
+    owner_role: R2
+    plan: docs/moirise/modules/M03-social/PLAN.md
+    technical_design: docs/moirise/modules/M03-social/TECHNICAL_DESIGN.md
+    required_together: true
+    formal_layer: D100K
+    fabrication_layers: [D1K, D10K, D100K]
+    orchestration: coordinator_reads_pair_then_delegates
+  04: 
+    id: M04
+    name: "M04 World"
+    owner_role: R2
+    plan: docs/moirise/modules/M04-world/PLAN.md
+    technical_design: docs/moirise/modules/M04-world/TECHNICAL_DESIGN.md
+    required_together: true
+    formal_layer: D100K
+    fabrication_layers: [D1K, D10K, D100K]
+    orchestration: coordinator_reads_pair_then_delegates
+  05: 
+    id: M05
+    name: "M05 System / Progression / Evolution"
+    owner_role: R3
+    plan: docs/moirise/modules/M05-system/PLAN.md
+    technical_design: docs/moirise/modules/M05-system/TECHNICAL_DESIGN.md
+    required_together: true
+    formal_layer: D100K
+    fabrication_layers: [D1K, D10K, D100K]
+    orchestration: coordinator_reads_pair_then_delegates
+  06: 
+    id: M06
+    name: "M06 Play"
+    owner_role: R3
+    plan: docs/moirise/modules/M06-play/PLAN.md
+    technical_design: docs/moirise/modules/M06-play/TECHNICAL_DESIGN.md
+    required_together: true
+    formal_layer: D100K
+    fabrication_layers: [D1K, D10K, D100K]
+    orchestration: coordinator_reads_pair_then_delegates
+  07: 
+    id: M07
+    name: "M07 Game Discovery"
+    owner_role: R4
+    plan: docs/moirise/modules/M07-game-discovery/PLAN.md
+    technical_design: docs/moirise/modules/M07-game-discovery/TECHNICAL_DESIGN.md
+    required_together: true
+    formal_layer: D100K
+    fabrication_layers: [D1K, D10K, D100K]
+    orchestration: coordinator_reads_pair_then_delegates
+  08: 
+    id: M08
+    name: "M08 Game A→Z Factory"
+    owner_role: R4
+    plan: docs/moirise/modules/M08-game-factory/PLAN.md
+    technical_design: docs/moirise/modules/M08-game-factory/TECHNICAL_DESIGN.md
+    required_together: true
+    formal_layer: D100K
+    fabrication_layers: [D1K, D10K, D100K]
+    orchestration: coordinator_reads_pair_then_delegates
+  09: 
+    id: M09
+    name: "M09 Shared Game Engine"
+    owner_role: R4
+    plan: docs/moirise/modules/M09-shared-game-engine/PLAN.md
+    technical_design: docs/moirise/modules/M09-shared-game-engine/TECHNICAL_DESIGN.md
+    required_together: true
+    formal_layer: D100K
+    fabrication_layers: [D1K, D10K, D100K]
+    orchestration: coordinator_reads_pair_then_delegates
+  10: 
+    id: M10
+    name: "M10 Social Gaming"
+    owner_role: R5
+    plan: docs/moirise/modules/M10-social-gaming/PLAN.md
+    technical_design: docs/moirise/modules/M10-social-gaming/TECHNICAL_DESIGN.md
+    required_together: true
+    formal_layer: D100K
+    fabrication_layers: [D1K, D10K, D100K]
+    orchestration: coordinator_reads_pair_then_delegates
+  11: 
+    id: M11
+    name: "M11 Communities / Guilds"
+    owner_role: R5
+    plan: docs/moirise/modules/M11-communities/PLAN.md
+    technical_design: docs/moirise/modules/M11-communities/TECHNICAL_DESIGN.md
+    required_together: true
+    formal_layer: D100K
+    fabrication_layers: [D1K, D10K, D100K]
+    orchestration: coordinator_reads_pair_then_delegates
+  12: 
+    id: M12
+    name: "M12 Events"
+    owner_role: R5
+    plan: docs/moirise/modules/M12-events/PLAN.md
+    technical_design: docs/moirise/modules/M12-events/TECHNICAL_DESIGN.md
+    required_together: true
+    formal_layer: D100K
+    fabrication_layers: [D1K, D10K, D100K]
+    orchestration: coordinator_reads_pair_then_delegates
+  13: 
+    id: M13
+    name: "M13 Adaptive World"
+    owner_role: R5
+    plan: docs/moirise/modules/M13-adaptive/PLAN.md
+    technical_design: docs/moirise/modules/M13-adaptive/TECHNICAL_DESIGN.md
+    required_together: true
+    formal_layer: D100K
+    fabrication_layers: [D1K, D10K, D100K]
+    orchestration: coordinator_reads_pair_then_delegates
+  14: 
+    id: M14
+    name: "M14 Collection / Reward Economy"
+    owner_role: R5
+    plan: docs/moirise/modules/M14-collection-reward/PLAN.md
+    technical_design: docs/moirise/modules/M14-collection-reward/TECHNICAL_DESIGN.md
+    required_together: true
+    formal_layer: D100K
+    fabrication_layers: [D1K, D10K, D100K]
+    orchestration: coordinator_reads_pair_then_delegates
+  15: 
+    id: M15
+    name: "M15 Meta System + MORISE AI Lab"
+    owner_role: R6
+    plan: docs/moirise/modules/M15-meta-ai-lab/PLAN.md
+    technical_design: docs/moirise/modules/M15-meta-ai-lab/TECHNICAL_DESIGN.md
+    required_together: true
+    formal_layer: D100K
+    fabrication_layers: [D1K, D10K, D100K]
+    orchestration: coordinator_reads_pair_then_delegates
+ai:
+  id: MORISE-AI
+  owner_module: M15
+  master_plan: docs/moirise/ai/AI_MASTER_PLAN.md
+  technical_design: docs/moirise/ai/AI_TECHNICAL_DESIGN.md
+  required_together: true
+  formal_layer: D100K
+  fabrication_layers: [D1K, D10K, D100K]
+  orchestration: coordinator_reads_pair_then_delegates
+
+verification_rule:
+  "A worker handoff is never sufficient by itself. The coordinator must verify the exact integrated commit against the relevant PLAN + TECHNICAL_DESIGN pair and the applicable transversal contracts."
+
+negative_rule:
+  "Do not create duplicate module plans, duplicate AI architecture, provider registries, alternative DONE definitions, or a second memory/brain/router authority in .codex/."
